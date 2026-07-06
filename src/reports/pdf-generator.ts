@@ -8,6 +8,11 @@ import { jsPDF } from 'jspdf';
 import type { NatalChart } from '../engine/types';
 import { getSignIndex, getDegreeInSign, formatDegMin } from '../engine/calculations';
 import { generateFullReport, type FullReport, type ThemeSynthesis } from '../engine/synthesis';
+import { getInterpretations } from '../engine/interpretations/index';
+import { VENUS_IN_HOUSE, MARS_IN_HOUSE, NORTH_NODE_HOUSE, NORTH_NODE_IN_SIGN } from '../engine/interpret';
+import { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE } from '../engine/outer-planets';
+import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from '../engine/chiron';
+import { getAspectInterpretation, ASPECT_NATURE } from '../engine/aspect-interpretations';
 
 // ============================================================
 // CONSTANTS
@@ -88,20 +93,167 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
   } else {
     // Full version: interpretation pages using synthesis engine
     const report = generateFullReport(chart);
+    const texts = getInterpretations(options.locale === 'en' ? 'en' : options.locale === 'es' ? 'es' : 'pt');
 
-    // Page 4: Overview + Chart Ruler + Elements
+    // Page 4: Visão Geral Narrativa (overview do synthesis)
     doc.addPage();
     renderSynthesisOverviewPage(doc, report, isEN);
 
-    // Pages 5+: Theme synthesis pages
+    // Page 5: Sol — interpretação na casa
+    const sunPos = chart.positions.sun;
+    if (sunPos) {
+      const sunHouse = chart.planetHouses.sun || 1;
+      const sunSign = getSignIndex(sunPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '☉', nameEN: 'Sun', namePT: 'Sol',
+        subtitleEN: 'Your solar essence — identity, purpose and vital energy',
+        subtitlePT: 'Sua essência solar — identidade, propósito e energia vital',
+        house: sunHouse, signIndex: sunSign,
+        text: texts.SUN_IN_HOUSE[sunHouse - 1] || '',
+        isRetrograde: sunPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 6: Lua — interpretação na casa
+    const moonPos = chart.positions.moon;
+    if (moonPos) {
+      const moonHouse = chart.planetHouses.moon || 1;
+      const moonSign = getSignIndex(moonPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '☽', nameEN: 'Moon', namePT: 'Lua',
+        subtitleEN: 'Your emotional world — needs, instincts and inner security',
+        subtitlePT: 'Seu mundo emocional — necessidades, instintos e segurança interior',
+        house: moonHouse, signIndex: moonSign,
+        text: texts.MOON_IN_HOUSE[moonHouse - 1] || '',
+        isRetrograde: moonPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 7: Mercúrio — interpretação na casa
+    const mercPos = chart.positions.mercury;
+    if (mercPos) {
+      const mercHouse = chart.planetHouses.mercury || 1;
+      const mercSign = getSignIndex(mercPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '☿', nameEN: 'Mercury', namePT: 'Mercúrio',
+        subtitleEN: 'Your mind and communication — how you think, learn and express',
+        subtitlePT: 'Sua mente e comunicação — como você pensa, aprende e se expressa',
+        house: mercHouse, signIndex: mercSign,
+        text: texts.MERCURY_IN_HOUSE[mercHouse - 1] || '',
+        isRetrograde: mercPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 8: Vênus — interpretação na casa
+    const venusPos = chart.positions.venus;
+    if (venusPos) {
+      const venusHouse = chart.planetHouses.venus || 1;
+      const venusSign = getSignIndex(venusPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '♀', nameEN: 'Venus', namePT: 'Vênus',
+        subtitleEN: 'Your love language — what you attract, value and desire in relationships',
+        subtitlePT: 'Sua linguagem do amor — o que você atrai, valoriza e deseja nos relacionamentos',
+        house: venusHouse, signIndex: venusSign,
+        text: VENUS_IN_HOUSE[venusHouse - 1] || '',
+        isRetrograde: venusPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 9: Marte — interpretação na casa
+    const marsPos = chart.positions.mars;
+    if (marsPos) {
+      const marsHouse = chart.planetHouses.mars || 1;
+      const marsSign = getSignIndex(marsPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '♂', nameEN: 'Mars', namePT: 'Marte',
+        subtitleEN: 'Your drive and action — how you pursue goals, assert yourself and desire',
+        subtitlePT: 'Seu impulso e ação — como você persegue objetivos, se impõe e deseja',
+        house: marsHouse, signIndex: marsSign,
+        text: MARS_IN_HOUSE[marsHouse - 1] || '',
+        isRetrograde: marsPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 10: Júpiter — interpretação na casa
+    const jupPos = chart.positions.jupiter;
+    if (jupPos) {
+      const jupHouse = chart.planetHouses.jupiter || 1;
+      const jupSign = getSignIndex(jupPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '♃', nameEN: 'Jupiter', namePT: 'Júpiter',
+        subtitleEN: 'Your path of expansion — where abundance, wisdom and growth flow naturally',
+        subtitlePT: 'Seu caminho de expansão — onde abundância, sabedoria e crescimento fluem naturalmente',
+        house: jupHouse, signIndex: jupSign,
+        text: JUPITER_IN_HOUSE[jupHouse - 1] || '',
+        isRetrograde: jupPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 11: Saturno — interpretação na casa
+    const satPos = chart.positions.saturn;
+    if (satPos) {
+      const satHouse = chart.planetHouses.saturn || 1;
+      const satSign = getSignIndex(satPos.longitude);
+      doc.addPage();
+      renderPlanetPage(doc, {
+        symbol: '♄', nameEN: 'Saturn', namePT: 'Saturno',
+        subtitleEN: 'Your mastery zone — where discipline, structure and lasting achievement are forged',
+        subtitlePT: 'Sua zona de maestria — onde disciplina, estrutura e conquista duradoura são forjadas',
+        house: satHouse, signIndex: satSign,
+        text: SATURN_IN_HOUSE[satHouse - 1] || '',
+        isRetrograde: satPos.isRetrograde,
+      }, signNames, isEN);
+    }
+
+    // Page 12: Urano / Netuno / Plutão — combinados
+    doc.addPage();
+    renderOuterPlanetsDetailPage(doc, chart, signNames, isEN);
+
+    // Page 13: Quíron — ferida e dom
+    const chironPos = chart.positions.chiron;
+    if (chironPos) {
+      const chironHouse = chart.planetHouses.chiron || 1;
+      const chironSign = getSignIndex(chironPos.longitude);
+      doc.addPage();
+      renderChironPage(doc, chironHouse, chironSign, signNames, isEN);
+    }
+
+    // Page 14: Nodo Norte — propósito de vida
+    const nnPos = chart.positions.northNode;
+    if (nnPos) {
+      const nnHouse = chart.planetHouses.northNode || 1;
+      const nnSign = getSignIndex(nnPos.longitude);
+      doc.addPage();
+      renderNorthNodePage(doc, nnHouse, nnSign, signNames, isEN);
+    }
+
+    // Pages 15-16: Top 10 aspectos com interpretações
+    doc.addPage();
+    renderAspectsPage(doc, chart, isEN);
+
+    // Page 17: Elementos e Modalidades
+    doc.addPage();
+    renderElementsModalitiesPage(doc, report, isEN);
+
+    // Page 18: Dignidades Essenciais
+    doc.addPage();
+    renderDignitiesPage(doc, report, isEN);
+
+    // Pages 19-24: Síntese por tema (6 temas)
     for (const theme of report.themes) {
       doc.addPage();
       renderThemePage(doc, theme, isEN);
     }
 
-    // Outer planets page
+    // Page 25: Conclusão / Próximos Passos
     doc.addPage();
-    renderOuterPlanetsPage(doc, report.outerPlanets, isEN);
+    renderConclusionPage(doc, options, isEN);
   }
 
   // Footer on all pages
@@ -157,7 +309,7 @@ function renderCoverPage(doc: jsPDF, options: PdfOptions, isEN: boolean) {
   doc.text(options.birthCity, w / 2, 182, { align: 'center' });
 
   // ASC + Sun info
-  const sunSign = getSignIndex(chart => 0); // placeholder
+  const sunSign = 0; // placeholder — cover page doesn't use this
   doc.setFontSize(11);
   doc.setTextColor(...COLORS.textLight);
 
@@ -600,4 +752,724 @@ function renderOuterPlanetsPage(doc: jsPDF, outerTexts: string[], isEN: boolean)
       y += lines.length * 5 + 5;
     }
   }
+}
+
+// ============================================================
+// INDIVIDUAL PLANET PAGE
+// ============================================================
+
+interface PlanetPageData {
+  symbol: string;
+  nameEN: string;
+  namePT: string;
+  subtitleEN: string;
+  subtitlePT: string;
+  house: number;
+  signIndex: number;
+  text: string;
+  isRetrograde: boolean;
+}
+
+function renderPlanetPage(doc: jsPDF, data: PlanetPageData, signNames: string[], isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  // Decorative top bar
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  // Planet symbol (large)
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.setTextColor(...COLORS.brandLight);
+  doc.text(data.symbol, margin, y + 5);
+
+  // Planet name
+  doc.setFontSize(22);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? data.nameEN : data.namePT, margin + 15, y + 5);
+
+  // Retrograde badge
+  if (data.isRetrograde) {
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.fire);
+    doc.text(isEN ? '℞ Retrograde' : '℞ Retrógrado', 165, y + 5, { align: 'right' });
+  }
+  y += 16;
+
+  // Sign + House subtitle
+  doc.setFontSize(13);
+  doc.setTextColor(...ELEMENT_COLORS_IDX[data.signIndex]);
+  doc.text(
+    `${SIGN_SYMBOLS[data.signIndex]} ${signNames[data.signIndex]}  —  ${isEN ? 'House' : 'Casa'} ${data.house}`,
+    margin, y
+  );
+  y += 8;
+
+  // Page subtitle (description of what this page covers)
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.textLight);
+  const subtitle = isEN ? data.subtitleEN : data.subtitlePT;
+  doc.text(subtitle, margin, y);
+  y += 10;
+
+  // Separator line
+  doc.setDrawColor(...COLORS.line);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, 190, y);
+  y += 10;
+
+  // Main interpretation text
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+
+  if (data.text) {
+    const lines = doc.splitTextToSize(data.text, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 5.5;
+    }
+  } else {
+    doc.setTextColor(...COLORS.textLight);
+    const fallback = isEN
+      ? `${data.nameEN} in House ${data.house} shapes the way you express this planetary energy in the area of life governed by this house. This placement indicates specific patterns of behavior, motivation and growth that define your unique approach to this area of life.`
+      : `${data.namePT} na Casa ${data.house} molda a forma como você expressa esta energia planetária na área de vida governada por esta casa. Este posicionamento indica padrões específicos de comportamento, motivação e crescimento que definem sua abordagem única nesta área da vida.`;
+    const lines = doc.splitTextToSize(fallback, 170);
+    doc.text(lines, margin, y);
+    y += lines.length * 5.5;
+  }
+
+  // Retrograde note at the bottom if applicable
+  if (data.isRetrograde) {
+    y += 8;
+    if (y > 260) { doc.addPage(); y = 30; }
+    doc.setFillColor(255, 245, 245);
+    doc.rect(margin, y - 4, 170, 18, 'F');
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.fire);
+    doc.text(isEN ? '℞ Retrograde Note' : '℞ Nota sobre Retrogradação', margin + 3, y + 1);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...COLORS.text);
+    const retroText = isEN
+      ? `${data.nameEN} was retrograde at your birth. This internalizes the planet's energy — you may process its themes more deeply but express them outwardly only after reflection. With time and awareness, retrograde planets often become sources of great wisdom.`
+      : `${data.namePT} estava retrógrado no seu nascimento. Isso internaliza a energia do planeta — você pode processar seus temas com mais profundidade, mas expressá-los externamente apenas após reflexão. Com o tempo e a consciência, planetas retrógrados frequentemente se tornam fontes de grande sabedoria.`;
+    const retroLines = doc.splitTextToSize(retroText, 162);
+    doc.text(retroLines, margin + 3, y + 7);
+  }
+}
+
+// ============================================================
+// OUTER PLANETS DETAIL PAGE (Uranus / Neptune / Pluto)
+// ============================================================
+
+function renderOuterPlanetsDetailPage(doc: jsPDF, chart: NatalChart, signNames: string[], isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Outer Planets — Generational Influences' : 'Planetas Exteriores — Influências Geracionais', margin, y + 4);
+  y += 14;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textLight);
+  const intro = isEN
+    ? 'Uranus, Neptune and Pluto move slowly and shape generational themes. Their house placements reveal where these collective forces act most personally in your life.'
+    : 'Urano, Netuno e Plutão se movem lentamente e moldam temas geracionais. Seus posicionamentos por casa revelam onde essas forças coletivas atuam de forma mais pessoal na sua vida.';
+  const introLines = doc.splitTextToSize(intro, 170);
+  doc.text(introLines, margin, y);
+  y += introLines.length * 4.5 + 8;
+
+  const outerPlanets = [
+    {
+      id: 'uranus', symbol: '♅', nameEN: 'Uranus', namePT: 'Urano',
+      array: URANUS_IN_HOUSE,
+      themeEN: 'Innovation, liberation and radical change',
+      themePT: 'Inovação, libertação e mudança radical',
+    },
+    {
+      id: 'neptune', symbol: '♆', nameEN: 'Neptune', namePT: 'Netuno',
+      array: NEPTUNE_IN_HOUSE,
+      themeEN: 'Intuition, spirituality and dissolution of boundaries',
+      themePT: 'Intuição, espiritualidade e dissolução de limites',
+    },
+    {
+      id: 'pluto', symbol: '♇', nameEN: 'Pluto', namePT: 'Plutão',
+      array: PLUTO_IN_HOUSE,
+      themeEN: 'Deep transformation, power and regeneration',
+      themePT: 'Transformação profunda, poder e regeneração',
+    },
+  ];
+
+  for (const planet of outerPlanets) {
+    const pos = chart.positions[planet.id];
+    if (!pos) continue;
+
+    const house = chart.planetHouses[planet.id] || 1;
+    const si = getSignIndex(pos.longitude);
+    const text = planet.array[house - 1] || '';
+
+    if (y > 240) { doc.addPage(); y = 30; }
+
+    // Planet header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.setTextColor(...COLORS.brand);
+    doc.text(`${planet.symbol}  ${isEN ? planet.nameEN : planet.namePT}`, margin, y);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...ELEMENT_COLORS_IDX[si]);
+    doc.text(
+      `${SIGN_SYMBOLS[si]} ${signNames[si]}  —  ${isEN ? 'House' : 'Casa'} ${house}`,
+      margin + 35, y
+    );
+    y += 6;
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(isEN ? planet.themeEN : planet.themePT, margin, y);
+    y += 6;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    if (text) {
+      const lines = doc.splitTextToSize(text, 170);
+      for (const line of lines) {
+        if (y > 272) { doc.addPage(); y = 30; }
+        doc.text(line, margin, y);
+        y += 5;
+      }
+    }
+    y += 8;
+
+    doc.setDrawColor(...COLORS.line);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y - 4, 190, y - 4);
+  }
+}
+
+// ============================================================
+// CHIRON PAGE — A Ferida que Cura
+// ============================================================
+
+function renderChironPage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...COLORS.brand);
+  doc.text('⚷  ' + (isEN ? 'Chiron' : 'Quíron'), margin, y + 4);
+  y += 13;
+
+  doc.setFontSize(13);
+  doc.setTextColor(...ELEMENT_COLORS_IDX[signIndex]);
+  doc.text(`${SIGN_SYMBOLS[signIndex]} ${signNames[signIndex]}  —  ${isEN ? 'House' : 'Casa'} ${house}`, margin, y);
+  y += 8;
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.textLight);
+  doc.text(
+    isEN
+      ? 'The wound that becomes wisdom — where you are most sensitive and most gifted'
+      : 'A ferida que se torna sabedoria — onde você é mais sensível e mais dotado',
+    margin, y
+  );
+  y += 10;
+
+  doc.setDrawColor(...COLORS.line);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, 190, y);
+  y += 10;
+
+  // House text
+  const houseText = CHIRON_IN_HOUSE[house - 1] || '';
+  if (houseText) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...COLORS.brand);
+    doc.text(isEN ? `Chiron in House ${house}` : `Quíron na Casa ${house}`, margin, y);
+    y += 7;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    const lines = doc.splitTextToSize(houseText, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 5.5;
+    }
+    y += 8;
+  }
+
+  // Sign text
+  const signText = CHIRON_IN_SIGN[signIndex] || '';
+  if (signText) {
+    if (y > 240) { doc.addPage(); y = 30; }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...COLORS.brand);
+    doc.text(
+      isEN ? `Chiron in ${signNames[signIndex]} — The Tone of the Wound` : `Quíron em ${signNames[signIndex]} — O Tom da Ferida`,
+      margin, y
+    );
+    y += 7;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    const lines = doc.splitTextToSize(signText, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 5.5;
+    }
+  }
+}
+
+// ============================================================
+// NORTH NODE PAGE — Propósito de Vida
+// ============================================================
+
+function renderNorthNodePage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...COLORS.brand);
+  doc.text('☊  ' + (isEN ? 'North Node' : 'Nodo Norte'), margin, y + 4);
+  y += 13;
+
+  doc.setFontSize(13);
+  doc.setTextColor(...ELEMENT_COLORS_IDX[signIndex]);
+  doc.text(`${SIGN_SYMBOLS[signIndex]} ${signNames[signIndex]}  —  ${isEN ? 'House' : 'Casa'} ${house}`, margin, y);
+  y += 8;
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.textLight);
+  doc.text(
+    isEN
+      ? 'Your soul\'s evolutionary direction — where growth calls you most powerfully'
+      : 'A direção evolutiva da sua alma — onde o crescimento te chama com mais força',
+    margin, y
+  );
+  y += 10;
+
+  doc.setDrawColor(...COLORS.line);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, 190, y);
+  y += 10;
+
+  // House text
+  const houseText = NORTH_NODE_HOUSE[house - 1] || '';
+  if (houseText) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...COLORS.brand);
+    doc.text(isEN ? `North Node in House ${house}` : `Nodo Norte na Casa ${house}`, margin, y);
+    y += 7;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    const lines = doc.splitTextToSize(houseText, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 5.5;
+    }
+    y += 8;
+  }
+
+  // Sign text
+  const signText = NORTH_NODE_IN_SIGN[signIndex] || '';
+  if (signText) {
+    if (y > 240) { doc.addPage(); y = 30; }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...COLORS.brand);
+    doc.text(
+      isEN ? `North Node in ${signNames[signIndex]} — The Journey` : `Nodo Norte em ${signNames[signIndex]} — A Jornada`,
+      margin, y
+    );
+    y += 7;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.text);
+    const lines = doc.splitTextToSize(signText, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 5.5;
+    }
+  }
+}
+
+// ============================================================
+// ASPECTS PAGE — Top 10 aspectos principais
+// ============================================================
+
+const ASPECT_SYMBOLS: Record<string, string> = {
+  conjunction: '☌', sextile: '⚹', square: '□', trine: '△', opposition: '☍',
+};
+const ASPECT_NAMES_PT: Record<string, string> = {
+  conjunction: 'Conjunção', sextile: 'Sextil', square: 'Quadratura', trine: 'Trígono', opposition: 'Oposição',
+};
+const ASPECT_NAMES_EN: Record<string, string> = {
+  conjunction: 'Conjunction', sextile: 'Sextile', square: 'Square', trine: 'Trine', opposition: 'Opposition',
+};
+
+function renderAspectsPage(doc: jsPDF, chart: NatalChart, isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Main Aspects' : 'Aspectos Principais', margin, y + 4);
+  y += 14;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textLight);
+  doc.text(
+    isEN
+      ? 'The planetary aspects reveal the inner dialogues between different parts of your psyche.'
+      : 'Os aspectos planetários revelam os diálogos internos entre diferentes partes da sua psique.',
+    margin, y
+  );
+  y += 9;
+
+  // Sort aspects by exactness desc, take top 10 with interpretations
+  const rankedAspects = [...chart.aspects]
+    .filter(a => {
+      const key1 = `${a.planet1}-${a.planet2}`;
+      const key2 = `${a.planet2}-${a.planet1}`;
+      const text = getAspectInterpretation(a.planet1, a.planet2, a.type);
+      return text.length > 0;
+    })
+    .sort((a, b) => b.exactness - a.exactness)
+    .slice(0, 10);
+
+  const aspectNames = isEN ? ASPECT_NAMES_EN : ASPECT_NAMES_PT;
+  const planetNamesMap = isEN ? PLANET_NAMES_EN : PLANET_NAMES_PT;
+
+  for (const aspect of rankedAspects) {
+    if (y > 255) { doc.addPage(); y = 30; }
+
+    const interp = getAspectInterpretation(aspect.planet1, aspect.planet2, aspect.type);
+    if (!interp) continue;
+
+    const p1Name = planetNamesMap[aspect.planet1] || aspect.planet1;
+    const p2Name = planetNamesMap[aspect.planet2] || aspect.planet2;
+    const p1Sym = PLANET_SYMBOLS[aspect.planet1] || '';
+    const p2Sym = PLANET_SYMBOLS[aspect.planet2] || '';
+    const aspSym = ASPECT_SYMBOLS[aspect.type] || '';
+    const aspName = aspectNames[aspect.type] || aspect.type;
+    const nature = ASPECT_NATURE[aspect.type];
+    const orbStr = `${aspect.orb.toFixed(1)}°`;
+
+    // Nature color
+    const natColor = nature?.nature === 'soft' ? COLORS.earth :
+      nature?.nature === 'hard' ? COLORS.fire : COLORS.brand;
+
+    // Aspect header
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...COLORS.text);
+    doc.text(`${p1Sym} ${p1Name}  ${aspSym}  ${p2Sym} ${p2Name}`, margin, y);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...natColor);
+    doc.text(`${aspName}  (${orbStr})`, 150, y, { align: 'right' });
+    y += 6;
+
+    // Interpretation text
+    doc.setFontSize(9.5);
+    doc.setTextColor(...COLORS.text);
+    const lines = doc.splitTextToSize(interp, 170);
+    for (const line of lines) {
+      if (y > 272) { doc.addPage(); y = 30; }
+      doc.text(line, margin, y);
+      y += 4.8;
+    }
+    y += 5;
+
+    doc.setDrawColor(...COLORS.line);
+    doc.setLineWidth(0.2);
+    doc.line(margin, y - 2, 190, y - 2);
+  }
+
+  if (rankedAspects.length === 0) {
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(
+      isEN ? 'No major aspects with interpretations found in this chart.' : 'Nenhum aspecto principal com interpretação encontrado neste mapa.',
+      margin, y
+    );
+  }
+}
+
+// ============================================================
+// ELEMENTS & MODALITIES PAGE
+// ============================================================
+
+function renderElementsModalitiesPage(doc: jsPDF, report: FullReport, isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Elements & Modalities' : 'Elementos & Modalidades', margin, y + 4);
+  y += 18;
+
+  // Elements section
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Element Balance' : 'Equilíbrio de Elementos', margin, y);
+  y += 8;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+  const elemLines = doc.splitTextToSize(report.elementBalance, 170);
+  doc.text(elemLines, margin, y);
+  y += elemLines.length * 5.5 + 12;
+
+  // Visual element bars
+  const elementData = [
+    { label: isEN ? 'Fire (Aries, Leo, Sagittarius)' : 'Fogo (Áries, Leão, Sagitário)', color: COLORS.fire },
+    { label: isEN ? 'Earth (Taurus, Virgo, Capricorn)' : 'Terra (Touro, Virgem, Capricórnio)', color: COLORS.earth },
+    { label: isEN ? 'Air (Gemini, Libra, Aquarius)' : 'Ar (Gêmeos, Libra, Aquário)', color: COLORS.air },
+    { label: isEN ? 'Water (Cancer, Scorpio, Pisces)' : 'Água (Câncer, Escorpião, Peixes)', color: COLORS.water },
+  ];
+  for (const el of elementData) {
+    doc.setFillColor(...el.color);
+    doc.rect(margin, y - 3, 4, 4, 'F');
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(el.label, margin + 7, y);
+    y += 6;
+  }
+  y += 8;
+
+  doc.setDrawColor(...COLORS.line);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, 190, y);
+  y += 10;
+
+  // Modalities section
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Modality Balance' : 'Equilíbrio de Modalidades', margin, y);
+  y += 8;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+  const modLines = doc.splitTextToSize(report.modalityBalance, 170);
+  doc.text(modLines, margin, y);
+  y += modLines.length * 5.5 + 12;
+
+  const modalityData = [
+    { label: isEN ? 'Cardinal — initiating, action-oriented' : 'Cardinal — iniciador, orientado à ação', color: COLORS.brand },
+    { label: isEN ? 'Fixed — sustaining, persistent' : 'Fixo — sustentador, persistente', color: COLORS.brandLight },
+    { label: isEN ? 'Mutable — adaptable, transitional' : 'Mutável — adaptável, transitório', color: COLORS.textLight },
+  ];
+  for (const mod of modalityData) {
+    doc.setFillColor(...mod.color);
+    doc.rect(margin, y - 3, 4, 4, 'F');
+    doc.setFontSize(9);
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(mod.label, margin + 7, y);
+    y += 6;
+  }
+}
+
+// ============================================================
+// DIGNITIES PAGE
+// ============================================================
+
+function renderDignitiesPage(doc: jsPDF, report: FullReport, isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(margin, y - 8, 170, 1.5, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Essential Dignities' : 'Dignidades Essenciais', margin, y + 4);
+  y += 14;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.textLight);
+  const intro = isEN
+    ? 'Essential dignities measure a planet\'s strength relative to its sign placement. Planets in dignity (domicile or exaltation) express their energy more purely; planets in debility (detriment or fall) face greater challenges but also offer deeper lessons.'
+    : 'As dignidades essenciais medem a força de um planeta em relação ao seu signo. Planetas em dignidade (domicílio ou exaltação) expressam sua energia com mais pureza; planetas em debilidade (detrimento ou queda) enfrentam maiores desafios mas também oferecem lições mais profundas.';
+  const introLines = doc.splitTextToSize(intro, 170);
+  doc.text(introLines, margin, y);
+  y += introLines.length * 5 + 10;
+
+  doc.setDrawColor(...COLORS.line);
+  doc.setLineWidth(0.3);
+  doc.line(margin, y, 190, y);
+  y += 10;
+
+  if (report.dignities.length === 0) {
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(
+      isEN ? 'No notable essential dignities in this chart.' : 'Nenhuma dignidade essencial notável neste mapa.',
+      margin, y
+    );
+    return;
+  }
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+
+  for (const dignity of report.dignities) {
+    if (y > 265) { doc.addPage(); y = 30; }
+    const clean = dignity.replace(/\*\*/g, '');
+    const lines = doc.splitTextToSize(clean, 170);
+    doc.text(lines, margin, y);
+    y += lines.length * 5.5 + 4;
+
+    doc.setDrawColor(...COLORS.line);
+    doc.setLineWidth(0.15);
+    doc.line(margin, y, 190, y);
+    y += 5;
+  }
+}
+
+// ============================================================
+// CONCLUSION PAGE — Próximos Passos
+// ============================================================
+
+function renderConclusionPage(doc: jsPDF, options: PdfOptions, isEN: boolean) {
+  const w = 210;
+  let y = 50;
+
+  // Decorative star
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(40);
+  doc.setTextColor(...COLORS.brandLight);
+  doc.text('✦', w / 2, y, { align: 'center' });
+  y += 20;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Your Map Is Complete' : 'Seu Mapa Está Completo', w / 2, y, { align: 'center' });
+  y += 14;
+
+  doc.setDrawColor(...COLORS.brand);
+  doc.setLineWidth(0.8);
+  doc.line(50, y, w - 50, y);
+  y += 14;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(...COLORS.text);
+
+  const body = isEN
+    ? [
+        'This report is a map — not a destiny.',
+        '',
+        'Every placement you have read describes potential patterns,',
+        'not fixed outcomes. You are always larger than any chart.',
+        '',
+        'Suggested next steps:',
+        '  1. Sit with the pages that resonated most strongly.',
+        '  2. Notice where you feel recognition — that is where growth lives.',
+        '  3. Work with a professional astrologer to explore transits',
+        '     and timing for the year ahead.',
+        '  4. Return to this report at different life moments — the same',
+        '     chart reveals different layers as you evolve.',
+        '',
+        'The stars incline, they do not compel.',
+      ]
+    : [
+        'Este relatório é um mapa — não um destino.',
+        '',
+        'Cada posicionamento que você leu descreve padrões potenciais,',
+        'não resultados fixos. Você é sempre maior do que qualquer mapa.',
+        '',
+        'Próximos passos sugeridos:',
+        '  1. Permaneça com as páginas que mais ressoaram.',
+        '  2. Note onde sentiu reconhecimento — é aí que mora o crescimento.',
+        '  3. Trabalhe com um astrólogo profissional para explorar trânsitos',
+        '     e timing para o próximo ano.',
+        '  4. Retorne a este relatório em momentos diferentes da vida — o mesmo',
+        '     mapa revela camadas diferentes à medida que você evolui.',
+        '',
+        'Os astros inclinam, não compelem.',
+      ];
+
+  for (const line of body) {
+    doc.text(line, w / 2, y, { align: 'center' });
+    y += line === '' ? 5 : 7;
+  }
+
+  y += 15;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.setTextColor(...COLORS.brandLight);
+  doc.text('www.lifemap.pro', w / 2, y, { align: 'center' });
+  y += 8;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textLight);
+  doc.text(options.profileName, w / 2, y, { align: 'center' });
+  y += 5;
+  doc.text(`${options.birthDate}  ${options.birthTime}  —  ${options.birthCity}`, w / 2, y, { align: 'center' });
+
+  // Bottom bar
+  doc.setFillColor(...COLORS.brand);
+  doc.rect(0, 282, 210, 15, 'F');
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text(isEN ? 'Generated with LifeMap Pro — Complete Natal Chart Report' : 'Gerado com LifeMap Pro — Relatório Natal Completo', w / 2, 291, { align: 'center' });
 }
