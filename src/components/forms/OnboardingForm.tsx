@@ -139,7 +139,7 @@ export default function OnboardingForm(props: Props) {
       });
 
       // Redirect to natal chart
-      window.location.href = `/${props.locale}/chart/natal`;
+      window.location.href = `${import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}/${props.locale}/chart/natal`;
     } catch (err) {
       console.error('Save error:', err);
       setSaving(false);

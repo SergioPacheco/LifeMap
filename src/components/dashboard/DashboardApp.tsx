@@ -3,6 +3,7 @@ import { db, type Profile } from '../../store/db';
 import { calculateNatalChart, initSweph, getActiveEngine } from '../../engine/index';
 import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-horoscope';
 import { renderWheel } from '../../renderer/wheel';
+import { localePath, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Locale } from '../../i18n';
 
@@ -103,12 +104,12 @@ export default function DashboardApp(props: Props) {
   };
 
   const quickLinks = () => [
-    { label: txt().natal, href: `/${props.locale}/chart/natal`, icon: '☉' },
-    { label: txt().transits, href: `/${props.locale}/chart/transits`, icon: '↻' },
-    { label: txt().horoscope, href: `/${props.locale}/horoscope/daily`, icon: '✦' },
-    { label: txt().synastry, href: `/${props.locale}/chart/synastry`, icon: '♡' },
-    { label: txt().reports, href: `/${props.locale}/reports`, icon: '📄' },
-    { label: txt().tools, href: `/${props.locale}/tools/ephemeris`, icon: '📅' },
+    { label: txt().natal, href: localePath('/chart/natal', props.locale as Locale), icon: '☉' },
+    { label: txt().transits, href: localePath('/chart/transits', props.locale as Locale), icon: '↻' },
+    { label: txt().horoscope, href: localePath('/horoscope/daily', props.locale as Locale), icon: '✦' },
+    { label: txt().synastry, href: localePath('/chart/synastry', props.locale as Locale), icon: '♡' },
+    { label: txt().reports, href: localePath('/reports', props.locale as Locale), icon: '📄' },
+    { label: txt().tools, href: localePath('/tools/ephemeris', props.locale as Locale), icon: '📅' },
   ];
 
   return (
@@ -159,7 +160,7 @@ export default function DashboardApp(props: Props) {
                   )}
                 </For>
                 <a
-                  href={`/${props.locale}/onboarding`}
+                  href={localePath('/onboarding', props.locale as Locale)}
                   class="block px-4 py-3 text-sm text-gold hover:bg-base-200 transition-colors border-t border-base-300"
                 >
                   {txt().addProfile}
@@ -240,7 +241,7 @@ export default function DashboardApp(props: Props) {
               </h3>
               <div class="aspect-square" innerHTML={wheelSvg()} />
               <a
-                href={`/${props.locale}/chart/natal`}
+                href={localePath('/chart/natal', props.locale as Locale)}
                 class="mt-3 block text-center text-xs text-gold hover:underline"
               >
                 {props.locale === 'pt' ? 'Ver mapa completo →' : 'View full chart →'}

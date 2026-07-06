@@ -64,7 +64,7 @@ export default function CartDrawer(props: Props) {
             <div class="text-center py-12 text-muted">
               <div class="text-4xl mb-3">🛒</div>
               <p class="text-sm">Seu carrinho está vazio</p>
-              <a href="/pt/reports" class="text-gold text-sm hover:underline mt-2 inline-block">
+              <a href={`${import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}/pt/reports`} class="text-gold text-sm hover:underline mt-2 inline-block">
                 Ver relatórios premium →
               </a>
             </div>

@@ -75,7 +75,7 @@ export default function Header(props: Props) {
                   <For each={Object.entries(languages)}>
                     {([code, lang]) => (
                       <a
-                        href={`/${code}/`}
+                        href={localePath('/', code as Locale)}
                         class={`flex items-center gap-2 px-4 py-2 text-sm hover:bg-base-200 transition-colors ${
                           code === props.locale ? 'text-gold font-medium' : 'text-cream-dark'
                         }`}

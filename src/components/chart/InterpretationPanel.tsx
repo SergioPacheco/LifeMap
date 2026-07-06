@@ -62,7 +62,7 @@ export default function InterpretationPanel(props: Props) {
             O Relatório Natal Completo inclui todos os planetas, aspectos entre planetas, dignidades essenciais e previsões — 20-30 páginas em PDF profissional.
           </p>
           <a
-            href="/pt/reports"
+            href={`${import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}/pt/reports`}
             class="inline-block mt-3 px-4 py-2 bg-gradient-to-r from-gold-dark to-gold text-black text-sm font-semibold rounded-lg transition-all hover:shadow-gold"
           >
             Ver Relatórios Premium

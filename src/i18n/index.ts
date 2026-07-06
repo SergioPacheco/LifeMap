@@ -71,5 +71,6 @@ export function getLocaleFromPath(path: string): Locale {
  * Build localized path
  */
 export function localePath(path: string, locale: Locale): string {
-  return `/${locale}${path.startsWith('/') ? path : '/' + path}`;
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  return `${base}/${locale}${path.startsWith('/') ? path : '/' + path}`;
 }

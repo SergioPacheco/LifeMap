@@ -122,7 +122,7 @@ export default function SynastryInterpretation(props: Props) {
             compatibilidade por área de vida e conselhos práticos em PDF.
           </p>
           <a
-            href="/pt/reports"
+            href={`${import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}/pt/reports`}
             class="inline-block mt-3 px-5 py-2 bg-gradient-to-r from-gold-dark to-gold text-black text-sm font-semibold rounded-lg hover:shadow-gold transition-all"
           >
             Ver Relatórios Premium
