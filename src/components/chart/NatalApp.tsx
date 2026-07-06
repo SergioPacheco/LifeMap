@@ -3,6 +3,7 @@ import NatalWheel from '../chart/NatalWheel';
 import PlanetTable from '../chart/PlanetTable';
 import InterpretationPanel from '../chart/InterpretationPanel';
 import BirthDataForm from '../forms/BirthDataForm';
+import { type ChartOptions, DEFAULT_OPTIONS } from '../forms/BirthDataForm';
 import ProfileSelector, { saveProfile } from '../forms/ProfileSelector';
 import { calculateNatalChart, initSweph, getActiveEngine } from '../../engine/index';
 import type { BirthData, NatalChart } from '../../engine/types';
@@ -44,13 +45,19 @@ export default function NatalApp(props: Props) {
     }
   });
 
-  const handleCalculate = async (data: BirthData) => {
+  const handleCalculate = async (data: BirthData, options?: ChartOptions) => {
     setLoading(true);
     setError('');
     setLastBirthData(data);
 
     try {
-      const result = calculateNatalChart(data, { houseSystem: 'placidus' });
+      const opts = options || DEFAULT_OPTIONS;
+      const result = calculateNatalChart(data, {
+        houseSystem: opts.houseSystem || 'placidus',
+        includeExtraPoints: opts.includeExtraPoints !== false,
+        includeAsteroids: opts.includeAsteroids || false,
+        aspectOrbs: opts.aspectOrbs,
+      });
       setChart(result);
       setEngineInfo(`✦ ${getActiveEngine() === 'swisseph' ? 'Swiss Ephemeris' : 'Astronomy Engine'}`);
 

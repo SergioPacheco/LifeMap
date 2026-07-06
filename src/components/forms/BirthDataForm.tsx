@@ -1,8 +1,38 @@
 import { createSignal, Show, For } from 'solid-js';
-import type { BirthData } from '../../engine/types';
+import type { BirthData, CalculationOptions, HouseSystem, AspectType } from '../../engine/types';
+
+export interface ChartOptions extends CalculationOptions {
+  nodeType: 'true' | 'mean';
+  showVertex: boolean;
+  showPartOfFortune: boolean;
+  orbsPreset: 'default' | 'tight' | 'wide';
+}
+
+export const DEFAULT_OPTIONS: ChartOptions = {
+  houseSystem: 'placidus',
+  includeExtraPoints: true,
+  includeAsteroids: false,
+  nodeType: 'true',
+  showVertex: false,
+  showPartOfFortune: false,
+  orbsPreset: 'default',
+  aspectOrbs: {
+    conjunction: 8,
+    sextile: 5,
+    square: 7,
+    trine: 7,
+    opposition: 8,
+  },
+};
+
+const ORBS_PRESETS: Record<string, Record<AspectType, number>> = {
+  default: { conjunction: 8, sextile: 5, square: 7, trine: 7, opposition: 8 },
+  tight: { conjunction: 6, sextile: 3, square: 5, trine: 5, opposition: 6 },
+  wide: { conjunction: 10, sextile: 7, square: 9, trine: 9, opposition: 10 },
+};
 
 interface Props {
-  onCalculate: (data: BirthData) => void;
+  onCalculate: (data: BirthData, options?: ChartOptions) => void;
   locale: string;
 }
 
@@ -25,6 +55,35 @@ export default function BirthDataForm(props: Props) {
   const [selectedCity, setSelectedCity] = createSignal<GeoResult | null>(null);
   const [searching, setSearching] = createSignal(false);
   const [error, setError] = createSignal('');
+  const [showAdvanced, setShowAdvanced] = createSignal(false);
+
+  // Advanced options state
+  const [houseSystem, setHouseSystem] = createSignal<HouseSystem>(DEFAULT_OPTIONS.houseSystem!);
+  const [includeAsteroids, setIncludeAsteroids] = createSignal(DEFAULT_OPTIONS.includeAsteroids!);
+  const [nodeType, setNodeType] = createSignal<'true' | 'mean'>(DEFAULT_OPTIONS.nodeType);
+  const [showVertex, setShowVertex] = createSignal(DEFAULT_OPTIONS.showVertex);
+  const [showPartOfFortune, setShowPartOfFortune] = createSignal(DEFAULT_OPTIONS.showPartOfFortune);
+  const [orbsPreset, setOrbsPreset] = createSignal(DEFAULT_OPTIONS.orbsPreset);
+
+  const resetOptions = () => {
+    setHouseSystem(DEFAULT_OPTIONS.houseSystem!);
+    setIncludeAsteroids(DEFAULT_OPTIONS.includeAsteroids!);
+    setNodeType(DEFAULT_OPTIONS.nodeType);
+    setShowVertex(DEFAULT_OPTIONS.showVertex);
+    setShowPartOfFortune(DEFAULT_OPTIONS.showPartOfFortune);
+    setOrbsPreset(DEFAULT_OPTIONS.orbsPreset);
+  };
+
+  const getChartOptions = (): ChartOptions => ({
+    houseSystem: houseSystem(),
+    includeExtraPoints: true,
+    includeAsteroids: includeAsteroids(),
+    nodeType: nodeType(),
+    showVertex: showVertex(),
+    showPartOfFortune: showPartOfFortune(),
+    orbsPreset: orbsPreset(),
+    aspectOrbs: ORBS_PRESETS[orbsPreset()],
+  });
 
   let searchTimeout: ReturnType<typeof setTimeout>;
 
@@ -91,7 +150,7 @@ export default function BirthDataForm(props: Props) {
       timezone: cityData.timezone,
       city: cityData.name,
       country: cityData.country,
-    });
+    }, getChartOptions());
   };
 
   return (
@@ -193,6 +252,129 @@ export default function BirthDataForm(props: Props) {
       <Show when={error()}>
         <div class="mt-4 text-sm text-red-400">{error()}</div>
       </Show>
+
+      {/* Advanced Options Toggle */}
+      <div class="mt-6 border-t border-base-300 pt-4">
+        <button
+          type="button"
+          onClick={() => setShowAdvanced(!showAdvanced())}
+          class="flex items-center gap-2 text-sm text-muted hover:text-gold transition-colors w-full"
+        >
+          <span class={`transition-transform ${showAdvanced() ? 'rotate-90' : ''}`}>▶</span>
+          <span class="font-medium">Seleção Estendida</span>
+          <span class="text-xs ml-auto opacity-60">
+            {houseSystem() !== 'placidus' || includeAsteroids() || orbsPreset() !== 'default' ? '● Customizado' : ''}
+          </span>
+        </button>
+
+        <Show when={showAdvanced()}>
+          <div class="mt-4 space-y-4 animate-fadeIn">
+            {/* House System */}
+            <div>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">Sistema de Casas</label>
+              <select
+                value={houseSystem()}
+                onChange={(e) => setHouseSystem(e.currentTarget.value as HouseSystem)}
+                class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60"
+              >
+                <option value="placidus">Plácido</option>
+                <option value="koch">Koch</option>
+                <option value="whole-sign">Signos Inteiros</option>
+                <option value="equal">Casas Iguais (Asc)</option>
+                <option value="campanus">Campanus</option>
+                <option value="regiomontanus">Regiomontanus</option>
+              </select>
+            </div>
+
+            {/* Asteroids */}
+            <div>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">Corpos Extras</label>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={includeAsteroids()}
+                    onChange={(e) => setIncludeAsteroids(e.currentTarget.checked)}
+                    class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">Asteroides (Ceres, Vesta, Pallas, Juno)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showVertex()}
+                    onChange={(e) => setShowVertex(e.currentTarget.checked)}
+                    class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">Vertex</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showPartOfFortune()}
+                    onChange={(e) => setShowPartOfFortune(e.currentTarget.checked)}
+                    class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">Parte da Fortuna</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Node Type */}
+            <div>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">Nodo Lunar</label>
+              <div class="flex gap-4">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="nodeType"
+                    value="true"
+                    checked={nodeType() === 'true'}
+                    onChange={() => setNodeType('true')}
+                    class="w-4 h-4 border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">Nodo Verdadeiro</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="nodeType"
+                    value="mean"
+                    checked={nodeType() === 'mean'}
+                    onChange={() => setNodeType('mean')}
+                    class="w-4 h-4 border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">Nodo Médio</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Orbs */}
+            <div>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">Orbes de Aspecto</label>
+              <select
+                value={orbsPreset()}
+                onChange={(e) => setOrbsPreset(e.currentTarget.value as 'default' | 'tight' | 'wide')}
+                class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60"
+              >
+                <option value="default">Padrão (8° conj / 7° □△ / 5° ✶)</option>
+                <option value="tight">Apertado (6° conj / 5° □△ / 3° ✶)</option>
+                <option value="wide">Largo (10° conj / 9° □△ / 7° ✶)</option>
+              </select>
+              <p class="mt-1 text-[10px] text-muted">Orbes maiores = mais aspectos detectados</p>
+            </div>
+
+            {/* Reset Button */}
+            <button
+              type="button"
+              onClick={resetOptions}
+              class="w-full mt-2 px-3 py-2 text-xs text-muted hover:text-cream border border-base-400 hover:border-gold/40 rounded-lg transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>↺</span> Resetar para configuração padrão
+            </button>
+          </div>
+        </Show>
+      </div>
 
       {/* Submit */}
       <button
