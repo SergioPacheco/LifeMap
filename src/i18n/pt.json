@@ -130,6 +130,9 @@
     "annualTitle": "Previsão Anual",
     "psychologicalTitle": "Análise Psicológica Profunda",
     "sevenSinsTitle": "Os Sete Pecados",
+    "financialTitle": "Mapa Financeiro",
+    "spiritualTitle": "Mapa Espiritual e Kármico",
+    "saturnReturnTitle": "Retorno de Saturno",
     "selectProfile": "Selecione um perfil para gerar a amostra",
     "generating": "Gerando PDF...",
     "downloadSample": "⬇ Baixar Amostra Gratuita (PDF)",
@@ -212,7 +215,20 @@
     "health": "Saúde",
     "moonIn": "Lua em",
     "viewFullChart": "Ver mapa completo →",
-    "signNames": ["Áries", "Touro", "Gêmeos", "Câncer", "Leão", "Virgem", "Libra", "Escorpião", "Sagitário", "Capricórnio", "Aquário", "Peixes"]
+    "signNames": [
+      "Áries",
+      "Touro",
+      "Gêmeos",
+      "Câncer",
+      "Leão",
+      "Virgem",
+      "Libra",
+      "Escorpião",
+      "Sagitário",
+      "Capricórnio",
+      "Aquário",
+      "Peixes"
+    ]
   },
   "onboarding": {
     "title": "Descubra seu Mapa Astral",
@@ -260,8 +276,15 @@
     "calculateFirst": "Calcule primeiro um mapa natal",
     "engineSwiss": "✦ Swiss Ephemeris",
     "engineAstro": "◇ Astronomy Engine",
-    "breadcrumb": { "learn": "Aprender" },
-    "elements": { "fire": "Fogo", "earth": "Terra", "air": "Ar", "water": "Água" },
+    "breadcrumb": {
+      "learn": "Aprender"
+    },
+    "elements": {
+      "fire": "Fogo",
+      "earth": "Terra",
+      "air": "Ar",
+      "water": "Água"
+    },
     "ruler": "Regente",
     "cycle": "Ciclo",
     "orb": "Orbe",

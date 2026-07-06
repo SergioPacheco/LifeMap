@@ -134,7 +134,28 @@
     "generating": "Generando...",
     "for": "Para"
   },
-  "onboarding": { "title": "Descubre tu Carta Astral", "subtitle": "Introduce tus datos de nacimiento para una lectura personalizada", "name": "¿Cómo te llamas?", "namePlaceholder": "Tu nombre", "date": "Fecha de nacimiento", "time": "Hora de nacimiento", "unknownTime": "No sé la hora exacta", "unknownTimeNote": "Usaremos mediodía como referencia. Casas y Luna pueden ser imprecisas.", "city": "Ciudad de nacimiento", "cityPlaceholder": "Escribe el nombre de la ciudad...", "gender": "Género (opcional)", "genderM": "Masculino", "genderF": "Femenino", "genderO": "Otro", "submit": "Calcular mi Carta ✦", "privacy": "100% privado — tus datos permanecen solo en tu dispositivo", "searching": "Buscando...", "errorDate": "Introduce tu fecha de nacimiento", "errorTime": "Introduce tu hora de nacimiento", "errorCity": "Selecciona una ciudad de la lista" },
+  "onboarding": {
+    "title": "Descubre tu Carta Astral",
+    "subtitle": "Introduce tus datos de nacimiento para una lectura personalizada",
+    "name": "¿Cómo te llamas?",
+    "namePlaceholder": "Tu nombre",
+    "date": "Fecha de nacimiento",
+    "time": "Hora de nacimiento",
+    "unknownTime": "No sé la hora exacta",
+    "unknownTimeNote": "Usaremos mediodía como referencia. Casas y Luna pueden ser imprecisas.",
+    "city": "Ciudad de nacimiento",
+    "cityPlaceholder": "Escribe el nombre de la ciudad...",
+    "gender": "Género (opcional)",
+    "genderM": "Masculino",
+    "genderF": "Femenino",
+    "genderO": "Otro",
+    "submit": "Calcular mi Carta ✦",
+    "privacy": "100% privado — tus datos permanecen solo en tu dispositivo",
+    "searching": "Buscando...",
+    "errorDate": "Introduce tu fecha de nacimiento",
+    "errorTime": "Introduce tu hora de nacimiento",
+    "errorCity": "Selecciona una ciudad de la lista"
+  },
   "home": {
     "tagline": "Astrología profesional · 100% en tu navegador",
     "headline": "Lee las estrellas.",
@@ -180,6 +201,9 @@
     "annualTitle": "Previsión Anual",
     "psychologicalTitle": "Análisis Psicológico Profundo",
     "sevenSinsTitle": "Los Siete Pecados",
+    "financialTitle": "Mapa Financiero",
+    "spiritualTitle": "Mapa Espiritual y Kármico",
+    "saturnReturnTitle": "Retorno de Saturno",
     "selectProfile": "Selecciona un perfil para generar la muestra",
     "generating": "Generando PDF...",
     "downloadSample": "⬇ Descargar Muestra Gratuita (PDF)",
@@ -213,7 +237,20 @@
     "health": "Salud",
     "moonIn": "Luna en",
     "viewFullChart": "Ver carta completa →",
-    "signNames": ["Aries", "Tauro", "Géminis", "Cáncer", "Leo", "Virgo", "Libra", "Escorpio", "Sagitario", "Capricornio", "Acuario", "Piscis"]
+    "signNames": [
+      "Aries",
+      "Tauro",
+      "Géminis",
+      "Cáncer",
+      "Leo",
+      "Virgo",
+      "Libra",
+      "Escorpio",
+      "Sagitario",
+      "Capricornio",
+      "Acuario",
+      "Piscis"
+    ]
   },
   "common": {
     "loading": "Cargando...",
@@ -239,8 +276,15 @@
     "calculateFirst": "Calcula primero una carta natal",
     "engineSwiss": "✦ Swiss Ephemeris",
     "engineAstro": "◇ Astronomy Engine",
-    "breadcrumb": { "learn": "Aprender" },
-    "elements": { "fire": "Fuego", "earth": "Tierra", "air": "Aire", "water": "Agua" },
+    "breadcrumb": {
+      "learn": "Aprender"
+    },
+    "elements": {
+      "fire": "Fuego",
+      "earth": "Tierra",
+      "air": "Aire",
+      "water": "Agua"
+    },
     "ruler": "Regente",
     "cycle": "Ciclo",
     "orb": "Orbe",

@@ -130,6 +130,9 @@
     "annualTitle": "Annual Forecast",
     "psychologicalTitle": "Deep Psychological Analysis",
     "sevenSinsTitle": "The Seven Sins",
+    "financialTitle": "Financial Map",
+    "spiritualTitle": "Spiritual & Karmic Map",
+    "saturnReturnTitle": "Saturn Return",
     "selectProfile": "Select a profile to generate the sample",
     "generating": "Generating PDF...",
     "downloadSample": "⬇ Download Free Sample (PDF)",
@@ -212,7 +215,20 @@
     "health": "Health",
     "moonIn": "Moon in",
     "viewFullChart": "View full chart →",
-    "signNames": ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
+    "signNames": [
+      "Aries",
+      "Taurus",
+      "Gemini",
+      "Cancer",
+      "Leo",
+      "Virgo",
+      "Libra",
+      "Scorpio",
+      "Sagittarius",
+      "Capricorn",
+      "Aquarius",
+      "Pisces"
+    ]
   },
   "onboarding": {
     "title": "Discover Your Birth Chart",
@@ -260,8 +276,15 @@
     "calculateFirst": "Calculate a natal chart first",
     "engineSwiss": "✦ Swiss Ephemeris",
     "engineAstro": "◇ Astronomy Engine",
-    "breadcrumb": { "learn": "Learn" },
-    "elements": { "fire": "Fire", "earth": "Earth", "air": "Air", "water": "Water" },
+    "breadcrumb": {
+      "learn": "Learn"
+    },
+    "elements": {
+      "fire": "Fire",
+      "earth": "Earth",
+      "air": "Air",
+      "water": "Water"
+    },
     "ruler": "Ruler",
     "cycle": "Cycle",
     "orb": "Orb",

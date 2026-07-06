@@ -3,6 +3,9 @@ import ProfileSelector from '../forms/ProfileSelector';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
 import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
+import { generateFinancialPdf } from '../../reports/financial-report';
+import { generateSpiritualPdf } from '../../reports/spiritual-report';
+import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
 import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
 import { localePath, getTranslations } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
@@ -10,7 +13,7 @@ import type { Profile } from '../../store/db';
 
 interface Props {
   locale: string;
-  reportType: 'natal' | 'relationship' | 'career' | 'annual' | 'psychological' | 'seven-sins';
+  reportType: 'natal' | 'relationship' | 'career' | 'annual' | 'psychological' | 'seven-sins' | 'financial' | 'spiritual' | 'saturn-return';
 }
 
 const REPORT_TITLE_KEYS: Record<string, string> = {
@@ -20,6 +23,9 @@ const REPORT_TITLE_KEYS: Record<string, string> = {
   annual: 'annualTitle',
   psychological: 'psychologicalTitle',
   'seven-sins': 'sevenSinsTitle',
+  financial: 'financialTitle',
+  spiritual: 'spiritualTitle',
+  'saturn-return': 'saturnReturnTitle',
 };
 
 export default function ReportPreview(props: Props) {
@@ -78,6 +84,15 @@ export default function ReportPreview(props: Props) {
         case 'seven-sins':
           blob = generateSevenSinsPdf(natal()!, opts);
           break;
+        case 'financial':
+          blob = generateFinancialPdf(natal()!, opts);
+          break;
+        case 'spiritual':
+          blob = generateSpiritualPdf(natal()!, opts);
+          break;
+        case 'saturn-return':
+          blob = generateSaturnReturnPdf(natal()!, opts);
+          break;
         default:
           blob = generateNatalPdf(natal()!, opts);
       }
@@ -135,6 +150,9 @@ export default function ReportPreview(props: Props) {
         case 'psychological': blob = generatePsychologicalPdf(natal()!, opts); break;
         case 'career': blob = generateCareerPdf(natal()!, opts); break;
         case 'seven-sins': blob = generateSevenSinsPdf(natal()!, opts); break;
+        case 'financial': blob = generateFinancialPdf(natal()!, opts); break;
+        case 'spiritual': blob = generateSpiritualPdf(natal()!, opts); break;
+        case 'saturn-return': blob = generateSaturnReturnPdf(natal()!, opts); break;
         default: blob = generateNatalPdf(natal()!, opts);
       }
 
