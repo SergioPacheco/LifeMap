@@ -448,17 +448,22 @@ function arcSegment(innerR: number, outerR: number, startA: number, endA: number
 // Aspect lines between transit planets → natal planets
 // ============================================================
 
-const R_TRANSIT_ORBIT = 305; // Transits sit between zodiac ring and sign boundary
-const R_TRANSIT_INNER = 278; // Inner edge of transit ring (= sign ring inner)
+const R_TRANSIT_ORBIT = 370; // Transits sit OUTSIDE the zodiac ring
+const R_TRANSIT_INNER = 330; // Inner edge of transit ring (= outer edge of zodiac)
 
 export function renderBiWheel(natal: NatalChart, transitPositions: Positions, transitAspects: Aspect[]): string {
   const asc = natal.houses.ascendant;
-  const w = 700, h = 700;
+  const w = 780, h = 780;
+  const offset = 40; // Extra space for outer transit ring
 
-  let svg = `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="font-family: serif;">`;
+  let svg = `<svg xmlns="${NS}" viewBox="-${offset} -${offset} ${w} ${h}" width="100%" height="100%" style="font-family: serif;">`;
 
   // 1. Background
   svg += drawBackgrounds();
+
+  // 1a. Outer transit ring background
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_ORBIT + 15}" fill="none" stroke="#2a2a4e" stroke-width="0.5"/>`;
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_INNER}" fill="none" stroke="#3a3a5e" stroke-width="0.8" stroke-dasharray="2,2"/>`;
 
   // 1b. House segments
   svg += drawHouseSegments(natal.houses.cusps, asc);
@@ -482,16 +487,16 @@ export function renderBiWheel(natal: NatalChart, transitPositions: Positions, tr
   svg += drawAxisLabels(natal.houses, asc);
 
   // 8. Legend indicator
-  svg += `<text x="20" y="20" font-size="9" fill="#8a8a9a" font-family="sans-serif">● Natal (interno)  ○ Trânsitos (externo)</text>`;
+  svg += `<text x="10" y="${h - 55}" font-size="9" fill="#8a8a9a" font-family="sans-serif">● Natal (interno)  ○ Trânsitos (externo)</text>`;
 
   svg += '</svg>';
   return svg;
 }
 
-// Draw natal planets slightly inward (to leave room for transits)
+// Draw natal planets at normal orbit (transits are outside now)
 function drawNatalPlanetsInner(positions: Positions, asc: number): string {
   let s = '';
-  const R_NATAL = 210; // Moved inward from normal 235
+  const R_NATAL = R_PLANET_ORBIT; // Normal orbit (235) — transits are outside
 
   const items = Object.entries(positions)
     .filter(([id]) => PLANET_SYMBOLS[id] && !['ceres','vesta','pallas','juno','vertex','partOfFortune'].includes(id))
@@ -595,7 +600,7 @@ function drawTransitAspects(aspects: Aspect[], natalPositions: Positions, transi
     .filter(a => a.exactness > 0.5)
     .slice(0, 10);
 
-  const R_NATAL_LINE = 210;
+  const R_NATAL_LINE = R_PLANET_ORBIT;
   const R_TRANSIT_LINE = R_TRANSIT_ORBIT;
 
   for (const asp of topAspects) {
