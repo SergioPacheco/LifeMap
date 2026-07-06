@@ -217,7 +217,8 @@
     "purchaseSuccess": "报告已购买并下载！",
     "viewPurchases": "在「我的报告」中查看 →",
     "tryAgain": "重试",
-    "unexpectedError": "意外错误。请重试。"
+    "unexpectedError": "意外错误。请重试。",
+    "reportLanguage": "🌐 报告语言:"
   },
   "dashboard": {
     "greeting": "你好",

@@ -217,7 +217,8 @@
     "purchaseSuccess": "Rapport gekocht en gedownload!",
     "viewPurchases": "Bekijk in \"Mijn Rapporten\" →",
     "tryAgain": "Opnieuw proberen",
-    "unexpectedError": "Onverwachte fout. Probeer het opnieuw."
+    "unexpectedError": "Onverwachte fout. Probeer het opnieuw.",
+    "reportLanguage": "🌐 Rapporttaal:"
   },
   "dashboard": {
     "greeting": "Hallo",

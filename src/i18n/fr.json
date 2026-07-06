@@ -217,7 +217,8 @@
     "purchaseSuccess": "Rapport acheté et téléchargé !",
     "viewPurchases": "Voir dans \"Mes Rapports\" →",
     "tryAgain": "Réessayer",
-    "unexpectedError": "Erreur inattendue. Veuillez réessayer."
+    "unexpectedError": "Erreur inattendue. Veuillez réessayer.",
+    "reportLanguage": "🌐 Langue du rapport:"
   },
   "dashboard": {
     "greeting": "Bonjour",

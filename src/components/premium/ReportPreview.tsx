@@ -35,6 +35,7 @@ export default function ReportPreview(props: Props) {
   const [generated, setGenerated] = createSignal(false);
   const [buyStatus, setBuyStatus] = createSignal<'idle' | 'paying' | 'generating' | 'done' | 'error'>('idle');
   const [buyError, setBuyError] = createSignal('');
+  const [reportLocale, setReportLocale] = createSignal(props.locale || 'en');
 
   const t = () => getTranslations(props.locale);
   const labels = () => t().reportPreview;
@@ -59,7 +60,7 @@ export default function ReportPreview(props: Props) {
 
     try {
       const opts = {
-        locale: props.locale,
+        locale: reportLocale(),
         isTryout: true,
         profileName: profile()!.name,
         birthDate: profile()!.date,
@@ -135,7 +136,7 @@ export default function ReportPreview(props: Props) {
       // 2. Generate full PDF
       setBuyStatus('generating');
       const opts = {
-        locale: props.locale,
+        locale: reportLocale(),
         isTryout: false,
         profileName: profile()!.name,
         birthDate: profile()!.date,
@@ -187,6 +188,28 @@ export default function ReportPreview(props: Props) {
       {/* Download buttons */}
       <Show when={natal()}>
         <div class="glass rounded-2xl p-6 space-y-4">
+          {/* Report language selector */}
+          <div class="flex items-center gap-3 mb-2">
+            <label class="text-sm text-muted whitespace-nowrap">{labels().reportLanguage || '🌐 Report language:'}</label>
+            <select
+              value={reportLocale()}
+              onChange={(e) => setReportLocale(e.currentTarget.value)}
+              class="flex-1 px-3 py-1.5 text-sm bg-base-200 border border-base-400 rounded-lg text-cream focus:border-gold/50 focus:outline-none"
+            >
+              <option value="pt">🇧🇷 Português</option>
+              <option value="en">🇺🇸 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="de">🇩🇪 Deutsch</option>
+              <option value="it">🇮🇹 Italiano</option>
+              <option value="nl">🇳🇱 Nederlands</option>
+              <option value="tr">🇹🇷 Türkçe</option>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="zh">🇨🇳 中文</option>
+              <option value="ja">🇯🇵 日本語</option>
+            </select>
+          </div>
+
           <div class="text-center">
             <p class="text-sm text-muted mb-4">{labels().sampleNote}</p>
 

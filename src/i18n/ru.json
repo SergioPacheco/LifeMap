@@ -217,7 +217,8 @@
     "purchaseSuccess": "Отчёт куплен и загружен!",
     "viewPurchases": "Смотреть в \"Мои Отчёты\" →",
     "tryAgain": "Попробовать снова",
-    "unexpectedError": "Неожиданная ошибка. Попробуйте снова."
+    "unexpectedError": "Неожиданная ошибка. Попробуйте снова.",
+    "reportLanguage": "🌐 Язык отчёта:"
   },
   "dashboard": {
     "greeting": "Привет",

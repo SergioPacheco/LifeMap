@@ -217,7 +217,8 @@
     "purchaseSuccess": "Bericht gekauft und heruntergeladen!",
     "viewPurchases": "In \"Meine Berichte\" ansehen →",
     "tryAgain": "Erneut versuchen",
-    "unexpectedError": "Unerwarteter Fehler. Bitte erneut versuchen."
+    "unexpectedError": "Unerwarteter Fehler. Bitte erneut versuchen.",
+    "reportLanguage": "🌐 Berichtssprache:"
   },
   "dashboard": {
     "greeting": "Hallo",

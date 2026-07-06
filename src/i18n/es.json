@@ -217,7 +217,8 @@
     "purchaseSuccess": "¡Informe comprado y descargado!",
     "viewPurchases": "Ver en \"Mis Informes\" →",
     "tryAgain": "Intentar de nuevo",
-    "unexpectedError": "Error inesperado. Inténtalo de nuevo."
+    "unexpectedError": "Error inesperado. Inténtalo de nuevo.",
+    "reportLanguage": "🌐 Idioma del informe:"
   },
   "dashboard": {
     "greeting": "Hola",

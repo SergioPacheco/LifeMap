@@ -217,7 +217,8 @@
     "purchaseSuccess": "Rapor satın alındı ve indirildi!",
     "viewPurchases": "\"Raporlarım\"da görüntüle →",
     "tryAgain": "Tekrar dene",
-    "unexpectedError": "Beklenmeyen hata. Lütfen tekrar deneyin."
+    "unexpectedError": "Beklenmeyen hata. Lütfen tekrar deneyin.",
+    "reportLanguage": "🌐 Rapor dili:"
   },
   "dashboard": {
     "greeting": "Merhaba",

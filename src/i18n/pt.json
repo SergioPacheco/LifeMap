@@ -146,7 +146,8 @@
     "purchaseSuccess": "Relatório comprado e baixado!",
     "viewPurchases": "Ver em \"Meus Relatórios\" →",
     "tryAgain": "Tentar novamente",
-    "unexpectedError": "Erro inesperado. Tente novamente."
+    "unexpectedError": "Erro inesperado. Tente novamente.",
+    "reportLanguage": "🌐 Idioma do relatório:"
   },
   "purchases": {
     "title": "📄 Meus Relatórios",

@@ -217,7 +217,8 @@
     "purchaseSuccess": "レポート購入・ダウンロード完了！",
     "viewPurchases": "「マイレポート」で確認 →",
     "tryAgain": "再試行",
-    "unexpectedError": "予期しないエラー。もう一度お試しください。"
+    "unexpectedError": "予期しないエラー。もう一度お試しください。",
+    "reportLanguage": "🌐 レポート言語:"
   },
   "dashboard": {
     "greeting": "こんにちは",

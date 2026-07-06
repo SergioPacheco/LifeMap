@@ -217,7 +217,8 @@
     "purchaseSuccess": "Report acquistato e scaricato!",
     "viewPurchases": "Vedi in \"I miei Report\" →",
     "tryAgain": "Riprova",
-    "unexpectedError": "Errore imprevisto. Riprova."
+    "unexpectedError": "Errore imprevisto. Riprova.",
+    "reportLanguage": "🌐 Lingua del report:"
   },
   "dashboard": {
     "greeting": "Ciao",
