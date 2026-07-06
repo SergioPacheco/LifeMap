@@ -95,7 +95,8 @@
     "clearCart": "Warenkorb leeren",
     "clearConfirm": "Gesamten Warenkorb leeren?",
     "viewReports": "Premium-Berichte ansehen",
-    "for": "Für"
+    "for": "Für",
+    "inCart": "Im Warenkorb"
   },
   "reports": {
     "title": "Premium-Berichte",

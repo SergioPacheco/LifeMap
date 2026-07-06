@@ -95,7 +95,8 @@
     "clearCart": "Svuota carrello",
     "clearConfirm": "Svuotare tutto il carrello?",
     "viewReports": "Vedi Report Premium",
-    "for": "Per"
+    "for": "Per",
+    "inCart": "Nel carrello"
   },
   "reports": {
     "title": "Report Premium",

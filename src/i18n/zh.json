@@ -95,7 +95,8 @@
     "clearCart": "清空购物车",
     "clearConfirm": "清空整个购物车？",
     "viewReports": "查看高级报告",
-    "for": "用于"
+    "for": "用于",
+    "inCart": "已在购物车"
   },
   "reports": {
     "title": "高级报告",

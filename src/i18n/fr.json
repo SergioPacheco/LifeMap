@@ -95,7 +95,8 @@
     "clearCart": "Vider le panier",
     "clearConfirm": "Vider tout le panier ?",
     "viewReports": "Voir les Rapports Premium",
-    "for": "Pour"
+    "for": "Pour",
+    "inCart": "Dans le panier"
   },
   "reports": {
     "title": "Rapports Premium",

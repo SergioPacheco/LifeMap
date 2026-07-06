@@ -113,6 +113,7 @@ export default function ReportsShop(props: Props) {
   const [selectedCategory, setSelectedCategory] = createSignal<string>('all');
   const [addedToCart, setAddedToCart] = createSignal<string | null>(null);
   const [cartCount, setCartCount] = createSignal(0);
+  const [cartItems, setCartItems] = createSignal<Set<string>>(new Set());
   const [showToast, setShowToast] = createSignal(false);
   const [lastAdded, setLastAdded] = createSignal('');
   const t = () => getTranslations(locale());
@@ -127,23 +128,52 @@ export default function ReportsShop(props: Props) {
   // Load cart count on mount
   onMount(async () => {
     try {
-      const count = await db.cart.count();
-      setCartCount(count);
+      const items = await db.cart.toArray();
+      setCartCount(items.length);
+      setCartItems(new Set(items.map(i => i.productId)));
     } catch (e) { /* IndexedDB may not be available */ }
   });
 
   const addToCart = async (product: Product) => {
+    // Check if already in cart
+    const existing = await db.cart.where('productId').equals(product.id).first();
+    if (existing) {
+      // Already in cart — flash feedback
+      setAddedToCart(product.id);
+      setLastAdded(getText(product.name));
+      setShowToast(true);
+      setTimeout(() => setAddedToCart(null), 2500);
+      setTimeout(() => setShowToast(false), 4000);
+      return;
+    }
+
+    // Check if user has at least one profile saved
+    const profiles = await db.profiles.toArray();
+    if (profiles.length === 0) {
+      const msg = locale() === 'pt'
+        ? 'Você precisa calcular seu mapa natal primeiro para gerar relatórios.'
+        : 'You need to calculate your natal chart first to generate reports.';
+      alert(msg);
+      return;
+    }
+
+    // Use the most recent profile
+    const latestProfile = profiles.sort((a, b) =>
+      (b.updatedAt?.getTime?.() || 0) - (a.updatedAt?.getTime?.() || 0)
+    )[0];
+
     await db.cart.add({
       productId: product.id,
       productName: getText(product.name),
-      profileId: 0,
-      profileName: '',
+      profileId: latestProfile.id!,
+      profileName: latestProfile.name,
       price: product.price,
       currency: product.currency,
       addedAt: new Date(),
     });
     setAddedToCart(product.id);
     setCartCount(c => c + 1);
+    setCartItems(prev => new Set([...prev, product.id]));
     setLastAdded(getText(product.name));
     setShowToast(true);
     setTimeout(() => setAddedToCart(null), 2500);
@@ -242,11 +272,17 @@ export default function ReportsShop(props: Props) {
                     onClick={() => addToCart(product)}
                     class={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                       addedToCart() === product.id
-                        ? 'bg-green-600 text-white'
+                        ? 'bg-green-600 text-white scale-105'
+                        : cartItems().has(product.id)
+                        ? 'bg-green-700/50 text-green-200 border border-green-500/30 cursor-default'
                         : 'bg-gradient-to-r from-gold-dark to-gold text-black hover:shadow-gold hover:scale-[1.02]'
                     }`}
                   >
-                    {addedToCart() === product.id ? (ADDED[locale()] || ADDED.en) : t().reports.buyNow}
+                    {addedToCart() === product.id
+                      ? (ADDED[locale()] || ADDED.en)
+                      : cartItems().has(product.id)
+                      ? '✓ ' + (t().cart?.inCart || 'In cart')
+                      : t().reports.buyNow}
                   </button>
                 </div>
               </div>

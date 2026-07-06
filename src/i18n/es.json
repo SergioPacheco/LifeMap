@@ -95,7 +95,8 @@
     "clearCart": "Vaciar carrito",
     "clearConfirm": "¿Vaciar todo el carrito?",
     "viewReports": "Ver Informes Premium",
-    "for": "Para"
+    "for": "Para",
+    "inCart": "En el carrito"
   },
   "reports": {
     "title": "Informes Premium",

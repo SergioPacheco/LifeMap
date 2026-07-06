@@ -95,7 +95,8 @@
     "clearCart": "Sepeti temizle",
     "clearConfirm": "Tüm sepeti temizle?",
     "viewReports": "Premium Raporları Gör",
-    "for": "İçin"
+    "for": "İçin",
+    "inCart": "Sepette"
   },
   "reports": {
     "title": "Premium Raporlar",

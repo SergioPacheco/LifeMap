@@ -95,7 +95,8 @@
     "clearCart": "Winkelwagen legen",
     "clearConfirm": "Gehele winkelwagen legen?",
     "viewReports": "Premium Rapporten bekijken",
-    "for": "Voor"
+    "for": "Voor",
+    "inCart": "In winkelwagen"
   },
   "reports": {
     "title": "Premium Rapporten",

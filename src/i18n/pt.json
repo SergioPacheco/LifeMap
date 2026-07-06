@@ -95,7 +95,8 @@
     "clearCart": "Limpar carrinho",
     "clearConfirm": "Limpar todo o carrinho?",
     "viewReports": "Ver Relatórios Premium",
-    "for": "Para"
+    "for": "Para",
+    "inCart": "No carrinho"
   },
   "reports": {
     "title": "Relatórios Premium",

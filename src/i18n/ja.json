@@ -95,7 +95,8 @@
     "clearCart": "カートを空にする",
     "clearConfirm": "カート全体を空にしますか？",
     "viewReports": "プレミアムレポートを見る",
-    "for": "対象"
+    "for": "対象",
+    "inCart": "カートに入っています"
   },
   "reports": {
     "title": "プレミアムレポート",

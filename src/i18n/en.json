@@ -95,7 +95,8 @@
     "clearCart": "Clear cart",
     "clearConfirm": "Clear entire cart?",
     "viewReports": "View Premium Reports",
-    "for": "For"
+    "for": "For",
+    "inCart": "In cart"
   },
   "reports": {
     "title": "Premium Reports",
