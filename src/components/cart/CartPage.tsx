@@ -1,5 +1,10 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { db, getCartTotal, clearCart, type CartItem } from '../../store/db';
+import { processPayment, savePurchase } from '../../store/payment';
+import { calculateNatalChart, initSweph } from '../../engine/index';
+import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
+import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
+import { localePath } from '../../i18n';
 import type { Locale } from '../../i18n';
 
 interface Props {
@@ -10,6 +15,8 @@ export default function CartPage(props: Props) {
   const [items, setItems] = createSignal<CartItem[]>([]);
   const [total, setTotal] = createSignal(0);
   const [checkingOut, setCheckingOut] = createSignal(false);
+  const [checkoutStatus, setCheckoutStatus] = createSignal<'idle' | 'paying' | 'generating' | 'done' | 'error'>('idle');
+  const [checkoutError, setCheckoutError] = createSignal('');
 
   const isPt = () => props.locale === 'pt';
 
@@ -38,11 +45,80 @@ export default function CartPage(props: Props) {
 
   const handleCheckout = async () => {
     setCheckingOut(true);
-    alert(isPt()
-      ? 'Checkout com Stripe será implementado em breve.\nPor enquanto, os relatórios estão disponíveis como preview gratuito.'
-      : 'Stripe checkout coming soon.\nFor now, reports are available as free previews.'
-    );
-    setCheckingOut(false);
+    setCheckoutStatus('paying');
+    setCheckoutError('');
+
+    try {
+      await initSweph();
+      const cartItems = items();
+
+      // Process each item in the cart
+      for (const item of cartItems) {
+        // 1. Payment mock (2s per item)
+        const result = await processPayment(item.productId, item.profileId, item.profileName);
+        if (!result.success) {
+          setCheckoutError(result.error || 'Erro no pagamento');
+          setCheckoutStatus('error');
+          setCheckingOut(false);
+          return;
+        }
+
+        // 2. Generate PDF
+        setCheckoutStatus('generating');
+
+        // Load profile data
+        const profile = await db.profiles.get(item.profileId);
+        if (!profile) continue;
+
+        const chart = calculateNatalChart({
+          name: profile.name,
+          date: profile.date,
+          time: profile.time,
+          lat: profile.lat,
+          lng: profile.lng,
+          timezone: profile.timezone,
+          city: profile.city,
+          country: profile.country,
+        });
+
+        const opts = {
+          locale: props.locale,
+          isTryout: false,
+          profileName: profile.name,
+          birthDate: profile.date,
+          birthTime: profile.time,
+          birthCity: profile.city,
+        };
+
+        let blob: Blob;
+        switch (item.productId) {
+          case 'annual-forecast': blob = generateAnnualPdf(chart, opts); break;
+          case 'relationship': blob = generateRelationshipPdf(chart, opts); break;
+          case 'psychological': blob = generatePsychologicalPdf(chart, opts); break;
+          case 'career': blob = generateCareerPdf(chart, opts); break;
+          case 'seven-sins': blob = generateSevenSinsPdf(chart, opts); break;
+          default: blob = generateNatalPdf(chart, opts);
+        }
+
+        // 3. Save to IndexedDB
+        await savePurchase(result.sessionId, item.productId, item.profileId, item.profileName, blob);
+
+        // 4. Auto-download
+        const filename = `LifeMap_${item.productId}_${profile.name.replace(/\s/g, '_')}.pdf`;
+        downloadPdf(blob, filename);
+      }
+
+      // 5. Clear cart and done
+      await clearCart();
+      await refreshCart();
+      setCheckoutStatus('done');
+    } catch (e) {
+      console.error('Checkout error:', e);
+      setCheckoutError('Erro inesperado. Tente novamente.');
+      setCheckoutStatus('error');
+    } finally {
+      setCheckingOut(false);
+    }
   };
 
   return (
@@ -111,16 +187,44 @@ export default function CartPage(props: Props) {
             </span>
           </div>
 
-          <button
-            onClick={handleCheckout}
-            disabled={checkingOut()}
-            class="w-full px-6 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
-          >
-            {checkingOut()
-              ? (isPt() ? 'Processando...' : 'Processing...')
-              : (isPt() ? 'Finalizar Compra' : 'Checkout')
-            }
-          </button>
+          <Show when={checkoutStatus() === 'idle' || checkoutStatus() === 'error'}>
+            <button
+              onClick={handleCheckout}
+              disabled={checkingOut()}
+              class="w-full px-6 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+            >
+              {isPt() ? 'Finalizar Compra' : 'Checkout'}
+            </button>
+          </Show>
+
+          <Show when={checkoutStatus() === 'paying'}>
+            <div class="w-full px-6 py-4 bg-base-200 rounded-xl text-center">
+              <div class="animate-pulse text-gold text-lg">💳 Processando pagamento...</div>
+            </div>
+          </Show>
+
+          <Show when={checkoutStatus() === 'generating'}>
+            <div class="w-full px-6 py-4 bg-base-200 rounded-xl text-center">
+              <div class="animate-spin inline-block text-2xl text-gold">✦</div>
+              <p class="text-sm text-cream mt-1">Gerando seus relatórios...</p>
+            </div>
+          </Show>
+
+          <Show when={checkoutStatus() === 'done'}>
+            <div class="w-full px-6 py-4 bg-green-900/20 border border-green-800/30 rounded-xl text-center">
+              <p class="text-lg text-green-400 font-medium">✅ Compra finalizada!</p>
+              <p class="text-sm text-muted mt-1">PDFs baixados automaticamente.</p>
+              <a href={localePath('/purchases', props.locale)} class="inline-block mt-3 text-sm text-gold hover:underline">
+                Ver em "Meus Relatórios" →
+              </a>
+            </div>
+          </Show>
+
+          <Show when={checkoutStatus() === 'error'}>
+            <div class="w-full px-4 py-3 bg-red-900/20 border border-red-800/30 rounded-lg text-center mb-3">
+              <p class="text-sm text-red-400">{checkoutError()}</p>
+            </div>
+          </Show>
 
           <button
             onClick={handleClear}
