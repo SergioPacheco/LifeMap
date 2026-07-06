@@ -3,6 +3,8 @@ import ProfileSelector from '../forms/ProfileSelector';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
 import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
+import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
+import { localePath } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 
@@ -44,6 +46,8 @@ export default function ReportPreview(props: Props) {
   const [profile, setProfile] = createSignal<Profile | null>(null);
   const [generating, setGenerating] = createSignal(false);
   const [generated, setGenerated] = createSignal(false);
+  const [buyStatus, setBuyStatus] = createSignal<'idle' | 'paying' | 'generating' | 'done' | 'error'>('idle');
+  const [buyError, setBuyError] = createSignal('');
 
   const labels = () => LABELS[props.locale] || LABELS.en;
   const title = () => (REPORT_TITLES[props.locale] || REPORT_TITLES.en)[props.reportType];
@@ -106,27 +110,64 @@ export default function ReportPreview(props: Props) {
     }
   };
 
+  const PRODUCT_MAP: Record<string, string> = {
+    natal: 'natal-complete',
+    annual: 'annual-forecast',
+    relationship: 'relationship',
+    psychological: 'psychological',
+    career: 'career',
+    'seven-sins': 'seven-sins',
+  };
+
   const handleDownloadFull = async () => {
     if (!natal() || !profile()) return;
-    setGenerating(true);
+
+    const productId = PRODUCT_MAP[props.reportType] || 'natal-complete';
+    setBuyStatus('paying');
+    setBuyError('');
 
     try {
-      const blob = generateNatalPdf(natal()!, {
+      // 1. Process payment (mock — always approves after 2s)
+      const result = await processPayment(productId, profile()!.id!, profile()!.name);
+      if (!result.success) {
+        setBuyError(result.error || 'Erro no pagamento');
+        setBuyStatus('error');
+        return;
+      }
+
+      // 2. Generate full PDF
+      setBuyStatus('generating');
+      const opts = {
         locale: props.locale,
         isTryout: false,
         profileName: profile()!.name,
         birthDate: profile()!.date,
         birthTime: profile()!.time,
         birthCity: profile()!.city,
-      });
+      };
 
-      const filename = `lifemap-${props.reportType}-${profile()!.name.replace(/\s/g, '_')}.pdf`;
+      let blob: Blob;
+      switch (props.reportType) {
+        case 'annual': blob = generateAnnualPdf(natal()!, opts); break;
+        case 'relationship': blob = generateRelationshipPdf(natal()!, opts); break;
+        case 'psychological': blob = generatePsychologicalPdf(natal()!, opts); break;
+        case 'career': blob = generateCareerPdf(natal()!, opts); break;
+        case 'seven-sins': blob = generateSevenSinsPdf(natal()!, opts); break;
+        default: blob = generateNatalPdf(natal()!, opts);
+      }
+
+      // 3. Save to IndexedDB
+      await savePurchase(result.sessionId, productId, profile()!.id!, profile()!.name, blob);
+
+      // 4. Auto-download
+      const filename = `LifeMap_${productId}_${profile()!.name.replace(/\s/g, '_')}.pdf`;
       downloadPdf(blob, filename);
-      setGenerated(true);
+
+      setBuyStatus('done');
     } catch (e) {
-      console.error('PDF generation error:', e);
-    } finally {
-      setGenerating(false);
+      console.error('Purchase error:', e);
+      setBuyError('Erro inesperado. Tente novamente.');
+      setBuyStatus('error');
     }
   };
 
@@ -159,13 +200,45 @@ export default function ReportPreview(props: Props) {
             </button>
 
             {/* Full version (paid) */}
-            <button
-              onClick={handleDownloadFull}
-              disabled={generating()}
-              class="w-full px-6 py-3 bg-base-200 hover:bg-base-100 text-cream font-medium rounded-lg transition-colors disabled:opacity-50 border border-base-400 hover:border-gold/30"
-            >
-              {labels().buyFull}
-            </button>
+            <Show when={buyStatus() === 'idle'}>
+              <button
+                onClick={handleDownloadFull}
+                class="w-full px-6 py-3 bg-base-200 hover:bg-base-100 text-cream font-medium rounded-lg transition-colors border border-base-400 hover:border-gold/30"
+              >
+                💳 {labels().buyFull} — R$ {PRODUCTS[PRODUCT_MAP[props.reportType]]?.price.toFixed(2) || '29.90'}
+              </button>
+            </Show>
+
+            <Show when={buyStatus() === 'paying'}>
+              <div class="w-full px-6 py-3 bg-base-200 rounded-lg text-center">
+                <div class="animate-pulse text-gold">💳 Processando pagamento...</div>
+              </div>
+            </Show>
+
+            <Show when={buyStatus() === 'generating'}>
+              <div class="w-full px-6 py-3 bg-base-200 rounded-lg text-center">
+                <div class="animate-spin inline-block text-gold">✦</div>
+                <span class="ml-2 text-cream">Gerando relatório completo...</span>
+              </div>
+            </Show>
+
+            <Show when={buyStatus() === 'done'}>
+              <div class="w-full px-6 py-3 bg-green-900/20 border border-green-800/30 rounded-lg text-center">
+                <p class="text-green-400 font-medium">✅ Relatório comprado e baixado!</p>
+                <a href={localePath('/purchases', props.locale as any)} class="text-xs text-gold hover:underline mt-1 inline-block">
+                  Ver em "Meus Relatórios" →
+                </a>
+              </div>
+            </Show>
+
+            <Show when={buyStatus() === 'error'}>
+              <div class="w-full px-6 py-3 bg-red-900/20 border border-red-800/30 rounded-lg text-center">
+                <p class="text-sm text-red-400">{buyError()}</p>
+                <button onClick={() => setBuyStatus('idle')} class="text-xs text-muted hover:text-cream underline mt-1">
+                  Tentar novamente
+                </button>
+              </div>
+            </Show>
           </div>
 
           <Show when={generated()}>

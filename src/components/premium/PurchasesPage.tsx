@@ -1,5 +1,6 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { db, type Purchase } from '../../store/db';
+import { PRODUCTS, downloadPurchasedPdf } from '../../store/payment';
 import type { Locale } from '../../i18n';
 
 interface Props {
@@ -76,18 +77,19 @@ export default function PurchasesPage(props: Props) {
             {(purchase) => (
               <div class="flex items-center justify-between p-4 glass rounded-xl border border-base-300">
                 <div class="flex-1">
-                  <p class="font-medium text-cream">{purchase.productId}</p>
+                  <p class="font-medium text-cream">{PRODUCTS[purchase.productId]?.name || purchase.productId}</p>
                   <p class="text-sm text-muted">
                     {isPt() ? 'Para:' : 'For:'} {purchase.profileName}
                   </p>
                   <p class="text-xs text-muted mt-1">
                     {formatDate(purchase.purchasedAt)}
+                    {PRODUCTS[purchase.productId] && <span class="ml-2">• R$ {PRODUCTS[purchase.productId].price.toFixed(2)}</span>}
                   </p>
                 </div>
                 <div class="flex items-center gap-3">
                   <Show when={purchase.pdfData}>
                     <button
-                      onClick={() => downloadPdf(purchase)}
+                      onClick={() => downloadPurchasedPdf(purchase)}
                       class="px-4 py-2 text-sm font-medium text-gold border border-gold/30 rounded-lg hover:bg-gold/10 transition-colors"
                     >
                       {isPt() ? '⬇ Baixar PDF' : '⬇ Download PDF'}
@@ -106,15 +108,4 @@ export default function PurchasesPage(props: Props) {
       </Show>
     </div>
   );
-}
-
-function downloadPdf(purchase: Purchase) {
-  if (!purchase.pdfData) return;
-  const blob = new Blob([purchase.pdfData], { type: 'application/pdf' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `lifemap-${purchase.productId}-${purchase.profileName}.pdf`;
-  a.click();
-  URL.revokeObjectURL(url);
 }
