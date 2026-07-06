@@ -1,11 +1,268 @@
-// INTERPRETATIONS — 中文 (zh)
-import { SUN_IN_HOUSE, MOON_IN_HOUSE, MERCURY_IN_HOUSE } from './pt';
-import { VENUS_IN_HOUSE, MARS_IN_HOUSE, NORTH_NODE_HOUSE, NORTH_NODE_IN_SIGN } from '../interpret';
-import { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE } from '../outer-planets';
-import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from '../chiron';
-export { SUN_IN_HOUSE, MOON_IN_HOUSE, MERCURY_IN_HOUSE, VENUS_IN_HOUSE, MARS_IN_HOUSE };
-export { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE };
-export { CHIRON_IN_HOUSE, CHIRON_IN_SIGN, NORTH_NODE_HOUSE, NORTH_NODE_IN_SIGN };
+// ============================================================
+// INTERPRETATIONS — ZH
+// Complete interpretive texts — no PT imports/fallback
+// ============================================================
+
+// ============================================================
+// INTERPRETATIONS — English (en)
+// ============================================================
+
+// ============================================================
+// SUN IN HOUSE
+// ============================================================
+export const SUN_IN_HOUSE: string[] = [
+  /* House 1  */ 'Your personal radiance lives in the way you present yourself to the world. You came here to be seen, to make your presence felt. The 1st house asks you to honor your individuality — when you allow yourself to be who you truly are, without masks, things flow. Your challenge is learning not to depend on others\' approval in order to shine.',
+  /* House 2  */ 'Your identity is deeply tied to what you build and what you value. You shine when you develop your talents and transform them into something tangible. Material security is not vanity for you — it is an expression of your worth. The challenge is not defining yourself solely by what you possess.',
+  /* House 3  */ 'You were born to communicate, to teach, to connect ideas. Your radiance lives in lightness, curiosity, and the ability to translate complex things into something accessible. If you work somewhere that does not allow you to express your opinion or create, something will always feel missing. When you honor this communicative quality, abundance follows.',
+  /* House 4  */ 'Your identity is rooted in family, home, and your emotional foundations. You shine when you create a safe space — for yourself and for others. You may be the person who emotionally sustains a family or community. The challenge is not losing yourself in others\' needs to the point of forgetting your own.',
+  /* House 5  */ 'You were born to create, to express, to shine! The 5th house is the Sun\'s natural stage. Creativity, romance, children, play — all of this energizes you. When you allow yourself to be playful and authentic, you radiate. The challenge is not seeking constant validation or confusing ego with essence.',
+  /* House 6  */ 'Your identity expresses itself through service, routine, and constant refinement. You shine when you are useful, when you solve problems, when you attend to the details no one else sees. Health and work are sacred areas for you. The challenge is not erasing yourself in the name of productivity.',
+  /* House 7  */ 'Your radiance reveals itself in relationships. You discover yourself through others — partners, associates, agreements. This does not mean dependency: it means that the mirror of relationship helps you see who you are. The challenge is not losing yourself in the other or projecting your identity onto partners.',
+  /* House 8  */ 'Your identity moves through deep transformations across your lifetime. You shine in moments of crisis, when everything seems to be crumbling and you rise again. Themes of sexuality, power, and shared resources are central. The challenge is not clinging to control or fearing vulnerability.',
+  /* House 9  */ 'You were born to expand horizons — deep study, journeys that shift your perspective, philosophies of life. Your radiance lives in being an eternal student and, eventually, a teacher who shares wisdom. The challenge is not getting lost in theories without practical application.',
+  /* House 10 */ 'Your identity is strongly tied to your career and public image. You came here to build something in the world, to be recognized for what you accomplish with mastery. This is not vanity — it is purpose. The challenge is balancing personal life with the pressure of external achievement.',
+  /* House 11 */ 'Your radiance lives in collective causes, friendships, and projects aimed at the future. You are energized by groups, by working toward something greater than yourself. Innovation and originality define you. The challenge is not becoming emotionally distant from the people closest to you.',
+  /* House 12 */ 'Your identity carries a deep spiritual dimension. You shine behind the scenes, in creative solitude, in connection with something greater. It can be difficult to show yourself to the world because your radiance is subtle, interior. The challenge is not sabotaging yourself or fleeing practical life.',
+];
+
+// ============================================================
+// MOON IN HOUSE
+// ============================================================
+export const MOON_IN_HOUSE: string[] = [
+  /* House 1  */ 'Your emotions are written on your face — you are transparent, people feel what you feel. You need freedom to be emotional without judgment. Your body responds directly to your emotional state.',
+  /* House 2  */ 'You feel secure when you have financial stability. This is not greed — money represents emotional safety for you. You may experience financial highs and lows that mirror your emotional cycles.',
+  /* House 3  */ 'You process emotions by talking, writing, and engaging the mind. You need intellectual stimulation to feel well. The environment of siblings and neighborhood left an imprint on your emotions in childhood.',
+  /* House 4  */ 'This is the Moon\'s most natural placement. Family and home are sacred to you. You need a physical space that truly feels like yours in order to recharge. The emotions of your mother (or maternal figure) profoundly shaped who you are.',
+  /* House 5  */ 'You nourish yourself emotionally when you play, create something, or fall in love. You need creative expression as an emotional outlet. With children, the connection is intense and deeply emotional.',
+  /* House 6  */ 'Your physical health is directly affected by your emotional state. When something is emotionally off, your body signals it. You need a routine that includes self-care in order to feel centered.',
+  /* House 7  */ 'You feel emotionally complete in relationships. You need partnership to feel secure — and you attract partners who mirror your emotional landscape (including its shadows). The challenge is not outsourcing your emotional wellbeing.',
+  /* House 8  */ 'Your emotions are intense, deep, and sometimes overwhelming. You feel everything with great force and can easily sense what others are hiding. Opening up may be difficult, but when you trust someone, you give them your whole soul.',
+  /* House 9  */ 'You nourish yourself emotionally when you are learning, traveling, or exploring new perspectives. You need space and freedom to grow. You may struggle with routine and conventional emotional closeness — you prefer philosophical depth.',
+  /* House 10 */ 'Your emotions are tied to career and public recognition. You may feel you need to "be someone" to deserve love. Your relationship with your mother may have been shaped by performance expectations.',
+  /* House 11 */ 'You nourish yourself in friendships and collective causes. You need to belong to a group that shares your ideals. One-on-one intimacy can be challenging; you tend to prefer broader, community-based connections.',
+  /* House 12 */ 'Your emotions have an oceanic quality — deep, sometimes diffuse, with fluid boundaries. You need solitude to process what you feel. You carry strong intuition and empathy, but you must learn to protect yourself emotionally.',
+];
+
+// ============================================================
+// MERCURY IN HOUSE
+// ============================================================
+export const MERCURY_IN_HOUSE: string[] = [
+  /* House 1  */ 'Your mind is quick and shapes the way the world perceives you. You think out loud, process in real time, and people immediately recognize you as intelligent and communicative. Your nervous, intuitive temperament gives you a natural gift for the exchange of ideas. The challenge is slowing down enough to listen — your mind moves so fast it can outrun the answers that arrive at a gentler pace.',
+  /* House 2  */ 'Your intelligence is your greatest tool for generating wealth. You earn through the mind — writing, journalism, commerce, administration, teaching, or any form of intellectual work. There is a natural instinct for business and for identifying where value lies. The challenge is not reducing all intelligence to financial utility — your mind needs freedom to explore, not only to profit.',
+  /* House 3  */ 'Mercury\'s natural placement — your mind is at home here. You have an extraordinary ease for learning, communicating, and self-expression. You assimilate information quickly, move between subjects with lightness, and carry a youthful spirit that keeps the environment around you lively. Writing, teaching, and any form of knowledge transmission are natural paths to success. The challenge is depth: when everything comes easily, there may be little incentive to truly dive deep.',
+  /* House 4  */ 'Your mind is rooted in family, memory, and the intellectual heritage of your upbringing. You may be the one who keeps the family stories alive, who works from home, or whose profession was inspired by your domestic environment. An intellectual vitality accompanies you throughout life. You have a remarkable ability to adapt to change — each new beginning is an opportunity to rewrite your narrative.',
+  /* House 5  */ 'Your mind is creative and playful — you express ideas in ways that are fun and engaging. There is a natural gift for teaching, especially with children and young people. You love wordplay, puzzles, and mental challenges. In relationships, you intellectualize love — you need to understand something before you can fully surrender to it. When mind and heart align, your communication becomes irresistible.',
+  /* House 6  */ 'Your mind is a problem-solving machine — analytical, precise, and tireless. You have a strong capacity for intellectual work, especially in administrative, healthcare, or organizational roles that require methodical structure. You stand out for efficiency and ingenuity. The challenge is nervous tension: the same mind that resolves everything can become overloaded if it does not find outlets for rest.',
+  /* House 7  */ 'Your mind works best in dialogue — you need the other person to think, debate, and process ideas. You excel at mediation, negotiation, and any form of intellectual partnership. You may attract mercurial partners (communicative, restless, versatile). Professional or literary success can come through collaboration. The challenge is not relying on others\' reflection to validate your own ideas.',
+  /* House 8  */ 'Your mind is investigative — you naturally go beyond the surface, drawn to mystery, depth psychology, the occult, and everything that is hidden. You read between the lines with unsettling ease, perceiving what goes unsaid. There may be a fascination with death, transformation, inheritance, or sexuality. The challenge is using this power of penetration to heal, not to manipulate.',
+  /* House 9  */ 'Your mind is philosophical and expansive — oriented toward meaning, not just facts. You have a natural aptitude for foreign languages, higher education, and journeys that broaden perspective. You have the objectivity to accept criticism and opposing ideas, provided they are intellectually serious. The challenge is not getting lost in abstract theories without application — wisdom must be lived, not only studied.',
+  /* House 10 */ 'Communication is your career tool — you stand out professionally through intelligence and articulation. This is the quintessential placement for the intermediary, the public communicator, the intellectual who earns recognition. Multiple professional paths are possible across a lifetime. The challenge is maintaining focus: the versatility that lets you move between fields can scatter energy without a clear guiding direction.',
+  /* House 11 */ 'Your mind is oriented toward the future — intellectual projects, collective causes, the spread of ideas. You communicate exceptionally well in groups and form friendships easily around intellectual exchange. Your friends are diverse and stimulating. The challenge is not getting so absorbed in collective ideals that you neglect the intimate connections that also need your presence.',
+  /* House 12 */ 'Your mind is contemplative and intuitive — insights arrive through dreams, meditation, and solitude. You have a natural aptitude for working with the unconscious: psychology, introspective writing, research into hidden dimensions. Verbalizing what you perceive can be difficult, because what you sense is broader than words can reach. The challenge is trusting your subtle perception without getting lost in indefinition.',
+];
+
+// ============================================================
+// VENUS IN HOUSE
+// ============================================================
+export const VENUS_IN_HOUSE: string[] = [
+  /* House 1  */ 'You radiate charm naturally — there is a pleasant, harmonious presence that draws people in before you even speak. Tenderness, emotional depth, and sensitivity are your hallmarks. Gains and wellbeing can flow through activities connected to art, fashion, beauty, and aesthetics. When you enter a space, something softens. The challenge is not relying exclusively on beauty or pleasing others as your primary way of existing in the world.',
+  /* House 2  */ 'You love material comfort and beautiful things — and that is not vanity, it is sensory intelligence. You have a natural eye for quality and lasting value. There is an ease of gaining through loved ones or through activities involving aesthetics and pleasure. You can build a shared life full of grace and abundance. The challenge is not confusing love with financial security, or using possessions as a substitute for affection.',
+  /* House 3  */ 'Your communication is seductive and pleasant — your words carry a disarming charm. You naturally cultivate harmony with siblings and neighbors. Friendship is something you cannot live without — you need intellectual connections that are also emotionally nourishing. You love the arts, beautiful language, and conversation that feeds the soul. The challenge is not mistaking charm for depth.',
+  /* House 4  */ 'Your love expresses itself by creating beautiful, welcoming homes — spaces that nourish everyone who enters. There is a deep harmony between you and your parents, or at least a profound longing for it. In mature years, love blossoms with renewed intensity. Venusian work conducted from home (art, antiques, décor, aesthetics) comes naturally. The challenge is not becoming so attached to domestic comfort that you lose your sense of adventure.',
+  /* House 5  */ 'A powerful placement for Venus — romantic love that is intense, pleasurable, and vivid. Great creative capacity in arts, music, and theater. Fortune in social and worldly relationships. Children bring deep satisfaction. You love generously and hope to be adored in return. The challenge is not turning love into a performance — sometimes the most genuine affection is quiet.',
+  /* House 6  */ 'You express love through practical care — you learn the other person\'s habits, prepare what they need before they ask, and are present in the invisible details. Love may be born in the workplace, among colleagues. You appreciate pleasant routines and aesthetically harmonious environments. The challenge is not reducing love to service — you deserve to be cared for, not only to care for others.',
+  /* House 7  */ 'Venus\'s natural placement — partnership is your art. You attract relationships with ease and have a natural gift for creating harmony in a pair. Marriage without serious crises is possible when there is mutual respect and beauty in the interaction. You have natural popularity, especially when expressed through art or diplomacy. The challenge is not erasing yourself to keep the peace — real harmony does not require you to disappear.',
+  /* House 8  */ 'Your love is intense and transformative — your relationships run deep, move the soul, and involve themes of power, vulnerability, and sexuality. Your emotional life is influenced by shared finances and resources. A tendency toward generosity is possible. The challenge is not using love as a means of control, or mistaking intensity for depth of bond.',
+  /* House 9  */ 'Love and adventure intertwine — you may fall for foreigners, different cultures, or people with expansive philosophies of life. Pleasure journeys. A high artistic ideal. Relationships that broaden your world view. The challenge is not idealizing the "distant" so much that everyday, nearby love seems insufficient.',
+  /* House 10 */ 'Relationships connected to career — great fortune and recognition for those in artistic professions, fashion, or any field that values beauty and personal charm. People see you publicly as someone attractive and agreeable. The challenge is separating true love from love of status — and allowing yourself to be loved for who you are, not for what you have achieved.',
+  /* House 11 */ 'Love is born from friendship — your most enduring romances begin as intellectual and social connection. Charm and magnetic appeal in group settings. An ease for forming influential friendships that support professional growth. You value freedom in relationships and connection with open-minded people. The challenge is not avoiding true intimacy by hiding behind sociability.',
+  /* House 12 */ 'Secret, spiritual, or platonic love — there is a transcendent quality to the way you love that does not always find expression in the concrete world. Secret relationships are possible, as are loves that transform profoundly over time. Venus here soothes heartache through art and contemplation. The challenge is bringing this love to the surface — what remains only interior stays incomplete.',
+];
+
+// ============================================================
+// MARS IN HOUSE
+// ============================================================
+export const MARS_IN_HOUSE: string[] = [
+  /* House 1  */ 'Combativeness and enthusiasm define your presence — you radiate energy, assertiveness, and a readiness for action that people feel immediately. You have a natural aptitude for activities requiring leadership, initiative, or competition. You go after what you want without hesitation, which is an immense strength when channeled with awareness. The challenge is that your assertiveness can emerge in many forms without you noticing — learning to modulate your intensity is your work of maturation.',
+  /* House 2  */ 'Your energy and determination are channeled into building resources — you actively fight for what is yours, with a willingness to work hard for material security and enrichment. Income may come from fields that demand strength, courage, or competition (industry, sports, entrepreneurship). The challenge is a tendency to overspend — the same energy that conquers can dissipate without a financial strategy.',
+  /* House 3  */ 'Your communication is direct, assertive, and sometimes cutting — your spirit is combative, critical, and uncompromising when defending an idea. There may be friction with siblings or in your immediate environment. Your mind is quick and intolerant of intellectual mediocrity. The challenge is transforming the sword of words into a tool — the same language that wounds can also mobilize and inspire.',
+  /* House 4  */ 'Your energy is deeply connected to home and roots — you may have grown up in an intense domestic environment, with an authoritarian parent or an excessively strict upbringing. You work hard for your family\'s comfort and defend your space with fierceness. A vital energy accompanies you throughout life. The challenge is not reproducing the intensity you received — building a home that is a refuge, not a battlefield.',
+  /* House 5  */ 'Creative, competitive, and passionate energy — you stand out in sports, arts, or any form of expression that demands courage and presence. Love achieved through overcoming obstacles or seized with boldness. Affairs marked by impulsiveness and intensity. The challenge is not confusing passion with possession — creative fire is most beautiful when it illuminates without burning.',
+  /* House 6  */ 'An tireless worker — your energy flows into productivity and practical problem-solving. You are suited to demanding or high-stakes work that requires courage and endurance. A natural role as an operational leader. Robust health, but with a predisposition to fevers, inflammation, and stress when energy is suppressed. The challenge is balancing productive intensity with rest — you are not a machine, even though you function like one.',
+  /* House 7  */ 'Your relationships are arenas for growth — you attract assertive, strong, and sometimes combative partners. Emotional clashes and power struggles in relationships are possible. Partnerships entered into hastily, at a young age, with risk of separation if energy is not channeled into mutual growth. The challenge is transforming competitiveness between two into collaboration — the other person is not an adversary, but a mirror.',
+  /* House 8  */ 'A placement of intense power — strong survival instinct, the ability to rise from the ashes, sexuality as a transformative vital force. There may be disputes over inheritance or involvement in high-risk situations. The challenge is using this immense power to consciously transform — not to destroy or to self-destruct.',
+  /* House 9  */ 'Complete dedication to a cause — you defend your beliefs with absolute passion and make no concessions when it comes to truth and justice. A character that commits to adventure even in the face of danger. There may be bold journeys or conflicts with established belief systems. The challenge is fanaticism: the same passion that drives you can blind you if not tempered with intellectual humility.',
+  /* House 10 */ 'Powerful professional ambition — you use fierce determination to establish yourself in career and public life. You attract hostility but know how to handle it — in fact, you thrive on challenge. An aptitude for leadership in any field requiring courage and decisiveness. The challenge is not creating unnecessary enemies on the way up — the most lasting power is the kind that builds bridges, not the kind that burns them.',
+  /* House 11 */ 'Enthusiasm and leadership in groups and collective causes — you are the friend who mobilizes, who drives action, who refuses passivity. Intense and sometimes domineering friendships: the great friend who, if they do not find reciprocity, may become a fierce opponent. The challenge is allowing others to lead as well — a collective cause does not need a general, it needs a catalyst.',
+  /* House 12 */ 'Subtle and introspective energy — you act behind the scenes, in secret, or in ways not always visible to others. There may be suppressed anger that needs to be channeled into conscious practices (art, spirituality, quiet activism). Hidden hostilities are possible. The challenge is not turning this energy against yourself — Mars in the 12th needs channels of expression; otherwise it becomes self-destruction.',
+];
+
+// ============================================================
+// JUPITER IN HOUSE
+// ============================================================
+export const JUPITER_IN_HOUSE: string[] = [
+  /* House 1  */ 'Jupiter in the 1st house brings natural optimism, magnetic presence, and a tendency to attract opportunities. You project confidence and generosity. Watch for excess — you may promise more than you deliver or overlook your own limits.',
+  /* House 2  */ 'Jupiter in the 2nd house indicates an ease for attracting resources and building wealth. You have a generous relationship with money — it comes in readily, but can flow out just as easily. Your values are expansive and open.',
+  /* House 3  */ 'Jupiter in the 3rd house expands the mind and communication. Ease with languages, writing, and teaching. You are the eternal student who loves sharing knowledge. You may have a positive relationship with siblings or neighbors.',
+  /* House 4  */ 'Jupiter in the 4th house indicates a generous home, a supportive family, or expansion in domestic life. You may have grown up with emotional abundance or find yourself moving to progressively larger homes. Solid roots and faith in the family foundation.',
+  /* House 5  */ 'Jupiter in the 5th house is a placement of joy: abundant creativity, luck in romance, and generosity with children. You need space to play, create, and express yourself. You may have many hobbies or artistic talents.',
+  /* House 6  */ 'Jupiter in the 6th house brings enthusiasm to daily work and general good health. You find meaning in routine when it has purpose. You may work in education, health, or causes that expand collective wellbeing.',
+  /* House 7  */ 'Jupiter in the 7th house attracts generous, optimistic partners or those from diverse cultural backgrounds. Relationships are a source of growth. Watch for unrealistic expectations of partners or a tendency to attract "too much."',
+  /* House 8  */ 'Jupiter in the 8th house indicates protection during crises and an ease with shared resources. You grow through deep transformations. You may inherit wealth or find good fortune in investments and joint funds.',
+  /* House 9  */ 'Jupiter in the 9th house is in its natural home — maximum philosophical expansion, transformative travel, deep higher education. You are naturally wise, optimistic, and always seeking meaning.',
+  /* House 10 */ 'Jupiter in the 10th house brings professional recognition, career expansion, and a positive public image. You may stand out in fields such as education, law, philosophy, or travel. A career shaped by a sense of mission.',
+  /* House 11 */ 'Jupiter in the 11th house expands your social network and your dreams for the future. You attract generous friends and benefit from groups. Social causes and collaborative projects are sources of abundance.',
+  /* House 12 */ 'Jupiter in the 12th house is a hidden guardian angel. Spiritual protection, deep faith, expanded intuition. You benefit from retreats, spirituality, and behind-the-scenes work. Your generosity may be quiet or anonymous.',
+];
+
+// ============================================================
+// SATURN IN HOUSE
+// ============================================================
+export const SATURN_IN_HOUSE: string[] = [
+  /* House 1  */ 'Saturn in the 1st house brings seriousness from an early age. You may have seemed older than your years or carried early responsibilities. With maturity, this transforms into natural authority and a commanding, respected presence.',
+  /* House 2  */ 'Saturn in the 2nd house indicates initial challenges with money or self-worth, but also the capacity to build genuine security through discipline. You value what you earn through effort — nothing comes easily, but what does arrive, stays.',
+  /* House 3  */ 'Saturn in the 3rd house may bring early difficulties with communication, learning, or relationships with siblings. Over time, you develop a structured mind, precise writing, and communication that carries authority.',
+  /* House 4  */ 'Saturn in the 4th house often indicates a childhood marked by restriction, early family responsibilities, or an absent or rigid parental figure. The mission is to build your own solid emotional foundations in adult life.',
+  /* House 5  */ 'Saturn in the 5th house may block creative expression or enjoyment in early life. Children may come later or bring significant responsibilities. With maturity, you develop disciplined, lasting creativity.',
+  /* House 6  */ 'Saturn in the 6th house demands dedication to work and constant attention to health. There may be a tendency to overload yourself with tasks. The lesson is building sustainable routines and not defining yourself solely by productivity.',
+  /* House 7  */ 'Saturn in the 7th house brings seriousness to relationships. There may be a delay in finding a partner, or marriages with older or more mature individuals. The lesson is genuine commitment — chosen freely, not entered out of obligation.',
+  /* House 8  */ 'Saturn in the 8th house indicates a fear of losing control, difficulty with deep intimacy, or challenges around inheritance and shared resources. The lesson is learning to trust and to transform without resistance.',
+  /* House 9  */ 'Saturn in the 9th house may limit travel or formal education early in life. With maturity, you become an authority in your field of study. Your beliefs are built through rigor, not blind faith.',
+  /* House 10 */ 'Saturn in the 10th house is one of the most ambitious placements — you came here to build a legacy. Career is a serious, central matter. Progress may be slow at first, but the success that comes is solid and enduring.',
+  /* House 11 */ 'Saturn in the 11th house may bring few but loyal friends, or an initial difficulty fitting into groups. The mission is to build a real support network and work toward causes that demand long-term commitment.',
+  /* House 12 */ 'Saturn in the 12th house may indicate hidden fears, isolation, or invisible responsibilities. The lesson is to confront inner ghosts and discover that structure can exist even within spirituality and the unconscious.',
+];
+
+// ============================================================
+// URANUS IN HOUSE
+// ============================================================
+export const URANUS_IN_HOUSE: string[] = [
+  /* House 1  */ 'Uranus in the 1st house makes you someone unique, rebellious, and unpredictable. You refuse to fit into molds. People may find you eccentric — and you probably are, with pride.',
+  /* House 2  */ 'Uranus in the 2nd house brings financial instability but also brilliant insights into unconventional ways of earning. Your values are progressive and ever-changing.',
+  /* House 3  */ 'Uranus in the 3rd house gives you an electric mind — rapid thoughts, sudden insights, unconventional communication. You may struggle with traditional learning but shine with alternative methods.',
+  /* House 4  */ 'Uranus in the 4th house indicates an unstable home in childhood or frequent changes of residence. You need freedom even within the home. Your family may be non-conventional.',
+  /* House 5  */ 'Uranus in the 5th house brings radical creativity and unexpected romances. You express yourself in original ways and may have unconventional children or a non-traditional relationship with parenthood.',
+  /* House 6  */ 'Uranus in the 6th house cannot tolerate repetitive routine. You need work with autonomy and room for innovation. Health may follow irregular patterns. Alternative approaches to self-care work well.',
+  /* House 7  */ 'Uranus in the 7th house attracts unconventional partners and relationships that challenge norms. Sudden ruptures in partnerships are possible. You need freedom within commitment.',
+  /* House 8  */ 'Uranus in the 8th house brings sudden transformations and deep insights into power and sexuality. Unexpected financial shifts. You may have unconventional transcendent experiences.',
+  /* House 9  */ 'Uranus in the 9th house builds its own belief system — it accepts no dogmas. Unexpected journeys, sudden philosophical insights. You may revolutionize your field of study.',
+  /* House 10 */ 'Uranus in the 10th house indicates an unconventional career, sudden professional changes, or work in technology and innovation. Rigid hierarchies are not for you.',
+  /* House 11 */ 'Uranus in the 11th house is in its natural home — eccentric friendships, a revolutionary vision of the future, participation in groups that shift paradigms. You are the collective\'s visionary.',
+  /* House 12 */ 'Uranus in the 12th house indicates sudden spiritual insights, electric intuition, and a possible unexpected spiritual awakening. You may feel restlessness without apparent cause — it is the unconscious calling for freedom.',
+];
+
+// ============================================================
+// NEPTUNE IN HOUSE
+// ============================================================
+export const NEPTUNE_IN_HOUSE: string[] = [
+  /* House 1  */ 'Neptune in the 1st house makes you chameleon-like, deeply empathetic, and hard to define. People project onto you what they wish to see. You absorb your environment — learning to hold boundaries is essential.',
+  /* House 2  */ 'Neptune in the 2nd house dissolves the relationship with money — there may be financial confusion, excessive generosity, or difficulty charging for your work. The lesson is valuing your gifts without guilt.',
+  /* House 3  */ 'Neptune in the 3rd house gives poetic communication, intuitive thinking, and an ease with symbolic language. There may be confusion around concrete information or idealization of siblings.',
+  /* House 4  */ 'Neptune in the 4th house indicates a home with a nebulous atmosphere — family idealized or absent in some way. There may be family secrets. Your true refuge is internal, spiritual.',
+  /* House 5  */ 'Neptune in the 5th house brings deep artistic creativity — music, film, poetry, dance. Idealized romances that may disappoint. Creative expression is your connection to the divine.',
+  /* House 6  */ 'Neptune in the 6th house indicates sensitivity to work environments and possible health conditions that are difficult to diagnose. You work best in activities involving healing, art, or compassion.',
+  /* House 7  */ 'Neptune in the 7th house may lead to idealizing partners or losing yourself in relationships. The lesson is loving without illusion — seeing the other as they are, not as you wish them to be. Artistic or spiritual partners are common.',
+  /* House 8  */ 'Neptune in the 8th house dissolves the boundaries of intimacy — transcendent experiences in sexuality, confusion around shared resources. Deep intuition about life and death.',
+  /* House 9  */ 'Neptune in the 9th house indicates deep faith, soul-transforming journeys, and an attraction to mysticism. Watch for gurus or belief systems that promise easy salvation.',
+  /* House 10 */ 'Neptune in the 10th house indicates a career in arts, healing, spirituality, or fields where compassion is central. Your public image may be hard to pin down — people are not always sure exactly what you do.',
+  /* House 11 */ 'Neptune in the 11th house idealizes friendships and social causes. You may be disappointed by groups or attract friends who need rescuing. The mission is to serve the collective without sacrificing yourself.',
+  /* House 12 */ 'Neptune in the 12th house is in its natural home — deep spirituality, oceanic intuition, connection with the collective unconscious. You may be a healer, artist, or medium. Regular solitude is essential.',
+];
+
+// ============================================================
+// PLUTO IN HOUSE
+// ============================================================
+export const PLUTO_IN_HOUSE: string[] = [
+  /* House 1  */ 'Pluto in the 1st house gives you an intense, magnetic presence. You reinvent yourself repeatedly across your lifetime. People sense your energy before you speak. You may intimidate without intending to.',
+  /* House 2  */ 'Pluto in the 2nd house indicates deep transformations tied to money, values, and self-worth. You may lose everything and rebuild. Your relationship with resources is intense — all or nothing.',
+  /* House 3  */ 'Pluto in the 3rd house gives an investigative mind and powerful words. Intense communication, a capacity for persuasion. You may have had transformative experiences with siblings or in the school environment.',
+  /* House 4  */ 'Pluto in the 4th house indicates intense family dynamics — secrets, power, transformation at the roots. Childhood may have been marked by control or loss. Healing comes through transforming your understanding of home.',
+  /* House 5  */ 'Pluto in the 5th house brings obsessive creativity and intense, almost compulsive romances. The relationship with children may be transformative. You create with visceral passion.',
+  /* House 6  */ 'Pluto in the 6th house may indicate health crises that lead to complete regeneration, or work that involves transforming systems. You have the power to heal — but you must tend to yourself first.',
+  /* House 7  */ 'Pluto in the 7th house attracts intense, transformative relationships. Power dynamics in partnerships. The lesson is neither controlling the other nor submitting — but transforming together.',
+  /* House 8  */ 'Pluto in the 8th house is in its natural home — maximum intensity in transformation, sexuality, power, and shared resources. You have been reborn many times in this life. Nothing is superficial.',
+  /* House 9  */ 'Pluto in the 9th house transforms your beliefs radically across your lifetime. Journeys can be experiences of death and rebirth. You pursue truth with obsession — shallow answers are never enough.',
+  /* House 10 */ 'Pluto in the 10th house indicates power in career — you transform your professional field. You may face power struggles with authority before becoming one yourself. Career as transformation.',
+  /* House 11 */ 'Pluto in the 11th house transforms the groups you belong to. You may have intense friendships or ruptures with collectives. You are an agent of social change — but you must be careful not to manipulate.',
+  /* House 12 */ 'Pluto in the 12th house indicates hidden power in the unconscious. Deep transformations that happen behind the scenes. You may experience intense fears without apparent cause — residues from past lives asking for integration.',
+];
+
+// ============================================================
+// CHIRON IN HOUSE
+// ============================================================
+export const CHIRON_IN_HOUSE: string[] = [
+  /* House 1  */ 'Chiron in the 1st house points to a wound around identity and the right to exist as you are. You may have grown up feeling that something was "wrong" with you — in your body, your behavior, your way of being. But it is precisely this sensitivity to self-knowledge that makes you capable of helping others find themselves. By accepting your own singularity without needing to justify it, you become a mirror of healing for the world.',
+  /* House 2  */ 'Chiron in the 2nd house touches the wound of self-worth and material security. You may have learned early that love was conditional on what you produced, owned, or provided. The path of healing runs through building a healthy relationship with your talents and resources — recognizing that your value exists independently of what you possess. In doing so, you become a powerful guide for those still seeking external approval.',
+  /* House 3  */ 'Chiron in the 3rd house reveals a wound in communication and intellectual expression. You may have felt that your words were not heard, that you were "not smart enough," or that you had no right to speak. The gift that emerges is a unique sensitivity to language — you learn to communicate with depth and care, becoming a mentor who gives voice to those who feel the same way.',
+  /* House 4  */ 'Chiron in the 4th house indicates a wound in roots — family of origin, a sense of belonging, emotional security. You may have grown up without an emotionally stable home or felt that you did not fit into your family. The healing process involves creating your own roots and defining what "home" means to you. When you do, you become an anchor for others who are also searching for belonging.',
+  /* House 5  */ 'Chiron in the 5th house touches the wound of creativity, authenticity, and joy. You may have received messages that your creative expression was not good enough, or that fun was dangerous or forbidden. The gift that arises is a deep and courageous creativity — by allowing yourself to create and to take joy without judgment, you inspire others to reclaim their own radiance.',
+  /* House 6  */ 'Chiron in the 6th house reveals a wound in the relationship with work, health, and daily routine. You may have learned that you must be perfect to deserve your place, or that caring for others is an obligation while caring for yourself is selfish. The healing path runs through understanding that service must come from a place of fullness, not guilt. You become a model of conscious self-care.',
+  /* House 7  */ 'Chiron in the 7th house touches the wound in relationships and partnership. You may have experienced losses, rejections, or painful relational patterns that created a fear of commitment or of revealing yourself. The gift that emerges is a deep understanding of relational dynamics — by healing this wound, you become someone capable of creating genuine connections and of guiding others in their relationships.',
+  /* House 8  */ 'Chiron in the 8th house indicates a wound connected to loss, forced transformations, power, and deep intimacy. You may have experienced situations of extreme vulnerability — financial, emotional, or related to death and life cycles. The gift that emerges is an uncommon strength of renewal and a unique capacity to accompany others through life\'s most difficult passages.',
+  /* House 9  */ 'Chiron in the 9th house touches the wound in beliefs, spirituality, and the search for meaning. You may have suffered under rigid dogmas, felt that your worldview was invalid, or had experiences that deeply shook your faith. The healing path is building a philosophy of life that is truly your own. In doing so, you become a spiritual guide of rare discernment.',
+  /* House 10 */ 'Chiron in the 10th house reveals a wound in career, legacy, and the relationship with authority. You may have had difficulties with parental figures, with professional recognition, or with the right to occupy positions of prominence. The healing process runs through claiming your authority without needing external validation. When you do, you become an inspiring reference for others seeking their own place in the world.',
+  /* House 11 */ 'Chiron in the 11th house touches the wound of collective belonging and friendship. You may have felt excluded from groups, too different to belong anywhere, or disappointed by friendships that did not sustain what they promised. The gift that emerges is the ability to build truly inclusive communities and to recognize the value in those who feel on the margins.',
+  /* House 12 */ 'Chiron in the 12th house indicates a deep spiritual wound tied to isolation, invisibility, and unexpressed pain. You may have carried wounds in solitude, felt you needed to hide what you felt, or experienced confinement or exclusion. The gift that emerges from this depth is an extraordinary capacity for compassion, deep listening, and silent healing — you touch people\'s souls without needing words.',
+];
+
+// ============================================================
+// CHIRON IN SIGN
+// ============================================================
+export const CHIRON_IN_SIGN: string[] = [
+  /* Aries       */ 'With Chiron in Aries, the wound has an active, identity-centered quality — it involves the right to act, to exist with strength, and to go first. The healing path runs through reclaiming the courage to exist without asking permission.',
+  /* Taurus      */ 'With Chiron in Taurus, the wound touches intrinsic worth and bodily security. It involves the belief that you must earn pleasure and comfort. Healing comes through inhabiting your body with peace and trusting that you are enough.',
+  /* Gemini      */ 'With Chiron in Gemini, the wound has a communicative and intellectual quality — it involves doubts about your own intelligence or the right to be heard. Healing comes through trusting your own voice and the uniqueness of your thinking.',
+  /* Cancer      */ 'With Chiron in Cancer, the wound touches the emotional and familial world. It involves questions of belonging, nurturance, and emotional safety. Healing comes through learning to nourish yourself with the same generosity you offer to others.',
+  /* Leo         */ 'With Chiron in Leo, the wound has an expressive and creative quality — it involves the right to shine, to be seen, and to express yourself without judgment. Healing comes through reclaiming the joy of authentic self-expression.',
+  /* Virgo       */ 'With Chiron in Virgo, the wound touches perfection, usefulness, and health. It may involve feeling that you are never good enough, or that your value depends on how much you serve. Healing comes through embracing imperfection as part of wholeness.',
+  /* Libra       */ 'With Chiron in Libra, the wound has a relational quality — it involves balance, fairness, and the right to have needs in relationships. Healing comes through learning that true harmony includes your own voice.',
+  /* Scorpio     */ 'With Chiron in Scorpio, the wound touches transformation, power, and intimacy. It involves deep fears of loss, betrayal, or vulnerability. Healing comes through embracing emotional depth as a gift, not a burden.',
+  /* Sagittarius */ 'With Chiron in Sagittarius, the wound has a philosophical and spiritual quality. It may involve the loss of faith, conflicts of belief, or the feeling that truth is out of reach. Healing comes through building a wisdom that is your own, grounded in lived experience.',
+  /* Capricorn   */ 'With Chiron in Capricorn, the wound touches ambition, responsibility, and the relationship with authority. It may involve excessive pressure for results or the belief that you must suffer to achieve. Healing comes through redefining success on your own terms.',
+  /* Aquarius    */ 'With Chiron in Aquarius, the wound has a collective quality — it involves feeling too different, belonging nowhere. Healing comes through transforming that singularity into a gift and using your vision of the future to inspire change.',
+  /* Pisces      */ 'With Chiron in Pisces, the wound touches dissolution, spirituality, and the boundaries of the ego. It may involve a sense of losing yourself in others or in collective suffering. Healing comes through learning compassion with boundaries — serving the world without losing yourself in it.',
+];
+
+// ============================================================
+// NORTH NODE IN HOUSE
+// ============================================================
+export const NORTH_NODE_HOUSE: string[] = [
+  /* House 1  */ 'North Node in House 1: You have already mastered "we" (partnership, diplomacy) and have come to learn independence — to put yourself first without guilt. Your mission is to develop your own identity.',
+  /* House 2  */ 'North Node in House 2: You have already mastered transformation and others\' resources. Now you have come to learn how to build your own security and your own values. Self-sufficiency is the path.',
+  /* House 3  */ 'North Node in House 3: You already carry the wisdom of deep study (9th house) and have come to learn how to communicate with lightness, to teach accessibly, and to listen more than you preach.',
+  /* House 4  */ 'North Node in House 4: You have already mastered public life and career. Now you have come to learn how to nurture your emotional foundations, care for family, and create genuine roots.',
+  /* House 5  */ 'North Node in House 5: You already belong to groups and collective causes. Now you have come to learn how to shine individually, to create, to play without guilt. Personal expression is the path.',
+  /* House 6  */ 'North Node in House 6: You have already mastered the spiritual world and solitude. Now you have come to learn how to serve in daily life, to organize practical reality, and to care for the body.',
+  /* House 7  */ 'North Node in House 7: You are already independent and self-sufficient. Now you have come to learn how to open space for the other — to negotiate, to build genuine partnerships.',
+  /* House 8  */ 'North Node in House 8: You have already mastered material comfort and stability. Now you have come to learn how to transform, to surrender, to navigate power and vulnerability.',
+  /* House 9  */ 'North Node in House 9: You have already mastered communication and surface-level knowledge. Now you have come to learn how to go deeper, expand horizons, and develop your own philosophy of life.',
+  /* House 10 */ 'North Node in House 10: You have already mastered home and emotions. Now you have come to learn how to build something in the world, to take on public responsibility, and to leave a legacy.',
+  /* House 11 */ 'North Node in House 11: You already shine individually. Now you have come to learn how to work for larger causes, to integrate into groups, and to think collectively.',
+  /* House 12 */ 'North Node in House 12: You have already mastered organization and practical service. Now you have come to learn how to release control, trust your intuition, and connect with something transcendent.',
+];
+
+// ============================================================
+// NORTH NODE IN SIGN
+// ============================================================
+export const NORTH_NODE_IN_SIGN: string[] = [
+  /* Aries       */ 'North Node in Aries: your evolutionary journey is to develop self-leadership, courage, and the right to act on your own. You come from lifetimes (or patterns) of dependency, excessive diplomacy, and approval-seeking. Liberation comes when you act without waiting for consensus — when you take the risk of being unpopular in the name of authenticity.',
+  /* Taurus      */ 'North Node in Taurus: your journey is to build your own security, to trust your body and the material world. You come from patterns of chaos, emotional intensity, and crisis as a way of life. Liberation comes when you allow yourself simple pleasures, stability without drama, and the trust that the ground beneath you will not give way.',
+  /* Gemini      */ 'North Node in Gemini: your journey is to cultivate curiosity, an open mind, and connection with your immediate surroundings. You come from dogmatic patterns, absolute certainties, and a tendency to preach rather than listen. Liberation comes when you allow yourself not to know — when the question becomes more valuable than the answer.',
+  /* Cancer      */ 'North Node in Cancer: your journey is emotional rootedness — home, care, vulnerability. You come from patterns of control, rigid ambition, and denial of emotional needs. Liberation comes when you allow yourself to need others, when you care without calculating, and when home becomes a refuge rather than an obligation.',
+  /* Leo         */ 'North Node in Leo: your journey is to express yourself from the heart, to shine individually, and to create with generosity. You come from patterns of collective anonymity, intellectual detachment, and fear of standing out. Liberation comes when you stop hiding behind the group and take the risk of being truly seen.',
+  /* Virgo       */ 'North Node in Virgo: your journey is to serve with discernment, to attend to health, and to apply spirituality to practical daily life. You come from patterns of dissolution, idealism without action, and escape from material reality. Liberation comes when you discover that the sacred lives in the details of the everyday.',
+  /* Libra       */ 'North Node in Libra: your journey is healing through partnership, commitment, and forgiveness. You come from patterns of isolation, excessive individualism, and difficulty yielding. Liberation comes when you learn that true strength is not doing everything alone — it is allowing yourself to be complemented.',
+  /* Scorpio     */ 'North Node in Scorpio: your journey is to transform yourself by confronting what is hidden — power, intimacy, vulnerability. You come from patterns of comfort, material attachment, and avoidance of crisis. Liberation comes when you allow yourself to die symbolically in order to be reborn more whole — when you accept that true security comes not from stability, but from the capacity to regenerate.',
+  /* Sagittarius */ 'North Node in Sagittarius: your journey is to expand horizons, build faith, and live your truth. You come from patterns of informational anxiety, superficiality, and fear of committing to a vision. Liberation comes when you stop collecting data and begin living wisdom — when experience replaces theory.',
+  /* Capricorn   */ 'North Node in Capricorn: your journey is to claim your vocation, build structure, and leave a legacy. You come from patterns of emotional dependency, familial victimhood, and difficulty taking responsibility for your own path. Liberation comes when you take the helm — when you stop blaming circumstances and build with your own hands.',
+  /* Aquarius    */ 'North Node in Aquarius: your journey is to serve the collective, embrace innovation, and think beyond the self. You come from patterns of inflated ego, the need for personal recognition, and difficulty sharing the spotlight. Liberation comes when you discover that your brilliance is most powerful when it illuminates causes greater than yourself.',
+  /* Pisces      */ 'North Node in Pisces: your journey is spiritual surrender — releasing control, trusting intuition, and dissolving the rigid boundaries of the ego. You come from patterns of hyper-control, perfectionism, and anxiety about "doing it right." Liberation comes when you allow yourself to flow — when you accept that not everything needs to be analyzed in order to be true.',
+];
+
+// ============================================================
+// NAMES AND LABELS — English
+// ============================================================
+
 export const SIGN_NAMES = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','天蝎座','射手座','摩羯座','水瓶座','双鱼座'];
 export const PLANET_NAMES: Record<string,string> = { sun:'太阳', moon:'月亮', mercury:'水星', venus:'金星', mars:'火星', jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星', northNode:'北交点', chiron:'凯龙', lilith:'莉莉丝' };
 export const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
