@@ -11,12 +11,14 @@ import { getAspectColor } from '../engine/aspects';
 const NS = 'http://www.w3.org/2000/svg';
 const CX = 350, CY = 350;
 
-// Ring radii (from outside in) — Astro.com proportions
-const R_OUTER = 330;          // Outer edge
-const R_SIGN_IN = 278;       // Inner edge of sign ring
-const R_PLANET_ORBIT = 235;  // Where planet symbols sit
-const R_HOUSE_OUT = 195;     // Outer edge of house lines (where lines start)
-const R_HOUSE_IN = 50;       // Inner circle (very small — just for aspect endpoints)
+// Ring radii (from outside in) — Astro.com layout:
+// OUTER EDGE → SIGN RING → HOUSE RING (planets here) → ASPECT CENTER
+const R_OUTER = 330;          // Outer edge of chart
+const R_SIGN_IN = 280;       // Inner edge of sign ring (sign ring = R_OUTER to R_SIGN_IN)
+const R_HOUSE_OUT = 280;     // Outer edge of house ring (= inner edge of sign ring)
+const R_PLANET_ORBIT = 220;  // Where natal planet symbols sit (inside house ring)
+const R_HOUSE_IN = 100;      // Inner edge of house ring (aspect circle)
+const R_ASPECT = 100;        // Aspect lines drawn inside this circle
 
 // Element colors (Astro.com)
 const ELEMENT_COLORS = ['#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844'];
@@ -110,10 +112,14 @@ function pol(r: number, angleDeg: number): { x: number; y: number } {
 
 function drawBackgrounds(): string {
   let s = '';
+  // Outer edge
   s += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER}" fill="#1a1a2e" stroke="#3a3a5e" stroke-width="2"/>`;
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_SIGN_IN}" fill="#151525" stroke="#3a3a5e" stroke-width="1.5"/>`;
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_OUT}" fill="#1a1a2e" stroke="#2a2a4e" stroke-width="0.8"/>`;
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_IN}" fill="#252540" stroke="#3a3a5e" stroke-width="0.5"/>`;
+  // Sign ring inner boundary (= house ring outer)
+  s += `<circle cx="${CX}" cy="${CY}" r="${R_SIGN_IN}" fill="#151520" stroke="#3a3a5e" stroke-width="1.5"/>`;
+  // House ring area (cream/beige like astro.com)
+  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_OUT}" fill="#1e1e30" stroke="none"/>`;
+  // Inner circle boundary (aspect area)
+  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_IN}" fill="#151525" stroke="#3a3a5e" stroke-width="0.8"/>`;
   return s;
 }
 
@@ -160,7 +166,7 @@ function drawHouseSegments(cusps: number[], asc: number): string {
     const startAngle = cusps[i] - asc;
     const endAngle = cusps[(i + 1) % 12] - asc;
 
-    // Draw colored arc segment for this house
+    // Draw colored arc segment for this house (between house inner and house outer)
     s += arcSegment(
       R_HOUSE_IN, R_HOUSE_OUT,
       startAngle, endAngle,
@@ -242,25 +248,24 @@ function drawHouseLines(cusps: number[], asc: number): string {
     const isAxis = (i === 0 || i === 3 || i === 6 || i === 9);
 
     if (isAxis) {
-      // Thick axis lines from center to sign ring (gold on dark)
+      // Thick axis lines from inner circle to sign ring boundary
       const p1 = pol(R_HOUSE_IN, angle);
-      const p2 = pol(R_SIGN_IN, angle);
+      const p2 = pol(R_HOUSE_OUT, angle);
       s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#d4a853" stroke-width="2"/>`;
     } else {
-      // Normal house lines from center to house outer ring
+      // Normal house lines from inner circle to house outer boundary
       const p1 = pol(R_HOUSE_IN, angle);
       const p2 = pol(R_HOUSE_OUT, angle);
       s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#4a4a6e" stroke-width="0.7"/>`;
     }
 
-    // House number — inside center area, just after the cusp line (like professional charts)
-    const ROMAN = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+    // House number — positioned in the MIDDLE of the house sector, near inner edge
     const nextAngle = cusps[(i + 1) % 12] - asc;
-    // Position: slightly after the cusp start (15% into the house sector)
-    let labelAngle = angle + ((((nextAngle - angle) % 360) + 360) % 360) * 0.15;
-    // Place inside the inner circle area (where aspects are drawn)
-    const numR = R_HOUSE_IN + 18;
-    const numP = pol(numR, labelAngle);
+    // Center of the sector (50% between this cusp and next)
+    let sectorMid = angle + ((((nextAngle - angle) % 360) + 360) % 360) * 0.5;
+    // Place near the inner ring (between aspects and planets)
+    const numR = R_HOUSE_IN + 25;
+    const numP = pol(numR, sectorMid);
 
     // Tooltip with house cusp sign
     const cuspSign = getSignIndex(cusps[i]);
@@ -269,7 +274,7 @@ function drawHouseLines(cusps: number[], asc: number): string {
 
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<text x="${numP.x}" y="${numP.y + 3}" text-anchor="middle" font-size="9" fill="#7a7a90" font-family="sans-serif">${ROMAN[i]}</text>`;
+    s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="11" font-weight="bold" fill="#6a6a80" font-family="sans-serif">${i + 1}</text>`;
     s += `</g>`;
   }
 
@@ -295,9 +300,9 @@ function drawAspects(aspects: Aspect[], positions: Positions, asc: number): stri
 
     const a1 = lon1 - asc;
     const a2 = lon2 - asc;
-    // Aspect lines go from planet position to planet position (inside house area)
-    const p1 = pol(R_HOUSE_OUT - 5, a1);
-    const p2 = pol(R_HOUSE_OUT - 5, a2);
+    // Aspect lines drawn inside the inner circle (aspect area)
+    const p1 = pol(R_HOUSE_IN - 5, a1);
+    const p2 = pol(R_HOUSE_IN - 5, a2);
 
     const style = ASPECT_LINE[asp.type] || { color: '#999', width: 1, dash: '' };
 
@@ -343,7 +348,7 @@ function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<str
 
     // Asteroids and extra points use a slightly inner orbit and smaller size
     const isExtra = ['ceres', 'vesta', 'pallas', 'juno', 'vertex', 'partOfFortune'].includes(item.id);
-    const orbitR = isExtra ? R_PLANET_ORBIT - 30 : R_PLANET_ORBIT;
+    const orbitR = isExtra ? R_PLANET_ORBIT - 25 : R_PLANET_ORBIT;
     const fontSize = isExtra ? 11 : 15;
     const circleR = isExtra ? 10 : 13;
 
@@ -493,10 +498,10 @@ export function renderBiWheel(natal: NatalChart, transitPositions: Positions, tr
   return svg;
 }
 
-// Draw natal planets at normal orbit (transits are outside now)
+// Draw natal planets at normal orbit (inside house ring)
 function drawNatalPlanetsInner(positions: Positions, asc: number): string {
   let s = '';
-  const R_NATAL = R_PLANET_ORBIT; // Normal orbit (235) — transits are outside
+  const R_NATAL = R_PLANET_ORBIT; // Inside house ring (220)
 
   const items = Object.entries(positions)
     .filter(([id]) => PLANET_SYMBOLS[id] && !['ceres','vesta','pallas','juno','vertex','partOfFortune'].includes(id))
@@ -612,9 +617,9 @@ function drawTransitAspects(aspects: Aspect[], natalPositions: Positions, transi
     const a1 = transitLon - asc;
     const a2 = natalLon - asc;
 
-    // Line from transit planet position (outer) to natal planet position (inner)
-    const p1 = pol(R_HOUSE_OUT - 5, a1);
-    const p2 = pol(R_HOUSE_OUT - 5, a2);
+    // Aspect lines inside the inner circle (connect through center)
+    const p1 = pol(R_HOUSE_IN - 5, a1);
+    const p2 = pol(R_HOUSE_IN - 5, a2);
 
     const style = ASPECT_LINE[asp.type] || { color: '#999', width: 1, dash: '' };
     // Make transit aspects slightly transparent
