@@ -186,6 +186,16 @@ export const LABELS = {
   wrath: 'Ira — Marte',
   envy: 'Inveja — Plutão',
   sloth: 'Preguiça — Netuno',
+  // Psychological extra
+  repetitivePatterns: 'Padrões Repetitivos — Quadraturas e Oposições',
+  unexploredPotentials: 'Potenciais Inexplorados — Trígonos e Talentos',
+  integrationPaths: 'Caminhos de Integração',
+  recommendedPractices: 'Práticas Recomendadas',
+  childhoodTemplate: 'Infância e o Template Emocional',
+  fromWoundToGift: 'Da Ferida ao Dom',
+  differentiation: 'Diferenciação — Ser Você, Não Sua Família',
+  mainTensions: 'Tensões Principais do Mapa',
+  plutoAspects: 'Aspectos Tensos de Plutão — Pontos de Pressão',
 };
 
 // ============================================================

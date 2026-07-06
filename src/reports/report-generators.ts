@@ -1013,7 +1013,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P2: Introdução
   doc.addPage(); let y = 30;
-  y = addSectionTitle(doc, 'O Mapa como Espelho da Psique', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.psychTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A astrologia psicológica — desenvolvida por Liz Greene, Howard Sasportas e outros — parte de um princípio simples e radical: o mapa natal não descreve eventos externos, mas estruturas internas. Os planetas são funções psíquicas; os signos, qualidades de expressão; as casas, arenas da experiência. Quando Marte está em Escorpião, não é que o destino seja "intensidade e conflito" — é que a função de ação e desejo (Marte) se expressa com a qualidade de profundidade, estratégia e intensidade de Escorpião.`, margin, y, 170);
   y += 6;
@@ -1022,7 +1022,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   y = wrapText(doc, `Ao longo das páginas seguintes, analisaremos a estrutura do ego (Sol e Ascendente), o mundo emocional (Lua), os processos mentais (Mercúrio), os padrões de amor e valor (Vênus), a força vital e agressividade (Marte), a sombra (Plutão), a ferida central (Quíron), o inconsciente (Casa 12 e Netuno), os padrões familiares herdados (Lua, Casa 4 e Saturno), e o caminho de integração que o mapa sugere.`, margin, y, 170);
 
   // TRYOUT CUT — return after cover + intro (3 pages)
-  const tryoutBlob3 = tryoutCut(doc, options, 'Análise Psicológica Profunda', '39.90');
+  const tryoutBlob3 = tryoutCut(doc, options, texts.LABELS.psychTitle, '39.90');
   if (tryoutBlob3) return tryoutBlob3;
 
   // P3: Ego — Sol + Asc
@@ -1042,7 +1042,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P4: Lua — Mundo Emocional
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'O Mundo Emocional — Lua', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.emotionalWorld, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A Lua é um dos pontos mais importantes do mapa para compreensão psicológica. Ela governa as necessidades emocionais, os padrões de apego, a relação com a figura materna e o que nos faz sentir seguros. Diferente do Sol (consciente e aspiracional), a Lua opera automaticamente — reagimos a partir dela antes de pensar. Por isso, trabalhar a Lua é trabalhar o nível mais inconsciente e mais impactante do comportamento.`, margin, y, 170);
   y += 6;
@@ -1051,13 +1051,13 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   const luaTexts = ['Suas necessidades emocionais são de ação, novidade e autonomia. Você se sente seguro quando tem liberdade de movimento e iniciativa. A dependência o sufoca; a independência o acalma. Emocionalmente, você reage de forma rápida e direta — e muitas vezes se arrepende depois. O trabalho da Lua em Áries é desenvolver a capacidade de sentir sem agir imediatamente — criar um espaço entre o impulso emocional e a resposta.', 'Você precisa de segurança, estabilidade e conforto sensorial para se sentir bem emocionalmente. Mudanças abruptas o desestabilizam profundamente — não por fraqueza, mas porque sua Lua processa em ritmo próprio, mais lento e mais profundo. O trabalho é aprender a diferenciar estabilidade necessária de resistência ao crescimento.', 'Sua necessidade emocional é de estimulação mental e comunicação. Você se sente seguro quando pode falar, trocar ideias e entender o que está sentindo através das palavras. Emoções não verbalizadas tendem a se tornar ansiedade. O trabalho é aprender a sentir antes de analisar — a emoção não precisa fazer sentido para ser válida.', 'Lua em Câncer está em domicílio — suas necessidades emocionais são profundas e centrais à sua vida. Você precisa de pertencimento, cuidado e vínculos seguros para funcionar bem. O risco é o apego excessivo: ao lar, às pessoas, ao passado. O trabalho é aprender a nutrir sem se perder no outro.', 'Você precisa de reconhecimento, admiração e expressão dramática para se sentir emocionalmente satisfeito. Não é vaidade — é uma necessidade real de ser visto em sua singularidade. Quando essa necessidade não é atendida, você ou performa mais intensamente ou colapsa. O trabalho é construir autoestima que não dependa de aplausos externos.', 'Suas necessidades emocionais são de ordem, competência e utilidade. Você se sente seguro quando há rotina, quando está fazendo algo bem feito e quando o ambiente ao redor está organizado. O caos externo te desestabiliza internamente. O trabalho é aprender que nem tudo precisa ser correto para ser bom o suficiente.', 'Você precisa de harmonia, equidade e relacionamentos balanceados para se sentir emocionalmente bem. Conflitos não resolvidos te perturbam profundamente — e você pode evitá-los ao custo de negar suas próprias necessidades. O trabalho é aprender que expressar desacordo não destrói o relacionamento — muitas vezes o fortalece.', 'Suas necessidades emocionais são intensas e profundas. Você precisa de intimidade real — não superficialidade. A pequena conversa te drena; o mergulho emocional te alimenta. O risco é o controle: proteger tanto o espaço emocional que ninguém consegue entrar. O trabalho é aprender a ser vulnerável com segurança.', 'Você precisa de liberdade, espaço e sentido filosófico para se sentir emocionalmente bem. Restrições e obrigações te sufocam. Emocionalmente, você tende a racionalizar o que sente — transformar sentimentos em conceitos. O trabalho é aprender a habitar as emoções sem precisar imediatamente transformá-las em insight.', 'Suas necessidades emocionais são de realização, estrutura e reconhecimento pelo que construiu. Vulnerabilidade emocional pode parecer fraqueza — e você aprendeu a controlar e gerenciar seus sentimentos desde cedo. O trabalho é aprender que sentir não compromete a competência — que mostrar emoção é força, não fraqueza.', 'Você precisa de liberdade intelectual e pertencimento a um grupo ou causa. Emoções muito intensas podem ser desconcertantes — você prefere analisá-las de longe. O risco é a desconexão emocional: intelectualizar tudo e nunca sentir de verdade. O trabalho é descer do plano mental para o plano sentimental com regularidade.', 'Suas necessidades emocionais são fluidas e difusas — você absorve emoções do ambiente como uma esponja. A empatia é seu dom e seu fardo. Sem fronteiras psíquicas, você pode se sentir responsável pelas emoções dos outros. O trabalho é aprender a distinguir "é meu" de "é do ambiente" — e praticar limites saudáveis com compaixão.'];
   y = wrapText(doc, luaTexts[moonSign] || `Lua em ${SIGN_NAMES[moonSign]}: suas necessidades emocionais seguem a natureza deste signo.`, margin, y, 170);
   y += 6;
-  y = addSubTitle(doc, 'Infância e o Template Emocional', y, margin);
+  y = addSubTitle(doc, texts.LABELS.childhoodTemplate, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A posição da Lua no mapa reflete não apenas suas necessidades emocionais atuais, mas o template formado na infância com a figura cuidadora primária. Não se trata de culpar a criação — trata-se de reconhecer padrões automáticos que foram adaptativos então e que podem ser revistos agora. A Lua na Casa ${moonHouse} indica que as primeiras experiências de segurança e cuidado estavam ligadas aos temas dessa casa. Esse padrão se repete automaticamente em relacionamentos adultos até ser reconhecido e trabalhado conscientemente.`, margin, y, 170);
 
   // P5: Mercúrio
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'A Mente — Mercúrio', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.mentalProcesses, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Mercúrio governa não apenas a comunicação, mas a estrutura do pensamento — como você organiza a realidade internamente, que tipo de informação prioriza, como processa o que é novo. Em psicologia junguiana, Mercúrio corresponde à função de pensamento ou intuição, dependendo de sua posição. Entender seu Mercúrio é entender como sua mente naturalmente funciona — e aceitar que outras mentes funcionam de forma diferente, não errada.`, margin, y, 170);
   y += 6;
@@ -1068,7 +1068,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P6: Vênus
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'O Coração — Vênus', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.lovePatterns, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Vênus governa o que amamos, o que valorizamos, o que consideramos belo e o que desejamos receber em troca de afeto. Psicologicamente, Vênus corresponde ao princípio do relacionamento — a capacidade de se ver no outro, de criar conexão, de encontrar valor no mundo. Uma Vênus não integrada pode se manifestar como dependência afetiva ou como dificuldade de receber amor. Uma Vênus saudável é capaz de dar e receber afeto com equilíbrio.`, margin, y, 170);
   y += 6;
@@ -1079,7 +1079,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P7: Marte
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'A Força Vital — Marte', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.vitalForce, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Marte é a força que nos move — não apenas a raiva (como popularmente se associa), mas toda a energia direcional: desejo, iniciativa, competição, defesa dos próprios limites. Uma Marte saudável sabe o que quer e age para conseguir. Uma Marte reprimida se manifesta como passividade, ressentimento acumulado e dificuldade de defender-se. Uma Marte não-contida se manifesta como agressividade, impulsividade e conflito crônico.`, margin, y, 170);
   y += 6;
@@ -1090,7 +1090,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P8: Plutão — Sombra
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'A Sombra — Plutão e Casa 8', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.shadow, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Jung definiu a Sombra como tudo aquilo que não reconhecemos em nós mesmos — não necessariamente o "mau", mas o não-integrado. Plutão, no mapa natal, indica onde está a matéria mais densa dessa sombra: o que foi reprimido, o que assusta, o que tem mais poder precisamente porque não é reconhecido. Quando Plutão está ativo por trânsito ou progressão, a sombra se torna visível — geralmente através de crises ou pessoas que "espelham" o que você ainda não viu em si mesmo.`, margin, y, 170);
   y += 6;
@@ -1105,7 +1105,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   y += 6;
   const hardAspects = chart.aspects.filter(a => (a.type === 'square' || a.type === 'opposition') && (a.planet1 === 'pluto' || a.planet2 === 'pluto'));
   if (hardAspects.length > 0) {
-    y = addSubTitle(doc, 'Aspectos Tensos de Plutão — Pontos de Pressão', y, margin);
+    y = addSubTitle(doc, texts.LABELS.plutoAspects, y, margin);
     for (const asp of hardAspects.slice(0, 3)) {
       y = checkPage(doc, y);
       const other = asp.planet1 === 'pluto' ? asp.planet2 : asp.planet1;
@@ -1119,7 +1119,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P9: Quíron
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'A Ferida — Quíron', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.wound, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Quíron é o asteróide do "curandeiro ferido" — o ponto do mapa que indica uma ferida primária que não cura completamente, mas que, ao ser trabalhada, se transforma no maior dom. O mito de Quíron é preciso: ele era um centauro sábio e curador que não podia curar a si mesmo. A ferida de Quíron não é fraqueza — é o ponto de mais profundidade e autenticidade.`, margin, y, 170);
   y += 6;
@@ -1129,13 +1129,13 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   y = wrapText(doc, chText, margin, y, 170); y += 5;
   const chSignText = CHIRON_IN_SIGN[chironSign] || `Quíron em ${SIGN_NAMES[chironSign]}: a ferida tem a qualidade deste signo.`;
   y = wrapText(doc, chSignText, margin, y, 170); y += 6;
-  y = addSubTitle(doc, 'Da Ferida ao Dom', y, margin);
+  y = addSubTitle(doc, texts.LABELS.fromWoundToGift, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A ferida de Quíron na Casa ${chironHouse} em ${SIGN_NAMES[chironSign]} não é para ser "curada" e deixada para trás — é para ser integrada e transformada em sabedoria. As pessoas que mais sofrem com a área de Quíron são frequentemente as que mais podem ajudar outros nessa mesma área, precisamente porque conhecem a dor por dentro. O caminho não é evitar a ferida — é aprender a permanecer presente nela com compaixão por si mesmo, o que transforma a vulnerabilidade em força genuína.`, margin, y, 170);
 
   // P10: Inconsciente — Casa 12 + Netuno
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'O Inconsciente — Casa 12 e Netuno', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.unconscious, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A Casa 12 e Netuno regem o que está além da consciência ordinária: sonhos, o inconsciente coletivo, padrões que operam abaixo do limiar da percepção, e a dissolução do ego em algo maior. É também a casa do isolamento, dos medos profundos e das fugas — tanto saudáveis (arte, meditação, sono) quanto não saudáveis (vícios, evasão). O trabalho com a Casa 12 e Netuno é um trabalho de toda uma vida.`, margin, y, 170);
   y += 6;
@@ -1168,7 +1168,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Saturno na Casa ${saturnHouse} revela onde a mensagem saturniana foi mais forte na infância — "aqui você precisa trabalhar mais", "aqui você nunca é suficiente", "aqui você precisa ganhar o direito de existir". Essa mensagem raramente foi dada com malícia — foi transmitida pelos próprios medos e limitações dos cuidadores. O trabalho adulto com esse Saturno é internalizar a autoridade (não precisar de aprovação externa) e transformar a crítica interna em standard saudável.`, margin, y, 170);
   y += 6;
-  y = addSubTitle(doc, 'Diferenciação — Ser Você, Não Sua Família', y, margin);
+  y = addSubTitle(doc, texts.LABELS.differentiation, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `A diferenciação saudável não é rejeitar a família de origem — é escolher conscientemente quais padrões herdados servem ao quem você está se tornando, e quais precisam ser revistos. Esse processo geralmente envolve alguma dose de luto: o luto pelo que não foi, pelo que foi diferente do que precisava ser, e pelo que você gostaria que tivesse sido diferente. Ao mesmo tempo, é um processo de gratidão pelo que foi suficientemente bom — porque é a partir desse suficiente que você cresceu.`, margin, y, 170);
 
@@ -1186,7 +1186,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   }
   const tenseAspects = chart.aspects.filter(a => a.type === 'square' || a.type === 'opposition').slice(0, 3);
   if (tenseAspects.length > 0) {
-    y = addSubTitle(doc, 'Tensões Principais do Mapa', y, margin);
+    y = addSubTitle(doc, texts.LABELS.mainTensions, y, margin);
     for (const asp of tenseAspects) {
       y = checkPage(doc, y);
       const interp = getAspectInterpretation(asp.planet1, asp.planet2, asp.type) || '';
@@ -1201,7 +1201,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P13: Nodo Norte — Propósito
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'O Propósito — Nodo Norte', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.integrationPath, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `O Nodo Norte (Cabeça do Dragão) indica a direção evolutiva da alma — onde há crescimento genuíno, mesmo que desconfortável. O Nodo Sul indica os padrões já desenvolvidos, o terreno familiar que oferece conforto mas pode tornar-se zona de estagnação. A jornada nodal é sempre em direção ao desconhecido do Nodo Norte, utilizando (não abandonando) os recursos do Nodo Sul.`, margin, y, 170);
   y += 6;
@@ -1215,7 +1215,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P14: Padrões Repetitivos
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Padrões Repetitivos — Quadraturas e Oposições', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.repetitivePatterns, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Quadraturas e oposições no mapa natal não são problemas a resolver — são tensões criativas a integrar. Uma quadratura é uma tensão interna: duas funções psíquicas que querem coisas diferentes. Uma oposição é uma polaridade: duas forças que precisam ser equilibradas em vez de suprimidas. Os padrões que se repetem em sua vida muitas vezes têm raiz nessas tensões — não porque você seja "difícil", mas porque ainda não encontrou a síntese que integra os dois polos.`, margin, y, 170);
   y += 6;
@@ -1236,7 +1236,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P15: Potenciais Inexplorados
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Potenciais Inexplorados — Trígonos e Talentos', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.unexploredPotentials, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Trígonos e sextis representam fluxo e facilidade — qualidades e habilidades que vêm naturalmente. Paradoxalmente, esses pontos frequentemente ficam subutilizados: como não exigem esforço para existir, raramente são valorizados ou desenvolvidos conscientemente. Identificar seus pontos de facilidade é tão importante quanto trabalhar os pontos de tensão.`, margin, y, 170);
   y += 6;
@@ -1285,7 +1285,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P20: Caminhos de Integração
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Caminhos de Integração', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.integrationPaths, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Integração psicológica não é um destino — é um processo contínuo. O mapa natal não oferece um ponto de chegada; oferece um mapa do território interno, com seus recursos e desafios. Os caminhos a seguir são sugestões baseadas na configuração específica do seu mapa:`, margin, y, 170);
   y += 6;
@@ -1304,7 +1304,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P21: Práticas Recomendadas
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Práticas Recomendadas', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.recommendedPractices, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   const practices = [
     { title: 'Diário Astrológico', text: `Registre diariamente uma observação sobre como as energias do seu mapa estão se manifestando. Não precisa ser longo — uma frase basta. Ao longo do tempo, padrões ficam visíveis.` },

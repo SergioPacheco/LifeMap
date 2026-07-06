@@ -135,6 +135,16 @@ export const LABELS = {
   wrath: 'Wrath — Mars',
   envy: 'Envy — Pluto',
   sloth: 'Sloth — Neptune',
+  // Psychological extra
+  repetitivePatterns: 'Repetitive Patterns — Squares and Oppositions',
+  unexploredPotentials: 'Unexplored Potentials — Trines and Talents',
+  integrationPaths: 'Integration Paths',
+  recommendedPractices: 'Recommended Practices',
+  childhoodTemplate: 'Childhood and the Emotional Template',
+  fromWoundToGift: 'From Wound to Gift',
+  differentiation: 'Differentiation — Being You, Not Your Family',
+  mainTensions: 'Main Tensions in the Chart',
+  plutoAspects: 'Tense Pluto Aspects — Pressure Points',
 };
 
 export const TRANSITIONS = {
