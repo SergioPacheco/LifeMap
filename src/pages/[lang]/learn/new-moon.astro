@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
+import { getContent } from '../../../content';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+const content = await getContent(locale, 'newMoon');
+---
+
+<BaseLayout title={content.title} locale={locale}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-muted mb-6">
+      <a href={localePath('/learn', locale)} class="hover:text-brand-600">{t.nav.learn}</a> → <span class="text-cream">{content.title}</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="mb-10">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-4xl">🌑</span>
+        <h1 class="text-3xl font-serif font-bold text-cream">{content.title}</h1>
+      </div>
+      <p class="text-muted text-lg leading-relaxed">{content.intro}</p>
+    </div>
+
+    <!-- Ciclo Lunar Completo -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-2">{content.phases.title}</h2>
+      <p class="text-muted mb-6">{content.phases.intro}</p>
+      <div class="space-y-3">
+        {content.phases.list.map((phase: any) => (
+          <article class="bg-base-50 border border-base-300 rounded-xl p-4">
+            <div class="flex items-start gap-4">
+              <div class="text-2xl flex-shrink-0">{phase.name.split(' ')[2]}</div>
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-3 mb-1">
+                  <h3 class="font-semibold text-cream text-sm">{phase.name}</h3>
+                  <span class="text-xs text-muted">{phase.degrees}</span>
+                  <span class="px-2 py-0.5 bg-gold/5 text-gold text-xs rounded-full">{phase.quality}</span>
+                </div>
+                <p class="text-sm text-cream-dark leading-relaxed">{phase.description}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Lua Nova nos Signos -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-2">{content.signs.title}</h2>
+      <p class="text-muted mb-6">{content.signs.intro}</p>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {content.signs.list.map((item: any) => (
+          <article class="bg-base-50 border border-base-300 rounded-xl p-5">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-gold font-semibold">{item.sign}</span>
+              <span class="text-xs bg-gold/5 text-gold px-2 py-0.5 rounded-full">{item.theme}</span>
+            </div>
+            <p class="text-sm text-cream-dark leading-relaxed">{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- Como usar a Lua Nova -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-2">{content.intentions.title}</h2>
+      <p class="text-muted mb-6">{content.intentions.intro}</p>
+      <div class="space-y-4 mb-6">
+        {content.intentions.steps.map((step: any) => (
+          <div class="bg-base-50 border border-base-300 rounded-xl p-5 flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center">
+              <span class="text-gold text-xs font-bold">{step.step.charAt(0)}</span>
+            </div>
+            <div>
+              <p class="font-semibold text-cream text-sm mb-1">{step.step}</p>
+              <p class="text-sm text-cream-dark leading-relaxed">{step.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <!-- Nota importante -->
+      <div class="bg-base-50 border border-gold/30 rounded-xl p-5">
+        <h3 class="font-semibold text-gold mb-2 text-sm">⚠️ {content.intentions.important.title}</h3>
+        <p class="text-sm text-cream-dark leading-relaxed">{content.intentions.important.text}</p>
+      </div>
+    </section>
+
+    <!-- Eclipses -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-4">{content.solarEclipses.title}</h2>
+      <div class="bg-base-50 border border-base-300 rounded-xl p-6">
+        <p class="text-cream-dark leading-relaxed">{content.solarEclipses.text}</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="mt-10 p-6 bg-gold/5 rounded-xl border border-gold/20 text-center">
+      <p class="text-sm text-gold font-medium">{content.cta}</p>
+      <a href={localePath('/tools/moon-phases', locale)} class="inline-block mt-3 px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors">{content.ctaButton}</a>
+    </div>
+  </div>
+</BaseLayout>

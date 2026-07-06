@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ReportPreview from '../../../components/premium/ReportPreview.tsx';
-import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
 
 export function getStaticPaths() {
   return supportedLocales.map(lang => ({ params: { lang } }));
@@ -16,7 +16,7 @@ const t = getTranslations(locale);
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="mb-6 text-center">
       <nav class="text-sm text-muted mb-4">
-        <a href={`/${locale}/reports`} class="hover:text-brand-600">{t.reports.title}</a> → <span class="text-cream">{locale === 'pt' ? 'Psicológico Profundo' : 'Deep Psychology'}</span>
+        <a href={localePath("/reports", locale)} class="hover:text-brand-600">{t.reports.title}</a> → <span class="text-cream">{locale === 'pt' ? 'Psicológico Profundo' : 'Deep Psychology'}</span>
       </nav>
     </div>
     <ReportPreview client:load locale={locale} reportType="psychological" />

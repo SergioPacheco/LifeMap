@@ -220,21 +220,38 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Opressão, lutas de poder com autoridades, medo existencial. Pode vivenciar perda de poder para depois reconstruir com mais força.',
   },
 
-  // --- URANUS-NEPTUNE-PLUTO (geracionais) ---
+  // --- JUPITER COM EXTERIORES (aspectos individuais importantes) ---
+  'jupiter-uranus': {
+    conjunction: 'Sorte e liberdade fundidas — você nasce com uma faísca de originalidade que abre portas inesperadas. Intuição forte sobre o futuro, otimismo com inovação. Oportunidades chegam de formas incomuns e repentinas, e você tem o instinto de aproveitá-las antes que outros percebam o potencial.',
+    soft: 'Expansão e originalidade trabalham em harmonia — você cresce quando se permite inovar. Viagens, aprendizados inesperados e revelações súbitas que abrem horizontes. Há uma leveza na forma como você lida com mudanças que outros achariam desestruturantes.',
+    hard: 'Tensão entre a busca por mais e a necessidade de liberdade total. Pode se tornar inquieto com qualquer estrutura que limite o crescimento, saltando de oportunidade em oportunidade sem consolidar. A lição é aproveitar a expansão sem fugir da profundidade que o tempo traz.',
+  },
+  'jupiter-neptune': {
+    conjunction: 'Fé e visão espiritual amplificadas — you believe before you see. Idealismo generoso, espiritualidade expansiva, senso de missão maior. Ao mesmo tempo, é fácil se perder em visões sem ancoragem prática. A casa onde cai revela onde o sonho encontra a realidade — e onde a ilusão pode ser mais sedutora.',
+    soft: 'Espiritualidade e otimismo se reforçam mutuamente. Facilidade com meditação, artes, compaixão e qualquer prática que expanda a consciência além do ego. Você inspira os outros com a qualidade da sua fé — não a fé dogmática, mas a fé que sente o invisível como real.',
+    hard: 'Excesso de idealismo — pode apostar em causas, pessoas ou projetos com base em visão ao invés de evidência, e se sentir traído quando a realidade não corresponde ao sonho. A lição não é abandonar a fé, mas aprender a distinguir inspiração genuína de ilusão confortável.',
+  },
+  'jupiter-pluto': {
+    conjunction: 'Poder e expansão fundidos — quando você quer algo, não há meio-termo. Capacidade extraordinária de mobilizar recursos, influenciar pessoas e crescer através de transformações que destroem o que era pequeno para dar lugar ao que é grande. Figuras de poder aparecem como espelhos do seu próprio potencial — ou como obstáculos que revelam onde você ainda precisa crescer.',
+    soft: 'Crescimento através de transformação profunda — cada ciclo de morte e renascimento em sua vida te encontra maior, mais capaz e mais sábio. Facilidade em acumular influência ou recursos de forma sustentável. Há uma qualidade de líder que renasce das cinzas na sua trajetória que inspira lealdade genuína.',
+    hard: 'Sede de poder que pode se tornar obsessão por controle — expansão que não aceita limites, ambição que passa por cima de outros ou atração por estruturas de poder que prometem mais do que entregam. A lição é usar a capacidade de transformar o mundo começando pelo que não pode mais ser sustentado internamente.',
+  },
+
+  // --- URANUS-NEPTUNE-PLUTO (aspectos geracionais) ---
   'uranus-neptune': {
-    conjunction: 'Geração com sensibilidade espiritual aliada a insights futuristas (nascidos ~1990-1996).',
-    soft: 'Intuição e originalidade se apoiam — visões do futuro com sensibilidade compassiva.',
-    hard: 'Tensão entre idealismo e rebeldia. Geração que questiona tanto tradição quanto espiritualidade superficial.',
+    conjunction: 'Aspecto geracional que define os nascidos ~1990-1996: a geração que cresceu na fronteira entre o mundo analógico e o digital, entre a razão e a espiritualidade pós-religiosa. Urânio e Netuno fundidos trazem visões de futuro carregadas de sensibilidade — inovação que não perde a alma. Na casa onde cai, revela onde essa pessoa carrega a assinatura de uma época de transição: onde o tecnológico e o transcendente se encontram.',
+    soft: 'Quando em trígono ou sextil com planetas pessoais, essa energia geracional se ativa individualmente: intuição elétrica aliada a compaixão, capacidade de usar tecnologia a serviço do humano. Estas pessoas têm um radar natural para o que o futuro pede — não por previsão racional, mas por uma sensibilidade que capta o zeitgeist antes que ele se articule em palavras.',
+    hard: 'Quando a quadratura ou oposição com planetas pessoais ativa essa energia, a tensão se torna individual: onde a visão coletiva do que poderia ser encontra o que realmente é. Pode se manifestar como desilusão com o futuro prometido, ou como a pressão criativa de quem sente o abismo entre o ideal e o real — e não consegue ignorar nenhum dos dois lados.',
   },
   'uranus-pluto': {
-    conjunction: 'Geração de transformação radical (nascidos ~1963-1968). Revolução profunda e irreversível.',
-    soft: 'Capacidade de usar crises como catalisador de inovação. Transformação que liberta.',
-    hard: 'Tensão entre desejo de mudança e forças de poder. Geração que vive revoluções sociais e pessoais intensas.',
+    conjunction: 'Aspecto geracional dos nascidos ~1963-1968: a geração Plutão em Virgem/Urânio em Virgem, que chegou ao mundo no auge da revolução cultural e carregou na psique a marca de que transformações radicais são possíveis e necessárias. Não é inquietude — é a lembrança celular de que o status quo pode ser rasgado. Na casa onde cai, aponta o setor da vida onde essa pessoa carrega o impulso revolucionário como herança geracional.',
+    soft: 'Quando essa conjunção geracional recebe aspectos suaves dos planetas pessoais, a energia se traduz em capacidade de usar crises como trampolins — não de forma ingênua, mas com a sabedoria de quem sabe que o que colapsa já estava oco por dentro. Há uma resiliência específica nessas pessoas: não a resiliência de quem nunca caiu, mas de quem aprendeu que cair faz parte do ritmo.',
+    hard: 'A quadratura de Urânio com Plutão (2012-2015) foi o aspecto coletivo mais tenso do início do século XXI, e quem tem planetas pessoais ativados por ela carrega esse padrão individualmente: a tensão entre desejo de ruptura e forças que resistem à mudança. Pode se manifestar como conflitos de poder, rupturas involuntárias ou a sensação de viver em um mundo que precisa urgentemente mudar mas encontra resistência em cada esquina.',
   },
   'neptune-pluto': {
-    conjunction: 'Aspecto geracional muito lento (~ciclo de 492 anos). Define épocas civilizacionais inteiras.',
-    soft: 'Transformação espiritual coletiva fluindo na direção da evolução da consciência.',
-    hard: 'Crises espirituais e de poder que afetam gerações inteiras — dissolução de estruturas obsoletas.',
+    conjunction: 'O aspecto mais lento do sistema solar — o ciclo completo dura ~492 anos, e a última conjunção ocorreu em ~1891-1892, em Gêmeos. Toda pessoa viva hoje carrega o sextil de Netuno com Plutão em seu mapa, pois esse aspecto dominou o século XX inteiro. É uma marca epocal: a geração que viveu a dissolução das certezas do século XIX e a emergência de uma nova consciência coletiva. Na posição por casa, revela onde esse impulso de transformação civilizacional encontra expressão individual.',
+    soft: 'O sextil que dominou o século XX (e persiste) representa a corrente subterrânea da transformação espiritual coletiva fluindo em direção à evolução da consciência. Individualmente, quando ativa planetas pessoais, traz uma qualidade de profeta discreto — alguém que percebe para onde a história está indo antes que se torne visível. Compaixão com profundidade, espiritualidade que não teme a sombra.',
+    hard: 'A quadratura e oposição de Netuno-Plutão pertencem a gerações distantes do presente — a última oposição foi em ~1897, a próxima será em ~2140. Quando presente em mapa histórico ou em trânsito ativando planetas pessoais, representa a tensão máxima entre o poder de dissolução e o poder de transformação: épocas onde o que era sagrado colapsa e o que emerge ainda não tem nome.',
   },
 
   // --- QUÍRON (A Ferida que Cura) ---

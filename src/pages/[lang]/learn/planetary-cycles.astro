@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
+import { getContent } from '../../../content';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+const content = await getContent(locale, 'planetaryCycles');
+---
+
+<BaseLayout title={content.title} locale={locale}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-muted mb-6">
+      <a href={localePath('/learn', locale)} class="hover:text-brand-600">{t.nav.learn}</a> → <span class="text-cream">{content.title}</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="mb-10">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-4xl">🔄</span>
+        <h1 class="text-3xl font-serif font-bold text-cream">{content.title}</h1>
+      </div>
+      <p class="text-muted text-lg leading-relaxed">{content.intro}</p>
+    </div>
+
+    <!-- O que são ciclos -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-4">{content.whatAreCycles.title}</h2>
+      <div class="bg-base-50 border border-base-300 rounded-xl p-6 space-y-4">
+        <p class="text-cream-dark leading-relaxed">{content.whatAreCycles.text}</p>
+        <div class="bg-gold/5 border border-gold/20 rounded-lg p-4">
+          <p class="text-gold text-sm leading-relaxed">💡 {content.whatAreCycles.note}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ciclos -->
+    <div class="space-y-10">
+      {content.cycles.map((cycle: any) => (
+        <section>
+          <div class="bg-base-50 border border-base-300 rounded-xl overflow-hidden">
+            <!-- Header do ciclo -->
+            <div class="p-6 border-b border-base-300">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl flex-shrink-0">{cycle.icon}</div>
+                <div class="flex-1">
+                  <div class="flex flex-wrap items-center gap-3 mb-1">
+                    <h2 class="text-xl font-serif font-bold text-cream">{cycle.title}</h2>
+                    <span class="text-gold font-bold text-lg">{cycle.planet}</span>
+                  </div>
+                  <p class="text-xs text-muted mb-2">🕐 {cycle.cycle} · Idades: {cycle.ages}</p>
+                  <p class="text-sm text-cream-dark leading-relaxed">{cycle.description}</p>
+                </div>
+              </div>
+            </div>
+            <!-- Fases do ciclo -->
+            <div class="divide-y divide-base-300">
+              {cycle.phases.map((phase: any) => (
+                <div class="p-4 flex gap-4">
+                  <div class="flex-shrink-0">
+                    <span class="inline-block bg-gold/10 text-gold text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">{phase.age}</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-cream text-sm mb-1">{phase.title}</p>
+                    <p class="text-sm text-cream-dark leading-relaxed">{phase.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Integração -->
+    <section class="mt-10">
+      <h2 class="text-2xl font-serif font-bold text-cream mb-4">{content.integration.title}</h2>
+      <div class="bg-base-50 border border-base-300 rounded-xl p-6">
+        <p class="text-cream-dark leading-relaxed mb-6">{content.integration.text}</p>
+        <ul class="space-y-2">
+          {content.integration.tips.map((tip: string) => (
+            <li class="flex items-start gap-2 text-sm text-cream-dark">
+              <span class="text-gold mt-0.5 flex-shrink-0">→</span>
+              <span>{tip}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <div class="mt-10 p-6 bg-gold/5 rounded-xl border border-gold/20 text-center">
+      <p class="text-sm text-gold font-medium">{content.cta}</p>
+      <a href={localePath('/chart/natal', locale)} class="inline-block mt-3 px-6 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors">{content.ctaButton}</a>
+    </div>
+  </div>
+</BaseLayout>

@@ -7,6 +7,9 @@ export const learn = {
     { slug: 'signs', icon: '♈ ♉ ♊', title: 'Os 12 Signos', description: 'Elementos, modalidades e a energia única de cada signo zodiacal.' },
     { slug: 'houses', icon: '🏠', title: 'As 12 Casas', description: 'As áreas da vida — onde os planetas atuam no seu mapa.' },
     { slug: 'aspects', icon: '△ □ ☍', title: 'Os Aspectos', description: 'As conversas entre planetas — harmonia, tensão e potencial.' },
+    { slug: 'chiron', icon: '⚷', title: 'Quíron — O Curador Ferido', description: 'A ferida que se torna dom: entenda o papel de Quíron no seu mapa.' },
+    { slug: 'planetary-cycles', icon: '🔄', title: 'Ciclos Planetários', description: 'Retorno de Saturno, crise dos 40 e os grandes marcos da vida.' },
+    { slug: 'new-moon', icon: '🌑', title: 'A Lua Nova', description: 'Como usar as lunações para plantar intenções e iniciar ciclos.' },
   ],
   premiumCta: { icon: '📄', title: 'Relatórios Personalizados', description: 'Quer ir além? Nossos relatórios PDF trazem interpretação profunda do seu mapa.' },
   firstSteps: {

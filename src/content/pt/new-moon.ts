@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'A Lua Nova e Seus Significados',
+  intro: 'A Lua Nova ocorre quando o Sol e a Lua se encontram no mesmo grau do zodíaco, formando uma conjunção perfeita. É o momento de semente — o início de um novo ciclo de 28 dias. Na visão humanística, cada lua nova não "faz" nada por você: ela afina sua sintonia com o tema simbólico que a natureza oferece. É um portal para intenções conscientes, não uma força mágica externa.',
+  phases: {
+    title: 'O Ciclo Lunar Completo',
+    intro: 'Antes de focar na Lua Nova, é útil entender o ciclo completo. Cada fase tem uma qualidade psicológica distinta.',
+    list: [
+      { name: 'Lua Nova 🌑', degrees: '0° — Sol e Lua juntos', quality: 'Semente', description: 'Escuridão, potencial puro, início. Terreno fértil para novas intenções. A mente está mais receptiva ao novo.' },
+      { name: 'Lua Crescente Balsâmica 🌒', degrees: '45°', quality: 'Emergência', description: 'O impulso ganha forma. Energia cresce, ação começa. Hora de agir sobre as intenções plantadas.' },
+      { name: 'Quarto Crescente 🌓', degrees: '90°', quality: 'Desafio', description: 'Primeira tensão e obstáculo. O que foi plantado encontra resistência. Requer decisão e comprometimento.' },
+      { name: 'Lua Gibosa Crescente 🌔', degrees: '135°', quality: 'Refinamento', description: 'Trabalho de desenvolvimento. Ajustes e refinamentos. Foco intenso antes do pico.' },
+      { name: 'Lua Cheia 🌕', degrees: '180° — Sol oposto à Lua', quality: 'Culminação', description: 'Iluminação, plenitude, revelação. O que foi semeado na lua nova chega à consciência. Emoções à flor da pele.' },
+      { name: 'Lua Gibosa Minguante 🌖', degrees: '225°', quality: 'Colheita', description: 'Integração dos frutos. Gratidão e assimilação do que foi aprendido.' },
+      { name: 'Quarto Minguante 🌗', degrees: '270°', quality: 'Revisão', description: 'Liberação e correção de curso. O que não funciona mais é deixado para trás.' },
+      { name: 'Lua Balsâmica 🌘', degrees: '315°', quality: 'Descanso', description: 'Dissolução e preparação. Fase de introspection, repouso e entrega antes do próximo ciclo.' },
+    ],
+  },
+  signs: {
+    title: 'A Lua Nova em Cada Signo',
+    intro: 'O signo em que a Lua Nova ocorre define o tema do ciclo de 28 dias. Não é um horóscopo — é uma lente simbólica que ilumina uma dimensão específica da experiência humana.',
+    list: [
+      { sign: 'Áries ♈', theme: 'Início e Identidade', description: 'Tema: novo começo, coragem, autoafirmação. Pergunte-se: em que área preciso agir com mais iniciativa? Que versão nova de mim quer emergir?', color: 'vermelho' },
+      { sign: 'Touro ♉', theme: 'Valores e Recursos', description: 'Tema: prazer sensorial, sustentabilidade, valor próprio. O que realmente importa para mim? Como posso construir algo duradouro e sólido?', color: 'verde' },
+      { sign: 'Gêmeos ♊', theme: 'Comunicação e Aprendizado', description: 'Tema: mente, conexões, troca de ideias. Que conhecimento quero absorver? Como posso me comunicar com mais clareza?', color: 'amarelo' },
+      { sign: 'Câncer ♋', theme: 'Lar e Cuidado', description: 'Tema: raízes, família, segurança emocional. O que me nutre genuinamente? Como posso criar mais pertencimento?', color: 'prata' },
+      { sign: 'Leão ♌', theme: 'Criação e Expressão', description: 'Tema: autoexpressão, alegria, criatividade. Que parte de mim quer brilhar? Em que área posso agir com mais autenticidade e prazer?', color: 'dourado' },
+      { sign: 'Virgem ♍', theme: 'Saúde e Serviço', description: 'Tema: corpo, rotinas, melhoria contínua. O que na minha vida cotidiana precisa de atenção? Como posso servir melhor sem me perder?', color: 'bege' },
+      { sign: 'Libra ♎', theme: 'Relacionamentos e Equilíbrio', description: 'Tema: parcerias, harmonia, beleza. Que relacionamentos precisam de atenção? Estou dando e recebendo em equilíbrio?', color: 'rosê' },
+      { sign: 'Escorpião ♏', theme: 'Transformação e Profundidade', description: 'Tema: psicologia profunda, poder, regeneração. O que precisa morrer para algo novo nascer? Que sombra posso enfrentar com coragem?', color: 'bordô' },
+      { sign: 'Sagitário ♐', theme: 'Expansão e Sentido', description: 'Tema: fé, aventura, filosofia de vida. O que amplia minha visão de mundo? Que aventura ou aprendizado me chama?', color: 'roxo' },
+      { sign: 'Capricórnio ♑', theme: 'Metas e Estrutura', description: 'Tema: ambição, maturidade, legado. Que estrutura quero construir? Como posso assumir mais responsabilidade sobre meu caminho?', color: 'cinza' },
+      { sign: 'Aquário ♒', theme: 'Originalidade e Coletivo', description: 'Tema: comunidade, inovação, liberdade. Como posso contribuir para algo maior? Que parte de mim precisa de mais liberdade para ser original?', color: 'azul elétrico' },
+      { sign: 'Peixes ♓', theme: 'Dissolução e Espiritualidade', description: 'Tema: intuição, compaixão, arte, transcendência. Que ilusão posso soltar? Como posso me conectar com o que é maior que meu ego?', color: 'turquesa' },
+    ],
+  },
+  intentions: {
+    title: 'Como Usar a Lua Nova para Intenções',
+    intro: 'Plantar intenções na Lua Nova é uma prática de foco consciente — você usa o símbolo do ciclo como espelho para se perguntar: o que quero cultivar nos próximos 28 dias?',
+    steps: [
+      { step: '1. Prepare o espaço', text: 'Nas 48 horas em torno da Lua Nova (de preferência após a Lua Nova exata), reserve um momento de silêncio. Não precisa ser ritual elaborado — pode ser 10 minutos com um diário.' },
+      { step: '2. Consulte o signo da Lua Nova', text: 'Identifique em qual signo a Lua Nova está ocorrendo. Esse é o tema do ciclo. Se é Câncer, o foco é lar, família, nutrição emocional.' },
+      { step: '3. Formule intenções como desejos, não metas', text: 'A diferença é sutil mas importante. Meta: "Preciso ganhar X reais". Intenção: "Eu desejo encontrar formas de abundância que se alinhem com minha alegria genuína." Intenções são direcionais, não prescritivas.' },
+      { step: '4. Seja específico sobre o que importa', text: 'Melhor 2-3 intenções claras do que 10 vagas. Cada intenção deve ressoar genuinamente — não o que você "deveria" querer.' },
+      { step: '5. Solte e confie', text: 'Plantar intenção não é programar o universo. É alinhar seu foco interno com o tema que o momento oferece. Plante e continue vivendo.' },
+      { step: '6. Revise na Lua Cheia', text: 'A Lua Cheia, 14 dias depois, é o momento de ver o que foi iluminado. O que chegou à consciência? O que precisa ser integrado ou liberado?' },
+    ],
+    important: {
+      title: 'Uma nota importante',
+      text: 'A Lua Nova não tem poder mágico sobre sua vida. Ela funciona como um ancorante simbólico: ao decidir intencionalmente focar em algo durante 28 dias, você simplesmente presta mais atenção a isso — e a atenção é a ferramenta de transformação mais poderosa que existe.',
+    },
+  },
+  solarEclipses: {
+    title: 'Eclipses Solares — Luas Novas Amplificadas',
+    text: 'Quando uma Lua Nova ocorre perto dos nodos lunares, temos um Eclipse Solar. Os eclipses têm o mesmo arquétipo da Lua Nova — semente, intenção, novo começo — mas amplificado. Eclipses frequentemente trazem mudanças significativas, viradas de direção e revelações importantes. São portais de transformação mais intensa que as luas novas regulares.',
+  },
+  cta: 'Acompanhe as próximas Luas Novas no seu calendário',
+  ctaButton: 'Ver Fases Lunares →',
+};

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getTranslations, supportedLocales, type Locale } from '../../i18n';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../i18n';
 import { getContent } from '../../content';
 
 export function getStaticPaths() {
@@ -64,12 +64,12 @@ const learn = await getContent(locale, 'learn');
 
       <!-- CTA buttons -->
       <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-        <a href={`/${locale}/onboarding`} class="group relative px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.02] active:scale-[0.98]">
+        <a href={localePath('/onboarding', locale)} class="group relative px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.02] active:scale-[0.98]">
           {locale === 'pt' ? 'Começar Grátis' : 'Start Free'}
           <span class="ml-2">✦</span>
           <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
         </a>
-        <a href={`/${locale}/reports`} class="px-8 py-4 glass rounded-xl text-cream font-medium hover:border-gold/20 transition-all glow-hover">
+        <a href={localePath('/reports', locale)} class="px-8 py-4 glass rounded-xl text-cream font-medium hover:border-gold/20 transition-all glow-hover">
           {t.reports.title}
           <span class="ml-2 text-cream-dark">→</span>
         </a>
@@ -98,32 +98,32 @@ const learn = await getContent(locale, 'learn');
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href={`/${locale}/chart/natal`} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
+      <a href={localePath('/chart/natal', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">☉</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.natal}</h3>
         <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Mapa completo com interpretação' : 'Complete chart with interpretation'}</p>
       </a>
-      <a href={`/${locale}/chart/transits`} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
+      <a href={localePath('/chart/transits', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">↻</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.transits}</h3>
         <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Trânsitos do dia sobre seu mapa' : 'Daily transits over your chart'}</p>
       </a>
-      <a href={`/${locale}/chart/synastry`} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
+      <a href={localePath('/chart/synastry', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">♡</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.synastry}</h3>
         <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Compatibilidade entre dois mapas' : 'Compatibility between charts'}</p>
       </a>
-      <a href={`/${locale}/horoscope/daily`} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
+      <a href={localePath('/horoscope/daily', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">✦</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{locale === 'pt' ? 'Horóscopo Diário' : 'Daily Horoscope'}</h3>
         <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Personalizado pelo seu mapa' : 'Personalized from your chart'}</p>
       </a>
-      <a href={`/${locale}/tools/ephemeris`} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
+      <a href={localePath('/tools/ephemeris', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">📅</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.ephemeris}</h3>
         <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Posições planetárias por data' : 'Planetary positions by date'}</p>
       </a>
-      <a href={`/${locale}/reports`} class="group p-6 rounded-2xl border border-gold/20 bg-gold/[0.03] glow-hover transition-all">
+      <a href={localePath('/reports', locale)} class="group p-6 rounded-2xl border border-gold/20 bg-gold/[0.03] glow-hover transition-all">
         <div class="text-3xl mb-4">📄</div>
         <h3 class="font-semibold text-gold">{locale === 'pt' ? 'Relatórios Premium' : 'Premium Reports'}</h3>
         <p class="text-sm text-gold-muted mt-1">{locale === 'pt' ? 'PDF com 20-30 páginas de análise' : '20-30 page PDF analysis'}</p>

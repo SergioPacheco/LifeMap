@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
 import { getContent } from '../../../content';
 
 export function getStaticPaths() {
@@ -16,7 +16,7 @@ const content = await getContent(locale, 'houses');
 <BaseLayout title={content.title} locale={locale}>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
     <nav class="text-sm text-muted mb-6">
-      <a href={`/${locale}/learn`} class="hover:text-brand-600">{t.nav.learn}</a> → <span class="text-cream">{content.title}</span>
+      <a href={localePath('/learn', locale)} class="hover:text-brand-600">{t.nav.learn}</a> → <span class="text-cream">{content.title}</span>
     </nav>
     <h1 class="text-3xl font-serif font-bold text-cream mb-4">{content.title}</h1>
     <p class="text-muted mb-8 text-lg">{content.intro}</p>

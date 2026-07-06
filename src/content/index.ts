@@ -22,6 +22,9 @@ export async function getContent(locale: string, section: string): Promise<any> 
       aspects: () => import('./pt/aspects').then(m => m.aspects),
       learn: () => import('./pt/learn').then(m => m.learn),
       horoscope: () => import('./pt/horoscope').then(m => m.horoscope),
+      chiron: () => import('./pt/chiron').then(m => m.chiron),
+      planetaryCycles: () => import('./pt/planetary-cycles').then(m => m.planetaryCycles),
+      newMoon: () => import('./pt/new-moon').then(m => m.newMoon),
     },
     en: {
       planets: () => import('./en/planets').then(m => m.planets),
@@ -30,6 +33,9 @@ export async function getContent(locale: string, section: string): Promise<any> 
       aspects: () => import('./en/aspects').then(m => m.aspects),
       learn: () => import('./en/learn').then(m => m.learn),
       horoscope: () => import('./en/horoscope').then(m => m.horoscope),
+      chiron: () => import('./en/chiron').then(m => m.chiron),
+      planetaryCycles: () => import('./en/planetary-cycles').then(m => m.planetaryCycles),
+      newMoon: () => import('./en/new-moon').then(m => m.newMoon),
     },
     // Other languages fall back to English until translated
     es: { /* falls back */ },

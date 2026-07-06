@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'The New Moon and Its Meanings',
+  intro: 'The New Moon occurs when the Sun and Moon meet at the same degree of the zodiac, forming a perfect conjunction. It is the seed moment — the beginning of a new 28-day cycle. In the humanistic view, each new moon does not "do" anything for you: it tunes your frequency to the symbolic theme that nature offers. It is a portal for conscious intentions, not an external magical force.',
+  phases: {
+    title: 'The Complete Lunar Cycle',
+    intro: 'Before focusing on the New Moon, it is helpful to understand the full cycle. Each phase has a distinct psychological quality.',
+    list: [
+      { name: 'New Moon 🌑', degrees: '0° — Sun and Moon together', quality: 'Seed', description: 'Darkness, pure potential, beginning. Fertile ground for new intentions. The mind is most receptive to the new.' },
+      { name: 'Waxing Crescent 🌒', degrees: '45°', quality: 'Emergence', description: 'The impulse takes shape. Energy rises, action begins. Time to act on the planted intentions.' },
+      { name: 'First Quarter 🌓', degrees: '90°', quality: 'Challenge', description: 'First tension and obstacle. What was planted encounters resistance. Requires decision and commitment.' },
+      { name: 'Waxing Gibbous 🌔', degrees: '135°', quality: 'Refinement', description: 'Development work. Adjustments and refinements. Intense focus before the peak.' },
+      { name: 'Full Moon 🌕', degrees: '180° — Sun opposite Moon', quality: 'Culmination', description: 'Illumination, fullness, revelation. What was seeded at the new moon reaches consciousness. Emotions run high.' },
+      { name: 'Waning Gibbous 🌖', degrees: '225°', quality: 'Harvest', description: 'Integration of fruits. Gratitude and assimilation of what was learned.' },
+      { name: 'Last Quarter 🌗', degrees: '270°', quality: 'Revision', description: 'Release and course correction. What no longer works is left behind.' },
+      { name: 'Balsamic Moon 🌘', degrees: '315°', quality: 'Rest', description: 'Dissolution and preparation. Phase of introspection, rest and surrender before the next cycle.' },
+    ],
+  },
+  signs: {
+    title: 'The New Moon in Each Sign',
+    intro: 'The sign in which the New Moon occurs defines the theme of the 28-day cycle. It is not a horoscope — it is a symbolic lens that illuminates a specific dimension of human experience.',
+    list: [
+      { sign: 'Aries ♈', theme: 'Beginning and Identity', description: 'Theme: new beginnings, courage, self-assertion. Ask yourself: in what area do I need to act with more initiative? What new version of me wants to emerge?', color: 'red' },
+      { sign: 'Taurus ♉', theme: 'Values and Resources', description: 'Theme: sensory pleasure, sustainability, self-worth. What truly matters to me? How can I build something lasting and solid?', color: 'green' },
+      { sign: 'Gemini ♊', theme: 'Communication and Learning', description: 'Theme: mind, connections, exchange of ideas. What knowledge do I want to absorb? How can I communicate with more clarity?', color: 'yellow' },
+      { sign: 'Cancer ♋', theme: 'Home and Nurturing', description: 'Theme: roots, family, emotional security. What genuinely nourishes me? How can I create more belonging?', color: 'silver' },
+      { sign: 'Leo ♌', theme: 'Creation and Expression', description: 'Theme: self-expression, joy, creativity. What part of me wants to shine? In what area can I act with more authenticity and pleasure?', color: 'gold' },
+      { sign: 'Virgo ♍', theme: 'Health and Service', description: 'Theme: body, routines, continuous improvement. What in my daily life needs attention? How can I serve better without losing myself?', color: 'beige' },
+      { sign: 'Libra ♎', theme: 'Relationships and Balance', description: 'Theme: partnerships, harmony, beauty. What relationships need attention? Am I giving and receiving in balance?', color: 'rose' },
+      { sign: 'Scorpio ♏', theme: 'Transformation and Depth', description: 'Theme: deep psychology, power, regeneration. What needs to die for something new to be born? What shadow can I face with courage?', color: 'burgundy' },
+      { sign: 'Sagittarius ♐', theme: 'Expansion and Meaning', description: 'Theme: faith, adventure, philosophy of life. What expands my worldview? What adventure or learning is calling me?', color: 'purple' },
+      { sign: 'Capricorn ♑', theme: 'Goals and Structure', description: 'Theme: ambition, maturity, legacy. What structure do I want to build? How can I take more responsibility for my path?', color: 'gray' },
+      { sign: 'Aquarius ♒', theme: 'Originality and the Collective', description: 'Theme: community, innovation, freedom. How can I contribute to something greater? What part of me needs more freedom to be original?', color: 'electric blue' },
+      { sign: 'Pisces ♓', theme: 'Dissolution and Spirituality', description: 'Theme: intuition, compassion, art, transcendence. What illusion can I release? How can I connect with what is greater than my ego?', color: 'turquoise' },
+    ],
+  },
+  intentions: {
+    title: 'How to Use the New Moon for Intentions',
+    intro: 'Setting intentions at the New Moon is a practice of conscious focus — you use the symbol of the cycle as a mirror to ask yourself: what do I want to cultivate over the next 28 days?',
+    steps: [
+      { step: '1. Prepare the space', text: 'Within the 48 hours around the New Moon (preferably after the exact New Moon), set aside a moment of silence. It does not need to be an elaborate ritual — 10 minutes with a journal works perfectly.' },
+      { step: '2. Check the sign of the New Moon', text: 'Identify which sign the New Moon is occurring in. That is the theme of the cycle. If it is Cancer, the focus is home, family, emotional nurturing.' },
+      { step: '3. Formulate intentions as wishes, not goals', text: 'The difference is subtle but important. Goal: "I need to earn X amount." Intention: "I wish to find forms of abundance that align with my genuine joy." Intentions are directional, not prescriptive.' },
+      { step: '4. Be specific about what matters', text: 'Better 2-3 clear intentions than 10 vague ones. Each intention should genuinely resonate — not what you "should" want.' },
+      { step: '5. Release and trust', text: 'Setting intentions is not programming the universe. It is aligning your inner focus with the theme the moment offers. Plant and keep living.' },
+      { step: '6. Review at the Full Moon', text: 'The Full Moon, 14 days later, is the moment to see what was illuminated. What came to consciousness? What needs to be integrated or released?' },
+    ],
+    important: {
+      title: 'An important note',
+      text: "The New Moon has no magical power over your life. It works as a symbolic anchor: by intentionally deciding to focus on something for 28 days, you simply pay more attention to it — and attention is the most powerful transformation tool that exists.",
+    },
+  },
+  solarEclipses: {
+    title: 'Solar Eclipses — Amplified New Moons',
+    text: 'When a New Moon occurs near the lunar nodes, we have a Solar Eclipse. Eclipses carry the same archetype as the New Moon — seed, intention, new beginning — but amplified. Eclipses often bring significant changes, turning points and important revelations. They are portals of more intense transformation than regular new moons.',
+  },
+  cta: 'Track upcoming New Moons in your calendar',
+  ctaButton: 'See Moon Phases →',
+};

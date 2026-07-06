@@ -14,6 +14,7 @@
 import { getSignIndex } from './calculations';
 import { getAspectInterpretation, ASPECT_NATURE } from './aspect-interpretations';
 import { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE } from './outer-planets';
+import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from './chiron';
 import { getChartRuler, calculateElementBalance, calculateModalityBalance, calculateDignities, getPlanetDignity } from './dignities';
 import type { NatalChart, Aspect } from './types';
 
@@ -326,6 +327,20 @@ function synthesizeMission(chart: NatalChart): ThemeSynthesis {
     sections.push({
       subtitle: `Saturno na Casa ${satHouse} — Construção de Legado`,
       text: `Saturno indica onde você veio construir maestria ao longo da vida. Na casa ${satHouse}, a disciplina aplicada aos temas dessa área gera resultados sólidos e duradouros.`,
+      importance: 'medium',
+    });
+  }
+
+  // Quíron (a ferida que cura — dom que emerge do aprofundamento)
+  const chironPos = chart.positions.chiron;
+  if (chironPos) {
+    const chironHouse = chart.planetHouses.chiron || 1;
+    const chironSign = getSignIndex(chironPos.longitude);
+    const houseText = CHIRON_IN_HOUSE[chironHouse - 1] || '';
+    const signText = CHIRON_IN_SIGN[chironSign] || '';
+    sections.push({
+      subtitle: `⚷ Quíron na Casa ${chironHouse} em ${SIGN_NAMES[chironSign]} — A Ferida que Cura`,
+      text: `${houseText} ${signText}`,
       importance: 'medium',
     });
   }

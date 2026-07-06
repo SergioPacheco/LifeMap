@@ -7,6 +7,9 @@ export const learn = {
     { slug: 'signs', icon: '♈ ♉ ♊', title: 'The 12 Signs', description: 'Elements, modalities and the unique energy of each zodiac sign.' },
     { slug: 'houses', icon: '🏠', title: 'The 12 Houses', description: 'Areas of life — where planets act in your chart.' },
     { slug: 'aspects', icon: '△ □ ☍', title: 'Aspects', description: 'Conversations between planets — harmony, tension and potential.' },
+    { slug: 'chiron', icon: '⚷', title: 'Chiron — The Wounded Healer', description: 'The wound that becomes a gift: understand the role of Chiron in your chart.' },
+    { slug: 'planetary-cycles', icon: '🔄', title: 'Planetary Cycles', description: 'Saturn Return, midlife crisis and the great milestones of life.' },
+    { slug: 'new-moon', icon: '🌑', title: 'The New Moon', description: 'How to use lunations to plant intentions and begin new cycles.' },
   ],
   premiumCta: { icon: '📄', title: 'Personalized Reports', description: 'Want to go deeper? Our PDF reports bring deep interpretation of your chart.' },
   firstSteps: {
