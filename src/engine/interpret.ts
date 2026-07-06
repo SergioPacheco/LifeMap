@@ -19,7 +19,7 @@ import type { InterpLocale } from './interpretations/index';
 // Os demais arrays permanecem aqui até nova fase de i18n.
 // ============================================================
 
-const VENUS_IN_HOUSE: string[] = [
+export const VENUS_IN_HOUSE: string[] = [
   /* Casa 1 */ 'Você irradia charme naturalmente — há uma presença agradável e harmoniosa que atrai as pessoas antes mesmo de você falar. Ternura, emotividade intensa e sensibilidade são sua marca. Ganhos e bem-estar podem vir através de atividades ligadas à arte, moda, perfumes e estética. Quando você entra num ambiente, algo suaviza. O desafio é não se apoiar exclusivamente na beleza ou no agrado como forma de existir no mundo.',
   /* Casa 2 */ 'Amor por conforto material e coisas belas — e isso não é vaidade, é inteligência sensorial. Você tem um olho natural para qualidade e valor duradouro. Facilidade de ganhos através da pessoa amada ou de atividades que envolvem estética e prazer. Pode construir uma vida em comum plena de graça e abundância. O desafio é não confundir amor com segurança financeira, nem usar bens como substituto de afeto.',
   /* Casa 3 */ 'Comunicação sedutora e agradável — suas palavras têm um charme que desarma. Harmonia nas relações com irmãos e vizinhos. A amizade é um sentimento do qual você não pode prescindir — precisa de conexões intelectuais que também sejam afetivas. Amor pelas artes, pela palavra bonita, pela conversa que alimenta a alma. O desafio é não confundir charme com profundidade.',
@@ -34,7 +34,7 @@ const VENUS_IN_HOUSE: string[] = [
   /* Casa 12 */ 'Amor secreto, espiritual ou platônico — há uma qualidade transcendente na forma como você ama que nem sempre encontra expressão no mundo concreto. Relações secretas são possíveis, assim como amores que se transformam profundamente com o tempo. Vênus aqui alivia desgostos pela arte e pela contemplação. O desafio é trazer esse amor para a superfície — o que é apenas interior permanece incompleto.',
 ];
 
-const MARS_IN_HOUSE: string[] = [
+export const MARS_IN_HOUSE: string[] = [
   /* Casa 1 */ 'Combatividade e entusiasmo definem sua presença — você irradia energia, assertividade e uma disposição para a ação que as pessoas sentem imediatamente. Aptidão natural para atividades que exigem liderança, iniciativa ou competição. Você vai atrás do que quer sem hesitar, o que é uma força imensa quando canalizada com consciência. O desafio é que sua agressividade pode surgir em múltiplas formas sem que você perceba — aprender a modular a intensidade é seu trabalho de maturidade.',
   /* Casa 2 */ 'Sua energia e determinação estão canalizadas para construir recursos — você luta ativamente pelo que é seu, com disposição para trabalhar duro pelo enriquecimento e pela segurança material. Provimentos podem vir de áreas que exigem força, coragem ou competição (indústria, esporte, empreendedorismo). O desafio é a tendência ao excesso de gastos — a mesma energia que conquista pode dissipar se não houver estratégia financeira.',
   /* Casa 3 */ 'Comunicação direta, assertiva e às vezes cortante — seu espírito é combativo, crítico e não faz concessões na hora de defender uma ideia. Pode haver atrito com irmãos ou no ambiente imediato. Mente rápida e intolerante com a mediocridade intelectual. Perigo de acidentes em deslocamentos rápidos. O desafio é transformar a espada das palavras em ferramenta — a mesma linguagem que fere pode mobilizar e inspirar.',
@@ -151,7 +151,7 @@ const ASCENDANT_TEXT: string[] = [
 // NODES INTERPRETATION (Eixo Nódulo Sul → Nódulo Norte)
 // ============================================================
 
-const NORTH_NODE_HOUSE: string[] = [
+export const NORTH_NODE_HOUSE: string[] = [
   /* Casa 1 */ 'Nodo Norte na Casa 1: Você já domina o "nós" (parceria, diplomacia) e agora veio aprender a ser independente, a se colocar em primeiro lugar sem culpa. Sua missão é desenvolver identidade própria.',
   /* Casa 2 */ 'Nodo Norte na Casa 2: Você já domina transformações e recursos dos outros. Agora veio aprender a construir sua própria segurança, seus próprios valores. Autossuficiência é o caminho.',
   /* Casa 3 */ 'Nodo Norte na Casa 3: Você já tem a sabedoria dos estudos profundos (casa 9) e agora veio aprender a comunicar com leveza, a ensinar de forma acessível, a ouvir mais do que pregar.',
@@ -170,7 +170,7 @@ const NORTH_NODE_HOUSE: string[] = [
 // NORTH NODE IN SIGN — A Jornada Evolutiva por Signo
 // ============================================================
 
-const NORTH_NODE_IN_SIGN: string[] = [
+export const NORTH_NODE_IN_SIGN: string[] = [
   /* Áries */     'Nodo Norte em Áries: sua jornada evolutiva é desenvolver autoliderança, coragem e o direito de agir por conta própria. Vem de vidas (ou padrões) de dependência, diplomacia excessiva e busca de aprovação. A libertação vem quando você age sem esperar consenso — quando assume o risco de ser impopular em nome da autenticidade.',
   /* Touro */     'Nodo Norte em Touro: sua jornada é construir segurança própria, confiar no corpo e no mundo material. Vem de padrões de caos, intensidade emocional e crises como modo de vida. A libertação vem quando você se permite o prazer simples, a estabilidade sem drama e a confiança de que o chão não vai sumir.',
   /* Gêmeos */    'Nodo Norte em Gêmeos: sua jornada é cultivar curiosidade, mente aberta e conexão com o entorno imediato. Vem de padrões dogmáticos, certezas absolutas e tendência a pregar em vez de ouvir. A libertação vem quando você se permite não saber — quando a pergunta se torna mais valiosa que a resposta.',

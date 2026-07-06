@@ -8,6 +8,7 @@ import { jsPDF } from 'jspdf';
 import type { NatalChart } from '../engine/types';
 import { getSignIndex, getDegreeInSign, formatDegMin } from '../engine/calculations';
 import { generateFullReport, type FullReport, type ThemeSynthesis } from '../engine/synthesis';
+import { renderWheel } from '../renderer/wheel';
 import { getInterpretations } from '../engine/interpretations/index';
 import { VENUS_IN_HOUSE, MARS_IN_HOUSE, NORTH_NODE_HOUSE, NORTH_NODE_IN_SIGN } from '../engine/interpret';
 import { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE } from '../engine/outer-planets';
@@ -78,7 +79,11 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
   // ======= PAGE 1: COVER =======
   renderCoverPage(doc, options, isEN);
 
-  // ======= PAGE 2: POSITIONS TABLE =======
+  // ======= PAGE 2: NATAL WHEEL CHART =======
+  doc.addPage();
+  renderWheelPage(doc, chart, isEN);
+
+  // ======= PAGE 3: POSITIONS TABLE =======
   doc.addPage();
   renderPositionsPage(doc, chart, planetNames, signNames, isEN);
 
@@ -269,6 +274,68 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
 // ============================================================
 // PAGE RENDERERS
 // ============================================================
+
+function renderWheelPage(doc: jsPDF, chart: NatalChart, isEN: boolean) {
+  const margin = 20;
+  let y = 25;
+
+  // Title
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? 'Your Natal Chart' : 'Seu Mapa Natal', 105, y, { align: 'center' });
+  y += 10;
+
+  // Generate the wheel SVG
+  const svgString = renderWheel(chart);
+
+  // jsPDF can embed SVG via svg2pdf.js or we can use addSvgAsImage
+  // Fallback: embed as SVG data URI image
+  try {
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    // Create a canvas to rasterize SVG for PDF embedding
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    canvas.width = 700;
+    canvas.height = 700;
+
+    // Synchronous approach using SVG data URI
+    const svgBase64 = btoa(unescape(encodeURIComponent(svgString)));
+    const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
+
+    // Add SVG as image (jsPDF supports SVG data URIs)
+    const chartSize = 150; // mm
+    const chartX = (210 - chartSize) / 2; // centered
+    doc.addImage(dataUri, 'SVG', chartX, y, chartSize, chartSize);
+    y += chartSize + 8;
+
+    URL.revokeObjectURL(svgUrl);
+  } catch (e) {
+    // Fallback: just show a placeholder text if SVG rendering fails
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...COLORS.textLight);
+    doc.text(isEN ? '(Chart wheel — view online for interactive version)' : '(Mapa astral — veja online a versão interativa)', 105, y + 60, { align: 'center' });
+    y += 130;
+  }
+
+  // Caption
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textLight);
+
+  const ascSign = SIGN_NAMES_PT[getSignIndex(chart.houses.ascendant)];
+  const sunSign = SIGN_NAMES_PT[getSignIndex(chart.positions.sun?.longitude || 0)];
+  const moonSign = SIGN_NAMES_PT[getSignIndex(chart.positions.moon?.longitude || 0)];
+
+  const caption = isEN
+    ? `Ascendant: ${ascSign} | Sun: ${sunSign} | Moon: ${moonSign} | System: Placidus`
+    : `Ascendente: ${ascSign} | Sol: ${sunSign} | Lua: ${moonSign} | Sistema: Plácido`;
+  doc.text(caption, 105, y, { align: 'center' });
+}
 
 function renderCoverPage(doc: jsPDF, options: PdfOptions, isEN: boolean) {
   const w = 210, h = 297;
