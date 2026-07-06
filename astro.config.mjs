@@ -2,9 +2,11 @@ import { defineConfig } from 'astro/config';
 import solidJs from '@astrojs/solid-js';
 import tailwind from '@astrojs/tailwind';
 
+const isProd = process.env.CI === 'true';
+
 export default defineConfig({
   site: 'https://SergioPacheco.github.io',
-  base: '/LifeMap',
+  base: isProd ? '/LifeMap' : '/',
   integrations: [
     solidJs(),
     tailwind(),

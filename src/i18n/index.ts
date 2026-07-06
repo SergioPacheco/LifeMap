@@ -59,18 +59,47 @@ export function t(key: string, locale: string): string {
 }
 
 /**
- * Get locale from URL path
+ * Get locale from URL path (handles base path automatically)
  */
 export function getLocaleFromPath(path: string): Locale {
-  const segments = path.split('/').filter(Boolean);
+  // Remove base path if present
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const cleanPath = base && path.startsWith(base) ? path.slice(base.length) : path;
+  const segments = cleanPath.split('/').filter(Boolean);
   const first = segments[0] as Locale;
   return supportedLocales.includes(first) ? first : defaultLocale;
 }
 
 /**
- * Build localized path
+ * Build localized path (works in both dev and production/GitHub Pages)
  */
 export function localePath(path: string, locale: Locale): string {
   const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
   return `${base}/${locale}${path.startsWith('/') ? path : '/' + path}`;
+}
+
+/**
+ * Switch language while staying on the same page.
+ * Extracts current route (without locale prefix) and rebuilds with new locale.
+ * Usage in language switcher: href={switchLocalePath('en')}
+ */
+export function switchLocalePath(newLocale: Locale): string {
+  if (typeof window === 'undefined') return localePath('/', newLocale);
+
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  let currentPath = window.location.pathname;
+
+  // Remove base prefix
+  if (base && currentPath.startsWith(base)) {
+    currentPath = currentPath.slice(base.length);
+  }
+
+  // Remove current locale prefix (e.g., /pt/chart/natal → /chart/natal)
+  const segments = currentPath.split('/').filter(Boolean);
+  if (segments.length > 0 && supportedLocales.includes(segments[0] as Locale)) {
+    segments.shift();
+  }
+
+  const route = segments.length > 0 ? '/' + segments.join('/') : '/';
+  return localePath(route, newLocale);
 }

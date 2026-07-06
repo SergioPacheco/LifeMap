@@ -1,5 +1,5 @@
 import { createSignal, For, Show } from 'solid-js';
-import { getTranslations, languages, localePath, type Locale } from '../../i18n';
+import { getTranslations, languages, localePath, switchLocalePath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -75,7 +75,7 @@ export default function Header(props: Props) {
                   <For each={Object.entries(languages)}>
                     {([code, lang]) => (
                       <a
-                        href={localePath('/', code as Locale)}
+                        href={switchLocalePath(code as Locale)}
                         class={`flex items-center gap-2 px-4 py-2 text-sm hover:bg-base-200 transition-colors ${
                           code === props.locale ? 'text-gold font-medium' : 'text-cream-dark'
                         }`}
