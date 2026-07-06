@@ -116,6 +116,11 @@ function pol(r: number, angleDeg: number): { x: number; y: number } {
 function drawSigns(asc: number): string {
   let s = '';
 
+  const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+  const SIGN_ELEMENTS = ['Fogo','Terra','Ar','Água','Fogo','Terra','Ar','Água','Fogo','Terra','Ar','Água'];
+  const SIGN_MODALITIES = ['Cardinal','Fixo','Mutável','Cardinal','Fixo','Mutável','Cardinal','Fixo','Mutável','Cardinal','Fixo','Mutável'];
+  const SIGN_RULERS = ['Marte','Vênus','Mercúrio','Lua','Sol','Mercúrio','Vênus','Plutão','Júpiter','Saturno','Urano','Netuno'];
+
   for (let i = 0; i < 12; i++) {
     const startAngle = i * 30 - asc;
 
@@ -124,13 +129,17 @@ function drawSigns(asc: number): string {
     const p2 = pol(R_OUTER, startAngle);
     s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${COL.line}" stroke-width="0.8"/>`;
 
-    // Symbol centered in segment
+    // Symbol centered in segment — with tooltip
     const midAngle = startAngle + 15;
     const midR = (R_OUTER + R_SIGN_IN) / 2;
     const p = pol(midR, midAngle);
     const color = SIGN_COLORS[i];
+    const tooltip = `${SIGN_NAMES[i]} — ${SIGN_ELEMENTS[i]} / ${SIGN_MODALITIES[i]} — Regente: ${SIGN_RULERS[i]}`;
 
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${tooltip}</title>`;
     s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="16" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
+    s += `</g>`;
 
     // 10° and 20° tick marks
     for (const t of [10, 20]) {
@@ -151,6 +160,22 @@ function drawSigns(asc: number): string {
 function drawHouses(cusps: number[], asc: number): string {
   let s = '';
 
+  const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+  const HOUSE_THEMES = [
+    'Identidade, aparência, novos começos',
+    'Dinheiro, valores, autoestima',
+    'Comunicação, irmãos, aprendizado',
+    'Lar, família, raízes',
+    'Criatividade, romance, filhos',
+    'Trabalho, saúde, rotina',
+    'Relacionamentos, parcerias',
+    'Transformação, sexualidade, crises',
+    'Expansão, viagens, filosofia',
+    'Carreira, vocação, reputação',
+    'Amigos, grupos, futuro',
+    'Espiritualidade, inconsciente, retiro',
+  ];
+
   for (let i = 0; i < 12; i++) {
     const angle = cusps[i] - asc;
     const isAxis = i === 0 || i === 3 || i === 6 || i === 9;
@@ -160,12 +185,19 @@ function drawHouses(cusps: number[], asc: number): string {
     const p2 = pol(R_HOUSE_OUT, angle);
     s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${isAxis ? COL.axis : COL.line}" stroke-width="${isAxis ? 1.5 : 0.6}"/>`;
 
-    // House number — centered in sector, near inner ring
+    // House number — centered in sector, near inner ring, with tooltip
     const nextAngle = cusps[(i + 1) % 12] - asc;
     const sectorMid = angle + ((((nextAngle - angle) % 360) + 360) % 360) * 0.5;
     const numP = pol(R_HOUSE_IN + 20, sectorMid);
 
+    const cuspSign = SIGN_NAMES[getSignIndex(cusps[i])];
+    const cuspDeg = Math.floor(getDegreeInSign(cusps[i]));
+    const houseTooltip = `Casa ${i + 1} — ${HOUSE_THEMES[i]}\nCúspide: ${cuspDeg}° ${cuspSign}`;
+
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${houseTooltip}</title>`;
     s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="10" fill="${COL.textDim}" font-family="sans-serif">${i + 1}</text>`;
+    s += `</g>`;
   }
 
   return s;
@@ -191,7 +223,24 @@ function drawAspects(aspects: Aspect[], positions: Positions, asc: number): stri
     const p2 = pol(R_HOUSE_IN - 3, lon2 - asc);
     const style = ASPECT_STYLES[asp.type] || { color: '#666', width: 0.8, dash: '' };
 
+    const ASPECT_NAMES: Record<string, string> = {
+      conjunction: 'Conjunção (0°)', sextile: 'Sextil (60°)', square: 'Quadratura (90°)',
+      trine: 'Trígono (120°)', opposition: 'Oposição (180°)',
+    };
+    const PLANET_LABELS: Record<string, string> = {
+      sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
+      jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
+      northNode: 'Nodo Norte', chiron: 'Quíron',
+    };
+    const aspName = ASPECT_NAMES[asp.type] || asp.type;
+    const p1Name = PLANET_LABELS[asp.planet1] || asp.planet1;
+    const p2Name = PLANET_LABELS[asp.planet2] || asp.planet2;
+    const aspTooltip = `${p1Name} ${aspName} ${p2Name} — orbe: ${asp.orb.toFixed(1)}°`;
+
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${aspTooltip}</title>`;
     s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}" opacity="0.7"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
+    s += `</g>`;
   }
 
   return s;
