@@ -70,6 +70,13 @@ export const PRODUCTS: Record<string, ProductInfo> = {
     currency: 'BRL',
     description: 'Compreenda o temperamento, necessidades e potenciais do seu filho.',
   },
+  'financial': {
+    id: 'financial',
+    price: 29.90,
+    currency: 'BRL',
+    name: 'Financial Map',
+    description: 'Casa 2, Casa 8, Venus, Jupiter, Saturn — your complete wealth and resource profile.',
+  },
   // Legacy IDs (for backward compatibility with ReportPreview)
   'natal-complete': {
     id: 'natal-complete',

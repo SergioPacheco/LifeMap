@@ -1740,6 +1740,8 @@ function getSinIntegration(sin: string, signIdx: number): string {
   return (integrations[sin] || [])[signIdx] || `Integrar este pecado começa com reconhecê-lo com humor e curiosidade, não com julgamento. A sombra que você nomeia perde poder sobre você.`;
 }
 
+export { generateFinancialPdf } from './financial-report';
+
 export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
@@ -1927,3 +1929,9 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   addFooters(doc, options.profileName);
   return doc.output('blob');
 }
+
+// ============================================================
+// SATURN RETURN REPORT
+// ============================================================
+export { generateSaturnReturnPdf } from './saturn-return-report';
+export { generateSpiritualPdf } from './spiritual-report';
