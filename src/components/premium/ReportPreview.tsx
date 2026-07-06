@@ -2,17 +2,18 @@ import { createSignal, onMount, Show } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
+import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 
 interface Props {
   locale: string;
-  reportType: 'natal' | 'relationship' | 'career' | 'annual';
+  reportType: 'natal' | 'relationship' | 'career' | 'annual' | 'psychological' | 'seven-sins';
 }
 
 const REPORT_TITLES: Record<string, Record<string, string>> = {
-  pt: { natal: 'Relatório Natal Completo', relationship: 'Relatório de Relacionamento', career: 'Carreira e Vocação', annual: 'Previsão Anual' },
-  en: { natal: 'Complete Natal Report', relationship: 'Relationship Report', career: 'Career & Vocation', annual: 'Annual Forecast' },
+  pt: { natal: 'Relatório Natal Completo', relationship: 'Relatório de Relacionamento', career: 'Carreira e Vocação', annual: 'Previsão Anual', psychological: 'Análise Psicológica Profunda', 'seven-sins': 'Os Sete Pecados' },
+  en: { natal: 'Complete Natal Report', relationship: 'Relationship Report', career: 'Career & Vocation', annual: 'Annual Forecast', psychological: 'Deep Psychological Analysis', 'seven-sins': 'The Seven Sins' },
 };
 
 const LABELS: Record<string, Record<string, string>> = {
@@ -65,14 +66,35 @@ export default function ReportPreview(props: Props) {
     setGenerating(true);
 
     try {
-      const blob = generateNatalPdf(natal()!, {
+      const opts = {
         locale: props.locale,
         isTryout: true,
         profileName: profile()!.name,
         birthDate: profile()!.date,
         birthTime: profile()!.time,
         birthCity: profile()!.city,
-      });
+      };
+
+      let blob: Blob;
+      switch (props.reportType) {
+        case 'annual':
+          blob = generateAnnualPdf(natal()!, opts);
+          break;
+        case 'relationship':
+          blob = generateRelationshipPdf(natal()!, opts);
+          break;
+        case 'psychological':
+          blob = generatePsychologicalPdf(natal()!, opts);
+          break;
+        case 'career':
+          blob = generateCareerPdf(natal()!, opts);
+          break;
+        case 'seven-sins':
+          blob = generateSevenSinsPdf(natal()!, opts);
+          break;
+        default:
+          blob = generateNatalPdf(natal()!, opts);
+      }
 
       const filename = `lifemap-${props.reportType}-sample-${profile()!.name.replace(/\s/g, '_')}.pdf`;
       downloadPdf(blob, filename);

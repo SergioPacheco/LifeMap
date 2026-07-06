@@ -3,6 +3,8 @@ import solidJs from '@astrojs/solid-js';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
+  site: 'https://SergioPacheco.github.io',
+  base: '/LifeMap',
   integrations: [
     solidJs(),
     tailwind(),
