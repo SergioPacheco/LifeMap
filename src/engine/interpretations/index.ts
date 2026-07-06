@@ -5,9 +5,18 @@
 
 import * as pt from './pt';
 import * as en from './en';
+import * as es from './es';
+import * as fr from './fr';
+import * as de from './de';
+import * as it from './it';
+import * as nl from './nl';
+import * as tr from './tr';
+import * as ru from './ru';
+import * as zh from './zh';
+import * as ja from './ja';
 
 // All available locale modules
-const MODULES: Record<string, typeof pt> = { pt, en };
+const MODULES: Record<string, typeof pt> = { pt, en, es, fr, de, it, nl, tr, ru, zh, ja };
 
 export type InterpLocale = 'pt' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'tr' | 'ru' | 'zh' | 'ja';
 
