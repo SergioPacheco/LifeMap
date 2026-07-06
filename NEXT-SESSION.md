@@ -5,15 +5,15 @@
 Traduzir os textos interpretativos dos relatórios PDF para os 7 idiomas pendentes.
 Cada sessão foca em **1 idioma** e traduz 168 parágrafos (14 arrays × 12 casas/signos).
 
-### Ordem de prioridade:
-1. ~~FR (Francês)~~ ✅ Completo
-2. ~~DE (Alemão)~~ ✅ Completo
-3. ~~IT (Italiano)~~ ✅ Completo
-4. RU (Russo) ← PRÓXIMO
-5. ZH (Chinês)
-6. JA (Japonês)
-7. NL (Holandês)
-8. TR (Turco)
+### ✅ TODAS AS TRADUÇÕES COMPLETAS!
+1. ~~FR (Francês)~~ ✅
+2. ~~DE (Alemão)~~ ✅
+3. ~~IT (Italiano)~~ ✅
+4. ~~RU (Russo)~~ ✅
+5. ~~ZH (Chinês)~~ ✅
+6. ~~JA (Japonês)~~ ✅
+7. ~~NL (Holandês)~~ ✅
+8. ~~TR (Turco)~~ ✅
 
 ### Comando para iniciar sessão:
 ```
@@ -59,8 +59,8 @@ Siga as instruções de TRANSLATION-SESSIONS.md.
 
 ### ⏳ Pendente: textos interpretativos narrativos
 - **PT, EN, ES:** 100% traduzidos (168 textos cada)
-- **FR, DE, IT:** 100% traduzidos (168 textos cada)
-- **RU, ZH, JA, NL, TR:** textos ainda em EN — precisam tradução nativa
+- **FR, DE, IT, RU, ZH, JA, NL, TR:** 100% traduzidos (168 textos cada)
+- **✅ TODOS OS 11 IDIOMAS COMPLETOS!**
 
 ---
 
