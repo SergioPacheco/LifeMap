@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
+import { getContent } from '../../../content';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+const learn = await getContent(locale, 'learn');
+const c = learn.firstSteps;
+---
+
+<BaseLayout title={c.title} locale={locale}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-muted mb-6">
+      <a href={localePath('/learn', locale)} class="hover:text-brand-600">{t.nav.learn}</a>
+      <span class="mx-2">→</span>
+      <span class="text-cream">{c.title}</span>
+    </nav>
+
+    <h1 class="text-3xl font-serif font-bold text-cream mb-2">{c.title}</h1>
+    <p class="text-muted mb-10 text-lg leading-relaxed">🌟 {learn.sections[0].description}</p>
+
+    <!-- 1. O que é um Mapa Natal -->
+    <section class="mb-10">
+      <h2 class="text-xl font-serif font-bold text-cream mb-3">{c.whatIsChart.title}</h2>
+      <p class="text-cream-dark leading-relaxed">{c.whatIsChart.text}</p>
+
+      <!-- Visual simples dos dados necessários -->
+      <div class="mt-5 grid grid-cols-3 gap-3 text-center">
+        {[
+          { icon: '📅', label: locale === 'pt' ? 'Data' : 'Date' },
+          { icon: '🕐', label: locale === 'pt' ? 'Hora' : 'Time' },
+          { icon: '📍', label: locale === 'pt' ? 'Local' : 'Place' },
+        ].map(item => (
+          <div class="bg-base-50 rounded-xl border border-base-300 p-4">
+            <div class="text-3xl mb-1">{item.icon}</div>
+            <p class="text-sm font-semibold text-cream">{item.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 2. Você não é só seu signo -->
+    <section class="mb-10">
+      <h2 class="text-xl font-serif font-bold text-cream mb-3">{c.notJustSun.title}</h2>
+      <p class="text-cream-dark leading-relaxed mb-5">{c.notJustSun.text}</p>
+
+      <!-- Big 3 -->
+      <div class="bg-base-50 rounded-xl border border-gold/20 p-6">
+        <p class="text-sm font-semibold text-gold mb-4">{c.notJustSun.big3.title}</p>
+        <div class="space-y-3">
+          {[
+            { symbol: '☉', text: c.notJustSun.big3.sun, color: 'text-yellow-400' },
+            { symbol: '☽', text: c.notJustSun.big3.moon, color: 'text-blue-300' },
+            { symbol: 'AC', text: c.notJustSun.big3.asc, color: 'text-purple-300' },
+          ].map(item => (
+            <div class="flex items-start gap-3">
+              <span class={`text-xl font-bold flex-shrink-0 w-8 text-center ${item.color}`}>{item.symbol}</span>
+              <p class="text-sm text-cream-dark leading-relaxed">{item.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Os três ingredientes -->
+    <section class="mb-10">
+      <h2 class="text-xl font-serif font-bold text-cream mb-3">{c.threeIngredients.title}</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+        {[
+          { emoji: '🪐', label: c.threeIngredients.planets.label, desc: c.threeIngredients.planets.desc, color: 'border-yellow-500/30' },
+          { emoji: '♈', label: c.threeIngredients.signs.label, desc: c.threeIngredients.signs.desc, color: 'border-green-500/30' },
+          { emoji: '🏠', label: c.threeIngredients.houses.label, desc: c.threeIngredients.houses.desc, color: 'border-blue-500/30' },
+        ].map(item => (
+          <div class={`bg-base-50 rounded-xl border ${item.color} p-5 text-center`}>
+            <div class="text-3xl mb-2">{item.emoji}</div>
+            <p class="text-xs font-bold text-gold uppercase tracking-wide mb-1">{item.label}</p>
+            <p class="text-sm text-muted">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Exemplo prático -->
+      <div class="bg-gold/5 border border-gold/20 rounded-xl p-4 text-sm text-cream-dark leading-relaxed">
+        💡 {c.threeIngredients.example}
+      </div>
+    </section>
+
+    <!-- 4. Determinismo -->
+    <section class="mb-10">
+      <h2 class="text-xl font-serif font-bold text-cream mb-3">{c.determinism.title}</h2>
+      <p class="text-cream-dark leading-relaxed">{c.determinism.text}</p>
+    </section>
+
+    <!-- Próximos passos -->
+    <section>
+      <h2 class="text-xl font-serif font-bold text-cream mb-5">{c.nextSteps.title}</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- CTA principal: Calcular mapa -->
+        <a
+          href={localePath('/chart/natal', locale)}
+          class="group col-span-full flex items-center gap-4 bg-gradient-to-r from-gold-dark/20 to-gold/10 border border-gold/30 hover:border-gold/60 rounded-xl p-5 transition-all"
+        >
+          <span class="text-4xl">🗺️</span>
+          <div>
+            <p class="font-semibold text-gold group-hover:text-gold-light">{c.nextSteps.chart}</p>
+            <p class="text-xs text-muted mt-0.5">{c.nextSteps.chartSub}</p>
+          </div>
+          <span class="ml-auto text-gold/60 group-hover:text-gold text-xl">→</span>
+        </a>
+
+        <!-- Links para outras páginas de aprendizado -->
+        {[
+          { href: localePath('/learn/planets', locale), icon: '🪐', label: c.nextSteps.planets },
+          { href: localePath('/learn/signs', locale),   icon: '♈',  label: c.nextSteps.signs },
+          { href: localePath('/learn/houses', locale),  icon: '🏠', label: c.nextSteps.houses },
+        ].map(link => (
+          <a
+            href={link.href}
+            class="group flex items-center gap-3 bg-base-50 border border-base-300 hover:border-gold/40 rounded-xl p-4 transition-all"
+          >
+            <span class="text-2xl">{link.icon}</span>
+            <span class="text-sm font-medium text-cream group-hover:text-gold transition-colors">{link.label}</span>
+            <span class="ml-auto text-muted group-hover:text-gold text-sm">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
