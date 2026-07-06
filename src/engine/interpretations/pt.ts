@@ -1,8 +1,17 @@
 // ============================================================
 // INTERPRETATIONS — Português (pt)
-// Textos originais extraídos de interpret.ts
+// Repositório completo de textos interpretativos
+// Fonte única de verdade para o relatório natal em PT
 // ============================================================
 
+// Re-export dos textos existentes (evita duplicação)
+import { VENUS_IN_HOUSE as _VENUS, MARS_IN_HOUSE as _MARS, NORTH_NODE_HOUSE as _NN_HOUSE, NORTH_NODE_IN_SIGN as _NN_SIGN } from '../interpret';
+import { JUPITER_IN_HOUSE as _JUPITER, SATURN_IN_HOUSE as _SATURN, URANUS_IN_HOUSE as _URANUS, NEPTUNE_IN_HOUSE as _NEPTUNE, PLUTO_IN_HOUSE as _PLUTO } from '../outer-planets';
+import { CHIRON_IN_HOUSE as _CHIRON, CHIRON_IN_SIGN as _CHIRON_SIGN } from '../chiron';
+
+// ============================================================
+// SOL NAS CASAS
+// ============================================================
 export const SUN_IN_HOUSE: string[] = [
   /* Casa 1  */ 'Seu brilho pessoal está na forma como você se apresenta ao mundo. Você veio para ser visto, para marcar presença. A casa 1 pede que você honre sua individualidade — quando você se permite ser quem é, sem máscaras, as coisas fluem. Seu desafio é não depender da aprovação alheia para brilhar.',
   /* Casa 2  */ 'Sua identidade está profundamente ligada àquilo que você constrói e valoriza. Você brilha quando desenvolve seus talentos e os transforma em algo concreto. Segurança material não é vaidade para você — é expressão do seu valor. O desafio é não se definir apenas pelo que possui.',
@@ -18,6 +27,9 @@ export const SUN_IN_HOUSE: string[] = [
   /* Casa 12 */ 'Sua identidade tem uma dimensão espiritual profunda. Você brilha nos bastidores, na solidão criativa, na conexão com algo maior. Pode ser difícil se mostrar ao mundo porque seu brilho é sutil, interior. O desafio é não se sabotar nem fugir da vida prática.',
 ];
 
+// ============================================================
+// LUA NAS CASAS
+// ============================================================
 export const MOON_IN_HOUSE: string[] = [
   /* Casa 1  */ 'Suas emoções estão escritas no seu rosto — você é transparente, as pessoas sentem o que você sente. Precisa de liberdade para ser emocional sem julgamento. Seu corpo reage diretamente ao seu estado emocional.',
   /* Casa 2  */ 'Você se sente seguro quando tem estabilidade financeira. Não é ganância — é que dinheiro representa segurança emocional para você. Pode ter altos e baixos financeiros que refletem seus ciclos emocionais.',
@@ -33,34 +45,108 @@ export const MOON_IN_HOUSE: string[] = [
   /* Casa 12 */ 'Suas emoções têm uma qualidade oceânica — profundas, às vezes confusas, com fronteiras difusas. Precisa de solidão para processar o que sente. Tem forte intuição e empatia, mas precisa aprender a se proteger emocionalmente.',
 ];
 
-export const MERCURY_IN_HOUSE: string[] = [
-  /* Casa 1  */ 'Sua mente é rápida e define a forma como o mundo te percebe. Você pensa em voz alta, processa em tempo real e as pessoas te identificam imediatamente como alguém inteligente e comunicativo. Seu temperamento nervoso e intuitivo te dá habilidade natural para o comércio de ideias. O desafio é desacelerar o suficiente para ouvir — sua mente avança tão rápido que pode atropelar as respostas que chegam devagar.',
-  /* Casa 2  */ 'Sua inteligência é sua maior ferramenta de geração de riqueza. Você ganha dinheiro através da mente — escrita, jornalismo, comércio, administração, ensino ou qualquer forma de trabalho intelectual. Há um faro natural para negócios e para identificar onde está o valor. O desafio é não reduzir toda a inteligência à utilidade financeira — sua mente precisa de liberdade para explorar, não apenas para lucrar.',
-  /* Casa 3  */ 'Posição natural de Mercúrio — sua mente está em casa aqui. Facilidade extraordinária para aprender, comunicar e se expressar. Você assimila informações rapidamente, transita entre assuntos com leveza e tem um espírito jovial que mantém o ambiente ao redor leve. Sucesso com escritos, ensino e qualquer forma de transmissão de conhecimento. O desafio é a profundidade: quando tudo vem fácil, pode faltar incentivo para mergulhar verdadeiramente fundo.',
-  /* Casa 4  */ 'Sua mente está enraizada na família, nas memórias e na herança intelectual dos seus pais. Você pode ser a pessoa que guarda as histórias da família, que trabalha de casa, ou cuja profissão foi inspirada pelo ambiente doméstico. Há uma vivacidade intelectual que te acompanha até o fim da vida. Capacidade notável de se adaptar a mudanças — cada recomeço é uma oportunidade de reescrever sua narrativa.',
-  /* Casa 5  */ 'Sua mente é criativa e lúdica — você expressa ideias de forma divertida e envolvente. Há talento natural para o ensino, especialmente com crianças ou jovens. Amor pelo jogo, por palavras cruzadas, enigmas e desafios mentais. Nos relacionamentos, racionaliza o amor — precisa entender intelectualmente antes de se entregar. Quando a mente se alinha com o coração, sua comunicação se torna irresistível.',
-  /* Casa 6  */ 'Sua mente é uma máquina de resolver problemas — analítica, precisa e incansável. Grande capacidade de trabalho intelectual, especialmente em funções de secretariado, administração, saúde ou qualquer coisa que exija organização metódica. Você se destaca pela eficiência e pelo engenho. O desafio é a tensão nervosa: a mesma mente que resolve tudo pode se sobrecarregar se não encontrar válvulas de descanso.',
-  /* Casa 7  */ 'Sua mente funciona melhor em diálogo — você precisa do outro para pensar, debater e processar ideias. Excelente para mediação, negociação e qualquer forma de parceria intelectual. Pode atrair cônjuges mercuriais (comunicativos, inquietos, versáteis). O sucesso literário ou profissional pode vir de colaborações. O desafio é não depender do espelho alheio para validar suas próprias ideias.',
-  /* Casa 8  */ 'Sua mente é investigativa — você vai naturalmente além da superfície, atraído por mistérios, psicologia profunda, ocultismo e tudo que está oculto. Percebe o que não é dito, lê nas entrelinhas com facilidade perturbadora. Pode haver interesse por temas de morte, transformação, heranças ou sexualidade. O desafio é usar esse poder de penetração para curar, não para manipular.',
-  /* Casa 9  */ 'Sua mente é filosófica e expansiva — orientada para o sentido da vida, não apenas para os fatos. Aptidão natural para línguas estrangeiras, estudos superiores, viagens que expandem a perspectiva. Há objetividade para aceitar críticas e ideias contrárias, desde que baseadas em seriedade intelectual. O desafio é não se perder em teorias abstratas sem aplicação — a sabedoria precisa ser vivida.',
-  /* Casa 10 */ 'Comunicação é sua ferramenta de carreira — você se destaca profissionalmente pela inteligência e articulação. Posição por excelência do intermediário, do comunicador público, do intelectual que conquista posição. Múltiplas atividades profissionais são possíveis ao longo da vida. O desafio é manter foco: a versatilidade que te permite transitar entre campos pode dispersar a energia se não houver uma direção clara.',
-  /* Casa 11 */ 'Sua mente é voltada para o futuro — projetos intelectuais, causas coletivas, difusão do pensamento. Você se comunica excepcionalmente bem em grupos e tem facilidade para fazer amizades baseadas em troca intelectual. Os amigos são variados e estimulantes. O desafio é não se perder na abstração dos ideais coletivos a ponto de negligenciar as conexões íntimas que também precisam de você.',
-  /* Casa 12 */ 'Sua mente é contemplativa e intuitiva — insights chegam através de sonhos, meditação e momentos de solidão. Há aptidão natural para trabalhar com o inconsciente: psicologia, escrita introspectiva, pesquisa sobre o oculto. Pode haver dificuldade em verbalizar o que sente, porque o que você percebe é mais amplo do que as palavras alcançam. O desafio é confiar na sua percepção sutil sem se perder na indefinição.',
+// ============================================================
+// MERCÚRIO NAS CASAS
+// ============================================================
+export { MERCURY_IN_HOUSE } from './pt-mercury';
+
+// ============================================================
+// VÊNUS, MARTE, EXTERIORES, QUÍRON, NODO (re-export dos fontes existentes)
+// ============================================================
+export const VENUS_IN_HOUSE = _VENUS;
+export const MARS_IN_HOUSE = _MARS;
+export const JUPITER_IN_HOUSE = _JUPITER;
+export const SATURN_IN_HOUSE = _SATURN;
+export const URANUS_IN_HOUSE = _URANUS;
+export const NEPTUNE_IN_HOUSE = _NEPTUNE;
+export const PLUTO_IN_HOUSE = _PLUTO;
+export const CHIRON_IN_HOUSE = _CHIRON;
+export const CHIRON_IN_SIGN = _CHIRON_SIGN;
+export const NORTH_NODE_HOUSE = _NN_HOUSE;
+export const NORTH_NODE_IN_SIGN = _NN_SIGN;
+
+// ============================================================
+// NOMES E LABELS
+// ============================================================
+export const SIGN_NAMES: string[] = [
+  'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
+  'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes',
 ];
 
-// Títulos de seção usados em generateNatalInterpretation
+export const PLANET_NAMES: Record<string, string> = {
+  sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
+  jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
+  northNode: 'Nodo Norte', chiron: 'Quíron', lilith: 'Lilith',
+};
+
+export const MONTHS: string[] = [
+  'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+  'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro',
+];
+
 export const SECTION_TITLES = {
   sun: (house: number, sign: string) => `☉ Sol na Casa ${house} em ${sign}`,
   moon: (house: number, sign: string) => `☽ Lua na Casa ${house} em ${sign}`,
   mercury: (house: number, sign: string) => `☿ Mercúrio na Casa ${house} em ${sign}`,
   venus: (house: number, sign: string) => `♀ Vênus na Casa ${house} em ${sign}`,
   mars: (house: number, sign: string) => `♂ Marte na Casa ${house} em ${sign}`,
+  jupiter: (house: number, sign: string) => `♃ Júpiter na Casa ${house} em ${sign}`,
+  saturn: (house: number, sign: string) => `♄ Saturno na Casa ${house} em ${sign}`,
+  uranus: (house: number, sign: string) => `♅ Urano na Casa ${house} em ${sign}`,
+  neptune: (house: number, sign: string) => `♆ Netuno na Casa ${house} em ${sign}`,
+  pluto: (house: number, sign: string) => `♇ Plutão na Casa ${house} em ${sign}`,
   northNode: (house: number, sign: string) => `☊ Nodo Norte na Casa ${house} em ${sign}`,
   chiron: (house: number, sign: string) => `⚷ Quíron na Casa ${house} em ${sign}`,
   ascendant: (sign: string) => `Ascendente em ${sign}`,
 };
 
-export const SIGN_NAMES: string[] = [
-  'Áries', 'Touro', 'Gêmeos', 'Câncer', 'Leão', 'Virgem',
-  'Libra', 'Escorpião', 'Sagitário', 'Capricórnio', 'Aquário', 'Peixes',
-];
+export const PLANET_SUBTITLES: Record<string, string> = {
+  sun: 'Sua essência solar — identidade, propósito e energia vital',
+  moon: 'Seu mundo emocional — necessidades, instintos e segurança interior',
+  mercury: 'Sua mente e comunicação — como você pensa, aprende e se expressa',
+  venus: 'Sua linguagem do amor — o que você atrai, valoriza e deseja nos relacionamentos',
+  mars: 'Seu impulso e ação — como você persegue objetivos, se impõe e deseja',
+  jupiter: 'Seu caminho de expansão — onde abundância, sabedoria e crescimento fluem naturalmente',
+  saturn: 'Sua zona de maestria — onde disciplina, estrutura e conquista duradoura são forjadas',
+  uranus: 'Sua revolução interior — onde você rompe padrões e expressa originalidade',
+  neptune: 'Seu portal espiritual — onde dissolve fronteiras e conecta com o transcendente',
+  pluto: 'Seu poder transformador — onde morte e renascimento operam no nível mais profundo',
+  northNode: 'Seu propósito evolutivo — a direção para a qual sua alma se move nesta vida',
+  chiron: 'Sua ferida sagrada — a dor que se torna dom de cura quando integrada',
+};
+
+// ============================================================
+// LABELS DO RELATÓRIO
+// ============================================================
+export const LABELS = {
+  reportTitle: 'Relatório Natal Completo',
+  reportSubtitle: 'Interpretação Profunda',
+  positions: 'Posições Planetárias',
+  houses: 'Cúspides das Casas',
+  overview: 'Visão Geral',
+  potentials: 'Seus 5 Maiores Potenciais',
+  challenges: 'Seus 5 Principais Desafios',
+  conclusion: 'Conclusão',
+  advice: 'Conselho Prático',
+  elements: 'Elementos e Modalidades',
+  dignities: 'Dignidades Essenciais',
+  aspects: 'Aspectos Principais',
+  themes: 'Síntese por Tema',
+  quote: '"O astro inclina, não obriga." — máxima da astrologia humanista',
+  sampleNote: 'Esta foi uma amostra gratuita!',
+  sampleFull: 'O relatório completo contém 20-30 páginas com interpretação detalhada de todos os planetas, casas, aspectos e previsões.',
+  buyNow: 'Versão completa:',
+  buyInstant: 'Compre agora e baixe instantaneamente — 100% no navegador.',
+  natalChart: 'Seu Mapa Natal',
+  retrograde: '(retrógrado)',
+};
+
+// ============================================================
+// CONECTORES NARRATIVOS
+// ============================================================
+export const TRANSITIONS = {
+  afterOverview: 'Essa base de identidade se manifesta de formas concretas quando olhamos os planetas em suas casas.',
+  afterPersonalPlanets: 'Os aspectos entre os planetas revelam como essas energias conversam entre si — onde há fluidez e onde há tensão.',
+  afterAspects: 'Dessas interações emergem padrões — temas centrais que definem sua experiência de vida.',
+  beforeConclusion: 'Reunindo tudo o que vimos, sua carta conta uma história coerente — e é hora de sintetizar.',
+};

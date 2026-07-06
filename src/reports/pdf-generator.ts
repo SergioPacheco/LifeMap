@@ -10,9 +10,6 @@ import { getSignIndex, getDegreeInSign, formatDegMin } from '../engine/calculati
 import { generateFullReport, type FullReport, type ThemeSynthesis } from '../engine/synthesis';
 import { renderWheel } from '../renderer/wheel';
 import { getInterpretations } from '../engine/interpretations/index';
-import { VENUS_IN_HOUSE, MARS_IN_HOUSE, NORTH_NODE_HOUSE, NORTH_NODE_IN_SIGN } from '../engine/interpret';
-import { JUPITER_IN_HOUSE, SATURN_IN_HOUSE, URANUS_IN_HOUSE, NEPTUNE_IN_HOUSE, PLUTO_IN_HOUSE } from '../engine/outer-planets';
-import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from '../engine/chiron';
 import { getAspectInterpretation, ASPECT_NATURE } from '../engine/aspect-interpretations';
 
 // ============================================================
@@ -73,8 +70,9 @@ export interface PdfOptions {
 export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const isEN = options.locale === 'en';
-  const planetNames = isEN ? PLANET_NAMES_EN : PLANET_NAMES_PT;
-  const signNames = isEN ? SIGN_NAMES_EN : SIGN_NAMES_PT;
+  const texts = getInterpretations(options.locale);
+  const planetNames = texts.PLANET_NAMES;
+  const signNames = texts.SIGN_NAMES;
 
   // ======= PAGE 1: COVER =======
   renderCoverPage(doc, options, isEN);
@@ -98,13 +96,16 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
   } else {
     // Full version: interpretation pages using synthesis engine
     const report = generateFullReport(chart);
-    const texts = getInterpretations(options.locale === 'en' ? 'en' : options.locale === 'es' ? 'es' : 'pt');
 
     // Page 4: Visão Geral Narrativa (overview do synthesis)
     doc.addPage();
     renderSynthesisOverviewPage(doc, report, isEN);
 
-    // Page 5: Sol — interpretação na casa
+    // Page 5: Top 5 Potenciais + Top 5 Desafios
+    doc.addPage();
+    renderTopPotentialsAndChallenges(doc, chart, report, texts, isEN);
+
+    // Page 6: Sol — interpretação na casa
     const sunPos = chart.positions.sun;
     if (sunPos) {
       const sunHouse = chart.planetHouses.sun || 1;
@@ -163,7 +164,7 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
         subtitleEN: 'Your love language — what you attract, value and desire in relationships',
         subtitlePT: 'Sua linguagem do amor — o que você atrai, valoriza e deseja nos relacionamentos',
         house: venusHouse, signIndex: venusSign,
-        text: VENUS_IN_HOUSE[venusHouse - 1] || '',
+        text: texts.VENUS_IN_HOUSE[venusHouse - 1] || '',
         isRetrograde: venusPos.isRetrograde,
       }, signNames, isEN);
     }
@@ -179,7 +180,7 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
         subtitleEN: 'Your drive and action — how you pursue goals, assert yourself and desire',
         subtitlePT: 'Seu impulso e ação — como você persegue objetivos, se impõe e deseja',
         house: marsHouse, signIndex: marsSign,
-        text: MARS_IN_HOUSE[marsHouse - 1] || '',
+        text: texts.MARS_IN_HOUSE[marsHouse - 1] || '',
         isRetrograde: marsPos.isRetrograde,
       }, signNames, isEN);
     }
@@ -195,7 +196,7 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
         subtitleEN: 'Your path of expansion — where abundance, wisdom and growth flow naturally',
         subtitlePT: 'Seu caminho de expansão — onde abundância, sabedoria e crescimento fluem naturalmente',
         house: jupHouse, signIndex: jupSign,
-        text: JUPITER_IN_HOUSE[jupHouse - 1] || '',
+        text: texts.JUPITER_IN_HOUSE[jupHouse - 1] || '',
         isRetrograde: jupPos.isRetrograde,
       }, signNames, isEN);
     }
@@ -211,14 +212,14 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
         subtitleEN: 'Your mastery zone — where discipline, structure and lasting achievement are forged',
         subtitlePT: 'Sua zona de maestria — onde disciplina, estrutura e conquista duradoura são forjadas',
         house: satHouse, signIndex: satSign,
-        text: SATURN_IN_HOUSE[satHouse - 1] || '',
+        text: texts.SATURN_IN_HOUSE[satHouse - 1] || '',
         isRetrograde: satPos.isRetrograde,
       }, signNames, isEN);
     }
 
     // Page 12: Urano / Netuno / Plutão — combinados
     doc.addPage();
-    renderOuterPlanetsDetailPage(doc, chart, signNames, isEN);
+    renderOuterPlanetsDetailPage(doc, chart, signNames, isEN, texts);
 
     // Page 13: Quíron — ferida e dom
     const chironPos = chart.positions.chiron;
@@ -226,7 +227,7 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
       const chironHouse = chart.planetHouses.chiron || 1;
       const chironSign = getSignIndex(chironPos.longitude);
       doc.addPage();
-      renderChironPage(doc, chironHouse, chironSign, signNames, isEN);
+      renderChironPage(doc, chironHouse, chironSign, signNames, isEN, texts);
     }
 
     // Page 14: Nodo Norte — propósito de vida
@@ -235,7 +236,7 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
       const nnHouse = chart.planetHouses.northNode || 1;
       const nnSign = getSignIndex(nnPos.longitude);
       doc.addPage();
-      renderNorthNodePage(doc, nnHouse, nnSign, signNames, isEN);
+      renderNorthNodePage(doc, nnHouse, nnSign, signNames, isEN, texts);
     }
 
     // Pages 15-16: Top 10 aspectos com interpretações
@@ -277,6 +278,8 @@ export function generateNatalPdf(chart: NatalChart, options: PdfOptions): Blob {
 
 function renderWheelPage(doc: jsPDF, chart: NatalChart, isEN: boolean) {
   const margin = 20;
+  const signNames = isEN ? SIGN_NAMES_EN : SIGN_NAMES_PT;
+  const planetNames = isEN ? PLANET_NAMES_EN : PLANET_NAMES_PT;
   let y = 25;
 
   // Title
@@ -327,9 +330,9 @@ function renderWheelPage(doc: jsPDF, chart: NatalChart, isEN: boolean) {
   doc.setFontSize(9);
   doc.setTextColor(...COLORS.textLight);
 
-  const ascSign = SIGN_NAMES_PT[getSignIndex(chart.houses.ascendant)];
-  const sunSign = SIGN_NAMES_PT[getSignIndex(chart.positions.sun?.longitude || 0)];
-  const moonSign = SIGN_NAMES_PT[getSignIndex(chart.positions.moon?.longitude || 0)];
+  const ascSign = signNames[getSignIndex(chart.houses.ascendant)];
+  const sunSign = signNames[getSignIndex(chart.positions.sun?.longitude || 0)];
+  const moonSign = signNames[getSignIndex(chart.positions.moon?.longitude || 0)];
 
   const caption = isEN
     ? `Ascendant: ${ascSign} | Sun: ${sunSign} | Moon: ${moonSign} | System: Placidus`
@@ -638,6 +641,135 @@ export function downloadPdf(blob: Blob, filename: string) {
 // SYNTHESIS PAGES (Full Report - Premium)
 // ============================================================
 
+// ============================================================
+// TOP 5 POTENTIALS + TOP 5 CHALLENGES
+// Scoring baseado em dignidades, aspectos harmônicos/tensos e planetas angulares
+// ============================================================
+
+function renderTopPotentialsAndChallenges(doc: jsPDF, chart: NatalChart, report: FullReport, texts: any, isEN: boolean) {
+  const margin = 20;
+  let y = 30;
+  const signNames = texts.SIGN_NAMES;
+  const planetNames = texts.PLANET_NAMES;
+
+  // --- Extrair potenciais (aspectos harmônicos + dignidades + planetas angulares) ---
+  const potentials: { text: string; score: number }[] = [];
+  const challenges: { text: string; score: number }[] = [];
+
+  // Aspectos harmônicos → potenciais | Aspectos tensos → desafios
+  if (chart.aspects) {
+    for (const asp of chart.aspects) {
+      const p1 = planetNames[asp.planet1] || asp.planet1;
+      const p2 = planetNames[asp.planet2] || asp.planet2;
+      const score = asp.exactness * 100;
+
+      if (asp.nature === 'harmonic') {
+        const txt = isEN
+          ? `${p1} ${asp.type} ${p2} — natural ease and talent in integrating these energies`
+          : `${p1} ${asp.type === 'trine' ? 'trígono' : 'sextil'} ${p2} — facilidade natural e talento na integração dessas energias`;
+        potentials.push({ text: txt, score });
+      } else if (asp.nature === 'tense') {
+        const txt = isEN
+          ? `${p1} ${asp.type} ${p2} — tension that demands growth and conscious effort`
+          : `${p1} ${asp.type === 'square' ? 'quadratura' : 'oposição'} ${p2} — tensão que exige crescimento e esforço consciente`;
+        challenges.push({ text: txt, score });
+      }
+    }
+  }
+
+  // Planetas angulares → potenciais
+  if (chart.angularPlanets) {
+    for (const p of chart.angularPlanets) {
+      const name = planetNames[p] || p;
+      const txt = isEN
+        ? `${name} angular — prominent energy that defines your public presence`
+        : `${name} angular — energia proeminente que define sua presença pública`;
+      potentials.push({ text: txt, score: 85 });
+    }
+  }
+
+  // Dignidades → potenciais; Debilidades → desafios
+  if (chart.dignities) {
+    for (const [planet, dignity] of Object.entries(chart.dignities)) {
+      const name = planetNames[planet] || planet;
+      if (dignity === 'domicile' || dignity === 'exalted') {
+        const txt = isEN
+          ? `${name} dignified (${dignity}) — operates with natural strength and clarity`
+          : `${name} dignificado (${dignity === 'domicile' ? 'domicílio' : 'exaltação'}) — opera com força e clareza natural`;
+        potentials.push({ text: txt, score: 80 });
+      } else if (dignity === 'detriment' || dignity === 'fall') {
+        const txt = isEN
+          ? `${name} debilitated (${dignity}) — requires extra work to express constructively`
+          : `${name} debilitado (${dignity === 'detriment' ? 'detrimento' : 'queda'}) — requer trabalho extra para se expressar construtivamente`;
+        challenges.push({ text: txt, score: 75 });
+      }
+    }
+  }
+
+  // Ordenar por score e pegar top 5
+  potentials.sort((a, b) => b.score - a.score);
+  challenges.sort((a, b) => b.score - a.score);
+  const top5P = potentials.slice(0, 5);
+  const top5C = challenges.slice(0, 5);
+
+  // --- Renderizar ---
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...COLORS.brand);
+  doc.text(isEN ? '✦ Your 5 Greatest Potentials' : '✦ Seus 5 Maiores Potenciais', margin, y);
+  y += 10;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+
+  for (let i = 0; i < top5P.length; i++) {
+    const item = top5P[i];
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(`${i + 1}.`, margin, y);
+    doc.setFont('helvetica', 'normal');
+    const lines = doc.splitTextToSize(item.text, 160);
+    doc.text(lines, margin + 8, y);
+    y += lines.length * 5 + 6;
+  }
+
+  y += 10;
+
+  // Desafios
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(180, 40, 40);
+  doc.text(isEN ? '⚡ Your 5 Main Challenges' : '⚡ Seus 5 Principais Desafios', margin, y);
+  y += 10;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.text);
+
+  for (let i = 0; i < top5C.length; i++) {
+    const item = top5C[i];
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.text(`${i + 1}.`, margin, y);
+    doc.setFont('helvetica', 'normal');
+    const lines = doc.splitTextToSize(item.text, 160);
+    doc.text(lines, margin + 8, y);
+    y += lines.length * 5 + 6;
+  }
+
+  // Nota final
+  y += 10;
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(9);
+  doc.setTextColor(...COLORS.textLight);
+  const note = isEN
+    ? 'Potentials show where energy flows naturally. Challenges show where conscious work produces the deepest growth.'
+    : 'Potenciais indicam onde a energia flui naturalmente. Desafios indicam onde o trabalho consciente produz o crescimento mais profundo.';
+  const noteLines = doc.splitTextToSize(note, 170);
+  doc.text(noteLines, margin, y);
+}
+
 function renderSynthesisOverviewPage(doc: jsPDF, report: FullReport, isEN: boolean) {
   const margin = 20;
   let y = 30;
@@ -933,7 +1065,7 @@ function renderPlanetPage(doc: jsPDF, data: PlanetPageData, signNames: string[],
 // OUTER PLANETS DETAIL PAGE (Uranus / Neptune / Pluto)
 // ============================================================
 
-function renderOuterPlanetsDetailPage(doc: jsPDF, chart: NatalChart, signNames: string[], isEN: boolean) {
+function renderOuterPlanetsDetailPage(doc: jsPDF, chart: NatalChart, signNames: string[], isEN: boolean, texts: any) {
   const margin = 20;
   let y = 30;
 
@@ -959,19 +1091,19 @@ function renderOuterPlanetsDetailPage(doc: jsPDF, chart: NatalChart, signNames: 
   const outerPlanets = [
     {
       id: 'uranus', symbol: '♅', nameEN: 'Uranus', namePT: 'Urano',
-      array: URANUS_IN_HOUSE,
+      array: texts.URANUS_IN_HOUSE,
       themeEN: 'Innovation, liberation and radical change',
       themePT: 'Inovação, libertação e mudança radical',
     },
     {
       id: 'neptune', symbol: '♆', nameEN: 'Neptune', namePT: 'Netuno',
-      array: NEPTUNE_IN_HOUSE,
+      array: texts.NEPTUNE_IN_HOUSE,
       themeEN: 'Intuition, spirituality and dissolution of boundaries',
       themePT: 'Intuição, espiritualidade e dissolução de limites',
     },
     {
       id: 'pluto', symbol: '♇', nameEN: 'Pluto', namePT: 'Plutão',
-      array: PLUTO_IN_HOUSE,
+      array: texts.PLUTO_IN_HOUSE,
       themeEN: 'Deep transformation, power and regeneration',
       themePT: 'Transformação profunda, poder e regeneração',
     },
@@ -1031,7 +1163,7 @@ function renderOuterPlanetsDetailPage(doc: jsPDF, chart: NatalChart, signNames: 
 // CHIRON PAGE — A Ferida que Cura
 // ============================================================
 
-function renderChironPage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean) {
+function renderChironPage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean, texts: any) {
   const margin = 20;
   let y = 30;
 
@@ -1066,7 +1198,7 @@ function renderChironPage(doc: jsPDF, house: number, signIndex: number, signName
   y += 10;
 
   // House text
-  const houseText = CHIRON_IN_HOUSE[house - 1] || '';
+  const houseText = texts.CHIRON_IN_HOUSE[house - 1] || '';
   if (houseText) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
@@ -1087,7 +1219,7 @@ function renderChironPage(doc: jsPDF, house: number, signIndex: number, signName
   }
 
   // Sign text
-  const signText = CHIRON_IN_SIGN[signIndex] || '';
+  const signText = texts.CHIRON_IN_SIGN[signIndex] || '';
   if (signText) {
     if (y > 240) { doc.addPage(); y = 30; }
 
@@ -1116,7 +1248,7 @@ function renderChironPage(doc: jsPDF, house: number, signIndex: number, signName
 // NORTH NODE PAGE — Propósito de Vida
 // ============================================================
 
-function renderNorthNodePage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean) {
+function renderNorthNodePage(doc: jsPDF, house: number, signIndex: number, signNames: string[], isEN: boolean, texts: any) {
   const margin = 20;
   let y = 30;
 
@@ -1151,7 +1283,7 @@ function renderNorthNodePage(doc: jsPDF, house: number, signIndex: number, signN
   y += 10;
 
   // House text
-  const houseText = NORTH_NODE_HOUSE[house - 1] || '';
+  const houseText = texts.NORTH_NODE_HOUSE[house - 1] || '';
   if (houseText) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
@@ -1172,7 +1304,7 @@ function renderNorthNodePage(doc: jsPDF, house: number, signIndex: number, signN
   }
 
   // Sign text
-  const signText = NORTH_NODE_IN_SIGN[signIndex] || '';
+  const signText = texts.NORTH_NODE_IN_SIGN[signIndex] || '';
   if (signText) {
     if (y > 240) { doc.addPage(); y = 30; }
 
