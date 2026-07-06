@@ -6,10 +6,10 @@ Traduzir os textos interpretativos dos relatórios PDF para os 7 idiomas pendent
 Cada sessão foca em **1 idioma** e traduz 168 parágrafos (14 arrays × 12 casas/signos).
 
 ### Ordem de prioridade:
-1. FR (Francês)
-2. DE (Alemão) 
-3. IT (Italiano)
-4. RU (Russo)
+1. ~~FR (Francês)~~ ✅ Completo
+2. ~~DE (Alemão)~~ ✅ Completo
+3. ~~IT (Italiano)~~ ✅ Completo
+4. RU (Russo) ← PRÓXIMO
 5. ZH (Chinês)
 6. JA (Japonês)
 7. NL (Holandês)
@@ -17,9 +17,9 @@ Cada sessão foca em **1 idioma** e traduz 168 parágrafos (14 arrays × 12 casa
 
 ### Comando para iniciar sessão:
 ```
-Traduza os textos interpretativos de src/engine/interpretations/en.ts para FRANCÊS.
-Reescreva src/engine/interpretations/fr.ts com todos os 14 arrays (168 textos) 
-traduzidos para francês nativo. Mantenha os metadados (SIGN_NAMES, LABELS etc) como estão.
+Traduza os textos interpretativos de src/engine/interpretations/en.ts para RUSSO.
+Reescreva src/engine/interpretations/ru.ts com todos os 14 arrays (168 textos) 
+traduzidos para russo nativo. Mantenha os metadados (SIGN_NAMES, LABELS etc) como estão.
 Siga as instruções de TRANSLATION-SESSIONS.md.
 ```
 
@@ -59,7 +59,8 @@ Siga as instruções de TRANSLATION-SESSIONS.md.
 
 ### ⏳ Pendente: textos interpretativos narrativos
 - **PT, EN, ES:** 100% traduzidos (168 textos cada)
-- **FR, DE, IT, NL, TR, RU, ZH, JA:** textos ainda em EN — precisam tradução nativa
+- **FR, DE, IT:** 100% traduzidos (168 textos cada)
+- **RU, ZH, JA, NL, TR:** textos ainda em EN — precisam tradução nativa
 
 ---
 
@@ -80,4 +81,4 @@ Siga as instruções de TRANSLATION-SESSIONS.md.
 
 ---
 
-*Atualizado: 2026-07-06 09:46*
+*Atualizado: 2026-07-06 11:10*
