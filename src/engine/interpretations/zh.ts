@@ -1,272 +1,376 @@
 // ============================================================
-// INTERPRETATIONS — ZH
-// Complete interpretive texts — no PT imports/fallback
+// INTERPRETATIONS — 中文 (zh)
+// 完整中文解读文本 — 无PT/EN导入
 // ============================================================
 
 // ============================================================
-// INTERPRETATIONS — English (en)
-// ============================================================
-
-// ============================================================
-// SUN IN HOUSE
+// 太阳在宫位
 // ============================================================
 export const SUN_IN_HOUSE: string[] = [
-  /* House 1  */ 'Your personal radiance lives in the way you present yourself to the world. You came here to be seen, to make your presence felt. The 1st house asks you to honor your individuality — when you allow yourself to be who you truly are, without masks, things flow. Your challenge is learning not to depend on others\' approval in order to shine.',
-  /* House 2  */ 'Your identity is deeply tied to what you build and what you value. You shine when you develop your talents and transform them into something tangible. Material security is not vanity for you — it is an expression of your worth. The challenge is not defining yourself solely by what you possess.',
-  /* House 3  */ 'You were born to communicate, to teach, to connect ideas. Your radiance lives in lightness, curiosity, and the ability to translate complex things into something accessible. If you work somewhere that does not allow you to express your opinion or create, something will always feel missing. When you honor this communicative quality, abundance follows.',
-  /* House 4  */ 'Your identity is rooted in family, home, and your emotional foundations. You shine when you create a safe space — for yourself and for others. You may be the person who emotionally sustains a family or community. The challenge is not losing yourself in others\' needs to the point of forgetting your own.',
-  /* House 5  */ 'You were born to create, to express, to shine! The 5th house is the Sun\'s natural stage. Creativity, romance, children, play — all of this energizes you. When you allow yourself to be playful and authentic, you radiate. The challenge is not seeking constant validation or confusing ego with essence.',
-  /* House 6  */ 'Your identity expresses itself through service, routine, and constant refinement. You shine when you are useful, when you solve problems, when you attend to the details no one else sees. Health and work are sacred areas for you. The challenge is not erasing yourself in the name of productivity.',
-  /* House 7  */ 'Your radiance reveals itself in relationships. You discover yourself through others — partners, associates, agreements. This does not mean dependency: it means that the mirror of relationship helps you see who you are. The challenge is not losing yourself in the other or projecting your identity onto partners.',
-  /* House 8  */ 'Your identity moves through deep transformations across your lifetime. You shine in moments of crisis, when everything seems to be crumbling and you rise again. Themes of sexuality, power, and shared resources are central. The challenge is not clinging to control or fearing vulnerability.',
-  /* House 9  */ 'You were born to expand horizons — deep study, journeys that shift your perspective, philosophies of life. Your radiance lives in being an eternal student and, eventually, a teacher who shares wisdom. The challenge is not getting lost in theories without practical application.',
-  /* House 10 */ 'Your identity is strongly tied to your career and public image. You came here to build something in the world, to be recognized for what you accomplish with mastery. This is not vanity — it is purpose. The challenge is balancing personal life with the pressure of external achievement.',
-  /* House 11 */ 'Your radiance lives in collective causes, friendships, and projects aimed at the future. You are energized by groups, by working toward something greater than yourself. Innovation and originality define you. The challenge is not becoming emotionally distant from the people closest to you.',
-  /* House 12 */ 'Your identity carries a deep spiritual dimension. You shine behind the scenes, in creative solitude, in connection with something greater. It can be difficult to show yourself to the world because your radiance is subtle, interior. The challenge is not sabotaging yourself or fleeing practical life.',
+  /* House 1  */ '你的个人光芒体现在你向世界展示自己的方式中。你来到这里是为了被看见，让你的存在被感知。第一宫邀请你尊重自己的个体性——当你允许自己真实地做自己，不戴面具，一切自然流动。你的挑战是学会不依赖他人的认可来发光。',
+  /* House 2  */ '你的身份与你所建造的和你所珍视的深深相连。当你发展才能并将其转化为有形之物时，你便闪耀。物质安全对你来说不是虚荣——它是你价值的表达。挑战在于不要仅仅通过拥有什么来定义自己。',
+  /* House 3  */ '你天生就是为了沟通、教导、连接思想。你的光芒存在于轻盈、好奇和将复杂事物变得通俗易懂的能力中。如果你工作的地方不允许你表达意见或创造，总会感觉缺少什么。当你尊重这种沟通品质时，丰盛随之而来。',
+  /* House 4  */ '你的身份扎根于家庭、家园和你的情感根基。当你创造一个安全的空间——为自己也为他人——你便闪耀。你可能是那个在情感上支撑家庭或社区的人。挑战是不要迷失在他人的需求中而忘记自己的。',
+  /* House 5  */ '你天生就是为了创造、表达、闪耀！第五宫是太阳的天然舞台。创造力、浪漫、孩子、游戏——这一切都给你充能。当你允许自己玩耍和真实，你便散发光芒。挑战是不要寻求持续的认可，也不要混淆自我与本质。',
+  /* House 6  */ '你的身份通过服务、日常和不断完善来表达。当你有用、解决问题、关注别人看不到的细节时，你便闪耀。健康和工作对你来说是神圣的领域。挑战是不要以生产力的名义抹杀自己。',
+  /* House 7  */ '你的光芒在关系中显现。你通过他人——伴侣、合伙人、协议——来发现自己。这不意味着依赖：它意味着关系的镜子帮助你看到你是谁。挑战是不要迷失在对方中或将你的身份投射到伴侣身上。',
+  /* House 8  */ '你的身份在一生中经历深刻的转变。你在危机时刻闪耀，当一切似乎崩塌而你再次站起来的时候。性、权力和共享资源的主题是核心。挑战是不要执着于控制或恐惧脆弱。',
+  /* House 9  */ '你天生就是为了拓展视野——深入学习、改变视角的旅行、生命哲学。你的光芒在于做一个永恒的学生，最终成为分享智慧的老师。挑战是不要迷失在没有实际应用的理论中。',
+  /* House 10 */ '你的身份与事业和公众形象紧密相连。你来到这里是为了在世界上建造些什么，因你以精通完成的事而被认可。这不是虚荣——这是使命。挑战是平衡个人生活与外在成就的压力。',
+  /* House 11 */ '你的光芒活在集体事业、友谊和面向未来的项目中。你被群体激发，为比自己更大的事物而工作。创新和原创定义着你。挑战是不要变得与最亲近的人情感疏远。',
+  /* House 12 */ '你的身份承载着深刻的灵性维度。你在幕后闪耀，在创造性的独处中，在与更大事物的连接中。向世界展示自己可能很困难，因为你的光芒是微妙的、内在的。挑战是不要自我破坏或逃避实际生活。',
 ];
 
 // ============================================================
-// MOON IN HOUSE
+// 月亮在宫位
 // ============================================================
 export const MOON_IN_HOUSE: string[] = [
-  /* House 1  */ 'Your emotions are written on your face — you are transparent, people feel what you feel. You need freedom to be emotional without judgment. Your body responds directly to your emotional state.',
-  /* House 2  */ 'You feel secure when you have financial stability. This is not greed — money represents emotional safety for you. You may experience financial highs and lows that mirror your emotional cycles.',
-  /* House 3  */ 'You process emotions by talking, writing, and engaging the mind. You need intellectual stimulation to feel well. The environment of siblings and neighborhood left an imprint on your emotions in childhood.',
-  /* House 4  */ 'This is the Moon\'s most natural placement. Family and home are sacred to you. You need a physical space that truly feels like yours in order to recharge. The emotions of your mother (or maternal figure) profoundly shaped who you are.',
-  /* House 5  */ 'You nourish yourself emotionally when you play, create something, or fall in love. You need creative expression as an emotional outlet. With children, the connection is intense and deeply emotional.',
-  /* House 6  */ 'Your physical health is directly affected by your emotional state. When something is emotionally off, your body signals it. You need a routine that includes self-care in order to feel centered.',
-  /* House 7  */ 'You feel emotionally complete in relationships. You need partnership to feel secure — and you attract partners who mirror your emotional landscape (including its shadows). The challenge is not outsourcing your emotional wellbeing.',
-  /* House 8  */ 'Your emotions are intense, deep, and sometimes overwhelming. You feel everything with great force and can easily sense what others are hiding. Opening up may be difficult, but when you trust someone, you give them your whole soul.',
-  /* House 9  */ 'You nourish yourself emotionally when you are learning, traveling, or exploring new perspectives. You need space and freedom to grow. You may struggle with routine and conventional emotional closeness — you prefer philosophical depth.',
-  /* House 10 */ 'Your emotions are tied to career and public recognition. You may feel you need to "be someone" to deserve love. Your relationship with your mother may have been shaped by performance expectations.',
-  /* House 11 */ 'You nourish yourself in friendships and collective causes. You need to belong to a group that shares your ideals. One-on-one intimacy can be challenging; you tend to prefer broader, community-based connections.',
-  /* House 12 */ 'Your emotions have an oceanic quality — deep, sometimes diffuse, with fluid boundaries. You need solitude to process what you feel. You carry strong intuition and empathy, but you must learn to protect yourself emotionally.',
+  /* House 1  */ '你的情绪写在脸上——你是透明的，人们能感受到你的感受。你需要自由地表达情感而不被评判。你的身体直接回应你的情绪状态。',
+  /* House 2  */ '当你有财务稳定时，你感到安全。这不是贪婪——金钱对你来说代表情感安全。你可能经历反映你情绪周期的财务起伏。',
+  /* House 3  */ '你通过说话、写作和思考来处理情绪。你需要智力刺激才能感觉良好。兄弟姐妹和邻里的环境在童年时期为你的情感留下了印记。',
+  /* House 4  */ '这是月亮最自然的位置。家庭和家园对你来说是神圣的。你需要一个真正感觉属于自己的物理空间来充电。你母亲（或母性人物）的情感深深塑造了你是谁。',
+  /* House 5  */ '当你玩耍、创造或坠入爱河时，你在情感上得到滋养。你需要创造性表达作为情感出口。与孩子的连接是强烈而深刻的情感。',
+  /* House 6  */ '你的身体健康直接受情绪状态影响。当情感出了问题，你的身体会发出信号。你需要包含自我照顾的日常才能感到平衡。',
+  /* House 7  */ '你在关系中感到情感完整。你需要伴侣关系来感到安全——你吸引的伴侣反映你的情感景观（包括其阴影）。挑战是不要将你的情感福祉外包。',
+  /* House 8  */ '你的情感是强烈的、深沉的，有时是压倒性的。你以巨大的力量感受一切，能轻易察觉他人隐藏的东西。敞开心扉可能很难，但当你信任某人时，你将整个灵魂交给他们。',
+  /* House 9  */ '当你学习、旅行或探索新视角时，你在情感上得到滋养。你需要空间和自由来成长。你可能难以适应常规和传统的情感亲密——你偏好哲学深度。',
+  /* House 10 */ '你的情绪与事业和公众认可相关。你可能觉得需要"成为某人"才配得上爱。你与母亲的关系可能被表现期望所塑造。',
+  /* House 11 */ '你在友谊和集体事业中获得滋养。你需要属于一个分享你理想的群体。一对一的亲密可能是个挑战；你倾向于偏好更广泛的社区连接。',
+  /* House 12 */ '你的情感有海洋般的品质——深沉，有时弥漫，边界流动。你需要独处来处理你的感受。你携带着强大的直觉和共情，但必须学会在情感上保护自己。',
 ];
 
 // ============================================================
-// MERCURY IN HOUSE
+// 水星在宫位
 // ============================================================
 export const MERCURY_IN_HOUSE: string[] = [
-  /* House 1  */ 'Your mind is quick and shapes the way the world perceives you. You think out loud, process in real time, and people immediately recognize you as intelligent and communicative. Your nervous, intuitive temperament gives you a natural gift for the exchange of ideas. The challenge is slowing down enough to listen — your mind moves so fast it can outrun the answers that arrive at a gentler pace.',
-  /* House 2  */ 'Your intelligence is your greatest tool for generating wealth. You earn through the mind — writing, journalism, commerce, administration, teaching, or any form of intellectual work. There is a natural instinct for business and for identifying where value lies. The challenge is not reducing all intelligence to financial utility — your mind needs freedom to explore, not only to profit.',
-  /* House 3  */ 'Mercury\'s natural placement — your mind is at home here. You have an extraordinary ease for learning, communicating, and self-expression. You assimilate information quickly, move between subjects with lightness, and carry a youthful spirit that keeps the environment around you lively. Writing, teaching, and any form of knowledge transmission are natural paths to success. The challenge is depth: when everything comes easily, there may be little incentive to truly dive deep.',
-  /* House 4  */ 'Your mind is rooted in family, memory, and the intellectual heritage of your upbringing. You may be the one who keeps the family stories alive, who works from home, or whose profession was inspired by your domestic environment. An intellectual vitality accompanies you throughout life. You have a remarkable ability to adapt to change — each new beginning is an opportunity to rewrite your narrative.',
-  /* House 5  */ 'Your mind is creative and playful — you express ideas in ways that are fun and engaging. There is a natural gift for teaching, especially with children and young people. You love wordplay, puzzles, and mental challenges. In relationships, you intellectualize love — you need to understand something before you can fully surrender to it. When mind and heart align, your communication becomes irresistible.',
-  /* House 6  */ 'Your mind is a problem-solving machine — analytical, precise, and tireless. You have a strong capacity for intellectual work, especially in administrative, healthcare, or organizational roles that require methodical structure. You stand out for efficiency and ingenuity. The challenge is nervous tension: the same mind that resolves everything can become overloaded if it does not find outlets for rest.',
-  /* House 7  */ 'Your mind works best in dialogue — you need the other person to think, debate, and process ideas. You excel at mediation, negotiation, and any form of intellectual partnership. You may attract mercurial partners (communicative, restless, versatile). Professional or literary success can come through collaboration. The challenge is not relying on others\' reflection to validate your own ideas.',
-  /* House 8  */ 'Your mind is investigative — you naturally go beyond the surface, drawn to mystery, depth psychology, the occult, and everything that is hidden. You read between the lines with unsettling ease, perceiving what goes unsaid. There may be a fascination with death, transformation, inheritance, or sexuality. The challenge is using this power of penetration to heal, not to manipulate.',
-  /* House 9  */ 'Your mind is philosophical and expansive — oriented toward meaning, not just facts. You have a natural aptitude for foreign languages, higher education, and journeys that broaden perspective. You have the objectivity to accept criticism and opposing ideas, provided they are intellectually serious. The challenge is not getting lost in abstract theories without application — wisdom must be lived, not only studied.',
-  /* House 10 */ 'Communication is your career tool — you stand out professionally through intelligence and articulation. This is the quintessential placement for the intermediary, the public communicator, the intellectual who earns recognition. Multiple professional paths are possible across a lifetime. The challenge is maintaining focus: the versatility that lets you move between fields can scatter energy without a clear guiding direction.',
-  /* House 11 */ 'Your mind is oriented toward the future — intellectual projects, collective causes, the spread of ideas. You communicate exceptionally well in groups and form friendships easily around intellectual exchange. Your friends are diverse and stimulating. The challenge is not getting so absorbed in collective ideals that you neglect the intimate connections that also need your presence.',
-  /* House 12 */ 'Your mind is contemplative and intuitive — insights arrive through dreams, meditation, and solitude. You have a natural aptitude for working with the unconscious: psychology, introspective writing, research into hidden dimensions. Verbalizing what you perceive can be difficult, because what you sense is broader than words can reach. The challenge is trusting your subtle perception without getting lost in indefinition.',
+  /* House 1  */ '你的头脑敏捷，塑造了世界感知你的方式。你大声思考，实时处理，人们立即认出你是聪明且善于沟通的。你的神经质、直觉型气质赋予你交流思想的天赋。挑战是足够慢下来去倾听——你的思维如此之快，可能超越那些以更柔和节奏到来的答案。',
+  /* House 2  */ '你的智慧是创造财富的最大工具。你通过头脑赚钱——写作、新闻、商业、管理、教学或任何形式的智力工作。有天生的商业本能和识别价值所在的能力。挑战是不要将所有智力都还原为财务用途——你的头脑需要自由去探索，而不仅仅是获利。',
+  /* House 3  */ '水星的自然位置——你的头脑在这里如鱼得水。你在学习、沟通和自我表达方面有非凡的轻松。你快速吸收信息，轻盈地在主题间切换，带着年轻的精神让周围保持活力。写作、教学和任何形式的知识传递是通往成功的自然途径。挑战是深度：当一切来得容易，可能缺少真正深入的动力。',
+  /* House 4  */ '你的头脑扎根于家庭、记忆和你成长环境的智力遗产。你可能是那个保持家族故事活力的人，在家工作的人，或职业受家庭环境启发的人。智力活力伴随你一生。你有非凡的适应变化的能力——每个新开始都是重写叙事的机会。',
+  /* House 5  */ '你的头脑富有创造力和趣味——你以有趣且引人入胜的方式表达想法。有教学的天赋，尤其是对儿童和年轻人。你喜欢文字游戏、谜题和智力挑战。在关系中，你将爱智力化——你需要先理解才能完全投入。当思维和心灵一致时，你的沟通变得不可抗拒。',
+  /* House 6  */ '你的头脑是解决问题的机器——分析型、精确且不知疲倦。你有很强的智力工作能力，尤其在需要系统结构的行政、医疗或组织角色中。你以效率和巧思脱颖而出。挑战是神经紧张：同一个解决一切的头脑如果找不到休息的出口就会过载。',
+  /* House 7  */ '你的头脑在对话中运作最佳——你需要另一个人来思考、辩论和处理想法。你擅长调解、谈判和任何形式的智力伙伴关系。你可能吸引水星型伴侣（善于沟通的、不安的、多才多艺的）。专业或文学上的成功可能通过合作而来。挑战是不要依赖他人的反馈来验证自己的想法。',
+  /* House 8  */ '你的头脑是调查型的——你自然地超越表面，被神秘、深度心理学、神秘学和所有隐藏之物所吸引。你以令人不安的轻松读出言外之意，感知未说之事。可能对死亡、转变、遗产或性有着迷。挑战是用这种穿透力来疗愈，而非操纵。',
+  /* House 9  */ '你的头脑是哲学性的和扩展性的——面向意义，而非仅仅面向事实。你对外语、高等教育和拓宽视野的旅行有天然的倾向。你有接受批评和对立观点的客观性，只要它们在智力上是认真的。挑战是不要迷失在抽象理论中而没有应用——智慧必须被活出来，而不仅仅被学习。',
+  /* House 10 */ '沟通是你的职业工具——你通过智慧和表达在专业上脱颖而出。这是中间人、公共沟通者、获得认可的知识分子的典型位置。一生中可能有多条职业路径。挑战是保持专注：让你在领域间游走的多才多艺可能分散能量而无明确方向。',
+  /* House 11 */ '你的头脑面向未来——智力项目、集体事业、思想传播。你在群体中沟通出色，轻松地围绕智力交流建立友谊。你的朋友多样而刺激。挑战是不要如此专注于集体理想而忽视同样需要你存在的亲密连接。',
+  /* House 12 */ '你的头脑是沉思型和直觉型的——洞察通过梦境、冥想和独处而来。你有与潜意识工作的天然能力：心理学、内省写作、探索隐藏维度。将你感知到的语言化可能很困难，因为你感受到的比言语所能达到的更广阔。挑战是信任你微妙的感知而不迷失在不确定中。',
 ];
 
 // ============================================================
-// VENUS IN HOUSE
+// 金星在宫位
 // ============================================================
 export const VENUS_IN_HOUSE: string[] = [
-  /* House 1  */ 'You radiate charm naturally — there is a pleasant, harmonious presence that draws people in before you even speak. Tenderness, emotional depth, and sensitivity are your hallmarks. Gains and wellbeing can flow through activities connected to art, fashion, beauty, and aesthetics. When you enter a space, something softens. The challenge is not relying exclusively on beauty or pleasing others as your primary way of existing in the world.',
-  /* House 2  */ 'You love material comfort and beautiful things — and that is not vanity, it is sensory intelligence. You have a natural eye for quality and lasting value. There is an ease of gaining through loved ones or through activities involving aesthetics and pleasure. You can build a shared life full of grace and abundance. The challenge is not confusing love with financial security, or using possessions as a substitute for affection.',
-  /* House 3  */ 'Your communication is seductive and pleasant — your words carry a disarming charm. You naturally cultivate harmony with siblings and neighbors. Friendship is something you cannot live without — you need intellectual connections that are also emotionally nourishing. You love the arts, beautiful language, and conversation that feeds the soul. The challenge is not mistaking charm for depth.',
-  /* House 4  */ 'Your love expresses itself by creating beautiful, welcoming homes — spaces that nourish everyone who enters. There is a deep harmony between you and your parents, or at least a profound longing for it. In mature years, love blossoms with renewed intensity. Venusian work conducted from home (art, antiques, décor, aesthetics) comes naturally. The challenge is not becoming so attached to domestic comfort that you lose your sense of adventure.',
-  /* House 5  */ 'A powerful placement for Venus — romantic love that is intense, pleasurable, and vivid. Great creative capacity in arts, music, and theater. Fortune in social and worldly relationships. Children bring deep satisfaction. You love generously and hope to be adored in return. The challenge is not turning love into a performance — sometimes the most genuine affection is quiet.',
-  /* House 6  */ 'You express love through practical care — you learn the other person\'s habits, prepare what they need before they ask, and are present in the invisible details. Love may be born in the workplace, among colleagues. You appreciate pleasant routines and aesthetically harmonious environments. The challenge is not reducing love to service — you deserve to be cared for, not only to care for others.',
-  /* House 7  */ 'Venus\'s natural placement — partnership is your art. You attract relationships with ease and have a natural gift for creating harmony in a pair. Marriage without serious crises is possible when there is mutual respect and beauty in the interaction. You have natural popularity, especially when expressed through art or diplomacy. The challenge is not erasing yourself to keep the peace — real harmony does not require you to disappear.',
-  /* House 8  */ 'Your love is intense and transformative — your relationships run deep, move the soul, and involve themes of power, vulnerability, and sexuality. Your emotional life is influenced by shared finances and resources. A tendency toward generosity is possible. The challenge is not using love as a means of control, or mistaking intensity for depth of bond.',
-  /* House 9  */ 'Love and adventure intertwine — you may fall for foreigners, different cultures, or people with expansive philosophies of life. Pleasure journeys. A high artistic ideal. Relationships that broaden your world view. The challenge is not idealizing the "distant" so much that everyday, nearby love seems insufficient.',
-  /* House 10 */ 'Relationships connected to career — great fortune and recognition for those in artistic professions, fashion, or any field that values beauty and personal charm. People see you publicly as someone attractive and agreeable. The challenge is separating true love from love of status — and allowing yourself to be loved for who you are, not for what you have achieved.',
-  /* House 11 */ 'Love is born from friendship — your most enduring romances begin as intellectual and social connection. Charm and magnetic appeal in group settings. An ease for forming influential friendships that support professional growth. You value freedom in relationships and connection with open-minded people. The challenge is not avoiding true intimacy by hiding behind sociability.',
-  /* House 12 */ 'Secret, spiritual, or platonic love — there is a transcendent quality to the way you love that does not always find expression in the concrete world. Secret relationships are possible, as are loves that transform profoundly over time. Venus here soothes heartache through art and contemplation. The challenge is bringing this love to the surface — what remains only interior stays incomplete.',
+  /* House 1  */ '你自然散发魅力——有一种愉悦、和谐的存在感，在你开口之前就吸引人们。温柔、情感深度和敏感是你的标志。收入和幸福可以通过与艺术、时尚、美和审美相关的活动流入。当你进入一个空间，某种东西变得柔和。挑战是不要仅仅依靠美丽或取悦他人作为存在的主要方式。',
+  /* House 2  */ '你热爱物质舒适和美好事物——这不是虚荣，而是感官智慧。你对品质和持久价值有天生的眼光。通过亲人或涉及审美和愉悦的活动容易获得收益。你可以建立一个充满优雅和富足的共同生活。挑战是不要将爱与财务安全混淆，或用物质替代感情。',
+  /* House 3  */ '你的沟通是迷人且愉悦的——你的话语带着令人缴械的魅力。你自然地与兄弟姐妹和邻居培养和谐。友谊是你不能没有的——你需要同时也是情感滋养的智力连接。你热爱艺术、美丽的语言和滋养灵魂的对话。挑战是不要将魅力误认为深度。',
+  /* House 4  */ '你的爱通过创造美丽、温馨的家来表达——滋养每一个进入者的空间。你和父母之间有深刻的和谐，或至少有对此的深切渴望。在成熟岁月，爱以更新的强度绽放。从家进行的金星工作（艺术、古董、装饰、审美）自然而然。挑战是不要如此执着于家庭舒适而失去冒险精神。',
+  /* House 5  */ '金星的强大位置——浪漫之爱，强烈、愉悦且鲜活。在艺术、音乐和戏剧方面有极大的创造力。在社交和世俗关系中幸运。孩子带来深刻的满足。你慷慨地爱，希望被回以崇拜。挑战是不要将爱变成表演——有时最真诚的感情是安静的。',
+  /* House 6  */ '你通过实际照顾来表达爱——你学习对方的习惯，在他们开口之前准备好他们需要的，在看不见的细节中存在。爱可能在工作场所、同事间诞生。你欣赏愉快的日常和审美和谐的环境。挑战是不要将爱简化为服务——你值得被照顾，而不仅仅是照顾他人。',
+  /* House 7  */ '金星的自然位置——伴侣关系是你的艺术。你轻松吸引关系，天生善于在两人间创造和谐。当有相互尊重和互动之美时，没有严重危机的婚姻是可能的。你有天然的人气，尤其通过艺术或外交表达时。挑战是不要为了维持和平而抹杀自己——真正的和谐不需要你的消失。',
+  /* House 8  */ '你的爱是强烈且具有转化性的——你的关系深入灵魂，涉及权力、脆弱和性的主题。你的情感生活受共同财务和资源影响。可能有慷慨的倾向。挑战是不要将爱作为控制手段，也不要将强烈混淆为深度。',
+  /* House 9  */ '爱与冒险交织——你可能爱上外国人、不同文化或拥有广阔人生哲学的人。愉悦之旅。崇高的艺术理想。拓宽你世界观的关系。挑战是不要如此理想化"远方"以至于日常、近处的爱显得不够。',
+  /* House 10 */ '与事业相连的关系——从事艺术职业、时尚或任何重视美和个人魅力领域的人有巨大的运气和认可。人们在公开场合视你为有吸引力且令人愉快的人。挑战是将真爱与对地位的爱分开——允许自己因你是谁而被爱，而非因你的成就。',
+  /* House 11 */ '爱从友谊中诞生——你最持久的恋情始于智力和社交连接。在群体环境中有魅力和磁性吸引力。容易形成支持职业成长的有影响力的友谊。你重视关系中的自由和与思想开放的人的连接。挑战是不要通过躲在社交性背后来逃避真正的亲密。',
+  /* House 12 */ '秘密的、灵性的或柏拉图式的爱——你爱的方式有一种超越性的品质，不总是在具体世界中找到表达。秘密关系是可能的，也有随时间深刻转变的爱。金星在这里通过艺术和沉思来抚慰心痛。挑战是将这份爱带到表面——仅停留在内在的东西仍是不完整的。',
 ];
 
 // ============================================================
-// MARS IN HOUSE
+// 火星在宫位
 // ============================================================
 export const MARS_IN_HOUSE: string[] = [
-  /* House 1  */ 'Combativeness and enthusiasm define your presence — you radiate energy, assertiveness, and a readiness for action that people feel immediately. You have a natural aptitude for activities requiring leadership, initiative, or competition. You go after what you want without hesitation, which is an immense strength when channeled with awareness. The challenge is that your assertiveness can emerge in many forms without you noticing — learning to modulate your intensity is your work of maturation.',
-  /* House 2  */ 'Your energy and determination are channeled into building resources — you actively fight for what is yours, with a willingness to work hard for material security and enrichment. Income may come from fields that demand strength, courage, or competition (industry, sports, entrepreneurship). The challenge is a tendency to overspend — the same energy that conquers can dissipate without a financial strategy.',
-  /* House 3  */ 'Your communication is direct, assertive, and sometimes cutting — your spirit is combative, critical, and uncompromising when defending an idea. There may be friction with siblings or in your immediate environment. Your mind is quick and intolerant of intellectual mediocrity. The challenge is transforming the sword of words into a tool — the same language that wounds can also mobilize and inspire.',
-  /* House 4  */ 'Your energy is deeply connected to home and roots — you may have grown up in an intense domestic environment, with an authoritarian parent or an excessively strict upbringing. You work hard for your family\'s comfort and defend your space with fierceness. A vital energy accompanies you throughout life. The challenge is not reproducing the intensity you received — building a home that is a refuge, not a battlefield.',
-  /* House 5  */ 'Creative, competitive, and passionate energy — you stand out in sports, arts, or any form of expression that demands courage and presence. Love achieved through overcoming obstacles or seized with boldness. Affairs marked by impulsiveness and intensity. The challenge is not confusing passion with possession — creative fire is most beautiful when it illuminates without burning.',
-  /* House 6  */ 'An tireless worker — your energy flows into productivity and practical problem-solving. You are suited to demanding or high-stakes work that requires courage and endurance. A natural role as an operational leader. Robust health, but with a predisposition to fevers, inflammation, and stress when energy is suppressed. The challenge is balancing productive intensity with rest — you are not a machine, even though you function like one.',
-  /* House 7  */ 'Your relationships are arenas for growth — you attract assertive, strong, and sometimes combative partners. Emotional clashes and power struggles in relationships are possible. Partnerships entered into hastily, at a young age, with risk of separation if energy is not channeled into mutual growth. The challenge is transforming competitiveness between two into collaboration — the other person is not an adversary, but a mirror.',
-  /* House 8  */ 'A placement of intense power — strong survival instinct, the ability to rise from the ashes, sexuality as a transformative vital force. There may be disputes over inheritance or involvement in high-risk situations. The challenge is using this immense power to consciously transform — not to destroy or to self-destruct.',
-  /* House 9  */ 'Complete dedication to a cause — you defend your beliefs with absolute passion and make no concessions when it comes to truth and justice. A character that commits to adventure even in the face of danger. There may be bold journeys or conflicts with established belief systems. The challenge is fanaticism: the same passion that drives you can blind you if not tempered with intellectual humility.',
-  /* House 10 */ 'Powerful professional ambition — you use fierce determination to establish yourself in career and public life. You attract hostility but know how to handle it — in fact, you thrive on challenge. An aptitude for leadership in any field requiring courage and decisiveness. The challenge is not creating unnecessary enemies on the way up — the most lasting power is the kind that builds bridges, not the kind that burns them.',
-  /* House 11 */ 'Enthusiasm and leadership in groups and collective causes — you are the friend who mobilizes, who drives action, who refuses passivity. Intense and sometimes domineering friendships: the great friend who, if they do not find reciprocity, may become a fierce opponent. The challenge is allowing others to lead as well — a collective cause does not need a general, it needs a catalyst.',
-  /* House 12 */ 'Subtle and introspective energy — you act behind the scenes, in secret, or in ways not always visible to others. There may be suppressed anger that needs to be channeled into conscious practices (art, spirituality, quiet activism). Hidden hostilities are possible. The challenge is not turning this energy against yourself — Mars in the 12th needs channels of expression; otherwise it becomes self-destruction.',
+  /* House 1  */ '战斗力和热情定义你的存在——你散发能量、果断和行动准备，人们立即感受到。你天生适合需要领导力、主动性或竞争的活动。你毫不犹豫地追求你想要的，当有意识地引导时这是巨大的力量。挑战是你的果断可能以多种形式出现而你并未注意——学会调节你的强度是你的成熟功课。',
+  /* House 2  */ '你的能量和决心被引导到建设资源中——你积极为属于你的东西而战，愿意为物质安全而努力工作。收入可能来自需要力量、勇气或竞争的领域（工业、体育、创业）。挑战是过度消费的倾向——同样征服的能量没有财务策略可能会消散。',
+  /* House 3  */ '你的沟通直接、果断，有时尖锐——你的精神好战、批判、在捍卫想法时不妥协。与兄弟姐妹或近环境可能有摩擦。你的头脑敏捷，对智力平庸不耐烦。挑战是将言语之剑转化为工具——同样伤人的语言也能动员和激励。',
+  /* House 4  */ '你的能量与家和根深深相连——你可能成长在强烈的家庭环境中，有威权父母或过分严格的教育。你为家人的舒适而努力工作，凶猛地捍卫你的空间。生命能量伴随你一生。挑战是不要复制你所接受的强度——建设一个是避风港而非战场的家。',
+  /* House 5  */ '创造性的、竞争性的、热情的能量——你在体育、艺术或任何需要勇气和临场感的表达形式中脱颖而出。通过克服障碍或大胆抓住而获得的爱。以冲动和强度为标志的风流韵事。挑战是不要将激情与占有混淆——创造之火在照亮而不灼伤时最美丽。',
+  /* House 6  */ '不知疲倦的工作者——你的能量流入生产力和实际问题解决。你适合需要勇气和耐力的要求高或高风险的工作。天生的运营领导者角色。强健的体魄，但当能量被压抑时有发烧、炎症和压力的倾向。挑战是平衡生产强度与休息——你不是机器，即使你像机器一样运转。',
+  /* House 7  */ '你的关系是成长的竞技场——你吸引果断的、强大的、有时好斗的伴侣。关系中的情感冲突和权力斗争是可能的。年轻时仓促进入的伴侣关系，如果能量未引导向共同成长则有分离风险。挑战是将两人间的竞争转化为合作——对方不是对手，而是镜子。',
+  /* House 8  */ '强大力量的位置——强大的生存本能，从灰烬中升起的能力，作为转化生命力的性。可能有遗产纠纷或卷入高风险情况。挑战是用这巨大的力量来有意识地转化——而非毁灭或自我毁灭。',
+  /* House 9  */ '对事业的完全奉献——你以绝对的热情捍卫你的信念，在真理和正义面前不做让步。即使面对危险也投身冒险的性格。可能有大胆的旅行或与既定信仰体系的冲突。挑战是狂热：驱动你的同一份热情如果不以智力谦逊调和可能蒙蔽你。',
+  /* House 10 */ '强大的职业抱负——你用凶猛的决心在事业和公共生活中确立自己。你吸引敌意但知道如何应对——事实上，你在挑战中茁壮。在任何需要勇气和果断的领域都有领导能力。挑战是不要在上升途中制造不必要的敌人——最持久的权力是建桥的，而非烧桥的。',
+  /* House 11 */ '在群体和集体事业中的热情与领导力——你是那个动员的朋友，推动行动的，拒绝被动的。强烈且有时支配性的友谊：伟大的朋友，如果找不到互惠，可能成为凶猛的对手。挑战是允许他人也来领导——集体事业不需要将军，它需要催化剂。',
+  /* House 12 */ '微妙而内省的能量——你在幕后行动，秘密地，或以不总是对他人可见的方式。可能有需要被引导到有意识实践中的压抑愤怒（艺术、灵性、安静的行动主义）。隐藏的敌意是可能的。挑战是不要将这能量转向自己——火星在第十二宫需要表达渠道，否则它变成自我毁灭。',
 ];
 
 // ============================================================
-// JUPITER IN HOUSE
+// 木星在宫位
 // ============================================================
 export const JUPITER_IN_HOUSE: string[] = [
-  /* House 1  */ 'Jupiter in the 1st house brings natural optimism, magnetic presence, and a tendency to attract opportunities. You project confidence and generosity. Watch for excess — you may promise more than you deliver or overlook your own limits.',
-  /* House 2  */ 'Jupiter in the 2nd house indicates an ease for attracting resources and building wealth. You have a generous relationship with money — it comes in readily, but can flow out just as easily. Your values are expansive and open.',
-  /* House 3  */ 'Jupiter in the 3rd house expands the mind and communication. Ease with languages, writing, and teaching. You are the eternal student who loves sharing knowledge. You may have a positive relationship with siblings or neighbors.',
-  /* House 4  */ 'Jupiter in the 4th house indicates a generous home, a supportive family, or expansion in domestic life. You may have grown up with emotional abundance or find yourself moving to progressively larger homes. Solid roots and faith in the family foundation.',
-  /* House 5  */ 'Jupiter in the 5th house is a placement of joy: abundant creativity, luck in romance, and generosity with children. You need space to play, create, and express yourself. You may have many hobbies or artistic talents.',
-  /* House 6  */ 'Jupiter in the 6th house brings enthusiasm to daily work and general good health. You find meaning in routine when it has purpose. You may work in education, health, or causes that expand collective wellbeing.',
-  /* House 7  */ 'Jupiter in the 7th house attracts generous, optimistic partners or those from diverse cultural backgrounds. Relationships are a source of growth. Watch for unrealistic expectations of partners or a tendency to attract "too much."',
-  /* House 8  */ 'Jupiter in the 8th house indicates protection during crises and an ease with shared resources. You grow through deep transformations. You may inherit wealth or find good fortune in investments and joint funds.',
-  /* House 9  */ 'Jupiter in the 9th house is in its natural home — maximum philosophical expansion, transformative travel, deep higher education. You are naturally wise, optimistic, and always seeking meaning.',
-  /* House 10 */ 'Jupiter in the 10th house brings professional recognition, career expansion, and a positive public image. You may stand out in fields such as education, law, philosophy, or travel. A career shaped by a sense of mission.',
-  /* House 11 */ 'Jupiter in the 11th house expands your social network and your dreams for the future. You attract generous friends and benefit from groups. Social causes and collaborative projects are sources of abundance.',
-  /* House 12 */ 'Jupiter in the 12th house is a hidden guardian angel. Spiritual protection, deep faith, expanded intuition. You benefit from retreats, spirituality, and behind-the-scenes work. Your generosity may be quiet or anonymous.',
+  /* House 1  */ '木星在第一宫带来天然的乐观、磁性的存在和吸引机会的倾向。你散发自信和慷慨。注意过度——你可能承诺多于兑现或忽视自己的限制。',
+  /* House 2  */ '木星在第二宫表示吸引资源和建造财富的轻松。你与金钱有慷慨的关系——它容易进来，但也可能同样容易流出。你的价值观是扩展性的和开放的。',
+  /* House 3  */ '木星在第三宫扩展思维和沟通。对语言、写作和教学有天赋。你是热爱分享知识的永恒学生。你可能与兄弟姐妹或邻居有积极的关系。',
+  /* House 4  */ '木星在第四宫表示慷慨的家、支持性的家庭或家庭生活的扩展。你可能在情感丰盛中长大，或发现自己搬进越来越大的房子。坚实的根基和对家庭基础的信心。',
+  /* House 5  */ '木星在第五宫是欢乐的位置：丰富的创造力、爱情中的幸运和对孩子的慷慨。你需要空间来玩耍、创造和表达自己。你可能有许多爱好或艺术才能。',
+  /* House 6  */ '木星在第六宫为日常工作带来热情和总体良好的健康。当日常有目的时你在其中找到意义。你可能在教育、健康或扩展集体福祉的事业中工作。',
+  /* House 7  */ '木星在第七宫吸引慷慨的、乐观的伴侣或来自不同文化背景的伴侣。关系是成长的来源。注意对伴侣不切实际的期望或吸引"太多"的倾向。',
+  /* House 8  */ '木星在第八宫表示危机中的保护和对共享资源的轻松。你通过深层转变而成长。你可能继承财富或在投资和共同基金中找到好运。',
+  /* House 9  */ '木星在第九宫——在其自然之家——最大限度的哲学扩展、转化性旅行、深度高等教育。你天生智慧、乐观，总是在寻找意义。',
+  /* House 10 */ '木星在第十宫带来职业认可、事业扩展和积极的公众形象。你可能在教育、法律、哲学或旅行等领域脱颖而出。由使命感塑造的事业。',
+  /* House 11 */ '木星在第十一宫扩展你的社交网络和对未来的梦想。你吸引慷慨的朋友并从群体中受益。社会事业和合作项目是丰盛的来源。',
+  /* House 12 */ '木星在第十二宫是隐藏的守护天使。灵性保护、深厚信仰、扩展的直觉。你从静修、灵性和幕后工作中受益。你的慷慨可能是安静的或匿名的。',
 ];
 
 // ============================================================
-// SATURN IN HOUSE
+// 土星在宫位
 // ============================================================
 export const SATURN_IN_HOUSE: string[] = [
-  /* House 1  */ 'Saturn in the 1st house brings seriousness from an early age. You may have seemed older than your years or carried early responsibilities. With maturity, this transforms into natural authority and a commanding, respected presence.',
-  /* House 2  */ 'Saturn in the 2nd house indicates initial challenges with money or self-worth, but also the capacity to build genuine security through discipline. You value what you earn through effort — nothing comes easily, but what does arrive, stays.',
-  /* House 3  */ 'Saturn in the 3rd house may bring early difficulties with communication, learning, or relationships with siblings. Over time, you develop a structured mind, precise writing, and communication that carries authority.',
-  /* House 4  */ 'Saturn in the 4th house often indicates a childhood marked by restriction, early family responsibilities, or an absent or rigid parental figure. The mission is to build your own solid emotional foundations in adult life.',
-  /* House 5  */ 'Saturn in the 5th house may block creative expression or enjoyment in early life. Children may come later or bring significant responsibilities. With maturity, you develop disciplined, lasting creativity.',
-  /* House 6  */ 'Saturn in the 6th house demands dedication to work and constant attention to health. There may be a tendency to overload yourself with tasks. The lesson is building sustainable routines and not defining yourself solely by productivity.',
-  /* House 7  */ 'Saturn in the 7th house brings seriousness to relationships. There may be a delay in finding a partner, or marriages with older or more mature individuals. The lesson is genuine commitment — chosen freely, not entered out of obligation.',
-  /* House 8  */ 'Saturn in the 8th house indicates a fear of losing control, difficulty with deep intimacy, or challenges around inheritance and shared resources. The lesson is learning to trust and to transform without resistance.',
-  /* House 9  */ 'Saturn in the 9th house may limit travel or formal education early in life. With maturity, you become an authority in your field of study. Your beliefs are built through rigor, not blind faith.',
-  /* House 10 */ 'Saturn in the 10th house is one of the most ambitious placements — you came here to build a legacy. Career is a serious, central matter. Progress may be slow at first, but the success that comes is solid and enduring.',
-  /* House 11 */ 'Saturn in the 11th house may bring few but loyal friends, or an initial difficulty fitting into groups. The mission is to build a real support network and work toward causes that demand long-term commitment.',
-  /* House 12 */ 'Saturn in the 12th house may indicate hidden fears, isolation, or invisible responsibilities. The lesson is to confront inner ghosts and discover that structure can exist even within spirituality and the unconscious.',
+  /* House 1  */ '土星在第一宫从小带来严肃。你可能看起来比实际年龄更大或承担了早期责任。随着成熟，这转化为自然的权威和令人尊敬的存在。',
+  /* House 2  */ '土星在第二宫表示最初在金钱或自我价值方面的挑战，但也有通过纪律建立真正安全的能力。你珍视通过努力获得的东西——没有什么来得容易，但来的东西会留下。',
+  /* House 3  */ '土星在第三宫可能带来早期沟通、学习或兄弟姐妹关系方面的困难。随着时间推移，你发展出结构化的头脑、精确的写作和带有权威的沟通。',
+  /* House 4  */ '土星在第四宫通常表示童年被限制、早期家庭责任或缺席或严厉的父母形象所标记。使命是在成年后建立自己坚实的情感基础。',
+  /* House 5  */ '土星在第五宫可能在早年阻碍创造性表达或享乐。孩子可能来得较晚或带来重大责任。随着成熟，你发展出有纪律的、持久的创造力。',
+  /* House 6  */ '土星在第六宫要求对工作的奉献和对健康的持续关注。可能有让自己超载任务的倾向。课题是建立可持续的日常并不要仅通过生产力来定义自己。',
+  /* House 7  */ '土星在第七宫为关系带来严肃。可能在找到伴侣方面有延迟，或与更成熟的人结婚。课题是真正的承诺——自由选择的，而非出于义务。',
+  /* House 8  */ '土星在第八宫表示对失控的恐惧、深层亲密的困难或围绕遗产和共享资源的挑战。课题是学会信任并无阻地转变。',
+  /* House 9  */ '土星在第九宫可能在早年限制旅行或正规教育。随着成熟，你成为你研究领域的权威。你的信念通过严谨而非盲目信仰来建立。',
+  /* House 10 */ '土星在第十宫是最具野心的位置之一——你来这里是为了建立遗产。事业是严肃的、核心的事务。起初进展可能缓慢，但到来的成功是坚实而持久的。',
+  /* House 11 */ '土星在第十一宫可能带来少但忠诚的朋友，或最初融入群体的困难。使命是建立真正的支持网络并为需要长期承诺的事业工作。',
+  /* House 12 */ '土星在第十二宫可能表示隐藏的恐惧、孤立或看不见的责任。课题是面对内心的幽灵并发现结构即使在灵性和潜意识中也能存在。',
 ];
 
 // ============================================================
-// URANUS IN HOUSE
+// 天王星在宫位
 // ============================================================
 export const URANUS_IN_HOUSE: string[] = [
-  /* House 1  */ 'Uranus in the 1st house makes you someone unique, rebellious, and unpredictable. You refuse to fit into molds. People may find you eccentric — and you probably are, with pride.',
-  /* House 2  */ 'Uranus in the 2nd house brings financial instability but also brilliant insights into unconventional ways of earning. Your values are progressive and ever-changing.',
-  /* House 3  */ 'Uranus in the 3rd house gives you an electric mind — rapid thoughts, sudden insights, unconventional communication. You may struggle with traditional learning but shine with alternative methods.',
-  /* House 4  */ 'Uranus in the 4th house indicates an unstable home in childhood or frequent changes of residence. You need freedom even within the home. Your family may be non-conventional.',
-  /* House 5  */ 'Uranus in the 5th house brings radical creativity and unexpected romances. You express yourself in original ways and may have unconventional children or a non-traditional relationship with parenthood.',
-  /* House 6  */ 'Uranus in the 6th house cannot tolerate repetitive routine. You need work with autonomy and room for innovation. Health may follow irregular patterns. Alternative approaches to self-care work well.',
-  /* House 7  */ 'Uranus in the 7th house attracts unconventional partners and relationships that challenge norms. Sudden ruptures in partnerships are possible. You need freedom within commitment.',
-  /* House 8  */ 'Uranus in the 8th house brings sudden transformations and deep insights into power and sexuality. Unexpected financial shifts. You may have unconventional transcendent experiences.',
-  /* House 9  */ 'Uranus in the 9th house builds its own belief system — it accepts no dogmas. Unexpected journeys, sudden philosophical insights. You may revolutionize your field of study.',
-  /* House 10 */ 'Uranus in the 10th house indicates an unconventional career, sudden professional changes, or work in technology and innovation. Rigid hierarchies are not for you.',
-  /* House 11 */ 'Uranus in the 11th house is in its natural home — eccentric friendships, a revolutionary vision of the future, participation in groups that shift paradigms. You are the collective\'s visionary.',
-  /* House 12 */ 'Uranus in the 12th house indicates sudden spiritual insights, electric intuition, and a possible unexpected spiritual awakening. You may feel restlessness without apparent cause — it is the unconscious calling for freedom.',
+  /* House 1  */ '天王星在第一宫使你成为独特的、叛逆的、不可预测的人。你拒绝被模式框住。人们可能觉得你古怪——你可能确实如此，且为此自豪。',
+  /* House 2  */ '天王星在第二宫带来财务不稳定但也有关于非传统赚钱方式的精彩洞见。你的价值观是进步的且不断演变的。',
+  /* House 3  */ '天王星在第三宫给你一个电光般的头脑——快速思维、突然的洞见、非传统的沟通。你可能在传统学习中有困难但在替代方法中闪光。',
+  /* House 4  */ '天王星在第四宫表示童年不稳定的家或频繁搬家。你即使在家中也需要自由。你的家庭可能是非传统的。',
+  /* House 5  */ '天王星在第五宫带来激进的创造力和意想不到的恋情。你以原创方式表达自己，可能有非传统的孩子或非传统的育儿关系。',
+  /* House 6  */ '天王星在第六宫不能容忍重复性的例行公事。你需要有自主性和创新空间的工作。健康可能遵循不规则模式。替代性的自我照顾方法效果好。',
+  /* House 7  */ '天王星在第七宫吸引非传统的伴侣和挑战规范的关系。突然的伴侣关系破裂是可能的。你需要承诺中的自由。',
+  /* House 8  */ '天王星在第八宫带来突然的转变和关于权力与性的深刻洞见。意外的财务变动。你可能有非传统的超越体验。',
+  /* House 9  */ '天王星在第九宫建立自己的信仰体系——不接受任何教条。意想不到的旅行、突然的哲学洞见。你可能革新你的研究领域。',
+  /* House 10 */ '天王星在第十宫表示非传统的事业、突然的职业变化或在科技和创新领域工作。僵化的等级制度不适合你。',
+  /* House 11 */ '天王星在第十一宫——在其自然之家——古怪的友谊、革命性的未来愿景、参与改变范式的群体。你是集体的远见者。',
+  /* House 12 */ '天王星在第十二宫表示突然的灵性洞见、电光般的直觉和可能的意外灵性觉醒。你可能感到无明显原因的不安——这是潜意识在呼唤自由。',
 ];
 
 // ============================================================
-// NEPTUNE IN HOUSE
+// 海王星在宫位
 // ============================================================
 export const NEPTUNE_IN_HOUSE: string[] = [
-  /* House 1  */ 'Neptune in the 1st house makes you chameleon-like, deeply empathetic, and hard to define. People project onto you what they wish to see. You absorb your environment — learning to hold boundaries is essential.',
-  /* House 2  */ 'Neptune in the 2nd house dissolves the relationship with money — there may be financial confusion, excessive generosity, or difficulty charging for your work. The lesson is valuing your gifts without guilt.',
-  /* House 3  */ 'Neptune in the 3rd house gives poetic communication, intuitive thinking, and an ease with symbolic language. There may be confusion around concrete information or idealization of siblings.',
-  /* House 4  */ 'Neptune in the 4th house indicates a home with a nebulous atmosphere — family idealized or absent in some way. There may be family secrets. Your true refuge is internal, spiritual.',
-  /* House 5  */ 'Neptune in the 5th house brings deep artistic creativity — music, film, poetry, dance. Idealized romances that may disappoint. Creative expression is your connection to the divine.',
-  /* House 6  */ 'Neptune in the 6th house indicates sensitivity to work environments and possible health conditions that are difficult to diagnose. You work best in activities involving healing, art, or compassion.',
-  /* House 7  */ 'Neptune in the 7th house may lead to idealizing partners or losing yourself in relationships. The lesson is loving without illusion — seeing the other as they are, not as you wish them to be. Artistic or spiritual partners are common.',
-  /* House 8  */ 'Neptune in the 8th house dissolves the boundaries of intimacy — transcendent experiences in sexuality, confusion around shared resources. Deep intuition about life and death.',
-  /* House 9  */ 'Neptune in the 9th house indicates deep faith, soul-transforming journeys, and an attraction to mysticism. Watch for gurus or belief systems that promise easy salvation.',
-  /* House 10 */ 'Neptune in the 10th house indicates a career in arts, healing, spirituality, or fields where compassion is central. Your public image may be hard to pin down — people are not always sure exactly what you do.',
-  /* House 11 */ 'Neptune in the 11th house idealizes friendships and social causes. You may be disappointed by groups or attract friends who need rescuing. The mission is to serve the collective without sacrificing yourself.',
-  /* House 12 */ 'Neptune in the 12th house is in its natural home — deep spirituality, oceanic intuition, connection with the collective unconscious. You may be a healer, artist, or medium. Regular solitude is essential.',
+  /* House 1  */ '海王星在第一宫使你像变色龙——深度共情且难以定义。人们在你身上投射他们想看到的。你吸收环境——学会保持界限至关重要。',
+  /* House 2  */ '海王星在第二宫溶解与金钱的关系——可能有财务混乱、过度慷慨或收费困难。课题是毫无愧疚地珍视你的天赋。',
+  /* House 3  */ '海王星在第三宫给出诗意的沟通、直觉的思维和对象征语言的轻松掌握。可能围绕具体信息有困惑或对兄弟姐妹的理想化。',
+  /* House 4  */ '海王星在第四宫表示一个氛围模糊的家——家庭被理想化或某种程度上缺席。可能有家庭秘密。你真正的避风港是内在的、灵性的。',
+  /* House 5  */ '海王星在第五宫带来深刻的艺术创造力——音乐、电影、诗歌、舞蹈。可能令人失望的理想化恋情。创造性表达是你与神圣的连接。',
+  /* House 6  */ '海王星在第六宫表示对工作环境的敏感和可能难以诊断的健康状况。你在涉及疗愈、艺术或悲悯的活动中工作最佳。',
+  /* House 7  */ '海王星在第七宫可能导致理想化伴侣或在关系中迷失自己。课题是不带幻觉地爱——看到对方的真实面目，而非你希望他们成为的样子。艺术或灵性伴侣很常见。',
+  /* House 8  */ '海王星在第八宫溶解亲密的界限——性中的超越体验，围绕共享资源的困惑。关于生死的深刻直觉。',
+  /* House 9  */ '海王星在第九宫表示深厚的信仰、转化灵魂的旅行和对神秘主义的吸引。警惕承诺轻松救赎的上师或信仰体系。',
+  /* House 10 */ '海王星在第十宫表示在艺术、疗愈、灵性或悲悯为核心的领域的事业。你的公众形象可能难以捉摸——人们不总是确定你到底做什么。',
+  /* House 11 */ '海王星在第十一宫理想化友谊和社会事业。你可能被群体失望或吸引需要被拯救的朋友。使命是服务集体而不牺牲自己。',
+  /* House 12 */ '海王星在第十二宫——在其自然之家——深刻的灵性、海洋般的直觉、与集体潜意识的连接。你可能是疗愈者、艺术家或灵媒。规律的独处至关重要。',
 ];
 
 // ============================================================
-// PLUTO IN HOUSE
+// 冥王星在宫位
 // ============================================================
 export const PLUTO_IN_HOUSE: string[] = [
-  /* House 1  */ 'Pluto in the 1st house gives you an intense, magnetic presence. You reinvent yourself repeatedly across your lifetime. People sense your energy before you speak. You may intimidate without intending to.',
-  /* House 2  */ 'Pluto in the 2nd house indicates deep transformations tied to money, values, and self-worth. You may lose everything and rebuild. Your relationship with resources is intense — all or nothing.',
-  /* House 3  */ 'Pluto in the 3rd house gives an investigative mind and powerful words. Intense communication, a capacity for persuasion. You may have had transformative experiences with siblings or in the school environment.',
-  /* House 4  */ 'Pluto in the 4th house indicates intense family dynamics — secrets, power, transformation at the roots. Childhood may have been marked by control or loss. Healing comes through transforming your understanding of home.',
-  /* House 5  */ 'Pluto in the 5th house brings obsessive creativity and intense, almost compulsive romances. The relationship with children may be transformative. You create with visceral passion.',
-  /* House 6  */ 'Pluto in the 6th house may indicate health crises that lead to complete regeneration, or work that involves transforming systems. You have the power to heal — but you must tend to yourself first.',
-  /* House 7  */ 'Pluto in the 7th house attracts intense, transformative relationships. Power dynamics in partnerships. The lesson is neither controlling the other nor submitting — but transforming together.',
-  /* House 8  */ 'Pluto in the 8th house is in its natural home — maximum intensity in transformation, sexuality, power, and shared resources. You have been reborn many times in this life. Nothing is superficial.',
-  /* House 9  */ 'Pluto in the 9th house transforms your beliefs radically across your lifetime. Journeys can be experiences of death and rebirth. You pursue truth with obsession — shallow answers are never enough.',
-  /* House 10 */ 'Pluto in the 10th house indicates power in career — you transform your professional field. You may face power struggles with authority before becoming one yourself. Career as transformation.',
-  /* House 11 */ 'Pluto in the 11th house transforms the groups you belong to. You may have intense friendships or ruptures with collectives. You are an agent of social change — but you must be careful not to manipulate.',
-  /* House 12 */ 'Pluto in the 12th house indicates hidden power in the unconscious. Deep transformations that happen behind the scenes. You may experience intense fears without apparent cause — residues from past lives asking for integration.',
+  /* House 1  */ '冥王星在第一宫给你强烈的、磁性的存在。你在一生中反复重塑自己。人们在你开口前就感受到你的能量。你可能无意中令人畏惧。',
+  /* House 2  */ '冥王星在第二宫表示与金钱、价值观和自我价值相关的深刻转变。你可能失去一切并重建。你与资源的关系是强烈的——全部或什么都没有。',
+  /* House 3  */ '冥王星在第三宫给出调查型的头脑和有力的话语。强烈的沟通，说服能力。你可能与兄弟姐妹或在学校环境中有过变革性的经历。',
+  /* House 4  */ '冥王星在第四宫表示强烈的家庭动态——秘密、权力、根部的转变。童年可能被控制或损失所标记。疗愈来自转变你对家的理解。',
+  /* House 5  */ '冥王星在第五宫带来痴迷性的创造力和强烈的、几乎是强迫性的恋情。与孩子的关系可能是变革性的。你以内脏般的热情创造。',
+  /* House 6  */ '冥王星在第六宫可能表示导致完全再生的健康危机，或涉及转变系统的工作。你有疗愈的力量——但你必须先照顾好自己。',
+  /* House 7  */ '冥王星在第七宫吸引强烈的、变革性的关系。伴侣关系中的权力动态。课题不是控制对方也不是屈服——而是一起转变。',
+  /* House 8  */ '冥王星在第八宫——在其自然之家——转变、性、权力和共享资源中的最大强度。你在这一生中已经重生了很多次。没有什么是肤浅的。',
+  /* House 9  */ '冥王星在第九宫在你一生中彻底转变你的信念。旅行可以是死亡和重生的体验。你以痴迷追求真理——肤浅的答案永远不够。',
+  /* House 10 */ '冥王星在第十宫表示事业中的权力——你转变你的专业领域。你可能在成为权威之前面对与权威的权力斗争。事业即转变。',
+  /* House 11 */ '冥王星在第十一宫转变你所属的群体。你可能有强烈的友谊或与集体的断裂。你是社会变革的推动者——但你必须小心不要操纵。',
+  /* House 12 */ '冥王星在第十二宫表示潜意识中隐藏的力量。在幕后发生的深刻转变。你可能经历无明显原因的强烈恐惧——前世残留要求被整合。',
 ];
 
 // ============================================================
-// CHIRON IN HOUSE
+// 凯龙在宫位
 // ============================================================
 export const CHIRON_IN_HOUSE: string[] = [
-  /* House 1  */ 'Chiron in the 1st house points to a wound around identity and the right to exist as you are. You may have grown up feeling that something was "wrong" with you — in your body, your behavior, your way of being. But it is precisely this sensitivity to self-knowledge that makes you capable of helping others find themselves. By accepting your own singularity without needing to justify it, you become a mirror of healing for the world.',
-  /* House 2  */ 'Chiron in the 2nd house touches the wound of self-worth and material security. You may have learned early that love was conditional on what you produced, owned, or provided. The path of healing runs through building a healthy relationship with your talents and resources — recognizing that your value exists independently of what you possess. In doing so, you become a powerful guide for those still seeking external approval.',
-  /* House 3  */ 'Chiron in the 3rd house reveals a wound in communication and intellectual expression. You may have felt that your words were not heard, that you were "not smart enough," or that you had no right to speak. The gift that emerges is a unique sensitivity to language — you learn to communicate with depth and care, becoming a mentor who gives voice to those who feel the same way.',
-  /* House 4  */ 'Chiron in the 4th house indicates a wound in roots — family of origin, a sense of belonging, emotional security. You may have grown up without an emotionally stable home or felt that you did not fit into your family. The healing process involves creating your own roots and defining what "home" means to you. When you do, you become an anchor for others who are also searching for belonging.',
-  /* House 5  */ 'Chiron in the 5th house touches the wound of creativity, authenticity, and joy. You may have received messages that your creative expression was not good enough, or that fun was dangerous or forbidden. The gift that arises is a deep and courageous creativity — by allowing yourself to create and to take joy without judgment, you inspire others to reclaim their own radiance.',
-  /* House 6  */ 'Chiron in the 6th house reveals a wound in the relationship with work, health, and daily routine. You may have learned that you must be perfect to deserve your place, or that caring for others is an obligation while caring for yourself is selfish. The healing path runs through understanding that service must come from a place of fullness, not guilt. You become a model of conscious self-care.',
-  /* House 7  */ 'Chiron in the 7th house touches the wound in relationships and partnership. You may have experienced losses, rejections, or painful relational patterns that created a fear of commitment or of revealing yourself. The gift that emerges is a deep understanding of relational dynamics — by healing this wound, you become someone capable of creating genuine connections and of guiding others in their relationships.',
-  /* House 8  */ 'Chiron in the 8th house indicates a wound connected to loss, forced transformations, power, and deep intimacy. You may have experienced situations of extreme vulnerability — financial, emotional, or related to death and life cycles. The gift that emerges is an uncommon strength of renewal and a unique capacity to accompany others through life\'s most difficult passages.',
-  /* House 9  */ 'Chiron in the 9th house touches the wound in beliefs, spirituality, and the search for meaning. You may have suffered under rigid dogmas, felt that your worldview was invalid, or had experiences that deeply shook your faith. The healing path is building a philosophy of life that is truly your own. In doing so, you become a spiritual guide of rare discernment.',
-  /* House 10 */ 'Chiron in the 10th house reveals a wound in career, legacy, and the relationship with authority. You may have had difficulties with parental figures, with professional recognition, or with the right to occupy positions of prominence. The healing process runs through claiming your authority without needing external validation. When you do, you become an inspiring reference for others seeking their own place in the world.',
-  /* House 11 */ 'Chiron in the 11th house touches the wound of collective belonging and friendship. You may have felt excluded from groups, too different to belong anywhere, or disappointed by friendships that did not sustain what they promised. The gift that emerges is the ability to build truly inclusive communities and to recognize the value in those who feel on the margins.',
-  /* House 12 */ 'Chiron in the 12th house indicates a deep spiritual wound tied to isolation, invisibility, and unexpressed pain. You may have carried wounds in solitude, felt you needed to hide what you felt, or experienced confinement or exclusion. The gift that emerges from this depth is an extraordinary capacity for compassion, deep listening, and silent healing — you touch people\'s souls without needing words.',
+  /* House 1  */ '凯龙在第一宫指向围绕身份和作为你自己存在的权利的伤口。你可能从小就觉得自己有什么"不对"——在身体、行为或存在方式上。但正是这种对自我认知的敏感使你能够帮助他人找到自己。通过接受自己的独特性而无需辩解，你成为世界的疗愈之镜。',
+  /* House 2  */ '凯龙在第二宫触及自我价值和物质安全的伤口。你可能很早就学到爱是有条件的——取决于你生产什么、拥有什么或提供什么。疗愈之路在于建立与你的才能和资源的健康关系——认识到你的价值独立于你所拥有的。这样做时，你成为那些仍在寻求外部认可的人的有力向导。',
+  /* House 3  */ '凯龙在第三宫揭示了沟通和智力表达中的伤口。你可能感觉你的话不被听到，觉得自己"不够聪明"，或没有说话的权利。浮现的天赋是对语言的独特敏感——你学会以深度和关怀来沟通，成为给予有同感者声音的导师。',
+  /* House 4  */ '凯龙在第四宫表示根部的伤口——原生家庭、归属感、情感安全。你可能在没有情感稳定的家中长大，或感觉不属于你的家庭。疗愈过程涉及创造你自己的根并定义"家"对你意味着什么。当你这样做时，你成为同样在寻找归属的他人的锚。',
+  /* House 5  */ '凯龙在第五宫触及创造力、真实性和喜悦的伤口。你可能收到过你的创造性表达不够好的信息，或乐趣是危险或被禁止的。浮现的天赋是深层而勇敢的创造力——通过允许自己无评判地创造和享乐，你激励他人重新夺回自己的光芒。',
+  /* House 6  */ '凯龙在第六宫揭示了与工作、健康和日常生活关系中的伤口。你可能学到必须完美才能配得上你的位置，或照顾他人是义务而照顾自己是自私。疗愈之路在于理解服务必须来自充实而非内疚之处。你成为有意识自我照顾的榜样。',
+  /* House 7  */ '凯龙在第七宫触及关系和伴侣关系中的伤口。你可能经历过损失、拒绝或痛苦的关系模式，创造了对承诺或暴露自己的恐惧。浮现的天赋是对关系动态的深刻理解——通过疗愈这个伤口，你成为能够创造真诚连接并指导他人关系的人。',
+  /* House 8  */ '凯龙在第八宫表示与损失、被迫的转变、权力和深层亲密相关的伤口。你可能经历过极度脆弱的情况——财务的、情感的或与死亡和生命周期相关的。浮现的天赋是非凡的更新力量和陪伴他人度过生命最困难阶段的独特能力。',
+  /* House 9  */ '凯龙在第九宫触及信念、灵性和意义寻求中的伤口。你可能在僵化教条下受苦，觉得你的世界观无效，或有深刻动摇你信仰的经历。疗愈之路是建立真正属于你的人生哲学。这样做时，你成为罕见洞察力的灵性向导。',
+  /* House 10 */ '凯龙在第十宫揭示了事业、遗产和与权威关系中的伤口。你可能与父母形象、职业认可或占据突出位置的权利有困难。疗愈过程在于不需要外部验证就宣称自己的权威。当你这样做时，你成为其他寻找自己位置之人的鼓舞性参照。',
+  /* House 11 */ '凯龙在第十一宫触及集体归属和友谊的伤口。你可能感觉被群体排斥，太不同而不属于任何地方，或被未兑现承诺的友谊所失望。浮现的天赋是建立真正包容社区的能力，以及看到那些感觉在边缘的人的价值。',
+  /* House 12 */ '凯龙在第十二宫表示与孤立、隐形和未表达的痛苦相关的深层灵性伤口。你可能在孤独中承载伤口，觉得需要隐藏你的感受，或经历了禁闭或排斥。从这深度浮现的天赋是非凡的慈悲能力、深度倾听和无声疗愈——你触及人们的灵魂而无需言语。',
 ];
 
 // ============================================================
-// CHIRON IN SIGN
+// 凯龙在星座
 // ============================================================
 export const CHIRON_IN_SIGN: string[] = [
-  /* Aries       */ 'With Chiron in Aries, the wound has an active, identity-centered quality — it involves the right to act, to exist with strength, and to go first. The healing path runs through reclaiming the courage to exist without asking permission.',
-  /* Taurus      */ 'With Chiron in Taurus, the wound touches intrinsic worth and bodily security. It involves the belief that you must earn pleasure and comfort. Healing comes through inhabiting your body with peace and trusting that you are enough.',
-  /* Gemini      */ 'With Chiron in Gemini, the wound has a communicative and intellectual quality — it involves doubts about your own intelligence or the right to be heard. Healing comes through trusting your own voice and the uniqueness of your thinking.',
-  /* Cancer      */ 'With Chiron in Cancer, the wound touches the emotional and familial world. It involves questions of belonging, nurturance, and emotional safety. Healing comes through learning to nourish yourself with the same generosity you offer to others.',
-  /* Leo         */ 'With Chiron in Leo, the wound has an expressive and creative quality — it involves the right to shine, to be seen, and to express yourself without judgment. Healing comes through reclaiming the joy of authentic self-expression.',
-  /* Virgo       */ 'With Chiron in Virgo, the wound touches perfection, usefulness, and health. It may involve feeling that you are never good enough, or that your value depends on how much you serve. Healing comes through embracing imperfection as part of wholeness.',
-  /* Libra       */ 'With Chiron in Libra, the wound has a relational quality — it involves balance, fairness, and the right to have needs in relationships. Healing comes through learning that true harmony includes your own voice.',
-  /* Scorpio     */ 'With Chiron in Scorpio, the wound touches transformation, power, and intimacy. It involves deep fears of loss, betrayal, or vulnerability. Healing comes through embracing emotional depth as a gift, not a burden.',
-  /* Sagittarius */ 'With Chiron in Sagittarius, the wound has a philosophical and spiritual quality. It may involve the loss of faith, conflicts of belief, or the feeling that truth is out of reach. Healing comes through building a wisdom that is your own, grounded in lived experience.',
-  /* Capricorn   */ 'With Chiron in Capricorn, the wound touches ambition, responsibility, and the relationship with authority. It may involve excessive pressure for results or the belief that you must suffer to achieve. Healing comes through redefining success on your own terms.',
-  /* Aquarius    */ 'With Chiron in Aquarius, the wound has a collective quality — it involves feeling too different, belonging nowhere. Healing comes through transforming that singularity into a gift and using your vision of the future to inspire change.',
-  /* Pisces      */ 'With Chiron in Pisces, the wound touches dissolution, spirituality, and the boundaries of the ego. It may involve a sense of losing yourself in others or in collective suffering. Healing comes through learning compassion with boundaries — serving the world without losing yourself in it.',
+  /* Aries       */ '凯龙在白羊座，伤口有主动的、以身份为中心的品质——涉及行动的权利、以力量存在和率先前行。疗愈之路在于重新夺回不请求许可就存在的勇气。',
+  /* Taurus      */ '凯龙在金牛座，伤口触及内在价值和身体安全。涉及必须赢得快乐和舒适的信念。疗愈来自以平和居住在你的身体中并信任你是足够的。',
+  /* Gemini      */ '凯龙在双子座，伤口有沟通和智力品质——涉及对自己智力的怀疑或被倾听的权利。疗愈来自信任自己的声音和思维的独特性。',
+  /* Cancer      */ '凯龙在巨蟹座，伤口触及情感和家庭世界。涉及归属、滋养和情感安全的问题。疗愈来自学会以你给予他人同样的慷慨来滋养自己。',
+  /* Leo         */ '凯龙在狮子座，伤口有表达和创造性品质——涉及闪耀的权利、被看见和不受评判地表达自己。疗愈来自重新夺回真实自我表达的喜悦。',
+  /* Virgo       */ '凯龙在处女座，伤口触及完美、有用性和健康。可能涉及永远不够好的感觉，或你的价值取决于你服务了多少。疗愈来自将不完美视为完整的一部分。',
+  /* Libra       */ '凯龙在天秤座，伤口有关系品质——涉及平衡、公平和在关系中有需求的权利。疗愈来自理解真正的和谐包含你自己的声音。',
+  /* Scorpio     */ '凯龙在天蝎座，伤口触及转变、权力和亲密。涉及对损失、背叛或脆弱的深层恐惧。疗愈来自将情感深度视为礼物而非负担。',
+  /* Sagittarius */ '凯龙在射手座，伤口有哲学和灵性品质。可能涉及信仰的丧失、信念冲突或真理遥不可及的感觉。疗愈来自建立真正属于你的、基于活生生经验的智慧。',
+  /* Capricorn   */ '凯龙在摩羯座，伤口触及野心、责任和与权威的关系。可能涉及对结果的过度压力或必须受苦才能成功的信念。疗愈来自以你自己的条件重新定义成功。',
+  /* Aquarius    */ '凯龙在水瓶座，伤口有集体品质——涉及感觉太不同、不属于任何地方。疗愈来自将那独特性转化为天赋并用你对未来的愿景来启发改变。',
+  /* Pisces      */ '凯龙在双鱼座，伤口触及溶解、灵性和自我的界限。可能涉及在他人或集体苦难中失去自己的感觉。疗愈来自学习有界限的慈悲——服务世界而不在其中迷失。',
 ];
 
 // ============================================================
-// NORTH NODE IN HOUSE
+// 北交点在宫位
 // ============================================================
 export const NORTH_NODE_HOUSE: string[] = [
-  /* House 1  */ 'North Node in House 1: You have already mastered "we" (partnership, diplomacy) and have come to learn independence — to put yourself first without guilt. Your mission is to develop your own identity.',
-  /* House 2  */ 'North Node in House 2: You have already mastered transformation and others\' resources. Now you have come to learn how to build your own security and your own values. Self-sufficiency is the path.',
-  /* House 3  */ 'North Node in House 3: You already carry the wisdom of deep study (9th house) and have come to learn how to communicate with lightness, to teach accessibly, and to listen more than you preach.',
-  /* House 4  */ 'North Node in House 4: You have already mastered public life and career. Now you have come to learn how to nurture your emotional foundations, care for family, and create genuine roots.',
-  /* House 5  */ 'North Node in House 5: You already belong to groups and collective causes. Now you have come to learn how to shine individually, to create, to play without guilt. Personal expression is the path.',
-  /* House 6  */ 'North Node in House 6: You have already mastered the spiritual world and solitude. Now you have come to learn how to serve in daily life, to organize practical reality, and to care for the body.',
-  /* House 7  */ 'North Node in House 7: You are already independent and self-sufficient. Now you have come to learn how to open space for the other — to negotiate, to build genuine partnerships.',
-  /* House 8  */ 'North Node in House 8: You have already mastered material comfort and stability. Now you have come to learn how to transform, to surrender, to navigate power and vulnerability.',
-  /* House 9  */ 'North Node in House 9: You have already mastered communication and surface-level knowledge. Now you have come to learn how to go deeper, expand horizons, and develop your own philosophy of life.',
-  /* House 10 */ 'North Node in House 10: You have already mastered home and emotions. Now you have come to learn how to build something in the world, to take on public responsibility, and to leave a legacy.',
-  /* House 11 */ 'North Node in House 11: You already shine individually. Now you have come to learn how to work for larger causes, to integrate into groups, and to think collectively.',
-  /* House 12 */ 'North Node in House 12: You have already mastered organization and practical service. Now you have come to learn how to release control, trust your intuition, and connect with something transcendent.',
+  /* House 1  */ '北交点在第一宫：你已经掌握了"我们"（伴侣关系、外交），现在来学习独立——将自己放在第一位而无愧疚。你的使命是发展自己的身份。',
+  /* House 2  */ '北交点在第二宫：你已经掌握了转变和他人的资源。现在你来学习如何建立自己的安全和自己的价值观。自给自足是道路。',
+  /* House 3  */ '北交点在第三宫：你已经携带深入学习的智慧（第九宫），现在来学习如何轻松地沟通、平易地教学、多听少说教。',
+  /* House 4  */ '北交点在第四宫：你已经掌握了公共生活和事业。现在你来学习如何滋养你的情感基础、照顾家人并创造真正的根。',
+  /* House 5  */ '北交点在第五宫：你已经属于群体和集体事业。现在你来学习如何个人闪耀、创造、无愧地玩耍。个人表达是道路。',
+  /* House 6  */ '北交点在第六宫：你已经掌握了灵性世界和独处。现在你来学习如何在日常生活中服务、组织实际现实并照顾身体。',
+  /* House 7  */ '北交点在第七宫：你已经独立且自给自足。现在你来学习如何为他人开辟空间——谈判、建立真正的伴侣关系。',
+  /* House 8  */ '北交点在第八宫：你已经掌握了物质舒适和稳定。现在你来学习如何转变、臣服、驾驭权力和脆弱。',
+  /* House 9  */ '北交点在第九宫：你已经掌握了沟通和表面知识。现在你来学习如何深入、扩展视野并发展你自己的人生哲学。',
+  /* House 10 */ '北交点在第十宫：你已经掌握了家庭和情感。现在你来学习如何在世界上建造些什么、承担公共责任并留下遗产。',
+  /* House 11 */ '北交点在第十一宫：你已经个人闪耀。现在你来学习如何为更大的事业工作、融入群体并集体思考。',
+  /* House 12 */ '北交点在第十二宫：你已经掌握了组织和实际服务。现在你来学习如何释放控制、信任直觉并与超越性的事物连接。',
 ];
 
 // ============================================================
-// NORTH NODE IN SIGN
+// 北交点在星座
 // ============================================================
 export const NORTH_NODE_IN_SIGN: string[] = [
-  /* Aries       */ 'North Node in Aries: your evolutionary journey is to develop self-leadership, courage, and the right to act on your own. You come from lifetimes (or patterns) of dependency, excessive diplomacy, and approval-seeking. Liberation comes when you act without waiting for consensus — when you take the risk of being unpopular in the name of authenticity.',
-  /* Taurus      */ 'North Node in Taurus: your journey is to build your own security, to trust your body and the material world. You come from patterns of chaos, emotional intensity, and crisis as a way of life. Liberation comes when you allow yourself simple pleasures, stability without drama, and the trust that the ground beneath you will not give way.',
-  /* Gemini      */ 'North Node in Gemini: your journey is to cultivate curiosity, an open mind, and connection with your immediate surroundings. You come from dogmatic patterns, absolute certainties, and a tendency to preach rather than listen. Liberation comes when you allow yourself not to know — when the question becomes more valuable than the answer.',
-  /* Cancer      */ 'North Node in Cancer: your journey is emotional rootedness — home, care, vulnerability. You come from patterns of control, rigid ambition, and denial of emotional needs. Liberation comes when you allow yourself to need others, when you care without calculating, and when home becomes a refuge rather than an obligation.',
-  /* Leo         */ 'North Node in Leo: your journey is to express yourself from the heart, to shine individually, and to create with generosity. You come from patterns of collective anonymity, intellectual detachment, and fear of standing out. Liberation comes when you stop hiding behind the group and take the risk of being truly seen.',
-  /* Virgo       */ 'North Node in Virgo: your journey is to serve with discernment, to attend to health, and to apply spirituality to practical daily life. You come from patterns of dissolution, idealism without action, and escape from material reality. Liberation comes when you discover that the sacred lives in the details of the everyday.',
-  /* Libra       */ 'North Node in Libra: your journey is healing through partnership, commitment, and forgiveness. You come from patterns of isolation, excessive individualism, and difficulty yielding. Liberation comes when you learn that true strength is not doing everything alone — it is allowing yourself to be complemented.',
-  /* Scorpio     */ 'North Node in Scorpio: your journey is to transform yourself by confronting what is hidden — power, intimacy, vulnerability. You come from patterns of comfort, material attachment, and avoidance of crisis. Liberation comes when you allow yourself to die symbolically in order to be reborn more whole — when you accept that true security comes not from stability, but from the capacity to regenerate.',
-  /* Sagittarius */ 'North Node in Sagittarius: your journey is to expand horizons, build faith, and live your truth. You come from patterns of informational anxiety, superficiality, and fear of committing to a vision. Liberation comes when you stop collecting data and begin living wisdom — when experience replaces theory.',
-  /* Capricorn   */ 'North Node in Capricorn: your journey is to claim your vocation, build structure, and leave a legacy. You come from patterns of emotional dependency, familial victimhood, and difficulty taking responsibility for your own path. Liberation comes when you take the helm — when you stop blaming circumstances and build with your own hands.',
-  /* Aquarius    */ 'North Node in Aquarius: your journey is to serve the collective, embrace innovation, and think beyond the self. You come from patterns of inflated ego, the need for personal recognition, and difficulty sharing the spotlight. Liberation comes when you discover that your brilliance is most powerful when it illuminates causes greater than yourself.',
-  /* Pisces      */ 'North Node in Pisces: your journey is spiritual surrender — releasing control, trusting intuition, and dissolving the rigid boundaries of the ego. You come from patterns of hyper-control, perfectionism, and anxiety about "doing it right." Liberation comes when you allow yourself to flow — when you accept that not everything needs to be analyzed in order to be true.',
+  /* Aries       */ '北交点在白羊座：你的进化旅程是发展自我领导力、勇气和独立行动的权利。你来自依赖、过度外交和寻求认可的生命（或模式）。解放来自你不等待共识就行动的时候——当你冒着不受欢迎的风险去追求真实。',
+  /* Taurus      */ '北交点在金牛座：你的旅程是建立自己的安全、信任你的身体和物质世界。你来自混乱、情绪强烈和以危机为生活方式的模式。解放来自你允许自己简单的快乐、没有戏剧的稳定和信任脚下的土地不会塌陷。',
+  /* Gemini      */ '北交点在双子座：你的旅程是培养好奇心、开放的心态和与周围环境的连接。你来自教条模式、绝对确定和倾向说教而非倾听。解放来自你允许自己不知道——当问题变得比答案更有价值。',
+  /* Cancer      */ '北交点在巨蟹座：你的旅程是情感扎根——家、照顾、脆弱。你来自控制、僵化野心和否认情感需求的模式。解放来自你允许自己需要他人、不计算地关怀、当家成为庇护而非义务。',
+  /* Leo         */ '北交点在狮子座：你的旅程是从心表达、个人闪耀和慷慨地创造。你来自集体匿名、智力超脱和害怕突出的模式。解放来自你停止躲在群体背后并冒险被真正看见。',
+  /* Virgo       */ '北交点在处女座：你的旅程是以辨别力服务、关注健康并将灵性应用于实际日常生活。你来自溶解、无行动的理想主义和逃避物质现实的模式。解放来自你发现神圣存在于日常的细节中。',
+  /* Libra       */ '北交点在天秤座：你的旅程是通过伴侣关系、承诺和宽恕来疗愈。你来自孤立、过度个人主义和难以让步的模式。解放来自你学到真正的力量不是什么都自己做——而是允许自己被补全。',
+  /* Scorpio     */ '北交点在天蝎座：你的旅程是通过面对隐藏之物来转变自己——权力、亲密、脆弱。你来自舒适、物质执着和回避危机的模式。解放来自你允许自己象征性地死去以更完整地重生——当你接受真正的安全不来自稳定而来自再生的能力。',
+  /* Sagittarius */ '北交点在射手座：你的旅程是扩展视野、建立信仰和活出你的真理。你来自信息焦虑、肤浅和害怕投入愿景的模式。解放来自你停止收集数据开始活出智慧——当经验替代理论。',
+  /* Capricorn   */ '北交点在摩羯座：你的旅程是宣称你的天职、建立结构并留下遗产。你来自情感依赖、家庭受害者心态和难以为自己的路负责的模式。解放来自你掌舵——当你停止归咎环境并用自己的双手建造。',
+  /* Aquarius    */ '北交点在水瓶座：你的旅程是服务集体、拥抱创新和超越自我思考。你来自膨胀的自我、需要个人认可和难以分享聚光灯的模式。解放来自你发现你的光芒在照亮比你更大的事业时最为有力。',
+  /* Pisces      */ '北交点在双鱼座：你的旅程是灵性臣服——释放控制、信任直觉和溶解自我的僵硬边界。你来自过度控制、完美主义和"做对"的焦虑的模式。解放来自你允许自己流动——当你接受不是一切都需要被分析才能为真。',
 ];
 
 // ============================================================
-// NAMES AND LABELS — English
+// 名称与标签 — 中文
 // ============================================================
 
 export const SIGN_NAMES = ['白羊座','金牛座','双子座','巨蟹座','狮子座','处女座','天秤座','天蝎座','射手座','摩羯座','水瓶座','双鱼座'];
 export const PLANET_NAMES: Record<string,string> = { sun:'太阳', moon:'月亮', mercury:'水星', venus:'金星', mars:'火星', jupiter:'木星', saturn:'土星', uranus:'天王星', neptune:'海王星', pluto:'冥王星', northNode:'北交点', chiron:'凯龙', lilith:'莉莉丝' };
 export const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-export const SECTION_TITLES = { sun:(h:number,s:string)=>`☉ 太阳在第${h}宫 ${s}`, moon:(h:number,s:string)=>`☽ 月亮在第${h}宫 ${s}`, mercury:(h:number,s:string)=>`☿ 水星在第${h}宫 ${s}`, venus:(h:number,s:string)=>`♀ 金星在第${h}宫 ${s}`, mars:(h:number,s:string)=>`♂ 火星在第${h}宫 ${s}`, jupiter:(h:number,s:string)=>`♃ 木星在第${h}宫 ${s}`, saturn:(h:number,s:string)=>`♄ 土星在第${h}宫 ${s}`, uranus:(h:number,s:string)=>`♅ 天王星在第${h}宫 ${s}`, neptune:(h:number,s:string)=>`♆ 海王星在第${h}宫 ${s}`, pluto:(h:number,s:string)=>`♇ 冥王星在第${h}宫 ${s}`, northNode:(h:number,s:string)=>`☊ 北交点在第${h}宫 ${s}`, chiron:(h:number,s:string)=>`⚷ 凯龙在第${h}宫 ${s}`, ascendant:(s:string)=>`上升星座 ${s}` };
-export const PLANET_SUBTITLES: Record<string,string> = { sun:'你的太阳本质 — 身份、目的与生命能量', moon:'你的情感世界 — 需求、本能与内在安全感', mercury:'你的思维与沟通 — 你如何思考与学习', venus:'你的爱情语言 — 你吸引什么、珍视什么', mars:'你的驱动力与行动 — 你如何追求目标', jupiter:'你的扩展之路 — 丰盛与成长流向何方', saturn:'你的精通领域 — 纪律锻造持久成就之处', uranus:'你的内在革命 — 你打破模式之处', neptune:'你的灵性门户 — 你消融界限之处', pluto:'你的转化力量 — 深层的死亡与重生', northNode:'你的进化目的 — 灵魂前进的方向', chiron:'你的神圣伤口 — 转化为疗愈之礼的痛苦' };
-export const LABELS = { reportTitle:'完整本命报告', reportSubtitle:'深度解读', positions:'行星位置', houses:'宫头', overview:'概述', potentials:'你的5大潜力', challenges:'你的5大挑战', conclusion:'结论', advice:'实用建议', elements:'元素与模式', dignities:'本质尊贵', aspects:'主要相位', themes:'主题综合', quote:'"星辰倾向，而非决定。"', sampleNote:'这是一份免费样本！', sampleFull:'完整报告包含20-30页详细解读。', buyNow:'完整版：', buyInstant:'立即购买并下载 — 100%在浏览器中完成。', natalChart:'你的本命盘', retrograde:'(逆行)', annualTitle:'年度预测', annualSubtitle:'行运与趋势', profection:'年度小限 — 年度主题', houseInFocus:'聚焦', rulerOfYear:'年度主星', eclipses:'年度食相', jupiterExpansion:'年度扩展', saturnLesson:'年度课题', conclusionAnnual:'结论 — 年度展望', relationshipTitle:'关系报告', compatibility:'兼容性', emotionalConnection:'情感连接', attractionChemistry:'吸引力与化学反应', communication:'沟通', commitmentLimits:'承诺与界限 — 土星', growthPotential:'成长潜力', challengesTension:'紧张点', psychTitle:'深度心理分析', egoStructure:'自我结构 — 太阳与上升', emotionalWorld:'情感世界 — 月亮', mentalProcesses:'心智过程 — 水星', lovePatterns:'爱情模式 — 金星', vitalForce:'生命力 — 火星', shadow:'阴影 — 冥王星', wound:'核心伤口 — 凯龙', unconscious:'潜意识 — 第12宫与海王星', familyPatterns:'家庭模式 — 月亮、第4宫与土星', defenseMechanisms:'防御机制 — 土星', integrationPath:'整合之路 — 北交点', careerTitle:'事业与天职', midheaven:'天顶', house10:'第10宫 — 天职', house6:'第6宫 — 日常与工作', house2:'第2宫 — 资源与才能', sinsTitle:'七宗罪', pride:'傲慢 — 太阳', lust:'色欲 — 金星与火星', greed:'贪婪 — 土星', gluttony:'暴食 — 木星', wrath:'暴怒 — 火星', envy:'嫉妒 — 冥王星', sloth:'懒惰 — 海王星', repetitivePatterns:'重复模式 — 四分与对冲', unexploredPotentials:'未开发潜力 — 三分与才能', integrationPaths:'整合路径', recommendedPractices:'推荐练习', childhoodTemplate:'童年与情感模板', fromWoundToGift:'从伤口到礼物', differentiation:'分化 — 做你自己', mainTensions:'星盘主要紧张', plutoAspects:'冥王星紧张相位' };
-export const TRANSITIONS = { afterOverview:'这个身份基础在行星所在宫位中具体体现。', afterPersonalPlanets:'行星之间的相位揭示了这些能量如何相互作用。', afterAspects:'从这些互动中浮现出模式 — 你体验的核心主题。', beforeConclusion:'将一切汇集起来，你的星盘讲述了一个连贯的故事。' };
+
+export const SECTION_TITLES = {
+  sun: (house: number, sign: string) => `☉ 太阳在第${house}宫 ${sign}`,
+  moon: (house: number, sign: string) => `☽ 月亮在第${house}宫 ${sign}`,
+  mercury: (house: number, sign: string) => `☿ 水星在第${house}宫 ${sign}`,
+  venus: (house: number, sign: string) => `♀ 金星在第${house}宫 ${sign}`,
+  mars: (house: number, sign: string) => `♂ 火星在第${house}宫 ${sign}`,
+  jupiter: (house: number, sign: string) => `♃ 木星在第${house}宫 ${sign}`,
+  saturn: (house: number, sign: string) => `♄ 土星在第${house}宫 ${sign}`,
+  uranus: (house: number, sign: string) => `♅ 天王星在第${house}宫 ${sign}`,
+  neptune: (house: number, sign: string) => `♆ 海王星在第${house}宫 ${sign}`,
+  pluto: (house: number, sign: string) => `♇ 冥王星在第${house}宫 ${sign}`,
+  northNode: (house: number, sign: string) => `☊ 北交点在第${house}宫 ${sign}`,
+  chiron: (house: number, sign: string) => `⚷ 凯龙在第${house}宫 ${sign}`,
+  ascendant: (sign: string) => `上升星座 ${sign}`,
+};
+
+export const PLANET_SUBTITLES: Record<string,string> = {
+  sun: '你的太阳本质 — 身份、目的与生命能量',
+  moon: '你的情感世界 — 需求、本能与内在安全感',
+  mercury: '你的思维与沟通 — 你如何思考与学习',
+  venus: '你的爱情语言 — 你吸引什么、珍视什么',
+  mars: '你的驱动力与行动 — 你如何追求目标',
+  jupiter: '你的扩展之路 — 丰盛与成长流向何方',
+  saturn: '你的精通领域 — 纪律锻造持久成就之处',
+  uranus: '你的内在革命 — 你打破模式之处',
+  neptune: '你的灵性门户 — 你消融界限之处',
+  pluto: '你的转化力量 — 深层的死亡与重生',
+  northNode: '你的进化目的 — 灵魂前进的方向',
+  chiron: '你的神圣伤口 — 转化为疗愈之礼的痛苦',
+};
+
+export const LABELS = {
+  reportTitle: '完整本命报告',
+  reportSubtitle: '深度解读',
+  positions: '行星位置',
+  houses: '宫头',
+  overview: '概述',
+  potentials: '你的5大潜力',
+  challenges: '你的5大挑战',
+  conclusion: '结论',
+  advice: '实用建议',
+  elements: '元素与模式',
+  dignities: '本质尊贵',
+  aspects: '主要相位',
+  themes: '主题综合',
+  quote: '"星辰倾向，而非决定。"',
+  sampleNote: '这是一份免费样本！',
+  sampleFull: '完整报告包含20-30页详细解读。',
+  buyNow: '完整版：',
+  buyInstant: '立即购买并下载 — 100%在浏览器中完成。',
+  natalChart: '你的本命盘',
+  retrograde: '(逆行)',
+  annualTitle: '年度预测',
+  annualSubtitle: '行运与趋势',
+  profection: '年度小限 — 年度主题',
+  houseInFocus: '聚焦',
+  rulerOfYear: '年度主星',
+  eclipses: '年度食相',
+  jupiterExpansion: '年度扩展',
+  saturnLesson: '年度课题',
+  conclusionAnnual: '结论 — 年度展望',
+  relationshipTitle: '关系报告',
+  compatibility: '兼容性',
+  emotionalConnection: '情感连接',
+  attractionChemistry: '吸引力与化学反应',
+  communication: '沟通',
+  commitmentLimits: '承诺与界限 — 土星',
+  growthPotential: '成长潜力',
+  challengesTension: '紧张点',
+  psychTitle: '深度心理分析',
+  egoStructure: '自我结构 — 太阳与上升',
+  emotionalWorld: '情感世界 — 月亮',
+  mentalProcesses: '心智过程 — 水星',
+  lovePatterns: '爱情模式 — 金星',
+  vitalForce: '生命力 — 火星',
+  shadow: '阴影 — 冥王星',
+  wound: '核心伤口 — 凯龙',
+  unconscious: '潜意识 — 第12宫与海王星',
+  familyPatterns: '家庭模式 — 月亮、第4宫与土星',
+  defenseMechanisms: '防御机制 — 土星',
+  integrationPath: '整合之路 — 北交点',
+  careerTitle: '事业与天职',
+  midheaven: '天顶',
+  house10: '第10宫 — 天职',
+  house6: '第6宫 — 日常与工作',
+  house2: '第2宫 — 资源与才能',
+  sinsTitle: '七宗罪',
+  pride: '傲慢 — 太阳',
+  lust: '色欲 — 金星与火星',
+  greed: '贪婪 — 土星',
+  gluttony: '暴食 — 木星',
+  wrath: '暴怒 — 火星',
+  envy: '嫉妒 — 冥王星',
+  sloth: '懒惰 — 海王星',
+  repetitivePatterns: '重复模式 — 四分与对冲',
+  unexploredPotentials: '未开发潜力 — 三分与才能',
+  integrationPaths: '整合路径',
+  recommendedPractices: '推荐练习',
+  childhoodTemplate: '童年与情感模板',
+  fromWoundToGift: '从伤口到礼物',
+  differentiation: '分化 — 做你自己',
+  mainTensions: '星盘主要紧张',
+  plutoAspects: '冥王星紧张相位',
+};
+
+export const TRANSITIONS = {
+  afterOverview: '这个身份基础在行星所在宫位中具体体现。',
+  afterPersonalPlanets: '行星之间的相位揭示了这些能量如何相互作用。',
+  afterAspects: '从这些互动中浮现出模式 — 你体验的核心主题。',
+  beforeConclusion: '将一切汇集起来，你的星盘讲述了一个连贯的故事。',
+};
