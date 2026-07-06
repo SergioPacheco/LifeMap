@@ -97,3 +97,41 @@ export const PLUTO_IN_HOUSE: string[] = [
   /* Casa 11 */ 'Plutão na casa 11 transforma os grupos dos quais participa. Pode ter amizades intensas ou rupturas com coletivos. Você é um agente de mudança social — mas precisa cuidar para não manipular.',
   /* Casa 12 */ 'Plutão na casa 12 indica poder oculto no inconsciente. Transformações profundas que acontecem nos bastidores. Pode ter medos intensos sem causa aparente — são resíduos de vidas passadas pedindo integração.',
 ];
+
+// ============================================================
+// JUPITER IN SIGN — Como você expande, onde encontra sentido
+// ============================================================
+
+export const JUPITER_IN_SIGN: string[] = [
+  /* Áries */     'Júpiter em Áries expande através da ação independente e da coragem. Você cresce quando toma iniciativa sem esperar permissão, quando lidera projetos pioneiros e quando confia no instinto. Abundância chega quando você ousa ser o primeiro.',
+  /* Touro */     'Júpiter em Touro expande através da construção material paciente e do prazer sensorial. Você cresce quando investe no longo prazo, quando desfruta o processo e quando confia que a consistência é a forma mais segura de abundância.',
+  /* Gêmeos */    'Júpiter em Gêmeos expande através da comunicação, do aprendizado e das conexões diversas. Você cresce quando ensina, quando faz pontes entre mundos diferentes e quando permite que a curiosidade guie sua direção.',
+  /* Câncer */    'Júpiter em Câncer (exaltação) expande através do cuidado, da nutrição e da criação de comunidade. Você cresce quando cuida genuinamente de outros, quando cria espaços seguros e quando permite que a generosidade emocional seja sua abundância.',
+  /* Leão */      'Júpiter em Leão expande através da expressão criativa, da generosidade e da liderança inspiradora. Você cresce quando brilha sem culpa, quando compartilha seu dom com grandeza e quando inspira outros a também criarem.',
+  /* Virgem */    'Júpiter em Virgem expande através do serviço prático, da melhoria contínua e do trabalho detalhado. Você cresce quando aplica suas habilidades a algo que serve ao mundo — quando a excelência se torna uma oferenda.',
+  /* Libra */     'Júpiter em Libra expande através de parcerias, diplomacia e busca de justiça. Você cresce quando colabora, quando cria harmonia entre opostos e quando usa o charme social como ponte entre mundos.',
+  /* Escorpião */ 'Júpiter em Escorpião expande através da transformação profunda, da investigação e do poder compartilhado. Você cresce quando mergulha nas profundezas — psicológicas, financeiras ou espirituais — e emerge com sabedoria que outros não ousam buscar.',
+  /* Sagitário */ 'Júpiter em Sagitário (domicílio) — máxima expansão. Você cresce quando viaja (física ou mentalmente), quando ensina, quando vive sua verdade sem concessões. A abundância chega naturalmente quando segue sua bússola filosófica interna.',
+  /* Capricórnio */ 'Júpiter em Capricórnio (queda) expande através da disciplina, da estrutura e da conquista de longo prazo. O crescimento pode parecer lento, mas é sólido. Você encontra abundância quando assume responsabilidade total — cada conquista foi genuinamente merecida.',
+  /* Aquário */   'Júpiter em Aquário expande através da inovação, das causas coletivas e do pensamento visionário. Você cresce quando trabalha por algo maior que si mesmo, quando rompe padrões obsoletos e quando a originalidade se torna contribuição social.',
+  /* Peixes */    'Júpiter em Peixes (domicílio tradicional) expande através da compaixão, da espiritualidade e da arte. Você cresce quando se permite fluir, quando serve ao intangível e quando a fé — não cega, mas vivida — se torna sua maior abundância.',
+];
+
+// ============================================================
+// SATURN IN SIGN — Onde você constrói maestria através da disciplina
+// ============================================================
+
+export const SATURN_IN_SIGN: string[] = [
+  /* Áries */     'Saturno em Áries pede que você aprenda a agir com maturidade — sem impulsividade destrutiva, mas sem perder a coragem. A lição é liderança responsável: ter a disciplina de começar coisas que pode terminar. A maestria vem quando a ação nasce da consciência, não da reatividade.',
+  /* Touro */     'Saturno em Touro pede que você construa segurança material real — não por acúmulo ansioso, mas por gestão sábia. Pode haver escassez inicial que ensina o valor verdadeiro das coisas. A maestria vem quando você distingue o que precisa do que apenas acumula por medo.',
+  /* Gêmeos */    'Saturno em Gêmeos pede disciplina mental — aprender a comunicar com precisão, a estudar com profundidade e a não dispersar em mil direções. A maestria vem quando você usa a inteligência com estrutura, quando as palavras ganham peso e responsabilidade.',
+  /* Câncer */    'Saturno em Câncer (detrimento) pede que você construa segurança emocional por conta própria — sem depender da família ou das circunstâncias externas. Pode haver dificuldades emocionais na infância que forçam maturidade precoce. A maestria vem quando você se torna seu próprio porto seguro.',
+  /* Leão */      'Saturno em Leão pede disciplina criativa e responsabilidade com o brilho pessoal. Pode haver dificuldade inicial em se expressar ou ser reconhecido. A maestria vem quando a autoexpressão nasce de autenticidade trabalhada — não de ego inflado nem de medo de aparecer.',
+  /* Virgem */    'Saturno em Virgem pede perfeição prática — não perfeccionismo paralisante, mas excelência construída com método. Pode haver uma relação difícil com a saúde ou com o trabalho cotidiano. A maestria vem quando você serve sem se esgotar e organiza sem se enrijecer.',
+  /* Libra */     'Saturno em Libra (exaltação) pede comprometimento real nos relacionamentos — não diplomacia superficial, mas justiça verdadeira. A maestria vem quando você assume a responsabilidade de estar em parceria com integridade, quando o equilíbrio é conquistado, não evitado.',
+  /* Escorpião */ 'Saturno em Escorpião pede que você enfrente o poder e a vulnerabilidade com disciplina. Pode haver medo profundo de perda de controle ou experiências de restrição emocional. A maestria vem quando você se permite morrer e renascer conscientemente — quando a transformação é escolha, não catástrofe.',
+  /* Sagitário */ 'Saturno em Sagitário pede que você construa sua própria filosofia de vida com rigor — não por fé cega, mas por verdade testada pela experiência. Pode haver limitação inicial em viagens ou estudos. A maestria vem quando sabedoria e disciplina se tornam uma só coisa.',
+  /* Capricórnio */ 'Saturno em Capricórnio (domicílio) — máxima expressão de Saturno. Ambição, disciplina e construção de legado como vocação natural. Pode parecer frio ou inacessível, mas há uma profundidade de comprometimento rara. A maestria vem naturalmente com o tempo — você foi feito para construir coisas que duram.',
+  /* Aquário */   'Saturno em Aquário (domicílio tradicional) pede responsabilidade com a inovação e o coletivo. A liberdade precisa ser conquistada com estrutura. A maestria vem quando você consegue ser visionário E prático — quando a revolução tem plano de implementação.',
+  /* Peixes */    'Saturno em Peixes pede que você dê forma ao informe — estruturar a espiritualidade, disciplinar a intuição, criar limites onde tudo quer se dissolver. Pode haver medo do caos ou da perda de controle. A maestria vem quando você aprende que a rendição consciente é a maior força.',
+];

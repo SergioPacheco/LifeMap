@@ -108,11 +108,15 @@ function generateOverview(chart: NatalChart): string {
   const sunHouse = chart.planetHouses.sun || 1;
   const moonHouse = chart.planetHouses.moon || 1;
 
-  return `Você é um Sol em ${SIGN_NAMES[sunSign]} na casa ${sunHouse}, com Lua em ${SIGN_NAMES[moonSign]} na casa ${moonHouse} e Ascendente em ${SIGN_NAMES[ascSign]}. ` +
+  return `Seu mapa natal não é uma sentença — é um projeto. Não descreve quem você terá de ser; descreve as energias que você veio trabalhar e integrar.\n\n` +
+    `Você é um Sol em ${SIGN_NAMES[sunSign]} na casa ${sunHouse}, com Lua em ${SIGN_NAMES[moonSign]} na casa ${moonHouse} e Ascendente em ${SIGN_NAMES[ascSign]}. ` +
     `Isso significa que sua essência busca ${getSunEssence(sunSign)}, ` +
     `mas emocionalmente você precisa de ${getMoonNeed(moonSign)}, ` +
-    `e o mundo te percebe como alguém ${getAscPerception(ascSign)}. ` +
-    `A interação entre essas três forças é a base de quem você é — o tripé fundamental do seu mapa.`;
+    `e o mundo te percebe como alguém ${getAscPerception(ascSign)}.\n\n` +
+    `A interação entre essas três forças é a base de quem você é — o tripé fundamental do seu mapa. ` +
+    `Quando Sol, Lua e Ascendente trabalham em harmonia, você se sente integrado e autêntico. ` +
+    `Quando entram em conflito, surge a sensação de não saber "quem realmente é" — ` +
+    `e é exatamente aí que o autoconhecimento astrológico se torna ferramenta de integração.`;
 }
 
 function getSunEssence(sign: number): string {
@@ -165,7 +169,7 @@ function synthesizeLove(chart: NatalChart): ThemeSynthesis {
     const vHouse = chart.planetHouses.venus || 1;
     sections.push({
       subtitle: `Vênus em ${SIGN_NAMES[vSign]} na Casa ${vHouse}`,
-      text: `Sua forma de amar é marcada por ${SIGN_NAMES[vSign]} — você expressa afeto na área da casa ${vHouse} (${getHouseTheme(vHouse)}).`,
+      text: `Vênus revela o que faz você se sentir amado e valorizado — não o que a sociedade diz que deveria funcionar, mas o que genuinamente nutre seu coração. Em ${SIGN_NAMES[vSign]}, sua forma de amar carrega as qualidades desse signo como linguagem afetiva. E na casa ${vHouse} (${getHouseTheme(vHouse)}), é nessa área de vida que o amor encontra sua expressão mais natural e seus maiores aprendizados.`,
       importance: 'high',
     });
   }
@@ -175,7 +179,7 @@ function synthesizeLove(chart: NatalChart): ThemeSynthesis {
   if (h7Ruler) {
     sections.push({
       subtitle: `Regente da Casa 7 (${PLANET_NAMES[h7Ruler.planet]})`,
-      text: `O tema de parcerias no seu mapa é regido por ${PLANET_NAMES[h7Ruler.planet]}, que está na casa ${h7Ruler.house}. Isso significa que seus relacionamentos são influenciados pelos assuntos da casa ${h7Ruler.house}.`,
+      text: `A Casa 7 é o espelho — mostra o que você busca ou projeta nos parceiros. O tema de parcerias no seu mapa é regido por ${PLANET_NAMES[h7Ruler.planet]}, que está posicionado na casa ${h7Ruler.house}. Isso significa que seus relacionamentos mais significativos são influenciados pelos assuntos de ${getHouseTheme(h7Ruler.house)}. O que você encontra no outro não é acidental — as energias que se ativam nessa conexão já existiam em você.`,
       importance: 'medium',
     });
   }
@@ -198,8 +202,8 @@ function synthesizeLove(chart: NatalChart): ThemeSynthesis {
   if (marsPos) {
     const mSign = getSignIndex(marsPos.longitude);
     sections.push({
-      subtitle: `Marte em ${SIGN_NAMES[mSign]} — Desejo`,
-      text: `Marte mostra o que te atrai instintivamente e como você busca o que deseja no amor. Em ${SIGN_NAMES[mSign]}, seu desejo se manifesta de forma ${getMarsFlavor(mSign)}.`,
+      subtitle: `Marte em ${SIGN_NAMES[mSign]} — Desejo e Atração`,
+      text: `Marte mostra o que te atrai instintivamente — não o amor construído no tempo, mas o desejo que surge antes de qualquer pensamento racional. Em ${SIGN_NAMES[mSign]}, sua forma de buscar o que deseja é ${getMarsFlavor(mSign)}. Quando Marte e Vênus trabalham juntos no mapa, desejo e afeto se complementam. Quando estão em tensão, pode haver uma divisão entre o que atrai (Marte) e o que nutre (Vênus).`,
       importance: 'medium',
     });
   }
@@ -299,7 +303,7 @@ function synthesizeMission(chart: NatalChart): ThemeSynthesis {
     const nnSign = getSignIndex(nnPos.longitude);
     sections.push({
       subtitle: `Nodo Norte na Casa ${nnHouse} em ${SIGN_NAMES[nnSign]}`,
-      text: `Sua direção evolutiva aponta para os temas da casa ${nnHouse}. É para lá que sua alma quer crescer nesta vida, mesmo que pareça desconfortável no início.`,
+      text: `O Nodo Norte representa a direção evolutiva da sua alma — as qualidades e experiências que você veio incorporar para crescer. Não promete facilidade; promete libertação através do propósito. Na casa ${nnHouse} (${getHouseTheme(nnHouse)}), é para esses temas que sua alma quer crescer nesta vida, mesmo que pareça desconfortável no início. O desconforto não é sinal de erro — é sinal de expansão.`,
       importance: 'high',
     });
   }
@@ -310,7 +314,7 @@ function synthesizeMission(chart: NatalChart): ThemeSynthesis {
     const sunHouse = chart.planetHouses.sun || 1;
     sections.push({
       subtitle: `Sol na Casa ${sunHouse} — Propósito Consciente`,
-      text: `Seu Sol pede que você brilhe na casa ${sunHouse} (${getHouseTheme(sunHouse)}). Quando honra esse chamado, atrai abundância e alinhamento.`,
+      text: `O Sol é o princípio organizador do seu mapa — a razão pela qual sua energia coere em vez de se dispersar. Na casa ${sunHouse} (${getHouseTheme(sunHouse)}), é nessa área que você veio brilhar e expressar sua identidade mais autêntica. Quando honra esse chamado, atrai alinhamento e vitalidade. Quando se desconecta dele, surge o burnout — que não é exaustão, mas desalinhamento.`,
       importance: 'high',
     });
   }
@@ -353,8 +357,8 @@ function synthesizeBlocks(chart: NatalChart): ThemeSynthesis {
   if (satPos) {
     const satHouse = chart.planetHouses.saturn || 1;
     sections.push({
-      subtitle: `Saturno na Casa ${satHouse} — Onde sente limitação`,
-      text: `Saturno indica onde a vida parece mais difícil ou lenta. Na casa ${satHouse}, pode haver sensação de inadequação ou restrição — mas é justamente ali que você constrói sua maior força com o tempo.`,
+      subtitle: `Saturno na Casa ${satHouse} — Onde Constrói Maestria`,
+      text: `Saturno não é o planeta dos bloqueios — é o planeta da maestria. Onde ele está em tensão no seu mapa é exatamente onde você está sendo chamado a assumir responsabilidade total pela sua vida. Na casa ${satHouse} (${getHouseTheme(satHouse)}), pode haver sensação de inadequação, lentidão ou restrição — mas é justamente ali que você constrói sua maior força com o tempo. O crítico interior que você carrega nessa área não é fraqueza: é Saturno em sua forma imatura. Quando integrado, esse crítico se transforma em guia interior.`,
       importance: 'medium',
     });
   }
@@ -420,10 +424,18 @@ function synthesizeTalents(chart: NatalChart): ThemeSynthesis {
 
 function getHouseTheme(house: number): string {
   const themes = [
-    'identidade e corpo', 'dinheiro e valores', 'comunicação e aprendizado',
-    'lar e família', 'criatividade e prazer', 'trabalho e saúde',
-    'relacionamentos e parcerias', 'transformação e intimidade', 'filosofia e viagens',
-    'carreira e imagem pública', 'amizades e projetos futuros', 'espiritualidade e inconsciente',
+    'identidade, corpo e a forma como o mundo te percebe',
+    'dinheiro, valores pessoais e autoestima material',
+    'comunicação, aprendizado e relações com o entorno imediato',
+    'raízes, família, segurança emocional e herança ancestral',
+    'criatividade, prazer, filhos e autoexpressão autêntica',
+    'trabalho cotidiano, saúde e serviço ao próximo',
+    'relacionamentos, parcerias e o espelho que o outro oferece',
+    'transformação profunda, intimidade, morte simbólica e renascimento',
+    'filosofia de vida, viagens que expandem a consciência e busca de significado',
+    'carreira, vocação pública e o legado que você constrói no mundo',
+    'amizades, grupos, visão de futuro e causas que transcendem o individual',
+    'espiritualidade, inconsciente, padrões ocultos e dissolução do ego',
   ];
   return themes[house - 1] || '';
 }

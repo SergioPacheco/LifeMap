@@ -56,9 +56,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Excesso — pode prometer demais, gastar demais, acreditar demais em si sem base real. A lição é expansão com responsabilidade.',
   },
   'sun-saturn': {
-    conjunction: 'Identidade marcada por disciplina, responsabilidade precoce e seriedade. Pode ter se sentido limitado na infância. Com maturidade, vira autoridade sólida.',
-    soft: 'Disciplina e ambição apoiam sua identidade. Você constrói com paciência e colhe resultados duradouros. Maturidade é aliada.',
-    hard: 'Tensão entre quem você é e o que sente que "deveria ser". Autocrítica severa, sensação de não ser suficiente. Pai rígido ou ausente. A lição: você não precisa de permissão para brilhar.',
+    conjunction: 'Identidade marcada por disciplina, responsabilidade precoce e seriedade. Pode ter se sentido limitado na infância — como se tivesse que "crescer" antes do tempo. Saturno fundido ao Sol é a assinatura do construtor paciente: o que você constrói tem uma solidez que ninguém pode tirar. Com maturidade, a pessoa que carregava peso demais se torna autoridade natural.',
+    soft: 'Disciplina e ambição apoiam sua identidade de forma orgânica. Você constrói com paciência e colhe resultados que duram décadas. A maturidade é aliada — cada ano que passa te fortalece. Há uma sabedoria prática na forma como você lida com o mundo que inspira confiança nos outros.',
+    hard: 'Tensão entre quem você é e o que sente que "deveria ser". Autocrítica severa, sensação de nunca ser suficiente, medo de não corresponder. O pai pode ter sido rígido, ausente ou excessivamente exigente. Esta não é uma falha no design — é um convite a se libertar da necessidade de permissão para existir. A lição profunda: você não precisa provar seu valor para ter direito de brilhar.',
   },
   'sun-uranus': {
     conjunction: 'Identidade radicalmente original — você precisa ser diferente e se recusa a se enquadrar. Pode chocar ou inspirar.',
@@ -71,9 +71,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Identidade confusa — quem sou eu? Pode se perder em ilusões, vícios ou sacrifício. A lição é sonhar com os pés no chão.',
   },
   'sun-pluto': {
-    conjunction: 'Identidade intensa e magnética. Você passa por transformações profundas de ego ao longo da vida. Presença poderosa.',
-    soft: 'Capacidade de se reinventar e usar poder pessoal com sabedoria. Liderança transformadora.',
-    hard: 'Lutas de poder — com autoridades, com o pai, consigo mesmo. Pode manipular ou ser manipulado. A lição é empoderamento sem controle.',
+    conjunction: 'Identidade intensa e magnética — sua presença é percebida mesmo quando você está em silêncio. Ao longo da vida, você passa por transformações profundas de ego que matam versões anteriores de si mesmo para dar lugar a algo mais verdadeiro. Quando Plutão está fundido ao Sol, não há meio-termo: ou você vive com autenticidade radical, ou a vida força essa autenticidade através de crises.',
+    soft: 'Capacidade extraordinária de se reinventar — você tem uma resiliência interna que permite morrer e renascer psicologicamente quando necessário. Poder pessoal usado com sabedoria: liderança que transforma sem dominar. Há uma profundidade magnética na forma como você se apresenta que atrai lealdade genuína.',
+    hard: 'Lutas de poder — com autoridades, com o pai, consigo mesmo. Pode haver experiências de manipulação (sofrida ou exercida) que forçam confronto com a própria sombra. O que parece estar se desmontando já estava desgastado por dentro — Plutão simplesmente revela. A lição é empoderamento sem controle: o poder mais verdadeiro não precisa dominar ninguém.',
   },
 
   // --- LUA ---
@@ -98,9 +98,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Exagero emocional — promete demais, espera demais, pode usar comida/compras para preencher vazio emocional.',
   },
   'moon-saturn': {
-    conjunction: 'Emoções contidas — pode ter aprendido cedo que chorar não é seguro. Responsabilidade emocional pesada. Com maturidade, vira força interior.',
-    soft: 'Estabilidade emocional. Você lida com sentimentos de forma madura e constrói relações emocionais sólidas.',
-    hard: 'Frieza emocional aparente que esconde necessidades profundas de segurança. Mãe ausente ou rígida. Medo de ser vulnerável. A lição é permitir-se sentir.',
+    conjunction: 'Emoções contidas — pode ter aprendido cedo que chorar não é seguro, que necessidades emocionais são um fardo para os outros. Responsabilidade emocional pesada desde jovem. Mas esta é também a assinatura da força interior genuína: com maturidade, a pessoa que continha demais se torna a rocha emocional que os outros buscam. A sabedoria emocional de quem já viu o pior e permaneceu de pé.',
+    soft: 'Estabilidade emocional que inspira confiança. Você lida com sentimentos de forma madura e constrói relações emocionais sólidas que duram. Há uma presença tranquila na forma como sustenta os outros emocionalmente — não é frieza, é profundidade centrada.',
+    hard: 'Frieza emocional aparente que esconde necessidades profundas de segurança e amor. A mãe pode ter sido ausente, rígida ou emocionalmente indisponível. Há um medo fundamental de ser vulnerável — como se mostrar necessidade fosse uma fraqueza imperdoável. Esta tensão não é sua falha: é onde a vida pede que você aprenda a ser gentil consigo mesmo primeiro, para depois receber gentileza de volta.',
   },
   'moon-uranus': {
     conjunction: 'Necessidade emocional de liberdade — inquietude interior, mudanças emocionais súbitas. Pode ter tido uma mãe não convencional.',
@@ -113,9 +113,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Confusão emocional — dificuldade em separar seus sentimentos dos alheios. Pode idealizar figuras maternas ou escapar pela fantasia.',
   },
   'moon-pluto': {
-    conjunction: 'Emoções intensas e profundas — tudo que sente é absoluto. Pode ter passado por crises emocionais transformadoras.',
-    soft: 'Profundidade emocional como força — você entende as camadas ocultas dos sentimentos e se regenera com facilidade.',
-    hard: 'Intensidade emocional que pode se tornar manipulação ou obsessão. Mãe controladora ou dinâmica familiar com segredos. A cura vem ao soltar o controle.',
+    conjunction: 'Emoções intensas e profundas — tudo que sente é absoluto, sem diluição, sem escapatória. Pode ter passado por crises emocionais transformadoras na infância que moldaram a forma como processa sentimentos para sempre. A mãe pode ter sido uma presença poderosa (controladora ou extremamente presente). Esta é a configuração de quem não tem escolha senão viver com autenticidade emocional total.',
+    soft: 'Profundidade emocional como superpoder — você entende as camadas ocultas dos sentimentos humanos com precisão que poucos alcançam. Capacidade natural de regeneração: o que destruiria outros emocionalmente, você transmuta em sabedoria. Há algo de curador na forma como você sustenta espaço para a dor alheia.',
+    hard: 'Intensidade emocional que pode se tornar manipulação, obsessão ou necessidade de controle sobre a vida emocional dos outros. A mãe pode ter sido controladora ou a dinâmica familiar incluía segredos poderosos. O que parece necessidade de controle é na verdade medo profundo de ser destruído pela própria vulnerabilidade. A cura vem ao soltar — ao confiar que as emoções podem ser sentidas sem que te destruam.',
   },
 
   // --- VENUS-MARS (amor-ação) ---
@@ -125,9 +125,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Tensão entre o que deseja e o que atrai — pode querer tipos que não são bons para você, ou ter conflito entre independência e parceria. A lição é integrar ternura e paixão.',
   },
   'venus-saturn': {
-    conjunction: 'Amor sério e comprometido — pode demorar para se abrir, mas quando ama é para sempre. Medo de rejeição.',
-    soft: 'Relações maduras e duradouras. Você leva amor a sério e constrói parcerias sólidas com paciência.',
-    hard: 'Medo de não ser amável, dificuldade em se abrir, relações com pessoas mais velhas ou inacessíveis. A lição é que você merece amor sem precisar "provar" nada.',
+    conjunction: 'Amor sério e comprometido — pode demorar para se abrir porque o coração aprendeu que vulnerabilidade tem consequências. Medo de rejeição é profundo, mas igualmente profunda é a capacidade de amar com consistência quando a confiança se estabelece. O amor aqui não é flashy — é o tipo que constrói patrimônio emocional ao longo de décadas.',
+    soft: 'Relações maduras e duradouras que melhoram com o tempo. Você leva amor a sério e constrói parcerias sólidas com paciência e responsabilidade. Há uma integridade na forma como você ama que atrai pessoas que também valorizam compromisso. O tempo é seu aliado no amor.',
+    hard: 'Medo profundo de não ser amável — dificuldade em se abrir, relações com pessoas mais velhas ou emocionalmente inacessíveis que reforçam a sensação de ter que "ganhar" o amor. Esta configuração não indica que você será sozinho — indica que a vida pede que você dissolva a crença de que amor precisa ser merecido. A lição é radical: você é digno de amor sem precisar provar absolutamente nada.',
   },
   'venus-neptune': {
     conjunction: 'Amor idealizado — romântico, artístico, às vezes ilusório. Dificuldade em ver o outro como é. Amor como experiência espiritual.',
@@ -135,9 +135,9 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     hard: 'Ilusão no amor — pode atrair parceiros que precisam de resgate ou se perder em fantasias românticas. A lição é amar sem projetar.',
   },
   'venus-pluto': {
-    conjunction: 'Amor intenso e transformador — relações profundas que mudam sua vida. Possessividade e magnetismo andam juntos.',
-    soft: 'Capacidade de amar profundamente e se transformar através de relações. Atração magnética natural.',
-    hard: 'Dinâmicas de poder no amor — ciúme, controle, medo de perda. Atração por relações proibidas ou intensas demais. A cura vem ao amar sem possuir.',
+    conjunction: 'Amor intenso e transformador — seus relacionamentos não são casuais; são experiências que mudam sua vida inteira. A intensidade que você sente no amor não é anormal; é a profundidade de sua própria psique finalmente pedindo atenção. Possessividade e magnetismo andam juntos porque amar, para você, é mergulhar totalmente. O desafio é permitir que o amor exista sem precisar controlá-lo.',
+    soft: 'Capacidade de amar profundamente e se transformar através das relações — cada vínculo significativo te deixa mais inteiro, não menos. Atração magnética natural que funciona sem esforço. Há uma sabedoria na forma como você navega a intimidade que permite curar tanto a si quanto aos outros.',
+    hard: 'Dinâmicas de poder no amor — ciúme, controle, medo de perda, atração por relações que parecem proibidas ou intensas demais. O que parece obsessão é na verdade a alma pedindo uma experiência de amor que não se esconda da verdade. Estruturas de relação construídas sobre medo colapsam naturalmente quando a consciência se expande. A cura vem ao amar sem possuir — ao confiar que profundidade não requer grades.',
   },
 
   // --- MARS-SATURN (ação-limite) ---
@@ -235,6 +235,33 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     conjunction: 'Aspecto geracional muito lento (~ciclo de 492 anos). Define épocas civilizacionais inteiras.',
     soft: 'Transformação espiritual coletiva fluindo na direção da evolução da consciência.',
     hard: 'Crises espirituais e de poder que afetam gerações inteiras — dissolução de estruturas obsoletas.',
+  },
+
+  // --- QUÍRON (A Ferida que Cura) ---
+  'sun-chiron': {
+    conjunction: 'A ferida está fundida à identidade — pode ter crescido sentindo que há algo fundamentalmente "errado" em quem você é. Mas é exatamente essa sensibilidade à dor identitária que te torna capaz de ajudar outros a se encontrarem. Quando para de tentar "consertar" a si mesmo e aceita a totalidade do que é, emerge uma autenticidade magnética.',
+    soft: 'Facilidade em integrar suas feridas à identidade de forma saudável. Você transforma experiências de dor em sabedoria que inspira os outros. Há um dom natural para mentoria — as pessoas sentem que você entende o que é lutar para ser quem se é.',
+    hard: 'Tensão entre identidade e ferida — pode sentir que precisa esconder suas vulnerabilidades para ser respeitado, ou que brilhar significa trair a dor que carrega. A lição é que sua luz não nega sua sombra; elas coexistem. Quem integra essa tensão se torna um farol para outros que também lutam para existir.',
+  },
+  'moon-chiron': {
+    conjunction: 'A ferida está fundida às necessidades emocionais — pode ter aprendido que precisar é perigoso, que suas emoções são "demais" ou que o cuidado materno tinha preço. Mas essa mesma sensibilidade emocional amplificada é o que te permite perceber a dor alheia com precisão rara. Curandeiros emocionais natos.',
+    soft: 'Suas emoções e suas feridas trabalham juntas de forma construtiva. Você usa a experiência de dor emocional para se conectar com empatia genuína. Há uma qualidade maternal na forma como sustenta espaço para a vulnerabilidade dos outros.',
+    hard: 'Tensão entre necessidades emocionais e padrões de dor — pode oscilar entre buscar nutrição desesperadamente e se retirar completamente por medo de ser ferido novamente. A mãe pode ter sido fonte tanto de amor quanto de ferida. A cura vem ao aprender que precisar não é fraqueza, e que você pode se nutrir sem repetir os padrões que herdou.',
+  },
+  'mercury-chiron': {
+    conjunction: 'A ferida está fundida à comunicação e ao intelecto — pode ter sido silenciado, ridicularizado por suas ideias ou ter sentido que sua forma de pensar era "errada". Mas essa mesma sensibilidade às palavras é o que te torna um comunicador extraordinário quando curado. A voz que foi silenciada se torna a voz que dá permissão aos outros para falarem.',
+    soft: 'Facilidade em usar palavras para curar. Você articula o que os outros sentem mas não conseguem nomear. Dom natural para escrita terapêutica, ensino transformador ou qualquer forma de comunicação que conecta mente e coração.',
+    hard: 'Tensão entre pensamento e ferida — dificuldade em ser ouvido, medo de falar errado, ou uso da inteligência como armadura para evitar vulnerabilidade. O desafio é confiar que sua voz tem valor mesmo quando treme — especialmente quando treme.',
+  },
+  'venus-chiron': {
+    conjunction: 'A ferida está fundida ao amor e aos relacionamentos — pode ter internalizado que não é digno de amor, que intimidade é perigosa ou que dar é mais seguro que receber. Mas essa mesma sensibilidade relacional é o que te dá uma percepção rara sobre o que o amor verdadeiro exige. Quando para de tentar "merecer" o amor, ele chega sem esforço.',
+    soft: 'Suas relações são fonte de cura — tanto para você quanto para os outros. Há uma beleza na forma como você ama que vem exatamente de ter conhecido a dor. Você atrai parceiros que precisam ser vistos, e ao vê-los, também se cura.',
+    hard: 'Tensão entre amor e ferida — pode atrair parceiros que reativam suas dores mais antigas, ou se sabotar quando o amor está indo "bem demais". O padrão de repetição não é masoquismo; é a psique tentando curar através da re-exposição. A lição é que você pode escolher conscientemente um amor diferente.',
+  },
+  'mars-chiron': {
+    conjunction: 'A ferida está fundida à ação, à assertividade e ao poder pessoal — pode ter aprendido que agir é perigoso, que sua raiva é destrutiva ou que seu direito de querer está comprometido. Mas essa mesma sensibilidade à violência (sofrida ou temida) é o que te dá uma percepção única sobre poder saudável. O guerreiro ferido que para de temer sua própria força se torna protetor.',
+    soft: 'Sua ação no mundo é informada pela experiência de dor. Há uma qualidade de "guerreiro consciente" — você sabe como usar força sem destruir porque conhece o custo da destruição. Dom para artes marciais, ativismo ou qualquer campo que use poder a serviço da cura.',
+    hard: 'Tensão entre ação e ferida — raiva reprimida, medo de ser agressivo, ou dificuldade em se defender quando necessário. Pode haver experiências onde sua força foi usada contra você ou onde agir trouxe consequências dolorosas. A lição é que sua raiva não é venenosa — é combustível sagrado quando canalizada com consciência.',
   },
 };
 
