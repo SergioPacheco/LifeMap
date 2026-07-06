@@ -26,6 +26,10 @@ const PLANET_COLORS: Record<string, string> = {
   sun: '#e8a830', moon: '#c8c0b4', mercury: '#d4a853', venus: '#44cc44', mars: '#ff4444',
   jupiter: '#aa66dd', saturn: '#c8c0b4', uranus: '#44aaff', neptune: '#44ccaa',
   pluto: '#cc4444', northNode: '#aaa', southNode: '#888', lilith: '#bbb', chiron: '#d4a853',
+  // Asteroids
+  ceres: '#8bc34a', vesta: '#ff9800', pallas: '#03a9f4', juno: '#e91e63',
+  // Extra points
+  vertex: '#b388ff', partOfFortune: '#ffd700',
 };
 
 // Planet symbols
@@ -33,6 +37,10 @@ const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
   northNode: '☊', southNode: '☋', lilith: '⚸', chiron: 'K',
+  // Asteroids
+  ceres: '⚳', vesta: '⚶', pallas: '⚴', juno: '⚵',
+  // Extra points
+  vertex: 'Vx', partOfFortune: '⊕',
 };
 
 // Sign symbols
@@ -333,10 +341,18 @@ function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<str
     const color = PLANET_COLORS[item.id] || '#c8c0b4';
     const symbol = PLANET_SYMBOLS[item.id];
 
+    // Asteroids and extra points use a slightly inner orbit and smaller size
+    const isExtra = ['ceres', 'vesta', 'pallas', 'juno', 'vertex', 'partOfFortune'].includes(item.id);
+    const orbitR = isExtra ? R_PLANET_ORBIT - 30 : R_PLANET_ORBIT;
+    const fontSize = isExtra ? 11 : 15;
+    const circleR = isExtra ? 10 : 13;
+
     const PLANET_NAMES_MAP: Record<string, string> = {
       sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
       jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
       northNode: 'Nodo Norte', southNode: 'Nodo Sul', lilith: 'Lilith', chiron: 'Quíron',
+      ceres: 'Ceres', vesta: 'Vesta', pallas: 'Pallas', juno: 'Juno',
+      vertex: 'Vertex', partOfFortune: 'Parte da Fortuna',
     };
     const SIGN_NAMES_MAP = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 
@@ -348,7 +364,7 @@ function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<str
     const min = Math.floor((degInSign - deg) * 60);
 
     // Planet symbol position
-    const p = pol(R_PLANET_ORBIT, item.angle);
+    const p = pol(orbitR, item.angle);
 
     // Tooltip: "Sol em Leão 15°23'"
     const tooltip = `${planetName} em ${signName} ${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? ' (Retrógrado)' : ''}`;
@@ -356,15 +372,15 @@ function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<str
     // Group with tooltip
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<circle cx="${p.x}" cy="${p.y}" r="13" fill="#252540" stroke="${color}" stroke-width="1.8"/>`;
-    s += `<text x="${p.x}" y="${p.y + 5}" text-anchor="middle" font-size="15" font-weight="bold" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `<circle cx="${p.x}" cy="${p.y}" r="${circleR}" fill="#252540" stroke="${color}" stroke-width="${isExtra ? 1.2 : 1.8}"/>`;
+    s += `<text x="${p.x}" y="${p.y + (fontSize === 11 ? 4 : 5)}" text-anchor="middle" font-size="${fontSize}" font-weight="bold" fill="${color}" font-family="serif">${symbol}</text>`;
     s += `</g>`;
 
     // Degree label below
     let label = `${deg}°${min < 10 ? '0' : ''}${min}'`;
     if (item.retro) label += '℞';
 
-    const degP = pol(R_PLANET_ORBIT - 20, item.angle);
+    const degP = pol(orbitR - 20, item.angle);
     const labelColor = item.retro ? '#ff4444' : '#8a8a9a';
     s += `<text x="${degP.x}" y="${degP.y + 3}" text-anchor="middle" font-size="8" fill="${labelColor}" font-family="monospace">${label}</text>`;
   }

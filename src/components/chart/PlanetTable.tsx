@@ -12,11 +12,15 @@ const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
   jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
   northNode: 'Nodo Norte', southNode: 'Nodo Sul', lilith: 'Lilith', chiron: 'Quíron',
+  ceres: 'Ceres', vesta: 'Vesta', pallas: 'Pallas', juno: 'Juno',
+  vertex: 'Vertex', partOfFortune: 'Parte da Fortuna',
 };
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
   northNode: '☊', southNode: '☋', lilith: '⚸', chiron: '⚷',
+  ceres: '⚳', vesta: '⚶', pallas: '⚴', juno: '⚵',
+  vertex: 'Vx', partOfFortune: '⊕',
 };
 const SIGN_ELEMENT_COLOR = ['#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844'];
 
