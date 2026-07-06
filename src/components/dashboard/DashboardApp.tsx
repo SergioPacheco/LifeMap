@@ -11,46 +11,10 @@ interface Props {
 }
 
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
-const SIGN_NAMES_PT = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-const SIGN_NAMES_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-
-const TEXTS = {
-  pt: {
-    greeting: 'Olá',
-    dailyTitle: 'Seu dia',
-    moonToday: 'Lua hoje',
-    quickLinks: 'Atalhos',
-    natal: 'Mapa Natal',
-    transits: 'Trânsitos',
-    synastry: 'Sinastria',
-    reports: 'Relatórios',
-    horoscope: 'Horóscopo',
-    tools: 'Ferramentas',
-    switchProfile: 'Trocar perfil',
-    addProfile: '+ Novo perfil',
-    engine: 'Engine',
-    signNames: SIGN_NAMES_PT,
-  },
-  en: {
-    greeting: 'Hello',
-    dailyTitle: 'Your day',
-    moonToday: 'Moon today',
-    quickLinks: 'Quick links',
-    natal: 'Natal Chart',
-    transits: 'Transits',
-    synastry: 'Synastry',
-    reports: 'Reports',
-    horoscope: 'Horoscope',
-    tools: 'Tools',
-    switchProfile: 'Switch profile',
-    addProfile: '+ New profile',
-    engine: 'Engine',
-    signNames: SIGN_NAMES_EN,
-  },
-};
 
 export default function DashboardApp(props: Props) {
-  const txt = () => TEXTS[props.locale as keyof typeof TEXTS] || TEXTS.en;
+  const t = () => getTranslations(props.locale);
+  const txt = () => t().dashboard;
 
   const [profile, setProfile] = createSignal<Profile | null>(null);
   const [profiles, setProfiles] = createSignal<Profile[]>([]);
@@ -187,15 +151,15 @@ export default function DashboardApp(props: Props) {
                 {/* Categories */}
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
                   <div class="p-3 bg-pink-900/10 rounded-lg border border-pink-800/30">
-                    <h4 class="text-xs font-semibold text-pink-300 uppercase mb-1">♡ {getTranslations(props.locale).dashboard.love}</h4>
+                    <h4 class="text-xs font-semibold text-pink-300 uppercase mb-1">♡ {txt().love}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.love}</p>
                   </div>
                   <div class="p-3 bg-blue-900/10 rounded-lg border border-blue-800/30">
-                    <h4 class="text-xs font-semibold text-blue-300 uppercase mb-1">♄ {getTranslations(props.locale).dashboard.career}</h4>
+                    <h4 class="text-xs font-semibold text-blue-300 uppercase mb-1">♄ {txt().career}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.career}</p>
                   </div>
                   <div class="p-3 bg-green-900/10 rounded-lg border border-green-800/30">
-                    <h4 class="text-xs font-semibold text-green-300 uppercase mb-1">♂ {getTranslations(props.locale).dashboard.health}</h4>
+                    <h4 class="text-xs font-semibold text-green-300 uppercase mb-1">♂ {txt().health}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.health}</p>
                   </div>
                 </div>
@@ -206,7 +170,7 @@ export default function DashboardApp(props: Props) {
                   <div>
                     <p class="text-xs text-muted uppercase tracking-wider">{txt().moonToday}</p>
                     <p class="text-sm font-medium text-cream">
-                      {getTranslations(props.locale).dashboard.moonIn} {txt().signNames[horoscope()!.moonSign]}
+                      {txt().moonIn} {txt().signNames[horoscope()!.moonSign]}
                     </p>
                   </div>
                 </div>
@@ -243,7 +207,7 @@ export default function DashboardApp(props: Props) {
                 href={localePath('/chart/natal', props.locale as Locale)}
                 class="mt-3 block text-center text-xs text-gold hover:underline"
               >
-                {getTranslations(props.locale).dashboard.viewFullChart}
+                {txt().viewFullChart}
               </a>
             </div>
 

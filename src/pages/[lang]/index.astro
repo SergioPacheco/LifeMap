@@ -45,15 +45,15 @@ const learn = await getContent(locale, 'learn');
       <!-- Eyebrow -->
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs text-cream-dark mb-8">
         <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
-        {locale === 'pt' ? 'Astrologia profissional · 100% no seu navegador' : 'Professional astrology · 100% in your browser'}
+        {t.home.tagline}
       </div>
 
       <!-- Main headline -->
       <h1 class="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-cream-light leading-[1.1] tracking-tight">
-        {locale === 'pt' ? 'Leia as estrelas.' : 'Read your stars.'}
+        {t.home.headline}
         <br />
         <span class="bg-gradient-to-r from-gold-dark via-gold to-gold-light bg-clip-text text-transparent">
-          {locale === 'pt' ? 'Conheça-se.' : 'Know yourself.'}
+          {t.home.headlineHighlight}
         </span>
       </h1>
 
@@ -65,7 +65,7 @@ const learn = await getContent(locale, 'learn');
       <!-- CTA buttons -->
       <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
         <a href={localePath('/onboarding', locale)} class="group relative px-8 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.02] active:scale-[0.98]">
-          {locale === 'pt' ? 'Começar Grátis' : 'Start Free'}
+          {t.home.cta}
           <span class="ml-2">✦</span>
           <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-gold-dark via-gold to-gold-light opacity-0 group-hover:opacity-20 blur-xl transition-opacity"></div>
         </a>
@@ -77,11 +77,11 @@ const learn = await getContent(locale, 'learn');
 
       <!-- Social proof -->
       <div class="mt-12 flex items-center justify-center gap-6 text-xs text-muted">
-        <span>🔒 100% privado</span>
+        <span>{t.home.socialPrivate}</span>
         <span class="w-px h-3 bg-base-400"></span>
-        <span>⚡ Swiss Ephemeris</span>
+        <span>{t.home.socialSwiss}</span>
         <span class="w-px h-3 bg-base-400"></span>
-        <span>📱 Funciona offline</span>
+        <span>{t.home.socialOffline}</span>
       </div>
     </div>
   </section>
@@ -90,10 +90,10 @@ const learn = await getContent(locale, 'learn');
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
     <div class="text-center mb-12">
       <h2 class="text-2xl sm:text-3xl font-serif font-bold text-cream-light">
-        {locale === 'pt' ? 'Ferramentas profissionais. Acesso livre.' : 'Professional tools. Free access.'}
+        {t.home.featuresTitle}
       </h2>
       <p class="text-cream-dark mt-3 max-w-lg mx-auto">
-        {locale === 'pt' ? 'Tudo roda no seu navegador — seus dados nunca saem do dispositivo.' : 'Everything runs in your browser — your data never leaves your device.'}
+        {t.home.featuresSubtitle}
       </p>
     </div>
 
@@ -101,32 +101,32 @@ const learn = await getContent(locale, 'learn');
       <a href={localePath('/chart/natal', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">☉</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.natal}</h3>
-        <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Mapa completo com interpretação' : 'Complete chart with interpretation'}</p>
+        <p class="text-sm text-muted mt-1">{t.home.natalDesc}</p>
       </a>
       <a href={localePath('/chart/transits', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">↻</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.transits}</h3>
-        <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Trânsitos do dia sobre seu mapa' : 'Daily transits over your chart'}</p>
+        <p class="text-sm text-muted mt-1">{t.home.transitsDesc}</p>
       </a>
       <a href={localePath('/chart/synastry', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">♡</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.synastry}</h3>
-        <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Compatibilidade entre dois mapas' : 'Compatibility between charts'}</p>
+        <p class="text-sm text-muted mt-1">{t.home.synastryDesc}</p>
       </a>
       <a href={localePath('/horoscope/daily', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">✦</div>
-        <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{locale === 'pt' ? 'Horóscopo Diário' : 'Daily Horoscope'}</h3>
-        <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Personalizado pelo seu mapa' : 'Personalized from your chart'}</p>
+        <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.home.horoscopeTitle}</h3>
+        <p class="text-sm text-muted mt-1">{t.home.horoscopeDesc}</p>
       </a>
       <a href={localePath('/tools/ephemeris', locale)} class="group p-6 rounded-2xl glass border-glow glow-hover transition-all">
         <div class="text-3xl mb-4">📅</div>
         <h3 class="font-semibold text-cream-light group-hover:text-gold transition-colors">{t.nav.ephemeris}</h3>
-        <p class="text-sm text-muted mt-1">{locale === 'pt' ? 'Posições planetárias por data' : 'Planetary positions by date'}</p>
+        <p class="text-sm text-muted mt-1">{t.home.ephemerisDesc}</p>
       </a>
       <a href={localePath('/reports', locale)} class="group p-6 rounded-2xl border border-gold/20 bg-gold/[0.03] glow-hover transition-all">
         <div class="text-3xl mb-4">📄</div>
-        <h3 class="font-semibold text-gold">{locale === 'pt' ? 'Relatórios Premium' : 'Premium Reports'}</h3>
-        <p class="text-sm text-gold-muted mt-1">{locale === 'pt' ? 'PDF com 20-30 páginas de análise' : '20-30 page PDF analysis'}</p>
+        <h3 class="font-semibold text-gold">{t.home.premiumTitle}</h3>
+        <p class="text-sm text-gold-muted mt-1">{t.home.premiumDesc}</p>
       </a>
     </div>
   </section>
@@ -135,23 +135,23 @@ const learn = await getContent(locale, 'learn');
   <section class="max-w-4xl mx-auto px-4 sm:px-6 py-16">
     <div class="glass rounded-2xl p-8 text-center">
       <h3 class="text-xl font-serif font-bold text-cream-light mb-6">
-        {locale === 'pt' ? 'Por que usar o LifeMap Pro?' : 'Why use LifeMap Pro?'}
+        {t.home.trustTitle}
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div>
           <div class="text-2xl mb-2">🔬</div>
           <h4 class="text-sm font-semibold text-cream-light">Swiss Ephemeris</h4>
-          <p class="text-xs text-muted mt-1">{locale === 'pt' ? 'Mesma engine do Astro.com. Precisão sub-arcsegundo.' : 'Same engine as Astro.com. Sub-arcsecond precision.'}</p>
+          <p class="text-xs text-muted mt-1">{t.home.trustSwissDesc}</p>
         </div>
         <div>
           <div class="text-2xl mb-2">🔒</div>
-          <h4 class="text-sm font-semibold text-cream-light">{locale === 'pt' ? 'Zero servidores' : 'Zero servers'}</h4>
-          <p class="text-xs text-muted mt-1">{locale === 'pt' ? 'Tudo roda no seu navegador. Dados ficam no dispositivo.' : 'Everything runs locally. Data stays on device.'}</p>
+          <h4 class="text-sm font-semibold text-cream-light">{t.home.trustZeroServers}</h4>
+          <p class="text-xs text-muted mt-1">{t.home.trustZeroDesc}</p>
         </div>
         <div>
           <div class="text-2xl mb-2">🌐</div>
-          <h4 class="text-sm font-semibold text-cream-light">{locale === 'pt' ? '11 idiomas' : '11 languages'}</h4>
-          <p class="text-xs text-muted mt-1">{locale === 'pt' ? 'PT, EN, ES, FR, DE, IT, NL, TR, RU, ZH, JA' : 'PT, EN, ES, FR, DE, IT, NL, TR, RU, ZH, JA'}</p>
+          <h4 class="text-sm font-semibold text-cream-light">{t.home.trust11langs}</h4>
+          <p class="text-xs text-muted mt-1">{t.home.trust11desc}</p>
         </div>
       </div>
     </div>

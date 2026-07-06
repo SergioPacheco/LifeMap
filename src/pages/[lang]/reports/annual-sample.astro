@@ -12,11 +12,11 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 ---
 
-<BaseLayout title={locale === 'pt' ? 'Previsão Anual' : 'Annual Forecast'} locale={locale}>
+<BaseLayout title={t.reports.yearAhead} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="mb-6 text-center">
       <nav class="text-sm text-muted mb-4">
-        <a href={localePath("/reports", locale)} class="hover:text-brand-600">{t.reports.title}</a> → <span class="text-cream">{locale === 'pt' ? 'Previsão Anual' : 'Annual Forecast'}</span>
+        <a href={localePath("/reports", locale)} class="hover:text-brand-600">{t.reports.title}</a> → <span class="text-cream">{t.reports.yearAhead}</span>
       </nav>
     </div>
     <ReportPreview client:load locale={locale} reportType="annual" />

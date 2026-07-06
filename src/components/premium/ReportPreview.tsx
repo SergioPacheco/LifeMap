@@ -13,32 +13,13 @@ interface Props {
   reportType: 'natal' | 'relationship' | 'career' | 'annual' | 'psychological' | 'seven-sins';
 }
 
-const REPORT_TITLES: Record<string, Record<string, string>> = {
-  pt: { natal: 'Relatório Natal Completo', relationship: 'Relatório de Relacionamento', career: 'Carreira e Vocação', annual: 'Previsão Anual', psychological: 'Análise Psicológica Profunda', 'seven-sins': 'Os Sete Pecados' },
-  en: { natal: 'Complete Natal Report', relationship: 'Relationship Report', career: 'Career & Vocation', annual: 'Annual Forecast', psychological: 'Deep Psychological Analysis', 'seven-sins': 'The Seven Sins' },
-};
-
-const LABELS: Record<string, Record<string, string>> = {
-  pt: {
-    selectProfile: 'Selecione um perfil para gerar a amostra',
-    generating: 'Gerando PDF...',
-    downloadSample: '⬇ Baixar Amostra Gratuita (PDF)',
-    downloadFull: '⬇ Baixar Relatório Completo (PDF)',
-    sampleNote: 'Amostra gratuita — 3 páginas com posições e visão geral. O relatório completo tem 20-30 páginas.',
-    buyFull: 'Comprar versão completa — R$ 29,90',
-    generated: 'PDF gerado com sucesso!',
-    pages: 'páginas',
-  },
-  en: {
-    selectProfile: 'Select a profile to generate the sample',
-    generating: 'Generating PDF...',
-    downloadSample: '⬇ Download Free Sample (PDF)',
-    downloadFull: '⬇ Download Complete Report (PDF)',
-    sampleNote: 'Free sample — 3 pages with positions and overview. The full report has 20-30 pages.',
-    buyFull: 'Buy full version — $9.90',
-    generated: 'PDF generated successfully!',
-    pages: 'pages',
-  },
+const REPORT_TITLE_KEYS: Record<string, string> = {
+  natal: 'natalTitle',
+  relationship: 'relationshipTitle',
+  career: 'careerTitle',
+  annual: 'annualTitle',
+  psychological: 'psychologicalTitle',
+  'seven-sins': 'sevenSinsTitle',
 };
 
 export default function ReportPreview(props: Props) {
@@ -49,8 +30,9 @@ export default function ReportPreview(props: Props) {
   const [buyStatus, setBuyStatus] = createSignal<'idle' | 'paying' | 'generating' | 'done' | 'error'>('idle');
   const [buyError, setBuyError] = createSignal('');
 
-  const labels = () => LABELS[props.locale] || LABELS.en;
-  const title = () => (REPORT_TITLES[props.locale] || REPORT_TITLES.en)[props.reportType];
+  const t = () => getTranslations(props.locale);
+  const labels = () => t().reportPreview;
+  const title = () => (labels() as any)[REPORT_TITLE_KEYS[props.reportType]];
 
   onMount(async () => { await initSweph(); });
 
@@ -166,7 +148,7 @@ export default function ReportPreview(props: Props) {
       setBuyStatus('done');
     } catch (e) {
       console.error('Purchase error:', e);
-      setBuyError('Erro inesperado. Tente novamente.');
+      setBuyError(labels().unexpectedError);
       setBuyStatus('error');
     }
   };
@@ -211,22 +193,22 @@ export default function ReportPreview(props: Props) {
 
             <Show when={buyStatus() === 'paying'}>
               <div class="w-full px-6 py-3 bg-base-200 rounded-lg text-center">
-                <div class="animate-pulse text-gold">💳 Processando pagamento...</div>
+                <div class="animate-pulse text-gold">💳 {labels().processing}</div>
               </div>
             </Show>
 
             <Show when={buyStatus() === 'generating'}>
               <div class="w-full px-6 py-3 bg-base-200 rounded-lg text-center">
                 <div class="animate-spin inline-block text-gold">✦</div>
-                <span class="ml-2 text-cream">Gerando relatório completo...</span>
+                <span class="ml-2 text-cream">{labels().generatingFull}</span>
               </div>
             </Show>
 
             <Show when={buyStatus() === 'done'}>
               <div class="w-full px-6 py-3 bg-green-900/20 border border-green-800/30 rounded-lg text-center">
-                <p class="text-green-400 font-medium">✅ Relatório comprado e baixado!</p>
+                <p class="text-green-400 font-medium">✅ {labels().purchaseSuccess}</p>
                 <a href={localePath('/purchases', props.locale as any)} class="text-xs text-gold hover:underline mt-1 inline-block">
-                  Ver em "Meus Relatórios" →
+                  {labels().viewPurchases}
                 </a>
               </div>
             </Show>
@@ -235,7 +217,7 @@ export default function ReportPreview(props: Props) {
               <div class="w-full px-6 py-3 bg-red-900/20 border border-red-800/30 rounded-lg text-center">
                 <p class="text-sm text-red-400">{buyError()}</p>
                 <button onClick={() => setBuyStatus('idle')} class="text-xs text-muted hover:text-cream underline mt-1">
-                  Tentar novamente
+                  {labels().tryAgain}
                 </button>
               </div>
             </Show>
@@ -252,15 +234,15 @@ export default function ReportPreview(props: Props) {
       {/* Preview of what the report contains */}
       <div class="bg-base-100 rounded-xl p-6 border border-base-300">
         <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-          {getTranslations(props.locale).reports.whatsIncluded}
+          {t().reports.whatsIncluded}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted">
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.coverPersonalized}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.positionsTable}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.houseCusps}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.planetInterpretation}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.aspectsAnalysis}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.dignities}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.coverPersonalized}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.positionsTable}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.houseCusps}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.planetInterpretation}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.aspectsAnalysis}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {t().reports.dignities}</div>
         </div>
       </div>
     </div>
