@@ -5,8 +5,9 @@ import InterpretationPanel from '../chart/InterpretationPanel';
 import BirthDataForm from '../forms/BirthDataForm';
 import { type ChartOptions, DEFAULT_OPTIONS } from '../forms/BirthDataForm';
 import ProfileSelector, { saveProfile } from '../forms/ProfileSelector';
-import { calculateNatalChart, initSweph, getActiveEngine } from '../../engine/index';
-import type { BirthData, NatalChart } from '../../engine/types';
+import { calculateNatalChart, calculateTransits, initSweph, getActiveEngine } from '../../engine/index';
+import { renderBiWheel } from '../../renderer/wheel';
+import type { BirthData, NatalChart, TransitChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
 
 interface Props {
@@ -19,6 +20,8 @@ export default function NatalApp(props: Props) {
   const [error, setError] = createSignal('');
   const [engineInfo, setEngineInfo] = createSignal('');
   const [lastBirthData, setLastBirthData] = createSignal<BirthData | null>(null);
+  const [showTransits, setShowTransits] = createSignal(false);
+  const [transitSvg, setTransitSvg] = createSignal('');
 
   onMount(async () => {
     const ready = await initSweph();
@@ -94,6 +97,18 @@ export default function NatalApp(props: Props) {
     });
   };
 
+  const toggleTransits = (enabled: boolean) => {
+    setShowTransits(enabled);
+    if (enabled && chart()) {
+      const today = new Date();
+      const transit = calculateTransits(today, chart()!);
+      const svg = renderBiWheel(chart()!, transit.positions, transit.aspects);
+      setTransitSvg(svg);
+    } else {
+      setTransitSvg('');
+    }
+  };
+
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left: Form + Profiles */}
@@ -126,7 +141,38 @@ export default function NatalApp(props: Props) {
           </div>
         </Show>
 
-        <NatalWheel chart={chart()} />
+        {/* Show natal-only wheel when transits OFF, bi-wheel when ON */}
+        <Show when={!showTransits()}>
+          <NatalWheel chart={chart()} />
+        </Show>
+
+        {/* Transit toggle */}
+        <Show when={chart()}>
+          <div class="flex items-center gap-3 px-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showTransits()}
+                onChange={(e) => toggleTransits(e.currentTarget.checked)}
+                class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+              />
+              <span class="text-sm text-cream-dark">Mostrar trânsitos de hoje</span>
+            </label>
+            <Show when={showTransits()}>
+              <span class="text-xs text-muted">({new Date().toLocaleDateString('pt-BR')})</span>
+            </Show>
+          </div>
+        </Show>
+
+        {/* Bi-wheel when transits enabled */}
+        <Show when={showTransits() && transitSvg()}>
+          <div class="glass rounded-2xl p-4">
+            <div class="text-xs text-center text-muted mb-2">
+              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo)
+            </div>
+            <div class="w-full max-w-[600px] mx-auto" innerHTML={transitSvg()} />
+          </div>
+        </Show>
 
         <Show when={chart()}>
           <PlanetTable chart={chart()} />
