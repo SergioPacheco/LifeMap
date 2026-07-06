@@ -6,7 +6,7 @@ import BirthDataForm from '../forms/BirthDataForm';
 import ProfileSelector, { saveProfile } from '../forms/ProfileSelector';
 import { calculateNatalChart, initSweph, getActiveEngine } from '../../engine/index';
 import type { BirthData, NatalChart } from '../../engine/types';
-import type { Profile } from '../../store/db';
+import { db, type Profile } from '../../store/db';
 
 interface Props {
   locale: string;
@@ -23,8 +23,24 @@ export default function NatalApp(props: Props) {
     const ready = await initSweph();
     setEngineInfo(ready ? '✦ Swiss Ephemeris' : '◇ Astronomy Engine');
 
-    if (ready && lastBirthData()) {
-      handleCalculate(lastBirthData()!);
+    // Auto-load last profile if coming from onboarding or has saved profiles
+    try {
+      const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
+      if (profiles.length > 0) {
+        const p = profiles[0];
+        handleCalculate({
+          name: p.name,
+          date: p.date,
+          time: p.time,
+          lat: p.lat,
+          lng: p.lng,
+          timezone: p.timezone,
+          city: p.city,
+          country: p.country,
+        });
+      }
+    } catch (e) {
+      console.warn('Could not auto-load profile:', e);
     }
   });
 
