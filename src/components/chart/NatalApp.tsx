@@ -20,6 +20,7 @@ export default function NatalApp(props: Props) {
   const [error, setError] = createSignal('');
   const [engineInfo, setEngineInfo] = createSignal('');
   const [lastBirthData, setLastBirthData] = createSignal<BirthData | null>(null);
+  const [formData, setFormData] = createSignal<BirthData | null>(null);
   const [showTransits, setShowTransits] = createSignal(false);
   const [transitSvg, setTransitSvg] = createSignal('');
 
@@ -85,7 +86,7 @@ export default function NatalApp(props: Props) {
   };
 
   const handleProfileSelect = (profile: Profile) => {
-    handleCalculate({
+    const data: BirthData = {
       name: profile.name,
       date: profile.date,
       time: profile.time,
@@ -94,7 +95,9 @@ export default function NatalApp(props: Props) {
       timezone: profile.timezone,
       city: profile.city,
       country: profile.country,
-    });
+    };
+    setFormData(data);
+    handleCalculate(data);
   };
 
   const toggleTransits = (enabled: boolean) => {
@@ -114,7 +117,7 @@ export default function NatalApp(props: Props) {
       {/* Left: Form + Profiles */}
       <div class="lg:col-span-1 space-y-4">
         <ProfileSelector onSelect={handleProfileSelect} locale={props.locale} />
-        <BirthDataForm onCalculate={handleCalculate} locale={props.locale} />
+        <BirthDataForm onCalculate={handleCalculate} locale={props.locale} initialData={formData()} />
 
         {/* Engine info badge */}
         <Show when={engineInfo()}>

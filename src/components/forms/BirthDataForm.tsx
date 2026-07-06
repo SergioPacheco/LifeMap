@@ -1,4 +1,4 @@
-import { createSignal, Show, For } from 'solid-js';
+import { createSignal, createEffect, Show, For } from 'solid-js';
 import type { BirthData, CalculationOptions, HouseSystem, AspectType } from '../../engine/types';
 
 export interface ChartOptions extends CalculationOptions {
@@ -34,6 +34,7 @@ const ORBS_PRESETS: Record<string, Record<AspectType, number>> = {
 interface Props {
   onCalculate: (data: BirthData, options?: ChartOptions) => void;
   locale: string;
+  initialData?: BirthData | null;
 }
 
 interface GeoResult {
@@ -56,6 +57,26 @@ export default function BirthDataForm(props: Props) {
   const [searching, setSearching] = createSignal(false);
   const [error, setError] = createSignal('');
   const [showAdvanced, setShowAdvanced] = createSignal(false);
+
+  // Populate form when initialData changes (e.g., profile selected)
+  createEffect(() => {
+    const data = props.initialData;
+    if (data) {
+      setName(data.name || '');
+      setDate(data.date || '');
+      setTime(data.time || '12:00');
+      setCity(data.city || '');
+      setSelectedCity(data.lat ? {
+        name: data.city || '',
+        lat: data.lat,
+        lng: data.lng,
+        country: data.country || '',
+        timezone: data.timezone,
+      } : null);
+      setSearchResults([]);
+      setError('');
+    }
+  });
 
   // Advanced options state
   const [houseSystem, setHouseSystem] = createSignal<HouseSystem>(DEFAULT_OPTIONS.houseSystem!);
