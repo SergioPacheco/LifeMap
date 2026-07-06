@@ -141,12 +141,23 @@ function drawSigns(asc: number): string {
     s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="16" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
     s += `</g>`;
 
-    // 10° and 20° tick marks
-    for (const t of [10, 20]) {
-      const tickAngle = startAngle + t;
+    // DEGREE RULER — 30 ticks per sign (inside edge of sign ring)
+    // Long tick every 10°, medium every 5°, short every 1°
+    for (let d = 1; d < 30; d++) {
+      const tickAngle = startAngle + d;
+      const isLong = d % 10 === 0;  // 10°, 20°
+      const isMed = d % 5 === 0;    // 5°, 15°, 25°
+
+      // Inner ruler (on R_SIGN_IN edge — pointing inward into house ring)
+      const tickLen = isLong ? 7 : isMed ? 5 : 2.5;
       const t1 = pol(R_SIGN_IN, tickAngle);
-      const t2 = pol(R_SIGN_IN + 4, tickAngle);
-      s += `<line x1="${t1.x}" y1="${t1.y}" x2="${t2.x}" y2="${t2.y}" stroke="${COL.lineLight}" stroke-width="0.5"/>`;
+      const t2 = pol(R_SIGN_IN - tickLen, tickAngle);
+      s += `<line x1="${t1.x}" y1="${t1.y}" x2="${t2.x}" y2="${t2.y}" stroke="${COL.line}" stroke-width="${isLong ? 0.7 : 0.3}"/>`;
+
+      // Outer ruler (on R_OUTER edge — pointing outward)
+      const t3 = pol(R_OUTER, tickAngle);
+      const t4 = pol(R_OUTER + tickLen * 0.7, tickAngle);
+      s += `<line x1="${t3.x}" y1="${t3.y}" x2="${t4.x}" y2="${t4.y}" stroke="${COL.line}" stroke-width="${isLong ? 0.7 : 0.3}"/>`;
     }
   }
 
@@ -198,6 +209,21 @@ function drawHouses(cusps: number[], asc: number): string {
     s += `<title>${houseTooltip}</title>`;
     s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="10" fill="${COL.textDim}" font-family="sans-serif">${i + 1}</text>`;
     s += `</g>`;
+
+    // DEGREE RULER on inner circle edge (R_HOUSE_IN) — ticks pointing inward
+    // Calculate sector span in degrees
+    const sectorSpan = ((((nextAngle - angle) % 360) + 360) % 360) || 30;
+    const ticksPerHouse = Math.min(30, Math.round(sectorSpan)); // 1 tick per degree up to 30
+    for (let d = 1; d < ticksPerHouse; d++) {
+      const tickAngle = angle + (sectorSpan * d / ticksPerHouse);
+      const isLong = (d * 30 / ticksPerHouse) % 10 < 1;  // approximate 10° marks
+      const isMed = (d * 30 / ticksPerHouse) % 5 < 1;    // approximate 5° marks
+
+      const tickLen = isLong ? 5 : isMed ? 3.5 : 2;
+      const t1 = pol(R_HOUSE_IN, tickAngle);
+      const t2 = pol(R_HOUSE_IN + tickLen, tickAngle);
+      s += `<line x1="${t1.x}" y1="${t1.y}" x2="${t2.x}" y2="${t2.y}" stroke="${COL.lineLight}" stroke-width="0.3"/>`;
+    }
   }
 
   return s;
