@@ -441,3 +441,182 @@ function arcSegment(innerR: number, outerR: number, startA: number, endA: number
   const path = `M ${s1.x} ${s1.y} A ${outerR} ${outerR} 0 ${largeArc} 1 ${e1.x} ${e1.y} L ${s2.x} ${s2.y} A ${innerR} ${innerR} 0 ${largeArc} 0 ${e2.x} ${e2.y} Z`;
   return `<path d="${path}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeW}"/>`;
 }
+
+// ============================================================
+// BI-WHEEL: Natal (inner) + Transits (outer ring)
+// Professional style: natal in inner orbit, transits in outer orbit
+// Aspect lines between transit planets → natal planets
+// ============================================================
+
+const R_TRANSIT_ORBIT = 305; // Transits sit between zodiac ring and sign boundary
+const R_TRANSIT_INNER = 278; // Inner edge of transit ring (= sign ring inner)
+
+export function renderBiWheel(natal: NatalChart, transitPositions: Positions, transitAspects: Aspect[]): string {
+  const asc = natal.houses.ascendant;
+  const w = 700, h = 700;
+
+  let svg = `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="font-family: serif;">`;
+
+  // 1. Background
+  svg += drawBackgrounds();
+
+  // 1b. House segments
+  svg += drawHouseSegments(natal.houses.cusps, asc);
+
+  // 2. Zodiac ring
+  svg += drawZodiacRing(asc);
+
+  // 3. House lines
+  svg += drawHouseLines(natal.houses.cusps, asc);
+
+  // 4. Transit → Natal aspect lines (in center)
+  svg += drawTransitAspects(transitAspects, natal.positions, transitPositions, asc);
+
+  // 5. Natal planets (inner orbit — moved inward to make room)
+  svg += drawNatalPlanetsInner(natal.positions, asc);
+
+  // 6. Transit planets (outer orbit — between sign ring)
+  svg += drawTransitPlanets(transitPositions, asc);
+
+  // 7. Axis labels
+  svg += drawAxisLabels(natal.houses, asc);
+
+  // 8. Legend indicator
+  svg += `<text x="20" y="20" font-size="9" fill="#8a8a9a" font-family="sans-serif">● Natal (interno)  ○ Trânsitos (externo)</text>`;
+
+  svg += '</svg>';
+  return svg;
+}
+
+// Draw natal planets slightly inward (to leave room for transits)
+function drawNatalPlanetsInner(positions: Positions, asc: number): string {
+  let s = '';
+  const R_NATAL = 210; // Moved inward from normal 235
+
+  const items = Object.entries(positions)
+    .filter(([id]) => PLANET_SYMBOLS[id] && !['ceres','vesta','pallas','juno','vertex','partOfFortune'].includes(id))
+    .map(([id, pos]) => ({
+      id,
+      angle: pos.longitude - asc,
+      lon: pos.longitude,
+      retro: pos.isRetrograde || false,
+    }))
+    .sort((a, b) => ((a.angle % 360 + 360) % 360) - ((b.angle % 360 + 360) % 360));
+
+  // Spread overlapping
+  const MIN_SEP = 10;
+  for (let pass = 0; pass < 5; pass++) {
+    for (let i = 1; i < items.length; i++) {
+      let diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
+      if (diff < MIN_SEP && diff > 0) {
+        items[i].angle += (MIN_SEP - diff) / 2;
+        items[i - 1].angle -= (MIN_SEP - diff) / 2;
+      }
+    }
+  }
+
+  for (const item of items) {
+    const color = PLANET_COLORS[item.id] || '#c8c0b4';
+    const symbol = PLANET_SYMBOLS[item.id];
+    const p = pol(R_NATAL, item.angle);
+
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${item.id} natal</title>`;
+    s += `<circle cx="${p.x}" cy="${p.y}" r="11" fill="#1a1a2e" stroke="${color}" stroke-width="1.5"/>`;
+    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `</g>`;
+  }
+
+  return s;
+}
+
+// Draw transit planets in outer area (between zodiac signs)
+function drawTransitPlanets(positions: Positions, asc: number): string {
+  let s = '';
+
+  const TRANSIT_PLANETS = ['sun','moon','mercury','venus','mars','jupiter','saturn','uranus','neptune','pluto','northNode','chiron'];
+
+  const items = Object.entries(positions)
+    .filter(([id]) => TRANSIT_PLANETS.includes(id))
+    .map(([id, pos]) => ({
+      id,
+      angle: pos.longitude - asc,
+      lon: pos.longitude,
+      retro: pos.isRetrograde || false,
+    }))
+    .sort((a, b) => ((a.angle % 360 + 360) % 360) - ((b.angle % 360 + 360) % 360));
+
+  // Spread overlapping
+  const MIN_SEP = 9;
+  for (let pass = 0; pass < 5; pass++) {
+    for (let i = 1; i < items.length; i++) {
+      let diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
+      if (diff < MIN_SEP && diff > 0) {
+        items[i].angle += (MIN_SEP - diff) / 2;
+        items[i - 1].angle -= (MIN_SEP - diff) / 2;
+      }
+    }
+  }
+
+  for (const item of items) {
+    const color = PLANET_COLORS[item.id] || '#c8c0b4';
+    const symbol = PLANET_SYMBOLS[item.id];
+    const p = pol(R_TRANSIT_ORBIT, item.angle);
+
+    const SIGN_NAMES_L = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+    const signIdx = getSignIndex(item.lon);
+    const degInSign = getDegreeInSign(item.lon);
+    const deg = Math.floor(degInSign);
+    const pName = item.id.charAt(0).toUpperCase() + item.id.slice(1);
+    const tooltip = `Trânsito: ${pName} em ${SIGN_NAMES_L[signIdx]} ${deg}°${item.retro ? ' ℞' : ''}`;
+
+    // Transit planets: open circle (hollow) to distinguish from natal
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${tooltip}</title>`;
+    s += `<circle cx="${p.x}" cy="${p.y}" r="10" fill="none" stroke="${color}" stroke-width="2"/>`;
+    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="12" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `</g>`;
+
+    // Retro indicator
+    if (item.retro) {
+      s += `<text x="${p.x + 11}" y="${p.y - 6}" font-size="7" fill="#ff4444" font-family="sans-serif">℞</text>`;
+    }
+  }
+
+  return s;
+}
+
+// Draw aspect lines between transit planets and natal planets
+function drawTransitAspects(aspects: Aspect[], natalPositions: Positions, transitPositions: Positions, asc: number): string {
+  let s = '';
+
+  // Show top 10 most exact transit-to-natal aspects
+  const topAspects = aspects
+    .filter(a => a.exactness > 0.5)
+    .slice(0, 10);
+
+  const R_NATAL_LINE = 210;
+  const R_TRANSIT_LINE = R_TRANSIT_ORBIT;
+
+  for (const asp of topAspects) {
+    // planet1 = transit, planet2 = natal (convention from calculateTransits)
+    const transitLon = transitPositions[asp.planet1]?.longitude;
+    const natalLon = natalPositions[asp.planet2]?.longitude;
+    if (transitLon === undefined || natalLon === undefined) continue;
+
+    const a1 = transitLon - asc;
+    const a2 = natalLon - asc;
+
+    // Line from transit planet position (outer) to natal planet position (inner)
+    const p1 = pol(R_HOUSE_OUT - 5, a1);
+    const p2 = pol(R_HOUSE_OUT - 5, a2);
+
+    const style = ASPECT_LINE[asp.type] || { color: '#999', width: 1, dash: '' };
+    // Make transit aspects slightly transparent
+    const opacity = 0.6 + asp.exactness * 0.4;
+
+    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}" opacity="${opacity.toFixed(2)}"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
+  }
+
+  return s;
+}

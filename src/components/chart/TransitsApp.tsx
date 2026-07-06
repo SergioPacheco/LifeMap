@@ -1,7 +1,7 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import { calculateNatalChart, calculateTransits, initSweph } from '../../engine/index';
-import { renderWheel } from '../../renderer/wheel';
+import { renderWheel, renderBiWheel } from '../../renderer/wheel';
 import type { NatalChart, TransitChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/calculations';
@@ -49,8 +49,8 @@ export default function TransitsApp() {
     const transit = calculateTransits(tDate, natal);
     setTransits(transit);
 
-    // Render natal wheel (transits overlay planned for future)
-    const svg = renderWheel(natal);
+    // Render bi-wheel: natal (inner) + transits (outer)
+    const svg = renderBiWheel(natal, transit.positions, transit.aspects);
     setWheelSvg(svg);
   };
 
