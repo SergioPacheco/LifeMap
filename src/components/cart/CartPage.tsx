@@ -66,9 +66,18 @@ export default function CartPage(props: Props) {
         // 2. Generate PDF
         setCheckoutStatus('generating');
 
-        // Load profile data
-        const profile = await db.profiles.get(item.profileId);
-        if (!profile) continue;
+        // Load profile data (use item's profileId or fallback to latest profile)
+        let profile = item.profileId ? await db.profiles.get(item.profileId) : null;
+        if (!profile) {
+          const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
+          if (profiles.length === 0) {
+            setCheckoutError('Nenhum perfil salvo. Calcule um mapa natal primeiro.');
+            setCheckoutStatus('error');
+            setCheckingOut(false);
+            return;
+          }
+          profile = profiles[0];
+        }
 
         const chart = calculateNatalChart({
           name: profile.name,
@@ -92,12 +101,22 @@ export default function CartPage(props: Props) {
 
         let blob: Blob;
         switch (item.productId) {
-          case 'annual-forecast': blob = generateAnnualPdf(chart, opts); break;
-          case 'relationship': blob = generateRelationshipPdf(chart, opts); break;
-          case 'psychological': blob = generatePsychologicalPdf(chart, opts); break;
-          case 'career': blob = generateCareerPdf(chart, opts); break;
-          case 'seven-sins': blob = generateSevenSinsPdf(chart, opts); break;
-          default: blob = generateNatalPdf(chart, opts);
+          case 'previsao-anual':
+          case 'annual-forecast':
+            blob = generateAnnualPdf(chart, opts); break;
+          case 'relacionamento':
+          case 'relationship':
+            blob = generateRelationshipPdf(chart, opts); break;
+          case 'psicologico':
+          case 'psychological':
+            blob = generatePsychologicalPdf(chart, opts); break;
+          case 'carreira':
+          case 'career':
+            blob = generateCareerPdf(chart, opts); break;
+          case 'seven-sins':
+            blob = generateSevenSinsPdf(chart, opts); break;
+          default:
+            blob = generateNatalPdf(chart, opts);
         }
 
         // 3. Save to IndexedDB

@@ -19,11 +19,61 @@ export interface ProductInfo {
   description: string;
 }
 
-// Available products catalog
+// Available products catalog — IDs must match ReportsShop.tsx
 export const PRODUCTS: Record<string, ProductInfo> = {
+  'natal-completo': {
+    id: 'natal-completo',
+    name: 'Mapa Natal Completo',
+    price: 29.90,
+    currency: 'BRL',
+    description: 'Relatório completo de 20+ páginas com interpretação profunda do seu mapa natal.',
+  },
+  'previsao-anual': {
+    id: 'previsao-anual',
+    name: 'Previsão Anual',
+    price: 34.90,
+    currency: 'BRL',
+    description: 'Profecção anual + trânsitos + recomendações por trimestre.',
+  },
+  'relacionamento': {
+    id: 'relacionamento',
+    name: 'Relatório de Relacionamento',
+    price: 39.90,
+    currency: 'BRL',
+    description: 'Sinastria completa + mapa composto + compatibilidade por tema.',
+  },
+  'psicologico': {
+    id: 'psicologico',
+    name: 'Análise Psicológica Profunda',
+    price: 39.90,
+    currency: 'BRL',
+    description: 'Análise da estrutura psicológica via planetas, aspectos e casas.',
+  },
+  'carreira': {
+    id: 'carreira',
+    name: 'Carreira e Vocação',
+    price: 29.90,
+    currency: 'BRL',
+    description: 'MC, Casa 6, Casa 10 e indicadores de vocação profissional.',
+  },
+  'seven-sins': {
+    id: 'seven-sins',
+    name: 'Os Sete Pecados',
+    price: 19.90,
+    currency: 'BRL',
+    description: 'A sombra lúdica do zodíaco — seus 7 pecados astrológicos.',
+  },
+  'crianca': {
+    id: 'crianca',
+    name: 'Mapa da Criança',
+    price: 24.90,
+    currency: 'BRL',
+    description: 'Compreenda o temperamento, necessidades e potenciais do seu filho.',
+  },
+  // Legacy IDs (for backward compatibility with ReportPreview)
   'natal-complete': {
     id: 'natal-complete',
-    name: 'Análise Natal Completa',
+    name: 'Mapa Natal Completo',
     price: 29.90,
     currency: 'BRL',
     description: 'Relatório completo de 20+ páginas com interpretação profunda do seu mapa natal.',
@@ -44,8 +94,8 @@ export const PRODUCTS: Record<string, ProductInfo> = {
   },
   'psychological': {
     id: 'psychological',
-    name: 'Psicológico Profundo',
-    price: 34.90,
+    name: 'Análise Psicológica Profunda',
+    price: 39.90,
     currency: 'BRL',
     description: 'Análise da estrutura psicológica via planetas, aspectos e casas.',
   },
@@ -55,13 +105,6 @@ export const PRODUCTS: Record<string, ProductInfo> = {
     price: 29.90,
     currency: 'BRL',
     description: 'MC, Casa 6, Casa 10 e indicadores de vocação profissional.',
-  },
-  'seven-sins': {
-    id: 'seven-sins',
-    name: 'Os Sete Pecados',
-    price: 19.90,
-    currency: 'BRL',
-    description: 'A sombra lúdica do zodíaco — seus 7 pecados astrológicos.',
   },
 };
 
