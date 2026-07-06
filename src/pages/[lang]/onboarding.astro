@@ -12,6 +12,6 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 ---
 
-<BaseLayout title={locale === 'pt' ? 'Começar' : 'Get Started'} locale={locale}>
+<BaseLayout title={t.onboarding.title} locale={locale}>
   <OnboardingForm client:load locale={locale} />
 </BaseLayout>

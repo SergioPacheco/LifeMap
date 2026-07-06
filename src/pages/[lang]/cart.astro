@@ -12,6 +12,6 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 ---
 
-<BaseLayout title={locale === 'pt' ? 'Carrinho' : 'Cart'} locale={locale}>
+<BaseLayout title={t.nav.cart} locale={locale}>
   <CartPage client:load locale={locale} />
 </BaseLayout>

@@ -35,9 +35,9 @@ const c = learn.firstSteps;
       <!-- Visual simples dos dados necessários -->
       <div class="mt-5 grid grid-cols-3 gap-3 text-center">
         {[
-          { icon: '📅', label: locale === 'pt' ? 'Data' : 'Date' },
-          { icon: '🕐', label: locale === 'pt' ? 'Hora' : 'Time' },
-          { icon: '📍', label: locale === 'pt' ? 'Local' : 'Place' },
+          { icon: '📅', label: t.chart.date },
+          { icon: '🕐', label: t.chart.time },
+          { icon: '📍', label: t.chart.city },
         ].map(item => (
           <div class="bg-base-50 rounded-xl border border-base-300 p-4">
             <div class="text-3xl mb-1">{item.icon}</div>
