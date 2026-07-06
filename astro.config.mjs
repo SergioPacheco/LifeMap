@@ -11,6 +11,16 @@ export default defineConfig({
     solidJs(),
     tailwind(),
   ],
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['sweph'],
+      },
+    },
+    optimizeDeps: {
+      exclude: ['sweph'],
+    },
+  },
   i18n: {
     defaultLocale: 'pt',
     locales: ['pt', 'en', 'es', 'fr', 'de', 'it', 'nl', 'ja', 'zh', 'ru', 'tr'],
