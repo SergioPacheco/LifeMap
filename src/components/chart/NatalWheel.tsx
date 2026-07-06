@@ -9,7 +9,7 @@ interface Props {
 export default function NatalWheel(props: Props) {
   const svgHtml = createMemo(() => {
     if (!props.chart) return '';
-    return renderWheel(props.chart, { showAspects: true, showDegrees: true, showRetrograde: true });
+    return renderWheel(props.chart);
   });
 
   return (

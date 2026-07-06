@@ -1,7 +1,7 @@
 // ============================================================
-// WHEEL.TS — Professional SVG Astrological Wheel Renderer
-// Layout: Astro.com style (3 rings)
-// Outer: Zodiac signs | Middle: Planets | Inner: Houses | Center: Aspects
+// WHEEL.TS — Clean Astrological Wheel (Astro.com Classic Style)
+// Simple, readable, professional — white/beige background, thin black lines
+// Layout: Sign ring (outer) → House ring with planets → Aspect center
 // ============================================================
 
 import type { NatalChart, Positions, Aspect, AspectType } from '../engine/types';
@@ -11,50 +11,56 @@ import { getAspectColor } from '../engine/aspects';
 const NS = 'http://www.w3.org/2000/svg';
 const CX = 350, CY = 350;
 
-// Ring radii (from outside in) — Astro.com layout:
-// OUTER EDGE → SIGN RING → HOUSE RING (planets here) → ASPECT CENTER
-const R_OUTER = 330;          // Outer edge of chart
-const R_SIGN_IN = 280;       // Inner edge of sign ring (sign ring = R_OUTER to R_SIGN_IN)
-const R_HOUSE_OUT = 280;     // Outer edge of house ring (= inner edge of sign ring)
-const R_PLANET_ORBIT = 220;  // Where natal planet symbols sit (inside house ring)
-const R_HOUSE_IN = 100;      // Inner edge of house ring (aspect circle)
-const R_ASPECT = 100;        // Aspect lines drawn inside this circle
+// Ring radii — clean proportions
+const R_OUTER = 330;         // Outer edge
+const R_SIGN_IN = 285;      // Inner edge of sign ring
+const R_HOUSE_OUT = 285;    // = sign ring inner (house ring starts here)
+const R_PLANET = 225;       // Planets orbit here (inside house ring)
+const R_HOUSE_IN = 130;     // Inner edge of house ring
+const R_CENTER = 130;       // Aspect lines inside here
 
-// Element colors (Astro.com)
-const ELEMENT_COLORS = ['#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844'];
-
-// Planet colors
-const PLANET_COLORS: Record<string, string> = {
-  sun: '#e8a830', moon: '#c8c0b4', mercury: '#d4a853', venus: '#44cc44', mars: '#ff4444',
-  jupiter: '#aa66dd', saturn: '#c8c0b4', uranus: '#44aaff', neptune: '#44ccaa',
-  pluto: '#cc4444', northNode: '#aaa', southNode: '#888', lilith: '#bbb', chiron: '#d4a853',
-  // Asteroids
-  ceres: '#8bc34a', vesta: '#ff9800', pallas: '#03a9f4', juno: '#e91e63',
-  // Extra points
-  vertex: '#b388ff', partOfFortune: '#ffd700',
+// Colors — clean dark theme
+const COL = {
+  bg: '#0d0d14',
+  ringBg: '#161622',
+  houseBg: '#1a1a28',
+  line: '#3a3a50',
+  lineLight: '#2a2a3e',
+  axis: '#888',
+  axisLabel: '#ccc',
+  text: '#bbb',
+  textDim: '#666',
+  signFire: '#e05555',
+  signEarth: '#55aa55',
+  signAir: '#5588dd',
+  signWater: '#dd8844',
 };
 
-// Planet symbols
+const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const SIGN_COLORS = [COL.signFire, COL.signEarth, COL.signAir, COL.signWater, COL.signFire, COL.signEarth, COL.signAir, COL.signWater, COL.signFire, COL.signEarth, COL.signAir, COL.signWater];
+
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
-  northNode: '☊', southNode: '☋', lilith: '⚸', chiron: 'K',
-  // Asteroids
+  northNode: '☊', southNode: '☋', lilith: '⚸', chiron: '⚷',
   ceres: '⚳', vesta: '⚶', pallas: '⚴', juno: '⚵',
-  // Extra points
   vertex: 'Vx', partOfFortune: '⊕',
 };
 
-// Sign symbols
-const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const PLANET_COLORS: Record<string, string> = {
+  sun: '#e8a830', moon: '#aaa', mercury: '#cc9933', venus: '#44bb44', mars: '#dd3333',
+  jupiter: '#9966cc', saturn: '#888', uranus: '#44aaff', neptune: '#44bbaa',
+  pluto: '#aa3333', northNode: '#999', southNode: '#777', lilith: '#999', chiron: '#cc9933',
+  ceres: '#77aa44', vesta: '#dd8800', pallas: '#4499cc', juno: '#cc4488',
+  vertex: '#9977cc', partOfFortune: '#ccaa33',
+};
 
-// Aspect styles (Astro.com: red=tense, blue=harmonic, thick lines)
-const ASPECT_LINE: Record<AspectType, { color: string; width: number; dash: string }> = {
-  conjunction: { color: '#cc0000', width: 2, dash: '' },
-  sextile: { color: '#0000cc', width: 1, dash: '4,3' },
-  square: { color: '#cc0000', width: 1.5, dash: '' },
-  trine: { color: '#0000cc', width: 2, dash: '' },
-  opposition: { color: '#cc0000', width: 1.5, dash: '6,3' },
+const ASPECT_STYLES: Record<AspectType, { color: string; width: number; dash: string }> = {
+  conjunction: { color: '#44aa44', width: 1.5, dash: '' },
+  sextile: { color: '#3366cc', width: 0.8, dash: '3,3' },
+  square: { color: '#cc3333', width: 1.2, dash: '' },
+  trine: { color: '#3366cc', width: 1.2, dash: '' },
+  opposition: { color: '#cc3333', width: 1, dash: '5,3' },
 };
 
 // ============================================================
@@ -63,171 +69,75 @@ const ASPECT_LINE: Record<AspectType, { color: string; width: number; dash: stri
 
 export function renderWheel(chart: NatalChart): string {
   const asc = chart.houses.ascendant;
-  const w = 700, h = 700;
+  let svg = `<svg xmlns="${NS}" viewBox="0 0 700 700" width="100%" height="100%" style="font-family: 'Times New Roman', serif;">`;
 
-  let svg = `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="font-family: serif;">`;
+  // Background
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER + 5}" fill="${COL.bg}"/>`;
 
-  // 1. Background circles
-  svg += drawBackgrounds();
+  // Sign ring background
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER}" fill="${COL.ringBg}" stroke="${COL.line}" stroke-width="1.5"/>`;
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_SIGN_IN}" fill="${COL.houseBg}" stroke="${COL.line}" stroke-width="1"/>`;
 
-  // 1b. House colored segments (visual highlight of the 12 houses)
-  svg += drawHouseSegments(chart.houses.cusps, asc);
+  // Inner circle
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_IN}" fill="${COL.ringBg}" stroke="${COL.line}" stroke-width="0.8"/>`;
 
-  // 2. Zodiac sign ring (outer) — 12 signs starting from Aries (0°)
-  svg += drawZodiacRing(asc);
+  // Sign ring: 12 divisions with symbols
+  svg += drawSigns(asc);
 
-  // 3. House lines (inner area)
-  svg += drawHouseLines(chart.houses.cusps, asc);
+  // House lines + numbers
+  svg += drawHouses(chart.houses.cusps, asc);
 
-  // 4. Aspect lines (center)
+  // Aspect lines (center)
   svg += drawAspects(chart.aspects, chart.positions, asc);
 
-  // 5. Planets (between sign ring and houses)
-  svg += drawPlanets(chart.positions, asc, chart.retrogrades);
+  // Planets
+  svg += drawPlanets(chart.positions, asc);
 
-  // 6. Axis labels (AC, DC, MC, IC)
-  svg += drawAxisLabels(chart.houses, asc);
+  // Axis labels
+  svg += drawAxes(chart.houses, asc);
 
   svg += '</svg>';
   return svg;
 }
 
 // ============================================================
-// POLAR FUNCTION — Astrological convention
-// 0° (ASC) = LEFT, counter-clockwise (zodiacal order)
+// POLAR
 // ============================================================
 
 function pol(r: number, angleDeg: number): { x: number; y: number } {
-  // 0° = left, 90° = bottom, 180° = right, 270° = top
   const rad = angleDeg * Math.PI / 180;
-  return {
-    x: CX - r * Math.cos(rad),
-    y: CY + r * Math.sin(rad),
-  };
+  return { x: CX - r * Math.cos(rad), y: CY + r * Math.sin(rad) };
 }
 
 // ============================================================
-// 1. BACKGROUNDS
+// SIGNS — simple divider lines + symbols
 // ============================================================
 
-function drawBackgrounds(): string {
-  let s = '';
-  // Outer edge
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER}" fill="#1a1a2e" stroke="#3a3a5e" stroke-width="2"/>`;
-  // Sign ring inner boundary (= house ring outer)
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_SIGN_IN}" fill="#151520" stroke="#3a3a5e" stroke-width="1.5"/>`;
-  // House ring area (cream/beige like astro.com)
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_OUT}" fill="#1e1e30" stroke="none"/>`;
-  // Inner circle boundary (aspect area)
-  s += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_IN}" fill="#151525" stroke="#3a3a5e" stroke-width="0.8"/>`;
-  return s;
-}
-
-// ============================================================
-// 1b. HOUSE COLORED SEGMENTS (between house outer and sign inner)
-// Each house gets a colored background based on its ruling element
-// ============================================================
-
-// House element mapping: House 1=Fire, 2=Earth, 3=Air, 4=Water, repeating
-const HOUSE_ELEMENT_COLORS = [
-  'rgba(255, 68, 68, 0.12)',   // House 1 — Fire (Áries)
-  'rgba(68, 204, 68, 0.10)',   // House 2 — Earth (Touro)
-  'rgba(102, 136, 255, 0.10)', // House 3 — Air (Gêmeos)
-  'rgba(255, 136, 68, 0.10)',  // House 4 — Water (Câncer)
-  'rgba(255, 68, 68, 0.12)',   // House 5 — Fire (Leão)
-  'rgba(68, 204, 68, 0.10)',   // House 6 — Earth (Virgem)
-  'rgba(102, 136, 255, 0.10)', // House 7 — Air (Libra)
-  'rgba(255, 136, 68, 0.10)',  // House 8 — Water (Escorpião)
-  'rgba(255, 68, 68, 0.12)',   // House 9 — Fire (Sagitário)
-  'rgba(68, 204, 68, 0.10)',   // House 10 — Earth (Capricórnio)
-  'rgba(102, 136, 255, 0.10)', // House 11 — Air (Aquário)
-  'rgba(255, 136, 68, 0.10)',  // House 12 — Water (Peixes)
-];
-
-const HOUSE_BORDER_COLORS = [
-  'rgba(255, 68, 68, 0.35)',
-  'rgba(68, 204, 68, 0.30)',
-  'rgba(102, 136, 255, 0.30)',
-  'rgba(255, 136, 68, 0.30)',
-  'rgba(255, 68, 68, 0.35)',
-  'rgba(68, 204, 68, 0.30)',
-  'rgba(102, 136, 255, 0.30)',
-  'rgba(255, 136, 68, 0.30)',
-  'rgba(255, 68, 68, 0.35)',
-  'rgba(68, 204, 68, 0.30)',
-  'rgba(102, 136, 255, 0.30)',
-  'rgba(255, 136, 68, 0.30)',
-];
-
-function drawHouseSegments(cusps: number[], asc: number): string {
+function drawSigns(asc: number): string {
   let s = '';
 
   for (let i = 0; i < 12; i++) {
-    const startAngle = cusps[i] - asc;
-    const endAngle = cusps[(i + 1) % 12] - asc;
+    const startAngle = i * 30 - asc;
 
-    // Draw colored arc segment for this house (between house inner and house outer)
-    s += arcSegment(
-      R_HOUSE_IN, R_HOUSE_OUT,
-      startAngle, endAngle,
-      HOUSE_ELEMENT_COLORS[i],
-      HOUSE_BORDER_COLORS[i],
-      0.5
-    );
-  }
-
-  return s;
-}
-
-// ============================================================
-// 2. ZODIAC RING (outer ring with 12 signs)
-// ============================================================
-
-function drawZodiacRing(asc: number): string {
-  let s = '';
-
-  const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-  const ELEMENT_NAMES = ['Fogo','Terra','Ar','Água','Fogo','Terra','Ar','Água','Fogo','Terra','Ar','Água'];
-
-  // Zodiac always has 12 signs of 30° each, starting from 0° Aries.
-  // The wheel rotates so that ASC is on the left (0° visual = ASC longitude).
-  // Sign i occupies absolute degrees [i*30, (i+1)*30].
-  // Visual angle = absolute_degree - asc.
-
-  for (let i = 0; i < 12; i++) {
-    // Absolute zodiac positions: sign i goes from i*30 to (i+1)*30
-    const signStart = i * 30;       // e.g., Aries=0°, Taurus=30°, etc.
-    const signEnd = (i + 1) * 30;
-
-    // Convert to visual angles (relative to ASC which is at 0° visual = left)
-    const startAngle = signStart - asc;
-    const endAngle = signEnd - asc;
-    const color = ELEMENT_COLORS[i];
-
-    // Colored segment background — stronger fill for clear division
-    s += arcSegment(R_SIGN_IN, R_OUTER, startAngle, endAngle, color + '25', color + '50', 0.8);
-
-    // Sign divider line (bold separator between signs)
+    // Divider line
     const p1 = pol(R_SIGN_IN, startAngle);
     const p2 = pol(R_OUTER, startAngle);
-    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#5a5a7e" stroke-width="1"/>`;
+    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${COL.line}" stroke-width="0.8"/>`;
 
-    // Sign symbol centered in segment — with tooltip
+    // Symbol centered in segment
     const midAngle = startAngle + 15;
     const midR = (R_OUTER + R_SIGN_IN) / 2;
     const p = pol(midR, midAngle);
+    const color = SIGN_COLORS[i];
 
-    s += `<g class="sign-symbol" style="cursor:pointer">`;
-    s += `<title>${SIGN_NAMES[i]} (${ELEMENT_NAMES[i]})</title>`;
-    s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="18" font-weight="bold" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
-    s += `</g>`;
+    s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="16" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
 
-    // Small ticks every 5° within the sign
-    for (let t = 1; t < 6; t++) {
-      const tickAngle = startAngle + t * 5;
+    // 10° and 20° tick marks
+    for (const t of [10, 20]) {
+      const tickAngle = startAngle + t;
       const t1 = pol(R_SIGN_IN, tickAngle);
-      const t2 = pol(R_SIGN_IN + 5, tickAngle);
-      s += `<line x1="${t1.x}" y1="${t1.y}" x2="${t2.x}" y2="${t2.y}" stroke="#4a4a6e" stroke-width="0.4"/>`;
+      const t2 = pol(R_SIGN_IN + 4, tickAngle);
+      s += `<line x1="${t1.x}" y1="${t1.y}" x2="${t2.x}" y2="${t2.y}" stroke="${COL.lineLight}" stroke-width="0.5"/>`;
     }
   }
 
@@ -235,106 +145,88 @@ function drawZodiacRing(asc: number): string {
 }
 
 // ============================================================
-// 3. HOUSE LINES
+// HOUSES — lines from inner to outer + numbers
 // ============================================================
 
-function drawHouseLines(cusps: number[], asc: number): string {
+function drawHouses(cusps: number[], asc: number): string {
   let s = '';
-
-  const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 
   for (let i = 0; i < 12; i++) {
     const angle = cusps[i] - asc;
-    const isAxis = (i === 0 || i === 3 || i === 6 || i === 9);
+    const isAxis = i === 0 || i === 3 || i === 6 || i === 9;
 
-    if (isAxis) {
-      // Thick axis lines from inner circle to sign ring boundary
-      const p1 = pol(R_HOUSE_IN, angle);
-      const p2 = pol(R_HOUSE_OUT, angle);
-      s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#d4a853" stroke-width="2"/>`;
-    } else {
-      // Normal house lines from inner circle to house outer boundary
-      const p1 = pol(R_HOUSE_IN, angle);
-      const p2 = pol(R_HOUSE_OUT, angle);
-      s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#4a4a6e" stroke-width="0.7"/>`;
-    }
+    // House cusp line
+    const p1 = pol(R_HOUSE_IN, angle);
+    const p2 = pol(R_HOUSE_OUT, angle);
+    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${isAxis ? COL.axis : COL.line}" stroke-width="${isAxis ? 1.5 : 0.6}"/>`;
 
-    // House number — positioned in the MIDDLE of the house sector, near inner edge
+    // House number — centered in sector, near inner ring
     const nextAngle = cusps[(i + 1) % 12] - asc;
-    // Center of the sector (50% between this cusp and next)
-    let sectorMid = angle + ((((nextAngle - angle) % 360) + 360) % 360) * 0.5;
-    // Place near the inner ring (between aspects and planets)
-    const numR = R_HOUSE_IN + 25;
-    const numP = pol(numR, sectorMid);
+    const sectorMid = angle + ((((nextAngle - angle) % 360) + 360) % 360) * 0.5;
+    const numP = pol(R_HOUSE_IN + 20, sectorMid);
 
-    // Tooltip with house cusp sign
-    const cuspSign = getSignIndex(cusps[i]);
-    const cuspDeg = getDegreeInSign(cusps[i]);
-    const tooltip = `Casa ${i + 1} — cúspide em ${SIGN_NAMES[cuspSign]} ${Math.floor(cuspDeg)}°`;
-
-    s += `<g style="cursor:pointer">`;
-    s += `<title>${tooltip}</title>`;
-    s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="11" font-weight="bold" fill="#6a6a80" font-family="sans-serif">${i + 1}</text>`;
-    s += `</g>`;
+    s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="10" fill="${COL.textDim}" font-family="sans-serif">${i + 1}</text>`;
   }
 
   return s;
 }
 
 // ============================================================
-// 4. ASPECT LINES (inside house circle)
+// ASPECTS — thin lines inside center circle
 // ============================================================
 
 function drawAspects(aspects: Aspect[], positions: Positions, asc: number): string {
   let s = '';
 
-  // Only show the top 12 most exact aspects (like Astro.com)
   const topAspects = aspects
-    .filter(a => a.exactness > 0.4)
-    .slice(0, 12);
+    .filter(a => a.exactness > 0.45)
+    .slice(0, 10);
 
   for (const asp of topAspects) {
     const lon1 = positions[asp.planet1]?.longitude;
     const lon2 = positions[asp.planet2]?.longitude;
     if (lon1 === undefined || lon2 === undefined) continue;
 
-    const a1 = lon1 - asc;
-    const a2 = lon2 - asc;
-    // Aspect lines drawn inside the inner circle (aspect area)
-    const p1 = pol(R_HOUSE_IN - 5, a1);
-    const p2 = pol(R_HOUSE_IN - 5, a2);
+    const p1 = pol(R_HOUSE_IN - 3, lon1 - asc);
+    const p2 = pol(R_HOUSE_IN - 3, lon2 - asc);
+    const style = ASPECT_STYLES[asp.type] || { color: '#666', width: 0.8, dash: '' };
 
-    const style = ASPECT_LINE[asp.type] || { color: '#999', width: 1, dash: '' };
-
-    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
+    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}" opacity="0.7"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
   }
 
   return s;
 }
 
 // ============================================================
-// 5. PLANETS (between sign ring and house area)
+// PLANETS — symbols + degree labels, inside house ring
 // ============================================================
 
-function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<string, boolean>): string {
+function drawPlanets(positions: Positions, asc: number): string {
   let s = '';
 
-  // Collect and sort planets by angle
+  const PLANET_NAMES_MAP: Record<string, string> = {
+    sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
+    jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
+    northNode: 'Nodo Norte', chiron: 'Quíron', ceres: 'Ceres', vesta: 'Vesta', pallas: 'Pallas', juno: 'Juno',
+  };
+  const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+
+  // Collect planets
   const items = Object.entries(positions)
     .filter(([id]) => PLANET_SYMBOLS[id])
     .map(([id, pos]) => ({
       id,
       angle: pos.longitude - asc,
       lon: pos.longitude,
-      retro: pos.isRetrograde || (retrogrades && retrogrades[id]) || false,
+      retro: pos.isRetrograde || false,
     }))
     .sort((a, b) => ((a.angle % 360 + 360) % 360) - ((b.angle % 360 + 360) % 360));
 
-  // Spread overlapping planets
-  const MIN_SEP = 10;
+  // Spread overlapping
+  const MIN_SEP = 12;
   for (let pass = 0; pass < 5; pass++) {
     for (let i = 1; i < items.length; i++) {
-      let diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
+      const diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
       if (diff < MIN_SEP && diff > 0) {
         items[i].angle += (MIN_SEP - diff) / 2;
         items[i - 1].angle -= (MIN_SEP - diff) / 2;
@@ -343,168 +235,135 @@ function drawPlanets(positions: Positions, asc: number, retrogrades?: Record<str
   }
 
   for (const item of items) {
-    const color = PLANET_COLORS[item.id] || '#c8c0b4';
+    const color = PLANET_COLORS[item.id] || '#aaa';
     const symbol = PLANET_SYMBOLS[item.id];
-
-    // Asteroids and extra points use a slightly inner orbit and smaller size
     const isExtra = ['ceres', 'vesta', 'pallas', 'juno', 'vertex', 'partOfFortune'].includes(item.id);
-    const orbitR = isExtra ? R_PLANET_ORBIT - 25 : R_PLANET_ORBIT;
-    const fontSize = isExtra ? 11 : 15;
-    const circleR = isExtra ? 10 : 13;
+    const orbit = isExtra ? R_PLANET - 25 : R_PLANET;
 
-    const PLANET_NAMES_MAP: Record<string, string> = {
-      sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
-      jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
-      northNode: 'Nodo Norte', southNode: 'Nodo Sul', lilith: 'Lilith', chiron: 'Quíron',
-      ceres: 'Ceres', vesta: 'Vesta', pallas: 'Pallas', juno: 'Juno',
-      vertex: 'Vertex', partOfFortune: 'Parte da Fortuna',
-    };
-    const SIGN_NAMES_MAP = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-
-    const planetName = PLANET_NAMES_MAP[item.id] || item.id;
+    const p = pol(orbit, item.angle);
     const signIdx = getSignIndex(item.lon);
-    const signName = SIGN_NAMES_MAP[signIdx];
     const degInSign = getDegreeInSign(item.lon);
     const deg = Math.floor(degInSign);
     const min = Math.floor((degInSign - deg) * 60);
+    const planetName = PLANET_NAMES_MAP[item.id] || item.id;
+    const tooltip = `${planetName} em ${SIGN_NAMES[signIdx]} ${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? ' ℞' : ''}`;
 
-    // Planet symbol position
-    const p = pol(orbitR, item.angle);
-
-    // Tooltip: "Sol em Leão 15°23'"
-    const tooltip = `${planetName} em ${signName} ${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? ' (Retrógrado)' : ''}`;
-
-    // Group with tooltip
+    // Planet symbol (no circle background — cleaner)
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<circle cx="${p.x}" cy="${p.y}" r="${circleR}" fill="#252540" stroke="${color}" stroke-width="${isExtra ? 1.2 : 1.8}"/>`;
-    s += `<text x="${p.x}" y="${p.y + (fontSize === 11 ? 4 : 5)}" text-anchor="middle" font-size="${fontSize}" font-weight="bold" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `<text x="${p.x}" y="${p.y + 5}" text-anchor="middle" font-size="${isExtra ? 12 : 16}" fill="${color}" font-family="serif">${symbol}</text>`;
     s += `</g>`;
 
-    // Degree label below
-    let label = `${deg}°${min < 10 ? '0' : ''}${min}'`;
-    if (item.retro) label += '℞';
+    // Degree label (small, gray)
+    const degP = pol(orbit - 18, item.angle);
+    const label = `${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? '℞' : ''}`;
+    s += `<text x="${degP.x}" y="${degP.y + 3}" text-anchor="middle" font-size="7" fill="${item.retro ? '#cc4444' : COL.textDim}" font-family="monospace">${label}</text>`;
 
-    const degP = pol(orbitR - 20, item.angle);
-    const labelColor = item.retro ? '#ff4444' : '#8a8a9a';
-    s += `<text x="${degP.x}" y="${degP.y + 3}" text-anchor="middle" font-size="8" fill="${labelColor}" font-family="monospace">${label}</text>`;
+    // Pointer line from planet to exact zodiac position
+    const exactP = pol(R_SIGN_IN + 2, item.lon - asc);
+    const planetEdge = pol(orbit + 10, item.angle);
+    s += `<line x1="${planetEdge.x}" y1="${planetEdge.y}" x2="${exactP.x}" y2="${exactP.y}" stroke="${COL.lineLight}" stroke-width="0.4"/>`;
   }
 
   return s;
 }
 
 // ============================================================
-// 6. AXIS LABELS (AC, DC, MC, IC with degrees)
+// AXIS LABELS — AC, DC, MC, IC
 // ============================================================
 
-function drawAxisLabels(houses: { cusps: number[]; ascendant: number; midheaven: number }, asc: number): string {
+function drawAxes(houses: { cusps: number[]; ascendant: number; midheaven: number }, asc: number): string {
   let s = '';
 
+  const signNames = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+
   // AC — left
-  const acDeg = formatDegMin(getDegreeInSign(asc));
-  s += `<text x="${CX - R_SIGN_IN - 25}" y="${CY + 5}" text-anchor="end" font-size="12" font-weight="bold" fill="#d4a853" font-family="sans-serif">AC</text>`;
-  s += `<text x="${CX - R_SIGN_IN - 25}" y="${CY + 17}" text-anchor="end" font-size="8" fill="#8a8a9a" font-family="monospace">${acDeg}</text>`;
+  const acSign = signNames[getSignIndex(asc)];
+  const acDeg = Math.floor(getDegreeInSign(asc));
+  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 4}" text-anchor="end" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">AC</text>`;
+  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 15}" text-anchor="end" font-size="8" fill="${COL.textDim}" font-family="monospace">${acDeg}°${acSign}</text>`;
 
   // DC — right
-  const dcDeg = formatDegMin(getDegreeInSign(norm(asc + 180)));
-  s += `<text x="${CX + R_SIGN_IN + 8}" y="${CY + 5}" text-anchor="start" font-size="12" font-weight="bold" fill="#d4a853" font-family="sans-serif">DC</text>`;
-  s += `<text x="${CX + R_SIGN_IN + 8}" y="${CY + 17}" text-anchor="start" font-size="8" fill="#8a8a9a" font-family="monospace">${dcDeg}</text>`;
+  const dcLon = norm(asc + 180);
+  const dcSign = signNames[getSignIndex(dcLon)];
+  const dcDeg = Math.floor(getDegreeInSign(dcLon));
+  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 4}" text-anchor="start" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">DC</text>`;
+  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 15}" text-anchor="start" font-size="8" fill="${COL.textDim}" font-family="monospace">${dcDeg}°${dcSign}</text>`;
 
-  // MC — top (use actual MC angle)
+  // MC — top
   const mcAngle = houses.midheaven - asc;
-  const mcP = pol(R_SIGN_IN + 20, mcAngle);
-  const mcDeg = formatDegMin(getDegreeInSign(houses.midheaven));
-  s += `<text x="${mcP.x}" y="${mcP.y - 5}" text-anchor="middle" font-size="12" font-weight="bold" fill="#d4a853" font-family="sans-serif">MC</text>`;
-  s += `<text x="${mcP.x + 20}" y="${mcP.y - 5}" text-anchor="start" font-size="8" fill="#8a8a9a" font-family="monospace">${mcDeg}</text>`;
+  const mcP = pol(R_HOUSE_OUT + 15, mcAngle);
+  const mcSign = signNames[getSignIndex(houses.midheaven)];
+  const mcDeg = Math.floor(getDegreeInSign(houses.midheaven));
+  s += `<text x="${mcP.x}" y="${mcP.y}" text-anchor="middle" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">MC</text>`;
+  s += `<text x="${mcP.x}" y="${mcP.y + 11}" text-anchor="middle" font-size="8" fill="${COL.textDim}" font-family="monospace">${mcDeg}°${mcSign}</text>`;
 
   // IC — bottom
-  const icAngle = norm(houses.midheaven + 180) - asc;
-  const icP = pol(R_SIGN_IN + 20, icAngle);
-  const icDeg = formatDegMin(getDegreeInSign(norm(houses.midheaven + 180)));
-  s += `<text x="${icP.x}" y="${icP.y + 15}" text-anchor="middle" font-size="12" font-weight="bold" fill="#d4a853" font-family="sans-serif">IC</text>`;
-  s += `<text x="${icP.x + 20}" y="${icP.y + 15}" text-anchor="start" font-size="8" fill="#8a8a9a" font-family="monospace">${icDeg}</text>`;
+  const icLon = norm(houses.midheaven + 180);
+  const icAngle = icLon - asc;
+  const icP = pol(R_HOUSE_OUT + 15, icAngle);
+  const icSign = signNames[getSignIndex(icLon)];
+  const icDeg = Math.floor(getDegreeInSign(icLon));
+  s += `<text x="${icP.x}" y="${icP.y}" text-anchor="middle" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">IC</text>`;
+  s += `<text x="${icP.x}" y="${icP.y + 11}" text-anchor="middle" font-size="8" fill="${COL.textDim}" font-family="monospace">${icDeg}°${icSign}</text>`;
 
   return s;
 }
 
 // ============================================================
-// SVG HELPERS
+// BI-WHEEL: Natal (inner) + Transits (outer)
 // ============================================================
 
-function arcSegment(innerR: number, outerR: number, startA: number, endA: number, fill: string, stroke: string, strokeW: number): string {
-  // Normalize the angular span — ensure we always draw the shortest correct arc
-  let span = ((endA - startA) % 360 + 360) % 360;
-  if (span === 0) span = 360;
-  const largeArc = span > 180 ? 1 : 0;
-
-  const s1 = pol(outerR, startA);
-  const e1 = pol(outerR, startA + span);
-  const s2 = pol(innerR, startA + span);
-  const e2 = pol(innerR, startA);
-
-  // SVG arc: sweep=1 for clockwise visual (matches our pol function)
-  const path = `M ${s1.x} ${s1.y} A ${outerR} ${outerR} 0 ${largeArc} 1 ${e1.x} ${e1.y} L ${s2.x} ${s2.y} A ${innerR} ${innerR} 0 ${largeArc} 0 ${e2.x} ${e2.y} Z`;
-  return `<path d="${path}" fill="${fill}" stroke="${stroke}" stroke-width="${strokeW}"/>`;
-}
-
-// ============================================================
-// BI-WHEEL: Natal (inner) + Transits (outer ring)
-// Professional style: natal in inner orbit, transits in outer orbit
-// Aspect lines between transit planets → natal planets
-// ============================================================
-
-const R_TRANSIT_ORBIT = 370; // Transits sit OUTSIDE the zodiac ring
-const R_TRANSIT_INNER = 330; // Inner edge of transit ring (= outer edge of zodiac)
+const R_TRANSIT_ORBIT = 365;
 
 export function renderBiWheel(natal: NatalChart, transitPositions: Positions, transitAspects: Aspect[]): string {
   const asc = natal.houses.ascendant;
-  const w = 780, h = 780;
-  const offset = 40; // Extra space for outer transit ring
 
-  let svg = `<svg xmlns="${NS}" viewBox="-${offset} -${offset} ${w} ${h}" width="100%" height="100%" style="font-family: serif;">`;
+  let svg = `<svg xmlns="${NS}" viewBox="-40 -40 780 780" width="100%" height="100%" style="font-family: 'Times New Roman', serif;">`;
 
-  // 1. Background
-  svg += drawBackgrounds();
+  // Background
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_ORBIT + 20}" fill="${COL.bg}"/>`;
 
-  // 1a. Outer transit ring background
-  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_ORBIT + 15}" fill="none" stroke="#2a2a4e" stroke-width="0.5"/>`;
-  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_INNER}" fill="none" stroke="#3a3a5e" stroke-width="0.8" stroke-dasharray="2,2"/>`;
+  // Outer ring for transits
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_TRANSIT_ORBIT + 15}" fill="none" stroke="${COL.lineLight}" stroke-width="0.5"/>`;
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER + 3}" fill="none" stroke="${COL.lineLight}" stroke-width="0.5" stroke-dasharray="2,2"/>`;
 
-  // 1b. House segments
-  svg += drawHouseSegments(natal.houses.cusps, asc);
+  // Main chart rings
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_OUTER}" fill="${COL.ringBg}" stroke="${COL.line}" stroke-width="1.5"/>`;
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_SIGN_IN}" fill="${COL.houseBg}" stroke="${COL.line}" stroke-width="1"/>`;
+  svg += `<circle cx="${CX}" cy="${CY}" r="${R_HOUSE_IN}" fill="${COL.ringBg}" stroke="${COL.line}" stroke-width="0.8"/>`;
 
-  // 2. Zodiac ring
-  svg += drawZodiacRing(asc);
+  // Signs
+  svg += drawSigns(asc);
 
-  // 3. House lines
-  svg += drawHouseLines(natal.houses.cusps, asc);
+  // Houses
+  svg += drawHouses(natal.houses.cusps, asc);
 
-  // 4. Transit → Natal aspect lines (in center)
-  svg += drawTransitAspects(transitAspects, natal.positions, transitPositions, asc);
+  // Transit-to-natal aspect lines
+  svg += drawTransitAspectLines(transitAspects, natal.positions, transitPositions, asc);
 
-  // 5. Natal planets (inner orbit — moved inward to make room)
-  svg += drawNatalPlanetsInner(natal.positions, asc);
+  // Natal planets
+  svg += drawPlanets(natal.positions, asc);
 
-  // 6. Transit planets (outer orbit — between sign ring)
-  svg += drawTransitPlanets(transitPositions, asc);
+  // Transit planets (outer)
+  svg += drawTransitPlanetsOuter(transitPositions, asc);
 
-  // 7. Axis labels
-  svg += drawAxisLabels(natal.houses, asc);
+  // Axes
+  svg += drawAxes(natal.houses, asc);
 
-  // 8. Legend indicator
-  svg += `<text x="10" y="${h - 55}" font-size="9" fill="#8a8a9a" font-family="sans-serif">● Natal (interno)  ○ Trânsitos (externo)</text>`;
+  // Legend
+  svg += `<text x="10" y="${700 - 50}" font-size="8" fill="${COL.textDim}" font-family="sans-serif">● Natal   ○ Trânsitos</text>`;
 
   svg += '</svg>';
   return svg;
 }
 
-// Draw natal planets at normal orbit (inside house ring)
-function drawNatalPlanetsInner(positions: Positions, asc: number): string {
+// Transit planets — outside the zodiac ring
+function drawTransitPlanetsOuter(positions: Positions, asc: number): string {
   let s = '';
-  const R_NATAL = R_PLANET_ORBIT; // Inside house ring (220)
 
   const items = Object.entries(positions)
-    .filter(([id]) => PLANET_SYMBOLS[id] && !['ceres','vesta','pallas','juno','vertex','partOfFortune'].includes(id))
+    .filter(([id]) => PLANET_SYMBOLS[id] && !['southNode', 'lilith', 'ceres', 'vesta', 'pallas', 'juno', 'vertex', 'partOfFortune'].includes(id))
     .map(([id, pos]) => ({
       id,
       angle: pos.longitude - asc,
@@ -513,54 +372,11 @@ function drawNatalPlanetsInner(positions: Positions, asc: number): string {
     }))
     .sort((a, b) => ((a.angle % 360 + 360) % 360) - ((b.angle % 360 + 360) % 360));
 
-  // Spread overlapping
-  const MIN_SEP = 10;
-  for (let pass = 0; pass < 5; pass++) {
-    for (let i = 1; i < items.length; i++) {
-      let diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
-      if (diff < MIN_SEP && diff > 0) {
-        items[i].angle += (MIN_SEP - diff) / 2;
-        items[i - 1].angle -= (MIN_SEP - diff) / 2;
-      }
-    }
-  }
-
-  for (const item of items) {
-    const color = PLANET_COLORS[item.id] || '#c8c0b4';
-    const symbol = PLANET_SYMBOLS[item.id];
-    const p = pol(R_NATAL, item.angle);
-
-    s += `<g style="cursor:pointer">`;
-    s += `<title>${item.id} natal</title>`;
-    s += `<circle cx="${p.x}" cy="${p.y}" r="11" fill="#1a1a2e" stroke="${color}" stroke-width="1.5"/>`;
-    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="13" font-weight="bold" fill="${color}" font-family="serif">${symbol}</text>`;
-    s += `</g>`;
-  }
-
-  return s;
-}
-
-// Draw transit planets in outer area (between zodiac signs)
-function drawTransitPlanets(positions: Positions, asc: number): string {
-  let s = '';
-
-  const TRANSIT_PLANETS = ['sun','moon','mercury','venus','mars','jupiter','saturn','uranus','neptune','pluto','northNode','chiron'];
-
-  const items = Object.entries(positions)
-    .filter(([id]) => TRANSIT_PLANETS.includes(id))
-    .map(([id, pos]) => ({
-      id,
-      angle: pos.longitude - asc,
-      lon: pos.longitude,
-      retro: pos.isRetrograde || false,
-    }))
-    .sort((a, b) => ((a.angle % 360 + 360) % 360) - ((b.angle % 360 + 360) % 360));
-
-  // Spread overlapping
+  // Spread
   const MIN_SEP = 9;
   for (let pass = 0; pass < 5; pass++) {
     for (let i = 1; i < items.length; i++) {
-      let diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
+      const diff = ((items[i].angle - items[i - 1].angle) % 360 + 360) % 360;
       if (diff < MIN_SEP && diff > 0) {
         items[i].angle += (MIN_SEP - diff) / 2;
         items[i - 1].angle -= (MIN_SEP - diff) / 2;
@@ -569,63 +385,38 @@ function drawTransitPlanets(positions: Positions, asc: number): string {
   }
 
   for (const item of items) {
-    const color = PLANET_COLORS[item.id] || '#c8c0b4';
+    const color = PLANET_COLORS[item.id] || '#999';
     const symbol = PLANET_SYMBOLS[item.id];
     const p = pol(R_TRANSIT_ORBIT, item.angle);
 
-    const SIGN_NAMES_L = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-    const signIdx = getSignIndex(item.lon);
-    const degInSign = getDegreeInSign(item.lon);
-    const deg = Math.floor(degInSign);
-    const pName = item.id.charAt(0).toUpperCase() + item.id.slice(1);
-    const tooltip = `Trânsito: ${pName} em ${SIGN_NAMES_L[signIdx]} ${deg}°${item.retro ? ' ℞' : ''}`;
+    // Hollow circle + symbol (transit style)
+    s += `<circle cx="${p.x}" cy="${p.y}" r="9" fill="none" stroke="${color}" stroke-width="1.5"/>`;
+    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="${color}" font-family="serif">${symbol}</text>`;
 
-    // Transit planets: open circle (hollow) to distinguish from natal
-    s += `<g style="cursor:pointer">`;
-    s += `<title>${tooltip}</title>`;
-    s += `<circle cx="${p.x}" cy="${p.y}" r="10" fill="none" stroke="${color}" stroke-width="2"/>`;
-    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="12" fill="${color}" font-family="serif">${symbol}</text>`;
-    s += `</g>`;
-
-    // Retro indicator
     if (item.retro) {
-      s += `<text x="${p.x + 11}" y="${p.y - 6}" font-size="7" fill="#ff4444" font-family="sans-serif">℞</text>`;
+      s += `<text x="${p.x + 10}" y="${p.y - 5}" font-size="6" fill="#cc4444" font-family="sans-serif">℞</text>`;
     }
   }
 
   return s;
 }
 
-// Draw aspect lines between transit planets and natal planets
-function drawTransitAspects(aspects: Aspect[], natalPositions: Positions, transitPositions: Positions, asc: number): string {
+// Transit aspect lines
+function drawTransitAspectLines(aspects: Aspect[], natalPositions: Positions, transitPositions: Positions, asc: number): string {
   let s = '';
 
-  // Show top 10 most exact transit-to-natal aspects
-  const topAspects = aspects
-    .filter(a => a.exactness > 0.5)
-    .slice(0, 10);
-
-  const R_NATAL_LINE = R_PLANET_ORBIT;
-  const R_TRANSIT_LINE = R_TRANSIT_ORBIT;
+  const topAspects = aspects.filter(a => a.exactness > 0.5).slice(0, 8);
 
   for (const asp of topAspects) {
-    // planet1 = transit, planet2 = natal (convention from calculateTransits)
-    const transitLon = transitPositions[asp.planet1]?.longitude;
-    const natalLon = natalPositions[asp.planet2]?.longitude;
-    if (transitLon === undefined || natalLon === undefined) continue;
+    const lon1 = transitPositions[asp.planet1]?.longitude;
+    const lon2 = natalPositions[asp.planet2]?.longitude;
+    if (lon1 === undefined || lon2 === undefined) continue;
 
-    const a1 = transitLon - asc;
-    const a2 = natalLon - asc;
+    const p1 = pol(R_HOUSE_IN - 3, lon1 - asc);
+    const p2 = pol(R_HOUSE_IN - 3, lon2 - asc);
+    const style = ASPECT_STYLES[asp.type] || { color: '#666', width: 0.8, dash: '' };
 
-    // Aspect lines inside the inner circle (connect through center)
-    const p1 = pol(R_HOUSE_IN - 5, a1);
-    const p2 = pol(R_HOUSE_IN - 5, a2);
-
-    const style = ASPECT_LINE[asp.type] || { color: '#999', width: 1, dash: '' };
-    // Make transit aspects slightly transparent
-    const opacity = 0.6 + asp.exactness * 0.4;
-
-    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}" opacity="${opacity.toFixed(2)}"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
+    s += `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="${style.color}" stroke-width="${style.width}" opacity="0.5"${style.dash ? ` stroke-dasharray="${style.dash}"` : ''}/>`;
   }
 
   return s;
