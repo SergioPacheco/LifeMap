@@ -1362,7 +1362,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
 
   // P2: Visão Geral — MC
   doc.addPage(); let y = 30;
-  y = addSectionTitle(doc, 'Visão Geral Profissional — Meio do Céu', y, margin);
+  y = addSectionTitle(doc, `${texts.LABELS.overview} — ${texts.LABELS.midheaven}`, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `O Meio do Céu (MC) é o ponto mais alto do mapa — representa sua vocação pública, a marca que você deixa no mundo e o tipo de reconhecimento que busca. Não é apenas "que profissão seguir" — é "qual o tom da sua presença no mundo profissional". O signo do MC define a qualidade dessa presença; os planetas que o aspectam definem os recursos e desafios.`, margin, y, 170);
   y += 6;
@@ -1385,7 +1385,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   y = wrapText(doc, mcDescs[mcSign], margin, y, 170);
 
   // TRYOUT CUT — return after cover + MC overview (3 pages)
-  const tryoutBlob4 = tryoutCut(doc, options, 'Carreira e Vocação', '29.90');
+  const tryoutBlob4 = tryoutCut(doc, options, texts.LABELS.careerTitle, '29.90');
   if (tryoutBlob4) return tryoutBlob4;
 
   // P3: Casa 10
@@ -1509,7 +1509,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
 
   // P11: Talentos naturais
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Talentos Naturais — Trígonos e Sextis', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.unexploredPotentials, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Trígonos e sextis no mapa natal indicam fluxo natural — habilidades que vêm sem esforço aparente. Esses pontos são frequentemente subestimados justamente por serem fáceis: como não exigem luta para existir, raramente recebem o mesmo investimento de desenvolvimento que os pontos difíceis. Identificar e deliberadamente desenvolver seus talentos naturais pode ser o caminho de menor resistência para o sucesso profissional.`, margin, y, 170);
   y += 6;
@@ -1531,7 +1531,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
 
   // P12: Desafios profissionais
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Desafios Profissionais — Quadraturas e Oposições', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.repetitivePatterns, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Aspectos tensos no mapa não indicam fracasso profissional — indicam as áreas que precisam de mais trabalho consciente. Muitas vezes, os maiores desafios do mapa são também os maiores pontos de aprendizado. Profissionais que trabalham conscientemente suas tensões astrológicas frequentemente desenvolvem habilidades excepcionais precisamente nas áreas onde mais lutaram.`, margin, y, 170);
   y += 6;
@@ -1592,7 +1592,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
 
   // P15: Conclusão
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Conclusão — Sua Carreira em Perspectiva', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `${options.profileName}, seu mapa de carreira revela uma combinação única de vocação, talento e timing. O MC em ${SIGN_NAMES[mcSign]} define a direção geral; Saturno na Casa ${satHouse} indica onde o trabalho duro produz resultados duradouros; Júpiter na Casa ${jupHouse} revela onde as oportunidades fluem com mais naturalidade.\n\nO Sol em ${SIGN_NAMES[sunSign]} define onde você brilha genuinamente — não apenas onde você é competente, mas onde há satisfação real. Marte em ${SIGN_NAMES[marsSign]} determina como você age e compete. Mercúrio em ${SIGN_NAMES[mercSign]} define seu diferencial intelectual.\n\nA carreira ideal não é a mais glamorosa ou a mais lucrativa — é aquela que ativa seus talentos naturais, honra seus valores e evolui junto com você. Use este relatório como bússola, não como destino fixo. O mapa sugere caminhos; você escolhe qual percorrer — e como.`, margin, y, 170);
   y += 10;
@@ -1777,7 +1777,7 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   for (const s of sinMap) { y = wrapText(doc, s, margin, y, 170); y += 5; }
 
   // TRYOUT CUT — return after cover + sin map overview (3 pages)
-  const tryoutBlob5 = tryoutCut(doc, options, 'Os Sete Pecados', '19.90');
+  const tryoutBlob5 = tryoutCut(doc, options, texts.LABELS.sinsTitle, '19.90');
   if (tryoutBlob5) return tryoutBlob5;
 
   // P3-P4: ORGULHO — Sol (2 páginas)
