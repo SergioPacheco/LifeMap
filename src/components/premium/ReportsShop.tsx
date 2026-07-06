@@ -1,6 +1,6 @@
-import { createSignal, For, Show } from 'solid-js';
+import { createSignal, onMount, For, Show } from 'solid-js';
 import { db } from '../../store/db';
-import { getTranslations, type Locale } from '../../i18n';
+import { getTranslations, localePath, type Locale } from '../../i18n';
 
 interface Props {
   locale?: Locale;
@@ -112,6 +112,9 @@ export default function ReportsShop(props: Props) {
   const locale = () => props.locale || 'pt';
   const [selectedCategory, setSelectedCategory] = createSignal<string>('all');
   const [addedToCart, setAddedToCart] = createSignal<string | null>(null);
+  const [cartCount, setCartCount] = createSignal(0);
+  const [showToast, setShowToast] = createSignal(false);
+  const [lastAdded, setLastAdded] = createSignal('');
   const t = () => getTranslations(locale());
 
   const filteredProducts = () => {
@@ -120,6 +123,14 @@ export default function ReportsShop(props: Props) {
   };
 
   const getText = (map: Record<string, string>) => map[locale()] || map.en || map.pt;
+
+  // Load cart count on mount
+  onMount(async () => {
+    try {
+      const count = await db.cart.count();
+      setCartCount(count);
+    } catch (e) { /* IndexedDB may not be available */ }
+  });
 
   const addToCart = async (product: Product) => {
     await db.cart.add({
@@ -132,13 +143,50 @@ export default function ReportsShop(props: Props) {
       addedAt: new Date(),
     });
     setAddedToCart(product.id);
-    setTimeout(() => setAddedToCart(null), 2000);
+    setCartCount(c => c + 1);
+    setLastAdded(getText(product.name));
+    setShowToast(true);
+    setTimeout(() => setAddedToCart(null), 2500);
+    setTimeout(() => setShowToast(false), 4000);
   };
 
   const trust = () => TRUST[locale()] || TRUST.en;
 
   return (
     <div class="space-y-6">
+      {/* Toast notification */}
+      <Show when={showToast()}>
+        <div class="fixed top-4 right-4 z-50 animate-slide-in">
+          <div class="glass rounded-xl border border-green-500/30 p-4 shadow-lg flex items-center gap-3 max-w-sm">
+            <span class="text-2xl">✅</span>
+            <div class="flex-1">
+              <p class="text-sm font-medium text-cream">{lastAdded()}</p>
+              <p class="text-xs text-green-400">{ADDED[locale()] || ADDED.en}</p>
+            </div>
+            <a
+              href={localePath('/cart', locale() as any)}
+              class="px-3 py-1.5 text-xs font-medium bg-gold text-black rounded-lg hover:bg-gold-light transition-colors whitespace-nowrap"
+            >
+              🛒 {t().nav.cart} ({cartCount()})
+            </a>
+          </div>
+        </div>
+      </Show>
+
+      {/* Cart badge - fixed */}
+      <Show when={cartCount() > 0}>
+        <div class="flex justify-end">
+          <a
+            href={localePath('/cart', locale() as any)}
+            class="inline-flex items-center gap-2 px-4 py-2 glass rounded-full border border-gold/30 hover:border-gold/60 transition-all hover:scale-[1.02]"
+          >
+            <span>🛒</span>
+            <span class="text-sm text-cream">{t().nav.cart}</span>
+            <span class="bg-gold text-black text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{cartCount()}</span>
+          </a>
+        </div>
+      </Show>
+
       {/* Category filter */}
       <div class="flex gap-2 flex-wrap justify-center">
         <For each={Object.keys(CATEGORIES)}>
@@ -161,7 +209,9 @@ export default function ReportsShop(props: Props) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <For each={filteredProducts()}>
           {(product) => (
-            <div class="glass rounded-2xl border-glow overflow-hidden hover:border-gold/40 hover:shadow-gold transition-all group">
+            <div class={`glass rounded-2xl border-glow overflow-hidden hover:border-gold/40 hover:shadow-gold transition-all group ${
+              addedToCart() === product.id ? 'ring-2 ring-green-500/50 scale-[1.02]' : ''
+            }`}>
               <div class="p-6 pb-4">
                 <div class="flex items-start justify-between">
                   <div class="text-3xl">{product.icon}</div>
