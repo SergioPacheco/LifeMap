@@ -97,6 +97,8 @@ export default function NatalApp(props: Props) {
       country: profile.country,
     };
     setFormData(data);
+    setShowTransits(false);
+    setTransitSvg('');
     handleCalculate(data);
   };
 
