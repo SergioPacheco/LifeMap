@@ -13,6 +13,7 @@ import { getAspectInterpretation } from '../engine/aspect-interpretations';
 import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from '../engine/chiron';
 import { downloadPdf } from './pdf-generator';
 import { generateSynastryReport } from '../engine/synastry-interpretation';
+import { getInterpretations } from '../engine/interpretations/index';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -280,9 +281,10 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
   const currentYear = new Date().getFullYear();
+  const texts = getInterpretations(options.locale || 'pt');
 
   // P1: Capa
-  renderCover(doc, 'Previsão Anual 2026', `Trânsitos e tendências ${currentYear}`, options, '🔮');
+  renderCover(doc, `${texts.LABELS.annualTitle} ${currentYear}`, `${texts.LABELS.annualSubtitle} ${currentYear}`, options, '🔮');
 
   // Dados base
   const birthYear = parseInt(options.birthDate.split(/[-/]/)[0]) || 1990;
@@ -302,7 +304,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   // P2: Profecção Anual
   doc.addPage();
   let y = 30;
-  y = addSectionTitle(doc, 'Profecção Anual — Tema do Ano', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.profection, y, margin);
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
@@ -339,7 +341,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   for (let m = 0; m < 12; m++) {
     doc.addPage();
     y = 30;
-    const monthName = MONTHS_PT[m];
+    const monthName = texts.MONTHS[m];
     y = addSectionTitle(doc, `${monthName} ${currentYear}`, y, margin);
 
     // Lua Nova e Cheia estimadas (datas aproximadas simbólicas)
@@ -557,7 +559,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   // P20: Conclusão
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, 'Conclusão — Seu Ano em Perspectiva', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.conclusionAnnual, y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
@@ -635,11 +637,12 @@ function getDefaultThemes(): { title: string; icon: string; text: string; score:
 export function generateRelationshipPdf(chart: NatalChart, options: ReportOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
+  const texts = getInterpretations(options.locale || 'pt');
   const nameA = options.profileName;
   const nameB = options.partnerName || 'Parceiro(a)';
 
   // P1: Capa
-  renderCover(doc, 'Relatório de Relacionamento', `${nameA} & ${nameB}`, options, '♡');
+  renderCover(doc, texts.LABELS.relationshipTitle, `${nameA} & ${nameB}`, options, '♡');
 
   // Dados dos mapas
   const sunSignA = getSignIndex(chart.positions.sun?.longitude || 0);
@@ -808,7 +811,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
 
   // P7: Saturno cruzado
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Comprometimento e Limites — Saturno', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.commitmentLimits, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Saturno nos relacionamentos representa comprometimento, limites e a realidade do longo prazo. Quando Saturno de um parceiro aspecta planetas pessoais do outro, a relação ganha peso e seriedade — mas também pode criar sensação de cobrança ou restrição. Saturno não é inimigo do amor; é o cimento que mantém a estrutura de pé quando a paixão inicial se estabiliza.`, margin, y, 170);
   y += 6;
@@ -982,6 +985,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
 export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
+  const texts = getInterpretations(options.locale || 'pt');
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
@@ -1005,7 +1009,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   const h12Sign = getSignIndex(chart.houses.cusps[11]);
 
   // P1: Capa
-  renderCover(doc, 'Análise Psicológica Profunda', 'Psique, sombra e integração', options, '⚇');
+  renderCover(doc, texts.LABELS.psychTitle, 'Psique, sombra e integração', options, '⚇');
 
   // P2: Introdução
   doc.addPage(); let y = 30;
@@ -1152,7 +1156,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P11: Padrões Familiares
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Padrões Familiares — Lua, Casa 4 e Saturno', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.familyPatterns, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Não escolhemos a família em que nascemos, mas herdamos seus padrões — emocionais, relacionais e de sobrevivência. A Lua, a Casa 4 e Saturno no mapa natal indicam esses padrões herdados: o que foi passado sem palavras, o que foi modelado pelos cuidadores, o que você aprendeu que era necessário para ser amado ou seguro. Esses padrões não são sentença — são o ponto de partida para a diferenciação consciente.`, margin, y, 170);
   y += 6;
@@ -1170,7 +1174,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P12: Mecanismos de Defesa
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Mecanismos de Defesa — Saturno e Aspectos Tensos', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.defenseMechanisms, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Mecanismos de defesa não são fraquezas — são estratégias de sobrevivência psíquica desenvolvidas em resposta a experiências que precisavam ser gerenciadas. O problema é quando continuam operando automaticamente em situações onde não são mais necessários. Reconhecê-los é o primeiro passo para escolher quando usá-los conscientemente e quando soltar a guarda.`, margin, y, 170);
   y += 6;
@@ -1336,6 +1340,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
+  const texts = getInterpretations(options.locale || 'pt');
 
   const mcSign = getSignIndex(chart.houses.midheaven);
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
@@ -1353,7 +1358,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   const mercHouse = chart.planetHouses.mercury || 1;
 
   // P1: Capa
-  renderCover(doc, 'Carreira e Vocação', 'Propósito profissional revelado pelo mapa', options, '♄');
+  renderCover(doc, texts.LABELS.careerTitle, 'Propósito profissional revelado pelo mapa', options, '♄');
 
   // P2: Visão Geral — MC
   doc.addPage(); let y = 30;
@@ -1738,6 +1743,7 @@ function getSinIntegration(sin: string, signIdx: number): string {
 export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions): Blob {
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
+  const texts = getInterpretations(options.locale || 'pt');
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
