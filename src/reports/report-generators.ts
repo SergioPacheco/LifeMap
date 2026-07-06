@@ -117,6 +117,55 @@ function addWatermark(_doc: jsPDF) {
   // Relatórios completos não têm marca d'água
 }
 
+/**
+ * Tryout cut — adds watermark + CTA page after the first 3 pages (cover + 2 content)
+ * Returns the truncated PDF blob, or null if not a tryout.
+ */
+function tryoutCut(doc: jsPDF, options: ReportOptions, reportName: string, price: string): Blob | null {
+  if (!options.isTryout) return null;
+
+  // Add SAMPLE watermark to all existing pages
+  const pageCount = doc.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(50);
+    doc.setTextColor(200, 200, 200);
+    doc.text('SAMPLE', 105, 200, { align: 'center', angle: 45 });
+  }
+
+  // CTA final page
+  doc.addPage();
+  const w = 210;
+  let y = 70;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...COLORS.brand);
+  doc.text('Esta foi uma amostra gratuita!', w / 2, y, { align: 'center' });
+  y += 25;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(12);
+  doc.setTextColor(...COLORS.text);
+  doc.text(`O relatório completo "${reportName}" contém`, w / 2, y, { align: 'center' });
+  doc.text('15-25 páginas com interpretação profunda e personalizada.', w / 2, y + 14, { align: 'center' });
+  y += 40;
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...COLORS.gold);
+  doc.text(`Versão completa: R$ ${price}`, w / 2, y, { align: 'center' });
+  y += 25;
+  doc.setFontSize(14);
+  doc.setTextColor(...COLORS.brandLight);
+  doc.text('www.lifemap.pro/reports', w / 2, y, { align: 'center' });
+  y += 25;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(...COLORS.textLight);
+  doc.text('Compre agora e baixe instantaneamente — 100% no navegador.', w / 2, y, { align: 'center' });
+
+  addFooters(doc, options.profileName);
+  return doc.output('blob') as unknown as Blob;
+}
+
 function addFooters(doc: jsPDF, name: string) {
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
@@ -281,6 +330,10 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.setTextColor(...COLORS.text);
   const workingTip = `Com a Casa ${profHouse} ativada, sua atenção deve se concentrar nos temas dessa esfera da vida. Agende revisões mensais para verificar onde está investindo energia e se está alinhado ao tema do ano. O mapa anual não determina o destino — ele revela o terreno. Você escolhe como percorrê-lo. Use as lunações (Lua Nova e Lua Cheia) como balizas mensais: plante nas novas e colha/revise nas cheias. Registre em diário os eventos marcantes para, ao final do ano, mapear o padrão completo.`;
   y = wrapText(doc, workingTip, margin, y, 170);
+
+  // TRYOUT CUT — return after cover + profecção overview (3 pages)
+  const tryoutBlob1 = tryoutCut(doc, options, 'Previsão Anual', '34.90');
+  if (tryoutBlob1) return tryoutBlob1;
 
   // P3–P14: 12 meses (1 pág por mês)
   for (let m = 0; m < 12; m++) {
@@ -646,6 +699,10 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Este relatório analisa 5 dimensões do relacionamento: atração e química física, conexão emocional e segurança, estilo de comunicação, alinhamento de valores e dinâmicas de poder, e potencial de crescimento mútuo. Cada seção combina os elementos dos dois mapas para revelar onde a relação tem mais facilidade — e onde os desafios pedem trabalho consciente.`, margin, y, 170);
 
+  // TRYOUT CUT — return after cover + overview (3 pages)
+  const tryoutBlob2 = tryoutCut(doc, options, 'Relatório de Relacionamento', '39.90');
+  if (tryoutBlob2) return tryoutBlob2;
+
   // P3: Sol ↔ Sol / Sol ↔ Lua
   doc.addPage(); y = 30;
   y = addSectionTitle(doc, 'Cruzamentos Solares — Identidade e Vitalidade', y, margin);
@@ -959,6 +1016,10 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   y = wrapText(doc, `Este relatório não classifica você. Ele oferece uma linguagem para os padrões que você já sente, mas talvez não tenha conseguido nomear. Reconhecer um padrão não o dissolve automaticamente — mas é o primeiro passo necessário para trabalhar com ele conscientemente, em vez de ser governado por ele sem perceber.`, margin, y, 170);
   y += 6;
   y = wrapText(doc, `Ao longo das páginas seguintes, analisaremos a estrutura do ego (Sol e Ascendente), o mundo emocional (Lua), os processos mentais (Mercúrio), os padrões de amor e valor (Vênus), a força vital e agressividade (Marte), a sombra (Plutão), a ferida central (Quíron), o inconsciente (Casa 12 e Netuno), os padrões familiares herdados (Lua, Casa 4 e Saturno), e o caminho de integração que o mapa sugere.`, margin, y, 170);
+
+  // TRYOUT CUT — return after cover + intro (3 pages)
+  const tryoutBlob3 = tryoutCut(doc, options, 'Análise Psicológica Profunda', '39.90');
+  if (tryoutBlob3) return tryoutBlob3;
 
   // P3: Ego — Sol + Asc
   doc.addPage(); y = 30;
@@ -1317,6 +1378,10 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
     'Seu MC em Peixes indica vocação ligada à arte, à espiritualidade, à cura ou ao serviço compassivo. Música, cinema, psicologia transpessoal, saúde alternativa, trabalho humanitário ou qualquer carreira que conecte o ordinário ao transcendente se alinham com esse MC.',
   ];
   y = wrapText(doc, mcDescs[mcSign], margin, y, 170);
+
+  // TRYOUT CUT — return after cover + MC overview (3 pages)
+  const tryoutBlob4 = tryoutCut(doc, options, 'Carreira e Vocação', '29.90');
+  if (tryoutBlob4) return tryoutBlob4;
 
   // P3: Casa 10
   doc.addPage(); y = 30;
@@ -1704,6 +1769,10 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
     `🛋️ PREGUIÇA — Júpiter em ${SIGN_NAMES[jupiterSign]}`,
   ];
   for (const s of sinMap) { y = wrapText(doc, s, margin, y, 170); y += 5; }
+
+  // TRYOUT CUT — return after cover + sin map overview (3 pages)
+  const tryoutBlob5 = tryoutCut(doc, options, 'Os Sete Pecados', '19.90');
+  if (tryoutBlob5) return tryoutBlob5;
 
   // P3-P4: ORGULHO — Sol (2 páginas)
   doc.addPage(); y = 30;

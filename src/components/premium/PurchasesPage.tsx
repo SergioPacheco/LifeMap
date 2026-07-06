@@ -1,7 +1,7 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { db, type Purchase } from '../../store/db';
 import { PRODUCTS, downloadPurchasedPdf } from '../../store/payment';
-import type { Locale } from '../../i18n';
+import { getTranslations, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -11,7 +11,7 @@ export default function PurchasesPage(props: Props) {
   const [purchases, setPurchases] = createSignal<Purchase[]>([]);
   const [loading, setLoading] = createSignal(true);
 
-  const isPt = () => props.locale === 'pt';
+  const t = () => getTranslations(props.locale);
 
   onMount(async () => {
     try {
@@ -25,7 +25,7 @@ export default function PurchasesPage(props: Props) {
   });
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat(props.locale === 'pt' ? 'pt-BR' : 'en-US', {
+    return new Intl.DateTimeFormat(props.locale === 'pt' ? 'pt-BR' : props.locale, {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -35,18 +35,16 @@ export default function PurchasesPage(props: Props) {
   return (
     <div class="max-w-3xl mx-auto px-4 py-12">
       <h1 class="text-3xl font-serif font-bold text-cream mb-2">
-        {isPt() ? '📄 Meus Relatórios' : '📄 My Reports'}
+        {t().purchases.title}
       </h1>
       <p class="text-cream-dark mb-8">
-        {isPt()
-          ? 'Relatórios comprados ficam salvos no seu navegador para acesso offline.'
-          : 'Purchased reports are saved in your browser for offline access.'}
+        {t().purchases.subtitle}
       </p>
 
       <Show when={loading()}>
         <div class="text-center py-12 text-muted">
           <div class="animate-spin text-3xl mb-3">⏳</div>
-          <p class="text-sm">{isPt() ? 'Carregando...' : 'Loading...'}</p>
+          <p class="text-sm">{t().purchases.loading}</p>
         </div>
       </Show>
 
@@ -54,18 +52,16 @@ export default function PurchasesPage(props: Props) {
         <div class="text-center py-20 glass rounded-2xl">
           <div class="text-6xl mb-4">📄</div>
           <p class="text-lg text-cream-dark mb-2">
-            {isPt() ? 'Nenhum relatório comprado' : 'No reports purchased yet'}
+            {t().purchases.empty}
           </p>
           <p class="text-sm text-muted mb-6">
-            {isPt()
-              ? 'Seus relatórios premium aparecerão aqui após a compra.'
-              : 'Your premium reports will appear here after purchase.'}
+            {t().purchases.emptyDesc}
           </p>
           <a
             href={`/${props.locale}/reports`}
             class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-xl hover:shadow-gold transition-all"
           >
-            {isPt() ? 'Ver Relatórios Disponíveis' : 'View Available Reports'}
+            {t().purchases.viewReports}
             <span>→</span>
           </a>
         </div>
@@ -79,7 +75,7 @@ export default function PurchasesPage(props: Props) {
                 <div class="flex-1">
                   <p class="font-medium text-cream">{PRODUCTS[purchase.productId]?.name || purchase.productId}</p>
                   <p class="text-sm text-muted">
-                    {isPt() ? 'Para:' : 'For:'} {purchase.profileName}
+                    {t().purchases.for}: {purchase.profileName}
                   </p>
                   <p class="text-xs text-muted mt-1">
                     {formatDate(purchase.purchasedAt)}
@@ -92,12 +88,12 @@ export default function PurchasesPage(props: Props) {
                       onClick={() => downloadPurchasedPdf(purchase)}
                       class="px-4 py-2 text-sm font-medium text-gold border border-gold/30 rounded-lg hover:bg-gold/10 transition-colors"
                     >
-                      {isPt() ? '⬇ Baixar PDF' : '⬇ Download PDF'}
+                      {t().purchases.downloadPdf}
                     </button>
                   </Show>
                   <Show when={!purchase.pdfData}>
                     <span class="px-3 py-1 text-xs text-muted bg-base-200 rounded-full">
-                      {isPt() ? 'Gerando...' : 'Generating...'}
+                      {t().purchases.generating}
                     </span>
                   </Show>
                 </div>

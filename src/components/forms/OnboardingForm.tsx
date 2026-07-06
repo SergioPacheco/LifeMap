@@ -1,6 +1,6 @@
 import { createSignal, Show, For } from 'solid-js';
 import { db } from '../../store/db';
-import type { Locale } from '../../i18n';
+import { getTranslations, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -15,51 +15,9 @@ interface GeoResult {
   timezone: number;
 }
 
-const TEXTS = {
-  pt: {
-    title: 'Descubra seu Mapa Astral',
-    subtitle: 'Preencha seus dados de nascimento para uma leitura personalizada',
-    name: 'Como você se chama?',
-    namePlaceholder: 'Seu nome',
-    date: 'Data de nascimento',
-    time: 'Hora de nascimento',
-    unknownTime: 'Não sei a hora exata',
-    unknownTimeNote: 'Usaremos meio-dia como referência. Casas e Lua podem ter imprecisão.',
-    city: 'Cidade de nascimento',
-    cityPlaceholder: 'Digite o nome da cidade...',
-    gender: 'Gênero (opcional)',
-    genderOptions: { M: 'Masculino', F: 'Feminino', O: 'Outro' },
-    submit: 'Calcular meu Mapa ✦',
-    privacy: '100% privado — seus dados ficam apenas no seu dispositivo',
-    searching: 'Buscando...',
-    errorDate: 'Informe a data de nascimento',
-    errorTime: 'Informe a hora de nascimento',
-    errorCity: 'Selecione uma cidade da lista',
-  },
-  en: {
-    title: 'Discover Your Birth Chart',
-    subtitle: 'Enter your birth details for a personalized reading',
-    name: 'What\'s your name?',
-    namePlaceholder: 'Your name',
-    date: 'Date of birth',
-    time: 'Time of birth',
-    unknownTime: 'I don\'t know the exact time',
-    unknownTimeNote: 'We\'ll use noon as reference. Houses and Moon may be imprecise.',
-    city: 'City of birth',
-    cityPlaceholder: 'Type city name...',
-    gender: 'Gender (optional)',
-    genderOptions: { M: 'Male', F: 'Female', O: 'Other' },
-    submit: 'Calculate my Chart ✦',
-    privacy: '100% private — your data stays only on your device',
-    searching: 'Searching...',
-    errorDate: 'Please enter your birth date',
-    errorTime: 'Please enter your birth time',
-    errorCity: 'Please select a city from the list',
-  },
-};
-
 export default function OnboardingForm(props: Props) {
-  const txt = () => TEXTS[props.locale as keyof typeof TEXTS] || TEXTS.en;
+  const t = () => getTranslations(props.locale);
+  const txt = () => t().onboarding;
 
   const [name, setName] = createSignal('');
   const [date, setDate] = createSignal('');
@@ -266,7 +224,7 @@ export default function OnboardingForm(props: Props) {
                         : 'border-base-400 bg-base-200 text-muted hover:border-base-300 hover:text-cream-dark'
                     }`}
                   >
-                    {txt().genderOptions[g]}
+                    {g === 'M' ? txt().genderM : g === 'F' ? txt().genderF : txt().genderO}
                   </button>
                 )}
               </For>

@@ -3,7 +3,7 @@ import { db, type Profile } from '../../store/db';
 import { calculateNatalChart, initSweph, getActiveEngine } from '../../engine/index';
 import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-horoscope';
 import { renderWheel } from '../../renderer/wheel';
-import { localePath, type Locale } from '../../i18n';
+import { localePath, getTranslations, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 
 interface Props {
@@ -187,15 +187,15 @@ export default function DashboardApp(props: Props) {
                 {/* Categories */}
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5">
                   <div class="p-3 bg-pink-900/10 rounded-lg border border-pink-800/30">
-                    <h4 class="text-xs font-semibold text-pink-300 uppercase mb-1">♡ {props.locale === 'pt' ? 'Amor' : 'Love'}</h4>
+                    <h4 class="text-xs font-semibold text-pink-300 uppercase mb-1">♡ {getTranslations(props.locale).dashboard.love}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.love}</p>
                   </div>
                   <div class="p-3 bg-blue-900/10 rounded-lg border border-blue-800/30">
-                    <h4 class="text-xs font-semibold text-blue-300 uppercase mb-1">♄ {props.locale === 'pt' ? 'Carreira' : 'Career'}</h4>
+                    <h4 class="text-xs font-semibold text-blue-300 uppercase mb-1">♄ {getTranslations(props.locale).dashboard.career}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.career}</p>
                   </div>
                   <div class="p-3 bg-green-900/10 rounded-lg border border-green-800/30">
-                    <h4 class="text-xs font-semibold text-green-300 uppercase mb-1">♂ {props.locale === 'pt' ? 'Saúde' : 'Health'}</h4>
+                    <h4 class="text-xs font-semibold text-green-300 uppercase mb-1">♂ {getTranslations(props.locale).dashboard.health}</h4>
                     <p class="text-xs text-muted leading-relaxed">{horoscope()!.health}</p>
                   </div>
                 </div>
@@ -206,7 +206,7 @@ export default function DashboardApp(props: Props) {
                   <div>
                     <p class="text-xs text-muted uppercase tracking-wider">{txt().moonToday}</p>
                     <p class="text-sm font-medium text-cream">
-                      {props.locale === 'pt' ? 'Lua em' : 'Moon in'} {txt().signNames[horoscope()!.moonSign]}
+                      {getTranslations(props.locale).dashboard.moonIn} {txt().signNames[horoscope()!.moonSign]}
                     </p>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function DashboardApp(props: Props) {
                 href={localePath('/chart/natal', props.locale as Locale)}
                 class="mt-3 block text-center text-xs text-gold hover:underline"
               >
-                {props.locale === 'pt' ? 'Ver mapa completo →' : 'View full chart →'}
+                {getTranslations(props.locale).dashboard.viewFullChart}
               </a>
             </div>
 

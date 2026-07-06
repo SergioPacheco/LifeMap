@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import CompositeApp from '../../../components/chart/CompositeApp.tsx';
 ---
-<BaseLayout title="composite" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CompositeApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.composite} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CompositeApp client:load /></div></BaseLayout>

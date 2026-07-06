@@ -4,7 +4,7 @@ import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
 import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
 import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
-import { localePath } from '../../i18n';
+import { localePath, getTranslations } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 
@@ -252,15 +252,15 @@ export default function ReportPreview(props: Props) {
       {/* Preview of what the report contains */}
       <div class="bg-base-100 rounded-xl p-6 border border-base-300">
         <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-          {props.locale === 'pt' ? 'O que contém' : 'What\'s included'}
+          {getTranslations(props.locale).reports.whatsIncluded}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted">
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Capa personalizada' : 'Personalized cover'}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Tabela de posições' : 'Positions table'}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Cúspides das casas' : 'House cusps'}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Interpretação planeta a planeta' : 'Planet-by-planet interpretation'}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Aspectos com análise' : 'Aspects with analysis'}</div>
-          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {props.locale === 'pt' ? 'Dignidades e debilidades' : 'Dignities and debilities'}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.coverPersonalized}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.positionsTable}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.houseCusps}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.planetInterpretation}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.aspectsAnalysis}</div>
+          <div class="flex items-center gap-2"><span class="text-gold">✓</span> {getTranslations(props.locale).reports.dignities}</div>
         </div>
       </div>
     </div>

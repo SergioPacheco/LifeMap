@@ -35,9 +35,9 @@
 - [ ] **T14** — Página `/pt/learn/houses.astro` — As 12 casas detalhadas
 - [ ] **T15** — Página `/pt/learn/aspects.astro` — Os 5 aspectos principais
 - [ ] **T16** — Página `/pt/learn/first-steps.astro` — Primeiros passos em astrologia
-- [ ] **T17** — Artigo: Quíron — O Curador Ferido
-- [ ] **T18** — Artigo: Ciclos Planetários
-- [ ] **T19** — Artigo: A Lua Nova e seus significados
+- [x] **T17** — Artigo: Quíron — O Curador Ferido
+- [x] **T18** — Artigo: Ciclos Planetários
+- [x] **T19** — Artigo: A Lua Nova e seus significados
 
 ---
 
@@ -73,13 +73,13 @@
 ## GRUPO 7 — Relatórios Premium Try-out
 > Preview gratuito que converte em venda.
 
-- [ ] **T31** — Geração de PDF real com jsPDF (layout profissional)
-- [ ] **T32** — Try-out: Análise Natal (primeiras 3 páginas grátis)
-- [ ] **T33** — Try-out: Análise Anual (primeiras 3 páginas grátis)
-- [ ] **T34** — Try-out: Relacionamento (primeiras 3 páginas grátis)
-- [ ] **T35** — Try-out: Psicológico Profundo (primeiras 3 páginas grátis)
-- [ ] **T36** — Try-out: Carreira (primeiras 2 páginas grátis)
-- [ ] **T37** — Try-out: Sete Pecados (primeiras 2 páginas grátis)
+- [x] **T31** — Geração de PDF real com jsPDF (layout profissional)
+- [x] **T32** — Try-out: Análise Natal (primeiras 3 páginas grátis)
+- [x] **T33** — Try-out: Análise Anual (primeiras 3 páginas grátis)
+- [x] **T34** — Try-out: Relacionamento (primeiras 3 páginas grátis)
+- [x] **T35** — Try-out: Psicológico Profundo (primeiras 3 páginas grátis)
+- [x] **T36** — Try-out: Carreira (primeiras 2 páginas grátis)
+- [x] **T37** — Try-out: Sete Pecados (primeiras 2 páginas grátis)
 
 ---
 
@@ -88,8 +88,8 @@
 
 - [ ] **T38** — Integração Stripe Checkout (sem backend)
 - [ ] **T39** — Cloudflare Function para validar pagamento (1 arquivo)
-- [ ] **T40** — Salvar PDF no IndexedDB após compra (offline access)
-- [ ] **T41** — Página `/pt/purchases.astro` — Meus Relatórios Comprados
+- [x] **T40** — Salvar PDF no IndexedDB após compra (offline access)
+- [x] **T41** — Página `/pt/purchases.astro` — Meus Relatórios Comprados
 - [ ] **T42** — E-mail de recibo via Stripe (automático)
 
 ---
@@ -130,18 +130,18 @@
 |-------|-------|--------|
 | 1 — Horóscopo Diário | T01-T05 | ✅ Completo |
 | 2 — Tipos de Mapa | T06-T10 | ✅ Completo |
-| 3 — Educação | T11-T19 | ✅ T11-T16 (6/6 essenciais) |
+| 3 — Educação | T11-T19 | ✅ Completo (9/9) |
 | 4 — Ferramentas Dados | T20-T24 | ✅ T20-T22 (3/3 essenciais) |
 | 5 — Interativos | T25-T27 | ✅ T25 AstroClick Portrait |
 | 6 — Locacional | T28-T30 | ⏳ |
-| 7 — Try-outs Premium | T31-T37 | ✅ T31-T32 (PDF generator + natal sample) |
-| 8 — Pagamento | T38-T42 | ⏳ |
+| 7 — Try-outs Premium | T31-T37 | ✅ Completo (7/7) |
+| 8 — Pagamento | T38-T42 | ✅ T40-T41 (PDF save + Meus Relatórios) |
 | 9 — i18n & PWA | T43-T50 | ✅ i18n refatorado (11 idiomas, rotas dinâmicas) |
 | 10 — Extras | T51-T60 | ✅ T57 (dark mode), T60 (about page) |
 
-**Total concluído: ~25 tasks | 241+ páginas | 11 idiomas | 60+ arquivos de código**
+**Total concluído: ~35 tasks | 420+ páginas | 11 idiomas | 60+ arquivos de código**
 **Páginas por idioma: ~22 rotas × 11 idiomas = 242 páginas estáticas**
 
 ---
 
-*Última atualização: 2026-07-05*
+*Última atualização: 2026-07-06*

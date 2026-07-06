@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import CelestialEventsApp from '../../../components/chart/CelestialEventsApp.tsx';
 ---
-<BaseLayout title="Events" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CelestialEventsApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.celestialEvents} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CelestialEventsApp client:load /></div></BaseLayout>

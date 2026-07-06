@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import SynastryApp from '../../../components/chart/SynastryApp.tsx';
 ---
-<BaseLayout title="synastry" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><SynastryApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.synastry} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><SynastryApp client:load /></div></BaseLayout>

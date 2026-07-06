@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import ProgressionsApp from '../../../components/chart/ProgressionsApp.tsx';
 ---
-<BaseLayout title="progressions" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><ProgressionsApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.progressions} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><ProgressionsApp client:load /></div></BaseLayout>

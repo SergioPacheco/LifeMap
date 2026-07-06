@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import EphemerisApp from '../../../components/chart/EphemerisApp.tsx';
 ---
-<BaseLayout title="Ephemeris" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><EphemerisApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.ephemeris} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><EphemerisApp client:load /></div></BaseLayout>

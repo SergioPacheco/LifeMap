@@ -4,7 +4,7 @@ import { processPayment, savePurchase } from '../../store/payment';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
 import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
-import { localePath } from '../../i18n';
+import { localePath, getTranslations } from '../../i18n';
 import type { Locale } from '../../i18n';
 
 interface Props {
@@ -18,7 +18,7 @@ export default function CartPage(props: Props) {
   const [checkoutStatus, setCheckoutStatus] = createSignal<'idle' | 'paying' | 'generating' | 'done' | 'error'>('idle');
   const [checkoutError, setCheckoutError] = createSignal('');
 
-  const isPt = () => props.locale === 'pt';
+  const t = () => getTranslations(props.locale);
 
   onMount(async () => {
     await refreshCart();
@@ -36,7 +36,7 @@ export default function CartPage(props: Props) {
   };
 
   const handleClear = async () => {
-    const msg = isPt() ? 'Limpar todo o carrinho?' : 'Clear entire cart?';
+    const msg = t().cart.clearConfirm;
     if (confirm(msg)) {
       await clearCart();
       await refreshCart();
@@ -143,23 +143,23 @@ export default function CartPage(props: Props) {
   return (
     <div class="max-w-3xl mx-auto px-4 py-12">
       <h1 class="text-3xl font-serif font-bold text-cream mb-8">
-        {isPt() ? '🛒 Carrinho' : '🛒 Cart'}
+        {t().cart.title}
       </h1>
 
       <Show when={items().length === 0}>
         <div class="text-center py-20 glass rounded-2xl">
           <div class="text-6xl mb-4">🛒</div>
           <p class="text-lg text-cream-dark mb-2">
-            {isPt() ? 'Seu carrinho está vazio' : 'Your cart is empty'}
+            {t().cart.empty}
           </p>
           <p class="text-sm text-muted mb-6">
-            {isPt() ? 'Explore nossos relatórios premium para descobrir insights profundos sobre seu mapa.' : 'Explore our premium reports for deep insights into your chart.'}
+            {t().cart.emptyDesc}
           </p>
           <a
             href={`/${props.locale}/reports`}
             class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-xl hover:shadow-gold transition-all"
           >
-            {isPt() ? 'Ver Relatórios Premium' : 'View Premium Reports'}
+            {t().cart.viewReports}
             <span>→</span>
           </a>
         </div>
@@ -174,7 +174,7 @@ export default function CartPage(props: Props) {
                   <p class="font-medium text-cream">{item.productName}</p>
                   <Show when={item.profileName}>
                     <p class="text-sm text-muted">
-                      {isPt() ? 'Para:' : 'For:'} {item.profileName}
+                      {t().cart.for}: {item.profileName}
                     </p>
                   </Show>
                 </div>
@@ -185,7 +185,7 @@ export default function CartPage(props: Props) {
                   <button
                     onClick={() => removeItem(item.id!)}
                     class="p-2 text-muted hover:text-red-400 transition-colors rounded-lg hover:bg-red-400/10"
-                    title={isPt() ? 'Remover' : 'Remove'}
+                    title={t().cart.remove}
                   >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -200,7 +200,7 @@ export default function CartPage(props: Props) {
         {/* Summary */}
         <div class="glass rounded-xl p-6 border border-gold/20">
           <div class="flex justify-between items-center mb-6">
-            <span class="text-cream-dark">{isPt() ? 'Total:' : 'Total:'}</span>
+            <span class="text-cream-dark">{t().cart.total}:</span>
             <span class="text-2xl font-bold text-gold">
               R$ {total().toFixed(2).replace('.', ',')}
             </span>
@@ -212,7 +212,7 @@ export default function CartPage(props: Props) {
               disabled={checkingOut()}
               class="w-full px-6 py-4 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-bold text-lg rounded-xl transition-all hover:shadow-gold-lg hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
             >
-              {isPt() ? 'Finalizar Compra' : 'Checkout'}
+              {t().cart.checkout}
             </button>
           </Show>
 
@@ -249,7 +249,7 @@ export default function CartPage(props: Props) {
             onClick={handleClear}
             class="w-full mt-3 px-4 py-2 text-sm text-muted hover:text-red-400 transition-colors"
           >
-            {isPt() ? 'Limpar carrinho' : 'Clear cart'}
+            {t().cart.clearCart}
           </button>
         </div>
       </Show>

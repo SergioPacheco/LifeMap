@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import CurrentPlanetsApp from '../../../components/chart/CurrentPlanetsApp.tsx';
 ---
-<BaseLayout title="Current Planets" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CurrentPlanetsApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.currentPlanets} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CurrentPlanetsApp client:load /></div></BaseLayout>

@@ -22,7 +22,14 @@
     "shop": "Shop",
     "cart": "Cart",
     "learn": "Learn",
-    "about": "About"
+    "about": "About",
+    "horoscope": "Horoscope",
+    "dailyHoroscope": "Daily Horoscope",
+    "weeklyHoroscope": "Weekly Horoscope",
+    "loveHoroscope": "Love Horoscope",
+    "celestialEvents": "Celestial Events",
+    "currentPlanets": "Current Positions",
+    "dashboard": "Dashboard"
   },
   "chart": {
     "title": "Natal Chart",
@@ -78,12 +85,17 @@
     "pisces": "Pisces"
   },
   "cart": {
-    "title": "Shopping Cart",
+    "title": "🛒 Cart",
     "empty": "Your cart is empty",
+    "emptyDesc": "Explore our premium reports for deep insights into your chart.",
     "total": "Total",
     "checkout": "Checkout",
     "remove": "Remove",
-    "addedToCart": "Added to cart!"
+    "addedToCart": "Added to cart!",
+    "clearCart": "Clear cart",
+    "clearConfirm": "Clear entire cart?",
+    "viewReports": "View Premium Reports",
+    "for": "For"
   },
   "reports": {
     "title": "Premium Reports",
@@ -96,9 +108,60 @@
     "yearAheadDesc": "Transits, profection and solar return for the next 12 months",
     "career": "Career & Vocation",
     "careerDesc": "MC, 10th House, Saturn and Jupiter — your professional potential",
+    "psychological": "Deep Psychological Analysis",
+    "psychologicalDesc": "Psychological structure through planets, aspects and houses",
+    "sevenSins": "The Seven Sins",
+    "sevenSinsDesc": "The playful shadow of the zodiac — your 7 astrological sins",
     "buyNow": "Buy Now",
     "preview": "Free Preview",
-    "price": "Price"
+    "price": "Price",
+    "whatsIncluded": "What's included",
+    "coverPersonalized": "Personalized cover",
+    "positionsTable": "Positions table",
+    "houseCusps": "House cusps",
+    "planetInterpretation": "Planet-by-planet interpretation",
+    "aspectsAnalysis": "Aspects with analysis",
+    "dignities": "Dignities and debilities"
+  },
+  "purchases": {
+    "title": "📄 My Reports",
+    "subtitle": "Purchased reports are saved in your browser for offline access.",
+    "loading": "Loading...",
+    "empty": "No reports purchased yet",
+    "emptyDesc": "Your premium reports will appear here after purchase.",
+    "viewReports": "View Available Reports",
+    "downloadPdf": "⬇ Download PDF",
+    "generating": "Generating...",
+    "for": "For"
+  },
+  "dashboard": {
+    "love": "Love",
+    "career": "Career",
+    "health": "Health",
+    "moonIn": "Moon in",
+    "viewFullChart": "View full chart →"
+  },
+  "onboarding": {
+    "title": "Discover Your Birth Chart",
+    "subtitle": "Enter your birth details for a personalized reading",
+    "name": "What's your name?",
+    "namePlaceholder": "Your name",
+    "date": "Date of birth",
+    "time": "Time of birth",
+    "unknownTime": "I don't know the exact time",
+    "unknownTimeNote": "We'll use noon as reference. Houses and Moon may be imprecise.",
+    "city": "City of birth",
+    "cityPlaceholder": "Type city name...",
+    "gender": "Gender (optional)",
+    "genderM": "Male",
+    "genderF": "Female",
+    "genderO": "Other",
+    "submit": "Calculate my Chart ✦",
+    "privacy": "100% private — your data stays only on your device",
+    "searching": "Searching...",
+    "errorDate": "Please enter your birth date",
+    "errorTime": "Please enter your birth time",
+    "errorCity": "Please select a city from the list"
   },
   "common": {
     "loading": "Loading...",

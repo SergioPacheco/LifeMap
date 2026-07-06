@@ -22,7 +22,14 @@
     "shop": "Loja",
     "cart": "Carrinho",
     "learn": "Aprender",
-    "about": "Sobre"
+    "about": "Sobre",
+    "horoscope": "Horóscopo",
+    "dailyHoroscope": "Horóscopo Diário",
+    "weeklyHoroscope": "Horóscopo Semanal",
+    "loveHoroscope": "Horóscopo do Amor",
+    "celestialEvents": "Eventos Celestes",
+    "currentPlanets": "Posições Atuais",
+    "dashboard": "Painel"
   },
   "chart": {
     "title": "Mapa Natal",
@@ -78,12 +85,17 @@
     "pisces": "Peixes"
   },
   "cart": {
-    "title": "Carrinho de Compras",
+    "title": "🛒 Carrinho",
     "empty": "Seu carrinho está vazio",
+    "emptyDesc": "Explore nossos relatórios premium para descobrir insights profundos sobre seu mapa.",
     "total": "Total",
     "checkout": "Finalizar Compra",
     "remove": "Remover",
-    "addedToCart": "Adicionado ao carrinho!"
+    "addedToCart": "Adicionado ao carrinho!",
+    "clearCart": "Limpar carrinho",
+    "clearConfirm": "Limpar todo o carrinho?",
+    "viewReports": "Ver Relatórios Premium",
+    "for": "Para"
   },
   "reports": {
     "title": "Relatórios Premium",
@@ -96,9 +108,60 @@
     "yearAheadDesc": "Trânsitos, profecção e retorno solar para os próximos 12 meses",
     "career": "Carreira e Vocação",
     "careerDesc": "MC, Casa 10, Saturno e Júpiter — seu potencial profissional",
+    "psychological": "Análise Psicológica Profunda",
+    "psychologicalDesc": "Estrutura psicológica via planetas, aspectos e casas",
+    "sevenSins": "Os Sete Pecados",
+    "sevenSinsDesc": "A sombra lúdica do zodíaco — seus 7 pecados astrológicos",
     "buyNow": "Comprar",
     "preview": "Ver Prévia Gratuita",
-    "price": "Preço"
+    "price": "Preço",
+    "whatsIncluded": "O que contém",
+    "coverPersonalized": "Capa personalizada",
+    "positionsTable": "Tabela de posições",
+    "houseCusps": "Cúspides das casas",
+    "planetInterpretation": "Interpretação planeta a planeta",
+    "aspectsAnalysis": "Aspectos com análise",
+    "dignities": "Dignidades e debilidades"
+  },
+  "purchases": {
+    "title": "📄 Meus Relatórios",
+    "subtitle": "Relatórios comprados ficam salvos no seu navegador para acesso offline.",
+    "loading": "Carregando...",
+    "empty": "Nenhum relatório comprado",
+    "emptyDesc": "Seus relatórios premium aparecerão aqui após a compra.",
+    "viewReports": "Ver Relatórios Disponíveis",
+    "downloadPdf": "⬇ Baixar PDF",
+    "generating": "Gerando...",
+    "for": "Para"
+  },
+  "dashboard": {
+    "love": "Amor",
+    "career": "Carreira",
+    "health": "Saúde",
+    "moonIn": "Lua em",
+    "viewFullChart": "Ver mapa completo →"
+  },
+  "onboarding": {
+    "title": "Descubra seu Mapa Astral",
+    "subtitle": "Preencha seus dados de nascimento para uma leitura personalizada",
+    "name": "Como você se chama?",
+    "namePlaceholder": "Seu nome",
+    "date": "Data de nascimento",
+    "time": "Hora de nascimento",
+    "unknownTime": "Não sei a hora exata",
+    "unknownTimeNote": "Usaremos meio-dia como referência. Casas e Lua podem ter imprecisão.",
+    "city": "Cidade de nascimento",
+    "cityPlaceholder": "Digite o nome da cidade...",
+    "gender": "Gênero (opcional)",
+    "genderM": "Masculino",
+    "genderF": "Feminino",
+    "genderO": "Outro",
+    "submit": "Calcular meu Mapa ✦",
+    "privacy": "100% privado — seus dados ficam apenas no seu dispositivo",
+    "searching": "Buscando...",
+    "errorDate": "Informe a data de nascimento",
+    "errorTime": "Informe a hora de nascimento",
+    "errorCity": "Selecione uma cidade da lista"
   },
   "common": {
     "loading": "Carregando...",

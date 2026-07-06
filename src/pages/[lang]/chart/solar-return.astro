@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import SolarReturnApp from '../../../components/chart/SolarReturnApp.tsx';
 ---
-<BaseLayout title="solar-return" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><SolarReturnApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.solarReturn} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><SolarReturnApp client:load /></div></BaseLayout>

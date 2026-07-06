@@ -7,4 +7,4 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import DailyHoroscopeApp from '../../../components/chart/DailyHoroscopeApp.tsx';
 ---
-<BaseLayout title="Love" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><DailyHoroscopeApp client:load mode="love" /></div></BaseLayout>
+<BaseLayout title={t.nav.loveHoroscope} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><DailyHoroscopeApp client:load mode="love" /></div></BaseLayout>
