@@ -55,6 +55,15 @@ export default function EphemerisApp() {
 
   return (
     <div class="space-y-4">
+      {/* Header */}
+      <div class="mb-2">
+        <h1 class="text-2xl font-serif font-bold text-cream">Efemérides Planetárias</h1>
+        <p class="text-muted mt-1 text-sm leading-relaxed max-w-3xl">
+          Posição exata dos planetas para cada dia do mês. Use para consultar trânsitos, verificar ingressos em signos, 
+          identificar períodos retrógrados (℞) e planejar ações com base no movimento celeste.
+        </p>
+      </div>
+
       {/* Controls */}
       <div class="glass rounded-2xl p-4 flex flex-wrap gap-3 items-center">
         <div class="flex items-center gap-2">
@@ -117,6 +126,25 @@ export default function EphemerisApp() {
           </table>
         </div>
       </Show>
+
+      {/* Legend */}
+      <div class="glass rounded-xl p-4 text-xs text-muted space-y-2">
+        <p class="font-medium text-cream-dark text-sm">Como ler a tabela</p>
+        <div class="flex flex-wrap gap-x-6 gap-y-1">
+          <span>♈ Áries</span><span>♉ Touro</span><span>♊ Gêmeos</span><span>♋ Câncer</span>
+          <span>♌ Leão</span><span>♍ Virgem</span><span>♎ Libra</span><span>♏ Escorpião</span>
+          <span>♐ Sagitário</span><span>♑ Capricórnio</span><span>♒ Aquário</span><span>♓ Peixes</span>
+        </div>
+        <div class="flex flex-wrap gap-x-6 gap-y-1 pt-1 border-t border-base-300/50">
+          <span><span class="text-red-500">r</span> = Retrógrado</span>
+          <span>°  = Grau no signo (0°–29°)</span>
+          <span>☊ = Nodo Norte (ponto kármico)</span>
+          <span>⚷ = Quíron (curador ferido)</span>
+        </div>
+        <p class="pt-1 border-t border-base-300/50 text-[11px]">
+          Posições calculadas para o meio-dia (12h UTC) de cada dia. Fonte: Swiss Ephemeris (precisão de arco-segundo).
+        </p>
+      </div>
     </div>
   );
 }
