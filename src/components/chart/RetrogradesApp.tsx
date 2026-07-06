@@ -1,19 +1,19 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
-import { getSignIndex, norm } from '../../engine/calculations';
+import { getSignIndex, norm } from '../../engine/astro-utils';
 import * as Astronomy from 'astronomy-engine';
 
 const PLANETS = [
-  { id: 'mercury', name: 'Mercúrio', symbol: '☿', color: '#d4a853' },
-  { id: 'venus', name: 'Vênus', symbol: '♀', color: '#44cc44' },
-  { id: 'mars', name: 'Marte', symbol: '♂', color: '#ff4444' },
-  { id: 'jupiter', name: 'Júpiter', symbol: '♃', color: '#aa66dd' },
-  { id: 'saturn', name: 'Saturno', symbol: '♄', color: '#c8c0b4' },
-  { id: 'uranus', name: 'Urano', symbol: '♅', color: '#44aaff' },
-  { id: 'neptune', name: 'Netuno', symbol: '♆', color: '#44ccaa' },
-  { id: 'pluto', name: 'Plutão', symbol: '♇', color: '#cc4444' },
+  { id: 'mercury', name: 'Mercury', symbol: '☿', color: '#d4a853' },
+  { id: 'venus', name: 'Venus', symbol: '♀', color: '#44cc44' },
+  { id: 'mars', name: 'Mars', symbol: '♂', color: '#ff4444' },
+  { id: 'jupiter', name: 'Jupiter', symbol: '♃', color: '#aa66dd' },
+  { id: 'saturn', name: 'Saturn', symbol: '♄', color: '#c8c0b4' },
+  { id: 'uranus', name: 'Uranus', symbol: '♅', color: '#44aaff' },
+  { id: 'neptune', name: 'Neptune', symbol: '♆', color: '#44ccaa' },
+  { id: 'pluto', name: 'Pluto', symbol: '♇', color: '#cc4444' },
 ];
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
-const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+const SIGN_NAMES = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 
 interface RetroPeriod {
   planet: string;
