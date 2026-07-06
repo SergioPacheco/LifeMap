@@ -639,7 +639,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   const margin = 20;
   const texts = getInterpretations(options.locale || 'pt');
   const nameA = options.profileName;
-  const nameB = options.partnerName || 'Parceiro(a)';
+  const nameB = options.partnerName || (options.locale === 'en' ? 'Partner' : 'Parceiro(a)');
 
   // P1: Capa
   renderCover(doc, texts.LABELS.relationshipTitle, `${nameA} & ${nameB}`, options, '♡');
@@ -673,7 +673,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   // P2: Visão Geral + Score
   doc.addPage();
   let y = 28;
-  y = addSectionTitle(doc, 'Compatibilidade Geral', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.compatibility, y, margin);
 
   const overallColor: [number, number, number] = compat.overall >= 70 ? COLORS.brand : compat.overall >= 50 ? COLORS.brandLight : COLORS.red;
   doc.setFont('helvetica', 'bold');
@@ -683,10 +683,10 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(...COLORS.textLight);
-  doc.text('compatibilidade geral', 105, y + 20, { align: 'center' });
+  doc.text(texts.LABELS.compatibility.toLowerCase(), 105, y + 20, { align: 'center' });
   y += 30;
 
-  for (const cat of [{ label: 'Atração', score: compat.attraction }, { label: 'Emoção', score: compat.emotion }, { label: 'Comunicação', score: compat.communication }, { label: 'Valores', score: compat.values }, { label: 'Crescimento', score: compat.growth }]) {
+  for (const cat of [{ label: texts.LABELS.attractionChemistry, score: compat.attraction }, { label: texts.LABELS.emotionalConnection, score: compat.emotion }, { label: texts.LABELS.communication, score: compat.communication }, { label: texts.LABELS.compatibility, score: compat.values }, { label: texts.LABELS.growthPotential, score: compat.growth }]) {
     renderCompatibilityBar(doc, cat.label, cat.score, margin, y);
     y += 10;
   }
@@ -835,7 +835,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
 
   // P8: Plutão cruzado
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Poder e Transformação — Plutão', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.shadow, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `Plutão nos relacionamentos governa poder, obsessão, transformação profunda e o que fica oculto entre dois parceiros. Quando Plutão de um aspecta planetas pessoais do outro, a relação tem profundidade psicológica — mas também pode trazer dinâmicas de controle, ciúme ou manipulação inconsciente. Plutão não é uma força negativa: é a força que transforma. Mas ela exige consciência para não destruir o que deveria apenas renovar.`, margin, y, 170);
   y += 6;
@@ -966,7 +966,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
 
   // P18: Conclusão
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Conclusão', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   const relConclusion = `Nenhum mapa natal predetermina o sucesso ou fracasso de um relacionamento. O que a astrologia oferece é uma linguagem simbólica para entender padrões — e padrões podem ser trabalhados quando são vistos com clareza.\n\nEste relatório revelou os temas centrais da dinâmica entre ${nameA}${options.partnerChart ? ` e ${nameB}` : ''}: onde há facilidade natural, onde há desafios que pedem atenção, e como os padrões individuais de cada um interagem na relação.\n\nO amor não é apenas sentimento — é uma prática. Prática de presença, de comunicação, de crescimento e de escolha renovada. Os melhores relacionamentos não são os que têm menos dificuldades, mas os que desenvolvem ferramentas para atravessá-las juntos.\n\nUse este relatório como ponto de partida para conversas honestas, não como veredicto. O mapa aponta direções — vocês escolhem o caminho.`;
   y = wrapText(doc, relConclusion, margin, y, 170);
@@ -1027,7 +1027,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P3: Ego — Sol + Asc
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Estrutura do Ego — Sol e Ascendente', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.egoStructure, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `O Sol representa o ego consciente — a identidade que construímos ao longo da vida, o centro gravitacional em torno do qual tudo se organiza. O Ascendente é a máscara adaptativa — como chegamos ao mundo, a primeira impressão que passamos e o filtro pelo qual percebemos a realidade. Juntos, eles formam a "persona": o Sol é quem você é quando está sendo mais você mesmo; o Ascendente é como você se apresenta antes de as pessoas te conhecerem de verdade.`, margin, y, 170);
   y += 6;
@@ -1322,7 +1322,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
 
   // P22: Conclusão
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Conclusão', y, margin);
+  y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, `${options.profileName}, este relatório percorreu as camadas principais do seu mapa psicológico: a estrutura do ego, o mundo emocional, os padrões de relacionamento, a sombra, a ferida, o inconsciente, os padrões herdados e os caminhos de integração.\n\nO que o mapa revela não é um julgamento — é um convite. Convite para conhecer-se com mais precisão, para trabalhar com os padrões que se repetem, para desenvolver o que ainda está inexplorado e para caminhar em direção ao propósito que o Nodo Norte indica.\n\nA psicologia astrológica não substitui a psicoterapia — ela a complementa com uma linguagem simbólica que muitas vezes acessa camadas que as palavras diretas não alcançam. Use este relatório como companheiro no processo — não como autoridade final.\n\nVocê é mais do que seu mapa. O mapa é o ponto de partida, não o destino.`, margin, y, 170);
   y += 10;
@@ -1754,7 +1754,7 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   const plutoSign = getSignIndex(chart.positions.pluto?.longitude || 0);
 
   // P1: Capa
-  renderCover(doc, 'Os Sete Pecados Astrológicos', 'Sua sombra revelada com humor e verdade', options, '👹');
+  renderCover(doc, texts.LABELS.sinsTitle, 'Sua sombra revelada com humor e verdade', options, '👹');
 
   // P2: Introdução
   doc.addPage(); let y = 30;
