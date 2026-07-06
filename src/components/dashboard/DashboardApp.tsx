@@ -5,7 +5,6 @@ import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-
 import { renderWheel } from '../../renderer/wheel';
 import { localePath, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
-import type { Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
