@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, type Locale } from '../../i18n';
+export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+---
+<BaseLayout title={t.nav.about} locale={locale}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <h1 class="text-3xl font-serif font-bold text-cream mb-6">LifeMap Pro</h1>
+
+    <div class="space-y-6">
+      <section class="bg-base-50 rounded-xl border border-base-300 p-6">
+        <h2 class="text-xl font-semibold text-cream mt-0 mb-3">{locale === 'pt' ? 'Sobre o projeto' : 'About'}</h2>
+        <p class="text-muted">
+          {locale === 'pt'
+            ? 'LifeMap Pro é uma plataforma de astrologia profissional que roda 100% no seu navegador. Nenhum dado é enviado a servidores — seus perfis, mapas e compras ficam armazenados localmente no seu dispositivo via IndexedDB.'
+            : 'LifeMap Pro is a professional astrology platform that runs 100% in your browser. No data is sent to servers — your profiles, charts and purchases are stored locally on your device via IndexedDB.'}
+        </p>
+      </section>
+
+      <section class="bg-base-50 rounded-xl border border-base-300 p-6">
+        <h2 class="text-xl font-semibold text-cream mt-0 mb-3">{locale === 'pt' ? 'Tecnologia' : 'Technology'}</h2>
+        <ul class="text-sm text-muted space-y-2">
+          <li><strong class="text-cream-dark">Swiss Ephemeris</strong> — {locale === 'pt' ? 'Mesma engine do astro.com. Precisão sub-arcsegundo.' : 'Same engine as astro.com. Sub-arcsecond precision.'}</li>
+          <li><strong class="text-cream-dark">Astronomy Engine</strong> — {locale === 'pt' ? 'Fallback NASA/JPL para modo offline.' : 'NASA/JPL fallback for offline mode.'}</li>
+          <li><strong class="text-cream-dark">jsPDF</strong> — {locale === 'pt' ? 'Relatórios PDF gerados instantaneamente no browser.' : 'PDF reports generated instantly in the browser.'}</li>
+          <li><strong class="text-cream-dark">IndexedDB</strong> — {locale === 'pt' ? 'Armazenamento local seguro, sem servidores.' : 'Secure local storage, no servers.'}</li>
+        </ul>
+      </section>
+
+      <section class="bg-base-50 rounded-xl border border-base-300 p-6">
+        <h2 class="text-xl font-semibold text-cream mt-0 mb-3">{locale === 'pt' ? 'Privacidade' : 'Privacy'}</h2>
+        <p class="text-muted">
+          {locale === 'pt'
+            ? 'Seus dados de nascimento, perfis salvos e relatórios comprados nunca deixam seu dispositivo. Não usamos cookies de rastreamento, não vendemos dados e não requeremos criação de conta.'
+            : 'Your birth data, saved profiles and purchased reports never leave your device. We don\'t use tracking cookies, don\'t sell data and don\'t require account creation.'}
+        </p>
+      </section>
+
+      <section class="bg-base-50 rounded-xl border border-base-300 p-6">
+        <h2 class="text-xl font-semibold text-cream mt-0 mb-3">{locale === 'pt' ? 'Idiomas' : 'Languages'}</h2>
+        <p class="text-muted">
+          {locale === 'pt' ? 'Disponível em 11 idiomas:' : 'Available in 11 languages:'} Português, English, Español, Français, Deutsch, Italiano, Nederlands, Türkçe, Русский, 中文, 日本語
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

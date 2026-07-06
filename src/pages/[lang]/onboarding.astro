@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import OnboardingForm from '../../components/forms/OnboardingForm.tsx';
+import { getTranslations, supportedLocales, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+---
+
+<BaseLayout title={locale === 'pt' ? 'Começar' : 'Get Started'} locale={locale}>
+  <OnboardingForm client:load locale={locale} />
+</BaseLayout>

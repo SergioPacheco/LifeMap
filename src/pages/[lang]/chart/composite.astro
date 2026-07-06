@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+import CompositeApp from '../../../components/chart/CompositeApp.tsx';
+---
+<BaseLayout title="composite" locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><CompositeApp client:load /></div></BaseLayout>

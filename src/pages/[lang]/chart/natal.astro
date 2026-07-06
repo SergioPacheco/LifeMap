@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NatalApp from '../../../components/chart/NatalApp.tsx';
+import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+---
+
+<BaseLayout title={t.nav.natal} locale={locale}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-6">
+      <h1 class="text-2xl font-serif font-bold text-cream">{t.nav.natal}</h1>
+      <p class="text-sm text-muted mt-1">{t.site.description}</p>
+    </div>
+    <NatalApp client:load locale={locale} />
+  </div>
+</BaseLayout>

@@ -1,0 +1,39 @@
+<script type="module">
+import * as Astronomy from '/node_modules/.vite/deps/astronomy-engine.js?v=3df1751d';
+
+function norm(a) { a = a % 360; return a < 0 ? a + 360 : a; }
+
+function getLon(planetId, date) {
+  const astroTime = new Astronomy.AstroTime(date);
+  const bodyMap = {
+    mercury: Astronomy.Body.Mercury,
+    venus: Astronomy.Body.Venus,
+    mars: Astronomy.Body.Mars,
+  };
+  const body = bodyMap[planetId];
+  if (!body) return 0;
+  const equ = Astronomy.GeoVector(body, astroTime, true);
+  const ecl = Astronomy.Ecliptic(equ);
+  return norm(ecl.elon);
+}
+
+// Test: Mercury retrograde March 10, 2026
+const date = new Date(Date.UTC(2026, 2, 10));
+const d1 = new Date(date.getTime() - 86400000);
+const d2 = new Date(date.getTime() + 86400000);
+const lon1 = getLon('mercury', d1);
+const lon2 = getLon('mercury', d2);
+let diff = lon2 - lon1;
+if (diff > 180) diff -= 360;
+if (diff < -180) diff += 360;
+
+document.body.innerHTML = '<pre>' + JSON.stringify({
+  test: 'Mercury retrograde March 10 2026',
+  lon_yesterday: lon1,
+  lon_tomorrow: lon2,
+  diff: diff,
+  isRetrograde: diff < 0,
+  astronomyLoaded: typeof Astronomy.GeoVector === 'function',
+}, null, 2) + '</pre>';
+</script>
+<body>Loading test...</body>

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Astro
+.astro/
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docs - arquivos grandes (PDFs/ZIPs)
+docs/AstrologyPDF-main.zip
+docs/AstrologyPDF-main/
+docs/lunasapiens_download-main/

@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Header from '../components/layout/Header.tsx';
+import Footer from '../components/layout/Footer.tsx';
+import { getTranslations, type Locale } from '../i18n';
+
+interface Props {
+  title?: string;
+  locale: Locale;
+}
+
+const { title, locale } = Astro.props;
+const t = getTranslations(locale);
+const pageTitle = title ? `${title} | ${t.site.title}` : t.site.title;
+---
+
+<!DOCTYPE html>
+<html lang={locale} style="background-color: #050507;">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={t.site.description} />
+  <title>{pageTitle}</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#050507" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={t.site.description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content={locale} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen bg-base text-cream font-sans antialiased" style="background-color: #050507; color: #f5f5f5;">
+  <Header client:load locale={locale} />
+
+  <main class="pt-16">
+    <slot />
+  </main>
+
+  <Footer locale={locale} />
+
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+</body>
+</html>

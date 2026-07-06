@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+import { getContent } from '../../../content';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+const content = await getContent(locale, 'houses');
+---
+
+<BaseLayout title={content.title} locale={locale}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+    <nav class="text-sm text-muted mb-6">
+      <a href={`/${locale}/learn`} class="hover:text-brand-600">{t.nav.learn}</a> → <span class="text-cream">{content.title}</span>
+    </nav>
+    <h1 class="text-3xl font-serif font-bold text-cream mb-4">{content.title}</h1>
+    <p class="text-muted mb-8 text-lg">{content.intro}</p>
+
+    <div class="space-y-4">
+      {content.list.map((house: any) => (
+        <article class="bg-base-50 rounded-xl border border-base-300 p-5 shadow-sm">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 flex items-center justify-center bg-gold/10 rounded-full text-gold font-bold text-sm flex-shrink-0">{house.num}</div>
+            <div class="flex-1">
+              <h2 class="text-lg font-semibold text-cream">{house.name}</h2>
+              <div class="flex flex-wrap gap-2 mt-1 text-xs text-muted">
+                <span class="bg-base-200 px-2 py-0.5 rounded">{house.area}</span>
+                <span>{t.common.analogSign}: {house.sign}</span>
+              </div>
+              <p class="mt-2 text-sm text-cream-dark leading-relaxed">{house.description}</p>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ReportsShop from '../../../components/premium/ReportsShop.tsx';
+import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+---
+<BaseLayout title={t.reports.title} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><h1 class="text-3xl font-serif font-bold text-cream text-center mb-8">{t.reports.title}</h1><ReportsShop client:load /></div></BaseLayout>

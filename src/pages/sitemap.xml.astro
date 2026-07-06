@@ -1,0 +1,39 @@
+---
+// Generates sitemap.xml with all pages in all languages
+import { supportedLocales } from '../i18n';
+
+const DOMAIN = 'https://lifemap.pro';
+const routes = [
+  '', '/chart/natal', '/chart/transits', '/chart/synastry', '/chart/solar-return',
+  '/chart/progressions', '/chart/composite', '/chart/astroclick',
+  '/horoscope/daily', '/horoscope/love', '/horoscope/weekly', '/horoscope/events',
+  '/tools/ephemeris', '/tools/current-planets', '/tools/retrogrades',
+  '/tools/aspect-calendar', '/tools/moon-phases',
+  '/learn', '/learn/first-steps', '/learn/planets', '/learn/signs', '/learn/houses', '/learn/aspects',
+  '/reports', '/reports/natal-sample', '/about',
+];
+
+const pages = supportedLocales.flatMap(lang =>
+  routes.map(route => ({
+    url: `${DOMAIN}/${lang}${route}`,
+    lang,
+    route,
+    lastmod: new Date().toISOString().split('T')[0],
+  }))
+);
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+{pages.map(page => (
+  <url>
+    <loc>{page.url}</loc>
+    <lastmod>{page.lastmod}</lastmod>
+    <changefreq>{page.route.includes('horoscope') ? 'daily' : 'weekly'}</changefreq>
+    <priority>{page.route === '' ? '1.0' : page.route.includes('chart/natal') ? '0.9' : '0.7'}</priority>
+    {supportedLocales.map(altLang => (
+      <xhtml:link rel="alternate" hreflang={altLang} href={`${DOMAIN}/${altLang}${page.route}`} />
+    ))}
+  </url>
+))}
+</urlset>
