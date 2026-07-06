@@ -1,96 +1,83 @@
-# PRÓXIMA SESSÃO — Status do Projeto LifeMap Pro
+# PRÓXIMA SESSÃO — Tradução de Relatórios PDF
 
-## ✅ CONCLUÍDO
+## O que fazer
 
-### Redesign Visual Dark Premium (Estilo Astroma.co)
-- [x] tailwind.config.js — paleta dark/gold/cream
-- [x] BaseLayout, Header, Footer — dark por padrão
-- [x] Todos os componentes e páginas — zero `dark:` ou `bg-white`
-- [x] Wheel SVG — cores adaptadas para fundo escuro
-- [x] Onboarding + Dashboard — nova UX
+Traduzir os textos interpretativos dos relatórios PDF para os 7 idiomas pendentes.
+Cada sessão foca em **1 idioma** e traduz 168 parágrafos (14 arrays × 12 casas/signos).
 
-### Motor de Interpretação — 5 Camadas
-- [x] **Camada 1 (básica)**: planeta + signo → `interpret.ts` (SUN_SIGN_FLAVOR, MOON_SIGN_FLAVOR)
-- [x] **Camada 2 (intermediária)**: planeta + signo + casa → `interpret.ts` (SUN/MOON/MERCURY/VENUS/MARS_IN_HOUSE)
-- [x] **Camada 3 (profunda)**: planeta + signo + casa + aspectos → `aspect-interpretations.ts`
-- [x] **Camada 4 (premium)**: síntese por tema → `synthesis.ts` (amor, dinheiro, carreira, missão, bloqueios, talentos)
-- [x] **Camada 5 (narrativa)**: texto bonito e humano → `synthesis.ts` (generateOverview, getHouseTheme)
+### Ordem de prioridade:
+1. FR (Francês)
+2. DE (Alemão) 
+3. IT (Italiano)
+4. RU (Russo)
+5. ZH (Chinês)
+6. JA (Japonês)
+7. NL (Holandês)
+8. TR (Turco)
 
-### Biblioteca de Interpretação
-- [x] `interpret.ts` — Planetas pessoais nas casas (narrativa aprofundada) + Ascendente + Nodo Norte
-- [x] `outer-planets.ts` — Jupiter, Saturn, Uranus, Neptune, Pluto nas 12 casas
-- [x] `aspect-interpretations.ts` — 25+ pares de planetas × 3 tipos (conjunção, soft, hard)
-- [x] `dignities.ts` — Regente do Ascendente, dignidades essenciais, elementos, modalidades
-- [x] `synthesis.ts` — Síntese por 6 temas de vida com regentes das casas
-
-### Gerador de PDF
-- [x] Relatório tryout (3 páginas gratuitas)
-- [x] Relatório completo com: overview narrativo, regente do mapa, elementos/modalidades, dignidades, 6 temas, planetas exteriores
-
----
-
-## ARQUITETURA DAS CAMADAS
-
+### Comando para iniciar sessão:
 ```
-GRATUITO (site)         → Camada 1+2: interpret.ts (InterpretationPanel)
-                          Ascendente + Sol/Lua/Mercúrio/Vênus/Marte nas casas + Nodo Norte
-
-RELATÓRIO PDF (pago)    → Camada 3+4+5: synthesis.ts + aspect-interpretations.ts
-                          Overview narrativo
-                          Regente do Ascendente
-                          Elementos e Modalidades  
-                          Dignidades Essenciais
-                          6 Temas (amor, carreira, dinheiro, missão, bloqueios, talentos)
-                          Planetas exteriores (5 planetas × 12 casas)
-                          Aspectos interpretados (quadraturas, oposições, trígonos)
+Traduza os textos interpretativos de src/engine/interpretations/en.ts para FRANCÊS.
+Reescreva src/engine/interpretations/fr.ts com todos os 14 arrays (168 textos) 
+traduzidos para francês nativo. Mantenha os metadados (SIGN_NAMES, LABELS etc) como estão.
+Siga as instruções de TRANSLATION-SESSIONS.md.
 ```
 
 ---
 
-## 🐛 BUG PENDENTE — Retrógrados não carrega no browser
+## Contexto do Projeto
 
-**Página:** `/pt/tools/retrogrades` (RetrogradesApp.tsx)
-**Sintoma:** Mostra "Nenhum período retrógrado encontrado para 2026" — o cálculo retorna array vazio.
-**Causa provável:** O `astronomy-engine` funciona corretamente no Node.js (testado via `npx tsx`) mas algo falha no contexto do browser (SolidJS island hydration). Possíveis causas:
-- Cache persistente do browser servindo versão antiga do componente
-- Conflito entre SwissEph WASM e Astronomy Engine no mesmo contexto
-- O `await` dentro do `onMount` pode não estar executando o `calculate()` corretamente
-
-**O que já foi tentado:**
-1. ✅ Detecção por `pos[].isRetrograde` (campo pode ser `false` quando sweph retorna sem speed)
-2. ✅ Detecção por comparação de longitude (`checkRetro` com diff entre ontem/amanhã)
-3. ✅ Usar `astronomy-engine` diretamente (sem depender do `calculatePositions` dual-engine)
-4. ✅ Cache de posições com `lonCache` para evitar recalcular
-5. ✅ Reinício do servidor Astro com limpeza de `.astro/`
-6. ✅ Confirmado que no Node.js o cálculo funciona (Mercury retro Mar 1-20 detectado)
-
-**Para resolver:**
-- Abrir console do browser (F12) na página e verificar erros JavaScript
-- Testar http://localhost:4321/test-retro.html (teste isolado do Astronomy Engine)
-- Se `test-retro.html` funcionar, o bug é na integração SolidJS/Astro island
-- Possível solução: pré-calcular retrógrados no build time (SSR) em vez de client-side
+- **Projeto:** LifeMap Pro — plataforma de astrologia 100% client-side
+- **Path:** /home/user-sn-387444/Documentos/code/LifeMap
+- **Branch:** main
+- **Último commit:** 3743ab2
+- **Build:** `source ~/.nvm/nvm.sh && nvm use 22 && npx astro build`
+- **420 páginas, 11 idiomas, ~60 arquivos de código**
 
 ---
 
-## PRÓXIMOS PASSOS
+## Estado dos relatórios
 
-### Prioridade 1 — Monetização
-- [ ] Integrar Stripe Checkout (pagamento real)
-- [ ] Relatório de Relacionamento (sinastria + composto)
-- [ ] Relatório de Previsão Anual (trânsitos + profecção)
+### ✅ Motor refatorado (REPORTS-ARCHITECTURE.md)
+- Determinístico, zero IA em runtime
+- Repositório centralizado de interpretações por idioma
+- getInterpretations(locale) com 11 idiomas registrados
+- Top 5 Potenciais + Top 5 Desafios (scoring automático)
+- tryoutCut() com labels traduzidos
 
-### Prioridade 2 — Conteúdo
-- [ ] Expandir biblioteca de aspectos (Urano, Netuno, Plutão entre si)
-- [ ] Adicionar interpretações em inglês (i18n do interpret.ts)
-- [ ] Seção de "recomendações" por tema (cristais, meditações, práticas)
+### ✅ Relatórios implementados (6 tipos)
+1. Mapa Natal Completo (20-30 páginas)
+2. Previsão Anual (15-20 páginas)
+3. Relatório de Relacionamento (20-30 páginas)
+4. Análise Psicológica Profunda (20-30 páginas)
+5. Carreira e Vocação (15-20 páginas)
+6. Os Sete Pecados (15-20 páginas)
 
-### Prioridade 3 — UX/SEO
-- [ ] SSR para SEO (meta tags dinâmicas por página)
-- [ ] PWA offline completa (cache de efemérides)
-- [ ] Google Analytics / Plausible
-- [ ] Landing page de conversão para relatórios
+### ✅ Traduções completas (interface + metadados)
+- 11 i18n/*.json com todas as chaves da UI
+- 11 interpretations/*.ts com SIGN_NAMES, PLANET_NAMES, MONTHS, LABELS, SECTION_TITLES, PLANET_SUBTITLES, TRANSITIONS traduzidos
+
+### ⏳ Pendente: textos interpretativos narrativos
+- **PT, EN, ES:** 100% traduzidos (168 textos cada)
+- **FR, DE, IT, NL, TR, RU, ZH, JA:** textos ainda em EN — precisam tradução nativa
 
 ---
 
-*Atualizado: 2026-07-05 14:45*
-*Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
+## Outros itens pendentes (não urgentes)
+
+### Bug: Retrógrados não carrega no browser
+- Funciona no Node.js, falha no browser (SolidJS hydration)
+- Ver NEXT-SESSION.md anterior para diagnóstico
+
+### Monetização
+- T38: Integração Stripe Checkout real (mock atual sempre aprova)
+- T39: Cloudflare Function para webhook Stripe
+
+### Documentação
+- REPORTS-ARCHITECTURE.md — arquitetura completa documentada
+- CATALOG.md — 40+ tipos de mapas para implementação futura
+- TRANSLATION-SESSIONS.md — guia para sessões de tradução
+
+---
+
+*Atualizado: 2026-07-06 09:46*
