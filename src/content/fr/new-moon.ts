@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'La Nouvelle Lune et Ses Significations',
+  intro: 'La Nouvelle Lune se produit quand le Soleil et la Lune se rencontrent au même degré du zodiaque, formant une conjonction parfaite. C\'est le moment-graine — le début d\'un nouveau cycle de 28 jours. Dans la vision humaniste, chaque nouvelle lune ne "fait" rien pour vous : elle synchronise votre fréquence avec le thème symbolique que la nature offre. C\'est un portail pour des intentions conscientes, pas une force magique externe.',
+  phases: {
+    title: 'Le Cycle Lunaire Complet',
+    intro: 'Avant de se concentrer sur la Nouvelle Lune, il est utile de comprendre le cycle complet. Chaque phase a une qualité psychologique distincte.',
+    list: [
+      { name: 'Nouvelle Lune 🌑', degrees: '0° — Soleil et Lune ensemble', quality: 'Graine', description: 'Obscurité, potentiel pur, commencement. Terrain fertile pour de nouvelles intentions. L\'esprit est le plus réceptif au nouveau.' },
+      { name: 'Croissant 🌒', degrees: '45°', quality: 'Émergence', description: 'L\'impulsion prend forme. L\'énergie monte, l\'action commence. Temps d\'agir sur les intentions plantées.' },
+      { name: 'Premier Quartier 🌓', degrees: '90°', quality: 'Défi', description: 'Première tension et obstacle. Ce qui a été planté rencontre de la résistance. Requiert décision et engagement.' },
+      { name: 'Gibbeuse Croissante 🌔', degrees: '135°', quality: 'Raffinement', description: 'Travail de développement. Ajustements et raffinements. Focus intense avant le sommet.' },
+      { name: 'Pleine Lune 🌕', degrees: '180° — Soleil opposé Lune', quality: 'Culmination', description: 'Illumination, plénitude, révélation. Ce qui a été semé à la nouvelle lune atteint la conscience. Les émotions sont intenses.' },
+      { name: 'Gibbeuse Décroissante 🌖', degrees: '225°', quality: 'Récolte', description: 'Intégration des fruits. Gratitude et assimilation de ce qui a été appris.' },
+      { name: 'Dernier Quartier 🌗', degrees: '270°', quality: 'Révision', description: 'Libération et correction de cap. Ce qui ne fonctionne plus est laissé derrière.' },
+      { name: 'Lune Balsamique 🌘', degrees: '315°', quality: 'Repos', description: 'Dissolution et préparation. Phase d\'introspection, de repos et d\'abandon avant le prochain cycle.' },
+    ],
+  },
+  signs: {
+    title: 'La Nouvelle Lune dans Chaque Signe',
+    intro: 'Le signe dans lequel se produit la Nouvelle Lune définit le thème du cycle de 28 jours. Ce n\'est pas un horoscope — c\'est un prisme symbolique qui éclaire une dimension spécifique de l\'expérience humaine.',
+    list: [
+      { sign: 'Bélier ♈', theme: 'Commencement et Identité', description: 'Thème : nouveaux commencements, courage, affirmation de soi. Demandez-vous : dans quel domaine ai-je besoin d\'agir avec plus d\'initiative ? Quelle nouvelle version de moi veut émerger ?', color: 'red' },
+      { sign: 'Taureau ♉', theme: 'Valeurs et Ressources', description: 'Thème : plaisir sensoriel, durabilité, valeur personnelle. Qu\'est-ce qui compte vraiment pour moi ? Comment puis-je construire quelque chose de durable et de solide ?', color: 'green' },
+      { sign: 'Gémeaux ♊', theme: 'Communication et Apprentissage', description: 'Thème : esprit, connexions, échange d\'idées. Quel savoir veux-je absorber ? Comment puis-je communiquer avec plus de clarté ?', color: 'yellow' },
+      { sign: 'Cancer ♋', theme: 'Foyer et Soin', description: 'Thème : racines, famille, sécurité émotionnelle. Qu\'est-ce qui me nourrit genuinement ? Comment puis-je créer plus d\'appartenance ?', color: 'silver' },
+      { sign: 'Lion ♌', theme: 'Création et Expression', description: 'Thème : expression de soi, joie, créativité. Quelle partie de moi veut briller ? Dans quel domaine puis-je agir avec plus d\'authenticité et de plaisir ?', color: 'gold' },
+      { sign: 'Vierge ♍', theme: 'Santé et Service', description: 'Thème : corps, routines, amélioration continue. Qu\'est-ce qui dans ma vie quotidienne a besoin d\'attention ? Comment puis-je servir mieux sans me perdre ?', color: 'beige' },
+      { sign: 'Balance ♎', theme: 'Relations et Équilibre', description: 'Thème : partenariats, harmonie, beauté. Quelles relations ont besoin d\'attention ? Est-ce que je donne et reçois en équilibre ?', color: 'rose' },
+      { sign: 'Scorpion ♏', theme: 'Transformation et Profondeur', description: 'Thème : psychologie profonde, pouvoir, régénération. Qu\'est-ce qui doit mourir pour que quelque chose de nouveau naisse ? Quelle ombre puis-je affronter avec courage ?', color: 'burgundy' },
+      { sign: 'Sagittaire ♐', theme: 'Expansion et Sens', description: 'Thème : foi, aventure, philosophie de vie. Qu\'est-ce qui élargit ma vision du monde ? Quelle aventure ou apprentissage m\'appelle ?', color: 'purple' },
+      { sign: 'Capricorne ♑', theme: 'Objectifs et Structure', description: 'Thème : ambition, maturité, héritage. Quelle structure veux-je construire ? Comment puis-je prendre plus de responsabilité pour mon chemin ?', color: 'gray' },
+      { sign: 'Verseau ♒', theme: 'Originalité et le Collectif', description: 'Thème : communauté, innovation, liberté. Comment puis-je contribuer à quelque chose de plus grand ? Quelle partie de moi a besoin de plus de liberté pour être originale ?', color: 'electric blue' },
+      { sign: 'Poissons ♓', theme: 'Dissolution et Spiritualité', description: 'Thème : intuition, compassion, art, transcendance. Quelle illusion puis-je libérer ? Comment puis-je me connecter à ce qui est plus grand que mon ego ?', color: 'turquoise' },
+    ],
+  },
+  intentions: {
+    title: 'Comment Utiliser la Nouvelle Lune pour les Intentions',
+    intro: 'Formuler des intentions à la Nouvelle Lune est une pratique de focus conscient — vous utilisez le symbole du cycle comme miroir pour vous demander : que veux-je cultiver au cours des 28 prochains jours ?',
+    steps: [
+      { step: '1. Préparer l\'espace', text: 'Dans les 48 heures autour de la Nouvelle Lune (de préférence après la Nouvelle Lune exacte), mettez-vous à l\'écart un moment de silence. Cela n\'a pas besoin d\'être un rituel élaboré — 10 minutes avec un journal fonctionne parfaitement.' },
+      { step: '2. Vérifier le signe de la Nouvelle Lune', text: 'Identifiez dans quel signe se produit la Nouvelle Lune. C\'est le thème du cycle. Si c\'est le Cancer, le focus est sur le foyer, la famille, le soin émotionnel.' },
+      { step: '3. Formuler les intentions comme des souhaits, pas des objectifs', text: 'La différence est subtile mais importante. Objectif : "je dois gagner X montant". Intention : "je souhaite trouver des formes d\'abondance qui s\'alignent avec ma joie authentique". Les intentions sont directionnelles, pas prescriptives.' },
+      { step: '4. Être spécifique sur ce qui compte', text: 'Mieux vaut 2-3 intentions claires que 10 vagues. Chaque intention doit résonner genuinement — pas ce que vous "devriez" vouloir.' },
+      { step: '5. Lâcher prise et faire confiance', text: 'Formuler des intentions n\'est pas programmer l\'univers. C\'est aligner votre focus intérieur avec le thème que le moment offre. Plantez et continuez à vivre.' },
+      { step: '6. Réexaminer à la Pleine Lune', text: 'La Pleine Lune, 14 jours plus tard, est le moment de voir ce qui a été illuminé. Qu\'est venu à la conscience ? Qu\'a besoin d\'être intégré ou libéré ?' },
+    ],
+    important: {
+      title: 'Une note importante',
+      text: 'La Nouvelle Lune n\'a pas de pouvoir magique sur votre vie. Elle fonctionne comme une ancre symbolique : en décidant intentionnellement de vous concentrer sur quelque chose pendant 28 jours, vous y portez simplement plus d\'attention — et l\'attention est l\'outil de transformation le plus puissant qui existe.',
+    },
+  },
+  solarEclipses: {
+    title: 'Éclipses Solaires — Nouvelles Lunes Amplifiées',
+    text: 'Quand une Nouvelle Lune se produit près des nœuds lunaires, nous avons une Éclipse Solaire. Les éclipses portent le même archétype que la Nouvelle Lune — graine, intention, nouveau commencement — mais amplifié. Les éclipses apportent souvent des changements significatifs, des tournants et des révélations importantes. Ce sont des portails de transformation plus intense que les nouvelles lunes ordinaires.',
+  },
+  cta: 'Suivez les prochaines Nouvelles Lunes dans votre calendrier',
+  ctaButton: 'Voir les Phases Lunaires →',
+};

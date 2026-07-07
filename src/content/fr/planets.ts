@@ -1,0 +1,18 @@
+export const planets = {
+  title: 'Les Planètes en Astrologie',
+  intro: 'En astrologie, chaque planète représente une fonction psychologique ou un domaine de l\'expérience humaine. Les planètes personnelles (Soleil à Mars) définissent la personnalité individuelle ; les planètes sociales (Jupiter et Saturne) montrent comment nous interagissons avec la société ; et les planètes transpersonnelles (Uranus, Neptune, Pluton) représentent des forces collectives qui transforment les générations.',
+  cta: 'Vous voulez savoir où se trouve chaque planète dans VOTRE thème ?',
+  ctaButton: 'Calculer Mon Thème Natal →',
+  list: [
+    { symbol: '☉', name: 'Soleil', keywords: 'Identité, ego, vitalité, but', ruler: 'Lion', cycle: '1 an', description: 'Le Soleil représente votre essence — qui vous êtes au fond. C\'est la volonté consciente, l\'ego sain, la vitalité et le but de vie. Dans le thème, il montre comment vous cherchez à briller, être reconnu et exprimer votre individualité.' },
+    { symbol: '☽', name: 'Lune', keywords: 'Émotions, instinct, mère, confort', ruler: 'Cancer', cycle: '28 jours', description: 'La Lune est votre monde émotionnel inconscient — réactions automatiques, besoins de sécurité, mémoire et habitudes. Elle représente ce dont vous avez besoin pour vous sentir nourri et protégé.' },
+    { symbol: '☿', name: 'Mercure', keywords: 'Esprit, communication, raisonnement, apprentissage', ruler: 'Gémeaux / Vierge', cycle: '88 jours', description: 'Mercure gouverne le fonctionnement de votre esprit — style de pensée, communication, apprentissage et traitement de l\'information.' },
+    { symbol: '♀', name: 'Vénus', keywords: 'Amour, beauté, plaisir, valeurs, attraction', ruler: 'Taureau / Balance', cycle: '225 jours', description: 'Vénus représente ce que vous valorisez et désirez attirer — comment vous aimez, ce que vous considérez beau, comment vous cherchez plaisir et harmonie.' },
+    { symbol: '♂', name: 'Mars', keywords: 'Action, énergie, courage, désir, colère', ruler: 'Bélier', cycle: '687 jours', description: 'Mars est votre énergie vitale en action — comment vous combattez, prenez des initiatives, exprimez la colère et canalisez le désir.' },
+    { symbol: '♃', name: 'Jupiter', keywords: 'Expansion, foi, sagesse, abondance, chance', ruler: 'Sagittaire', cycle: '12 ans', description: 'Jupiter est le Grand Bénéfique — où vous trouvez sens, croissance et opportunité. Il gouverne la philosophie de vie, la foi, l\'enseignement supérieur et les voyages.' },
+    { symbol: '♄', name: 'Saturne', keywords: 'Discipline, limites, responsabilité, maturité', ruler: 'Capricorne', cycle: '29 ans', description: 'Saturne est le Maître Sévère — représente vos plus grandes peurs, devoirs et là où vous devez mûrir avec patience.' },
+    { symbol: '♅', name: 'Uranus', keywords: 'Liberté, originalité, rupture, innovation', ruler: 'Verseau', cycle: '84 ans', description: 'Uranus est l\'Éveil Soudain — où vous avez besoin de liberté radicale et rompez avec les schémas établis.' },
+    { symbol: '♆', name: 'Neptune', keywords: 'Spiritualité, intuition, rêves, illusion', ruler: 'Poissons', cycle: '165 ans', description: 'Neptune est le Voile entre les mondes — porte vers la transcendance, l\'art sublime et la compassion universelle, mais aussi vers l\'illusion et l\'évasion.' },
+    { symbol: '♇', name: 'Pluton', keywords: 'Transformation, pouvoir, régénération, mort/renaissance', ruler: 'Scorpion', cycle: '248 ans', description: 'Pluton est le Phénix — le pouvoir de la transformation absolue. Mort et renaissance symboliques, intensité, régénération.' },
+  ],
+};

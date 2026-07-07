@@ -1,0 +1,18 @@
+export const signs = {
+  title: '12 Zodyak Burcu',
+  intro: 'Burçlar 12 enerjetik arketiptir. Haritanızdaki her gezegen bir burçta yer alır ve ifadesini spesifik niteliklerle renklendirir.',
+  list: [
+    { symbol: '♈', name: 'Koç', dates: '21 Mar – 19 Nis', element: 'Ateş', mode: 'Öncü', ruler: '♂ Mars', color: '#cc0000', description: 'Birinci burç — başlangıcın kıvılcımı. Cesaret, dürtü, rekabetçilik ve bireysellik. Koç eylemsizliği kırar ve yeni yollar açar. Gölge: dürtüsellik, bencillik, saldırganlık.' },
+    { symbol: '♉', name: 'Boğa', dates: '20 Nis – 20 May', element: 'Toprak', mode: 'Sabit', ruler: '♀ Venüs', color: '#006600', description: 'Koç\'un başlattıklarının pekiştirilmesi. İstikrar, duyusal zevk, sadakat ve sebat. Boğa sabırla sağlam temeller inşa eder. Gölge: sahiplenme, inatçılık, materyalizm.' },
+    { symbol: '♊', name: 'İkizler', dates: '21 May – 20 Haz', element: 'Hava', mode: 'Değişken', ruler: '☿ Merkür', color: '#0000cc', description: 'Dünyalar arasındaki köprü. Doyumsuz merak, iletişim, çok yönlülük ve hafiflik. İkizler bilgileri ve insanları birbirine bağlar. Gölge: yüzeysellik, tutarsızlık, ikililik.' },
+    { symbol: '♋', name: 'Yengeç', dates: '21 Haz – 22 Tem', element: 'Su', mode: 'Öncü', ruler: '☽ Ay', color: '#cc6600', description: 'Duygusal yuva. Koruma, hafıza, aidiyet ve beslenme. Yengeç kökler atar ve derinden ilgilenir. Gölge: bağımlılık, duygusal manipülasyon, geçmişe tutunma.' },
+    { symbol: '♌', name: 'Aslan', dates: '23 Tem – 22 Ağu', element: 'Ateş', mode: 'Sabit', ruler: '☉ Güneş', color: '#cc0000', description: 'Hayatın sahnesi. Yaratıcı ifade, kişisel parlaklık, cömertlik ve liderlik. Aslan ışıl ışıl parlar ve ilham verir. Gölge: kibir, alkış ihtiyacı, drama.' },
+    { symbol: '♍', name: 'Başak', dates: '23 Ağu – 22 Eyl', element: 'Toprak', mode: 'Değişken', ruler: '☿ Merkür', color: '#006600', description: 'Deneyimin rafine edilmesi. Analiz, yeterlilik, hizmet ve iyileştirme. Başak özü gereksizden ayırır. Gölge: aşırı eleştiri, mükemmeliyetçilik, kaygı.' },
+    { symbol: '♎', name: 'Terazi', dates: '23 Eyl – 22 Eki', element: 'Hava', mode: 'Öncü', ruler: '♀ Venüs', color: '#0000cc', description: 'Ötekiyle karşılaşma. Denge, adalet, diplomasi ve ortaklık. Terazi ilişkilerde ve estetikte uyum arar. Gölge: kararsızlık, başkalarına bağımlılık.' },
+    { symbol: '♏', name: 'Akrep', dates: '23 Eki – 21 Kas', element: 'Su', mode: 'Sabit', ruler: '♇ Plüton', color: '#cc6600', description: 'Derinliklere iniş. Yoğunluk, dönüşüm, hakikat ve güç. Akrep gizli olandan korkmaz. Gölge: takıntı, kıskançlık, manipülasyon, intikam.' },
+    { symbol: '♐', name: 'Yay', dates: '22 Kas – 21 Ara', element: 'Ateş', mode: 'Değişken', ruler: '♃ Jüpiter', color: '#cc0000', description: 'Anlam oku. Genişleme, felsefe, macera ve inanç. Yay ufkun ötesinde anlam arar. Gölge: aşırılık, fanatizm, sorumsuzluk.' },
+    { symbol: '♑', name: 'Oğlak', dates: '22 Ara – 19 Oca', element: 'Toprak', mode: 'Öncü', ruler: '♄ Satürn', color: '#006600', description: 'Tırmanılacak dağ. Hırs, disiplin, olgunluk ve miras. Oğlak zamanla ve sebatla inşa eder. Gölge: soğukluk, katılık, kötümserlik.' },
+    { symbol: '♒', name: 'Kova', dates: '20 Oca – 18 Şub', element: 'Hava', mode: 'Sabit', ruler: '♅ Uranüs', color: '#0000cc', description: 'Sessiz devrim. Özgünlük, bağımsızlık, gelecek vizyonu ve insancılık. Kova mevcut durumu sorgular. Gölge: duygusal uzaklaşma, boş isyan.' },
+    { symbol: '♓', name: 'Balık', dates: '19 Şub – 20 Mar', element: 'Su', mode: 'Değişken', ruler: '♆ Neptün', color: '#cc6600', description: 'Son okyanus. Evrensel şefkat, maneviyat, sanat ve egonun çözülmesi. Balık her şeyi hisseder ve bütünle bağlanır. Gölge: kaçış, kurban rolü, kargaşa.' },
+  ],
+};

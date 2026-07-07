@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'Der Neumond und Seine Bedeutungen',
+  intro: 'Der Neumond tritt auf, wenn Sonne und Mond sich im gleichen Grad des Tierkreises treffen und eine perfekte Konjunktion bilden. Es ist der Saatmoment — der Beginn eines neuen 28-tägigen Zyklus. In der humanistischen Sicht "tut" jeder Neumond nichts für Sie: Er stimmt Ihre Frequenz auf das symbolische Thema ab, das die Natur anbietet. Es ist ein Portal für bewusste Absichten, keine externe magische Kraft.',
+  phases: {
+    title: 'Der vollständige Mondzyklus',
+    intro: 'Bevor man sich auf den Neumond konzentriert, ist es hilfreich, den vollständigen Zyklus zu verstehen. Jede Phase hat eine eigene psychologische Qualität.',
+    list: [
+      { name: 'Neumond 🌑', degrees: '0° — Sonne und Mond zusammen', quality: 'Saat', description: 'Dunkelheit, reines Potenzial, Beginn. Fruchtbarer Boden für neue Absichten. Der Geist ist am empfänglichsten für das Neue.' },
+      { name: 'Zunehmende Sichel 🌒', degrees: '45°', quality: 'Entstehung', description: 'Der Impuls nimmt Form an. Energie steigt, Aktion beginnt. Zeit, die gepflanzten Absichten umzusetzen.' },
+      { name: 'Erstes Viertel 🌓', degrees: '90°', quality: 'Herausforderung', description: 'Erste Spannung und Hindernis. Was gepflanzt wurde, begegnet Widerstand. Erfordert Entscheidung und Engagement.' },
+      { name: 'Zunehmender Halbmond 🌔', degrees: '135°', quality: 'Verfeinerung', description: 'Entwicklungsarbeit. Anpassungen und Verfeinerungen. Intensiver Fokus vor dem Höhepunkt.' },
+      { name: 'Vollmond 🌕', degrees: '180° — Sonne gegenüber Mond', quality: 'Kulminierung', description: 'Erleuchtung, Fülle, Offenbarung. Was beim Neumond gesät wurde, erreicht das Bewusstsein. Emotionen sind stark.' },
+      { name: 'Abnehmender Halbmond 🌖', degrees: '225°', quality: 'Ernte', description: 'Integration der Früchte. Dankbarkeit und Assimilation des Gelernten.' },
+      { name: 'Letztes Viertel 🌗', degrees: '270°', quality: 'Revision', description: 'Loslassen und Kurskorrektur. Was nicht mehr funktioniert, wird zurückgelassen.' },
+      { name: 'Balsamischer Mond 🌘', degrees: '315°', quality: 'Ruhe', description: 'Auflösung und Vorbereitung. Phase der Introspektion, Ruhe und Hingabe vor dem nächsten Zyklus.' },
+    ],
+  },
+  signs: {
+    title: 'Der Neumond in jedem Zeichen',
+    intro: 'Das Zeichen, in dem der Neumond auftritt, definiert das Thema des 28-tägigen Zyklus. Es ist kein Horoskop — es ist eine symbolische Linse, die eine spezifische Dimension menschlicher Erfahrung beleuchtet.',
+    list: [
+      { sign: 'Widder ♈', theme: 'Beginn und Identität', description: 'Thema: neue Anfänge, Mut, Selbstbehauptung. Fragen Sie sich: in welchem Bereich muss ich mehr Initiative ergreifen? Welche neue Version von mir möchte entstehen?', color: 'red' },
+      { sign: 'Stier ♉', theme: 'Werte und Ressourcen', description: 'Thema: Sinnesgenuss, Nachhaltigkeit, Selbstwert. Was ist mir wirklich wichtig? Wie kann ich etwas Dauerhaftes und Solides aufbauen?', color: 'green' },
+      { sign: 'Zwillinge ♊', theme: 'Kommunikation und Lernen', description: 'Thema: Geist, Verbindungen, Ideenaustausch. Welches Wissen möchte ich aufnehmen? Wie kann ich klarer kommunizieren?', color: 'yellow' },
+      { sign: 'Krebs ♋', theme: 'Zuhause und Fürsorge', description: 'Thema: Wurzeln, Familie, emotionale Sicherheit. Was nährt mich wirklich? Wie kann ich mehr Zugehörigkeit schaffen?', color: 'silver' },
+      { sign: 'Löwe ♌', theme: 'Kreation und Ausdruck', description: 'Thema: Selbstausdruck, Freude, Kreativität. Welcher Teil von mir möchte glänzen? In welchem Bereich kann ich authentischer und mit mehr Freude handeln?', color: 'gold' },
+      { sign: 'Jungfrau ♍', theme: 'Gesundheit und Dienst', description: 'Thema: Körper, Routinen, kontinuierliche Verbesserung. Was in meinem Alltag braucht Aufmerksamkeit? Wie kann ich besser dienen, ohne mich zu verlieren?', color: 'beige' },
+      { sign: 'Waage ♎', theme: 'Beziehungen und Balance', description: 'Thema: Partnerschaften, Harmonie, Schönheit. Welche Beziehungen brauchen Aufmerksamkeit? Gebe und empfange ich im Gleichgewicht?', color: 'rose' },
+      { sign: 'Skorpion ♏', theme: 'Transformation und Tiefe', description: 'Thema: Tiefenpsychologie, Macht, Regeneration. Was muss sterben, damit etwas Neues entsteht? Welchem Schatten kann ich mutig begegnen?', color: 'burgundy' },
+      { sign: 'Schütze ♐', theme: 'Expansion und Bedeutung', description: 'Thema: Glaube, Abenteuer, Lebensphilosophie. Was erweitert meinen Horizont? Welches Abenteuer oder Lernen ruft mich?', color: 'purple' },
+      { sign: 'Steinbock ♑', theme: 'Ziele und Struktur', description: 'Thema: Ehrgeiz, Reife, Vermächtnis. Welche Struktur möchte ich aufbauen? Wie kann ich mehr Verantwortung für meinen Weg übernehmen?', color: 'gray' },
+      { sign: 'Wassermann ♒', theme: 'Originalität und das Kollektiv', description: 'Thema: Gemeinschaft, Innovation, Freiheit. Wie kann ich zu etwas Größerem beitragen? Welcher Teil von mir braucht mehr Freiheit, um originell zu sein?', color: 'electric blue' },
+      { sign: 'Fische ♓', theme: 'Auflösung und Spiritualität', description: 'Thema: Intuition, Mitgefühl, Kunst, Transzendenz. Welche Illusion kann ich loslassen? Wie kann ich mich mit etwas Größerem als meinem Ego verbinden?', color: 'turquoise' },
+    ],
+  },
+  intentions: {
+    title: 'Wie Man den Neumond für Absichten nutzt',
+    intro: 'Absichten beim Neumond zu setzen ist eine Praxis bewussten Fokus — Sie nutzen das Symbol des Zyklus als Spiegel, um sich zu fragen: Was möchte ich in den nächsten 28 Tagen kultivieren?',
+    steps: [
+      { step: '1. Den Raum vorbereiten', text: 'Innerhalb der 48 Stunden um den Neumond herum (vorzugsweise nach dem exakten Neumond) nehmen Sie sich einen stillen Moment. Es muss kein aufwendiges Ritual sein — 10 Minuten mit einem Tagebuch funktioniert perfekt.' },
+      { step: '2. Das Zeichen des Neumonds prüfen', text: 'Identifizieren Sie, in welchem Zeichen der Neumond auftritt. Das ist das Thema des Zyklus. Ist es Krebs, liegt der Fokus auf Zuhause, Familie, emotionaler Fürsorge.' },
+      { step: '3. Absichten als Wünsche formulieren, nicht als Ziele', text: 'Der Unterschied ist subtil aber wichtig. Ziel: "Ich muss X Betrag verdienen". Absicht: "Ich wünsche mir, Formen von Fülle zu finden, die mit meiner echten Freude übereinstimmen". Absichten sind richtungsweisend, nicht vorschreibend.' },
+      { step: '4. Spezifisch sein, was wichtig ist', text: 'Besser 2-3 klare Absichten als 10 vage. Jede Absicht sollte wirklich resonieren — nicht was Sie "sollten" wollen.' },
+      { step: '5. Loslassen und vertrauen', text: 'Absichten setzen ist nicht das Universum zu programmieren. Es ist, Ihren inneren Fokus mit dem Thema des Moments auszurichten. Pflanzen Sie und leben Sie weiter.' },
+      { step: '6. Beim Vollmond überprüfen', text: 'Der Vollmond, 14 Tage später, ist der Moment zu sehen, was erleuchtet wurde. Was kam ins Bewusstsein? Was muss integriert oder losgelassen werden?' },
+    ],
+    important: {
+      title: 'Ein wichtiger Hinweis',
+      text: 'Der Neumond hat keine magische Macht über Ihr Leben. Er funktioniert als symbolischer Anker: indem Sie bewusst entscheiden, sich 28 Tage auf etwas zu konzentrieren, achten Sie einfach mehr darauf — und Aufmerksamkeit ist das mächtigste Transformationswerkzeug, das es gibt.',
+    },
+  },
+  solarEclipses: {
+    title: 'Sonnenfinsternisse — Verstärkte Neumonde',
+    text: 'Wenn ein Neumond in der Nähe der Mondknoten auftritt, haben wir eine Sonnenfinsternis. Finsternisse tragen denselben Archetyp wie der Neumond — Saat, Absicht, Neubeginn — aber verstärkt. Finsternisse bringen oft bedeutende Veränderungen, Wendepunkte und wichtige Enthüllungen. Sie sind Portale intensiverer Transformation als gewöhnliche Neumonde.',
+  },
+  cta: 'Verfolgen Sie kommende Neumonde in Ihrem Kalender',
+  ctaButton: 'Mondphasen ansehen →',
+};

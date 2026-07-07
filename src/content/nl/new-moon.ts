@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'De Nieuwe Maan en Haar Betekenissen',
+  intro: 'De Nieuwe Maan treedt op wanneer de Zon en de Maan elkaar ontmoeten op dezelfde graad van de dierenriem, een perfecte conjunctie vormend. Het is het zaadmoment — het begin van een nieuwe 28-daagse cyclus. In de humanistische kijk "doet" elke nieuwe maan niets voor u: het stemt uw frequentie af op het symbolische thema dat de natuur aanbiedt. Het is een portaal voor bewuste intenties, geen externe magische kracht.',
+  phases: {
+    title: 'De Volledige Maancyclus',
+    intro: 'Voordat u zich op de Nieuwe Maan concentreert, is het nuttig om de volledige cyclus te begrijpen. Elke fase heeft een eigen psychologische kwaliteit.',
+    list: [
+      { name: 'Nieuwe Maan 🌑', degrees: '0° — Zon en Maan samen', quality: 'Zaad', description: 'Duisternis, zuiver potentieel, begin. Vruchtbare grond voor nieuwe intenties. De geest is het meest ontvankelijk voor het nieuwe.' },
+      { name: 'Wassende Sikkel 🌒', degrees: '45°', quality: 'Opkomst', description: 'De impuls neemt vorm aan. Energie stijgt, actie begint. Tijd om te handelen op de geplante intenties.' },
+      { name: 'Eerste Kwartier 🌓', degrees: '90°', quality: 'Uitdaging', description: 'Eerste spanning en obstakel. Wat geplant is, ontmoet weerstand. Vereist beslissing en toewijding.' },
+      { name: 'Wassende Gibbeuze Maan 🌔', degrees: '135°', quality: 'Verfijning', description: 'Ontwikkelingswerk. Aanpassingen en verfijningen. Intensieve focus voor de piek.' },
+      { name: 'Volle Maan 🌕', degrees: '180° — Zon tegenover Maan', quality: 'Culminatie', description: 'Verlichting, volheid, openbaring. Wat bij de nieuwe maan gezaaid werd, bereikt het bewustzijn. Emoties lopen hoog op.' },
+      { name: 'Afnemende Gibbeuze Maan 🌖', degrees: '225°', quality: 'Oogst', description: 'Integratie van vruchten. Dankbaarheid en assimilatie van wat geleerd werd.' },
+      { name: 'Laatste Kwartier 🌗', degrees: '270°', quality: 'Revisie', description: 'Loslaten en koerscorrectie. Wat niet meer werkt, wordt achtergelaten.' },
+      { name: 'Balsamische Maan 🌘', degrees: '315°', quality: 'Rust', description: 'Ontbinding en voorbereiding. Fase van introspectie, rust en overgave voor de volgende cyclus.' },
+    ],
+  },
+  signs: {
+    title: 'De Nieuwe Maan in Elk Teken',
+    intro: 'Het teken waarin de Nieuwe Maan optreedt definieert het thema van de 28-daagse cyclus. Het is geen horoscoop — het is een symbolische lens die een specifieke dimensie van de menselijke ervaring belicht.',
+    list: [
+      { sign: 'Ram ♈', theme: 'Begin en Identiteit', description: 'Thema: nieuwe beginnen, moed, zelfbevestiging. Vraag uzelf: op welk gebied moet ik meer initiatief nemen? Welke nieuwe versie van mij wil ontstaan?', color: 'red' },
+      { sign: 'Stier ♉', theme: 'Waarden en Hulpbronnen', description: 'Thema: zintuiglijk genot, duurzaamheid, eigenwaarde. Wat is echt belangrijk voor mij? Hoe kan ik iets duurzaams en solides bouwen?', color: 'green' },
+      { sign: 'Tweelingen ♊', theme: 'Communicatie en Leren', description: 'Thema: geest, verbindingen, uitwisseling van ideeën. Welke kennis wil ik absorberen? Hoe kan ik duidelijker communiceren?', color: 'yellow' },
+      { sign: 'Kreeft ♋', theme: 'Thuis en Zorg', description: 'Thema: wortels, familie, emotionele veiligheid. Wat voedt mij werkelijk? Hoe kan ik meer verbondenheid creëren?', color: 'silver' },
+      { sign: 'Leeuw ♌', theme: 'Creatie en Expressie', description: 'Thema: zelfexpressie, vreugde, creativiteit. Welk deel van mij wil schitteren? Op welk gebied kan ik met meer authenticiteit en plezier handelen?', color: 'gold' },
+      { sign: 'Maagd ♍', theme: 'Gezondheid en Dienst', description: 'Thema: lichaam, routines, voortdurende verbetering. Wat in mijn dagelijks leven vraagt aandacht? Hoe kan ik beter dienen zonder mezelf te verliezen?', color: 'beige' },
+      { sign: 'Weegschaal ♎', theme: 'Relaties en Evenwicht', description: 'Thema: partnerschappen, harmonie, schoonheid. Welke relaties hebben aandacht nodig? Geef en ontvang ik in evenwicht?', color: 'rose' },
+      { sign: 'Schorpioen ♏', theme: 'Transformatie en Diepte', description: 'Thema: diepepsychologie, macht, regeneratie. Wat moet sterven opdat iets nieuws geboren wordt? Welke schaduw kan ik moedig onder ogen zien?', color: 'burgundy' },
+      { sign: 'Boogschutter ♐', theme: 'Expansie en Betekenis', description: 'Thema: geloof, avontuur, levensfilosofie. Wat verruimt mijn wereldbeeld? Welk avontuur of leerproces roept mij?', color: 'purple' },
+      { sign: 'Steenbok ♑', theme: 'Doelen en Structuur', description: 'Thema: ambitie, volwassenheid, erfenis. Welke structuur wil ik bouwen? Hoe kan ik meer verantwoordelijkheid nemen voor mijn pad?', color: 'gray' },
+      { sign: 'Waterman ♒', theme: 'Originaliteit en het Collectief', description: 'Thema: gemeenschap, innovatie, vrijheid. Hoe kan ik bijdragen aan iets groters? Welk deel van mij heeft meer vrijheid nodig om origineel te zijn?', color: 'electric blue' },
+      { sign: 'Vissen ♓', theme: 'Oplossing en Spiritualiteit', description: 'Thema: intuïtie, mededogen, kunst, transcendentie. Welke illusie kan ik loslaten? Hoe kan ik verbinding maken met iets groters dan mijn ego?', color: 'turquoise' },
+    ],
+  },
+  intentions: {
+    title: 'Hoe de Nieuwe Maan te Gebruiken voor Intenties',
+    intro: 'Intenties stellen bij de Nieuwe Maan is een praktijk van bewuste focus — u gebruikt het symbool van de cyclus als spiegel om uzelf te vragen: wat wil ik de komende 28 dagen cultiveren?',
+    steps: [
+      { step: '1. De ruimte voorbereiden', text: 'Binnen de 48 uur rond de Nieuwe Maan (bij voorkeur na de exacte Nieuwe Maan) neemt u een moment van stilte. Het hoeft geen uitgebreid ritueel te zijn — 10 minuten met een dagboek werkt perfect.' },
+      { step: '2. Het teken van de Nieuwe Maan controleren', text: 'Identificeer in welk teken de Nieuwe Maan plaatsvindt. Dat is het thema van de cyclus. Als het Kreeft is, ligt de focus op thuis, familie, emotionele verzorging.' },
+      { step: '3. Intenties formuleren als wensen, niet als doelen', text: 'Het verschil is subtiel maar belangrijk. Doel: "ik moet X bedrag verdienen". Intentie: "ik wens vormen van overvloed te vinden die aansluiten bij mijn echte vreugde". Intenties zijn richtinggevend, niet voorschrijvend.' },
+      { step: '4. Specifiek zijn over wat belangrijk is', text: 'Beter 2-3 duidelijke intenties dan 10 vage. Elke intentie moet oprecht resoneren — niet wat u "zou moeten" willen.' },
+      { step: '5. Loslaten en vertrouwen', text: 'Intenties stellen is het universum niet programmeren. Het is uw innerlijke focus uitlijnen met het thema dat het moment biedt. Plant en blijf leven.' },
+      { step: '6. Herzien bij Volle Maan', text: 'De Volle Maan, 14 dagen later, is het moment om te zien wat verlicht werd. Wat kwam in het bewustzijn? Wat moet geïntegreerd of losgelaten worden?' },
+    ],
+    important: {
+      title: 'Een belangrijke noot',
+      text: 'De Nieuwe Maan heeft geen magische macht over uw leven. Het werkt als symbolisch anker: door bewust te beslissen 28 dagen op iets te focussen, besteedt u er gewoon meer aandacht aan — en aandacht is het krachtigste transformatiemiddel dat bestaat.',
+    },
+  },
+  solarEclipses: {
+    title: 'Zonsverduisteringen — Versterkte Nieuwe Manen',
+    text: 'Wanneer een Nieuwe Maan plaatsvindt in de buurt van de maanknopen, hebben we een Zonsverduistering. Verduisteringen dragen hetzelfde archetype als de Nieuwe Maan — zaad, intentie, nieuw begin — maar versterkt. Verduisteringen brengen vaak significante veranderingen, keerpunten en belangrijke onthullingen. Ze zijn portalen van intensievere transformatie dan gewone nieuwe manen.',
+  },
+  cta: 'Volg komende Nieuwe Manen in uw kalender',
+  ctaButton: 'Zie Maanfasen →',
+};

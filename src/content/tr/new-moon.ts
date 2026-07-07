@@ -1,0 +1,58 @@
+export const newMoon = {
+  title: 'Yeni Ay ve Anlamları',
+  intro: 'Yeni Ay, Güneş ve Ay\'ın zodyakın aynı derecesinde buluşarak mükemmel bir kavuşum oluşturduğu zaman gerçekleşir. Bu, tohum anıdır — yeni bir 28 günlük döngünün başlangıcı. İnsancı bakış açısında, her yeni ay sizin için hiçbir şey "yapmaz": frekansınızı doğanın sunduğu sembolik temaya ayarlar. Bilinçli niyetler için bir portal, dışsal sihirli bir güç değildir.',
+  phases: {
+    title: 'Tam Ay Döngüsü',
+    intro: 'Yeni Ay\'a odaklanmadan önce, tam döngüyü anlamak yararlıdır. Her evrenin ayrı bir psikolojik kalitesi vardır.',
+    list: [
+      { name: 'Yeni Ay 🌑', degrees: '0° — Güneş ve Ay birlikte', quality: 'Tohum', description: 'Karanlık, saf potansiyel, başlangıç. Yeni niyetler için verimli zemin. Zihin yeniye en açık haldedir.' },
+      { name: 'Hilal 🌒', degrees: '45°', quality: 'Ortaya Çıkış', description: 'Dürtü şekilleniyor. Enerji yükseliyor, eylem başlıyor. Ekilen niyetler üzerine harekete geçme zamanı.' },
+      { name: 'İlk Dördün 🌓', degrees: '90°', quality: 'Meydan Okuma', description: 'İlk gerilim ve engel. Ekilen şey dirençle karşılaşıyor. Karar ve kararlılık gerektirir.' },
+      { name: 'Şişkinleşen Hilal 🌔', degrees: '135°', quality: 'Rafine Etme', description: 'Geliştirme çalışması. Ayarlamalar ve iyileştirmeler. Zirve öncesi yoğun odak.' },
+      { name: 'Dolunay 🌕', degrees: '180° — Güneş Ay\'a karşı', quality: 'Doruk', description: 'Aydınlanma, doluluk, vahiy. Yeni ayda ekilen şey bilince ulaşıyor. Duygular yoğundur.' },
+      { name: 'Küçülen Hilal 🌖', degrees: '225°', quality: 'Hasat', description: 'Meyvelerin entegrasyonu. Öğrenilenlerin minnet ve özümsenmesi.' },
+      { name: 'Son Dördün 🌗', degrees: '270°', quality: 'Revizyon', description: 'Serbest bırakma ve rota düzeltme. İşe yaramayan geride bırakılır.' },
+      { name: 'Balzamik Ay 🌘', degrees: '315°', quality: 'Dinlenme', description: 'Çözülme ve hazırlık. Bir sonraki döngüden önce içe dönüş, dinlenme ve teslim olma evresi.' },
+    ],
+  },
+  signs: {
+    title: 'Her Burçta Yeni Ay',
+    intro: 'Yeni Ay\'ın gerçekleştiği burç, 28 günlük döngünün temasını tanımlar. Bu bir burç yorumu değil — insan deneyiminin belirli bir boyutunu aydınlatan sembolik bir mercektir.',
+    list: [
+      { sign: 'Koç ♈', theme: 'Başlangıç ve Kimlik', description: 'Tema: yeni başlangıçlar, cesaret, kendini onaylama. Kendinize sorun: hangi alanda daha fazla inisiyatif almalıyım? Hangi yeni versiyonum ortaya çıkmak istiyor?', color: 'red' },
+      { sign: 'Boğa ♉', theme: 'Değerler ve Kaynaklar', description: 'Tema: duyusal zevk, sürdürülebilirlik, öz-değer. Benim için gerçekten önemli olan ne? Kalıcı ve sağlam bir şeyi nasıl inşa edebilirim?', color: 'green' },
+      { sign: 'İkizler ♊', theme: 'İletişim ve Öğrenme', description: 'Tema: zihin, bağlantılar, fikir alışverişi. Hangi bilgiyi özümsemek istiyorum? Nasıl daha net iletişim kurabilirim?', color: 'yellow' },
+      { sign: 'Yengeç ♋', theme: 'Ev ve Beslenme', description: 'Tema: kökler, aile, duygusal güvenlik. Beni gerçekten besleyen ne? Nasıl daha fazla aidiyet yaratabilirim?', color: 'silver' },
+      { sign: 'Aslan ♌', theme: 'Yaratım ve İfade', description: 'Tema: öz-ifade, neşe, yaratıcılık. Hangi parçam parlamak istiyor? Hangi alanda daha özgün ve zevkle hareket edebilirim?', color: 'gold' },
+      { sign: 'Başak ♍', theme: 'Sağlık ve Hizmet', description: 'Tema: beden, rutinler, sürekli iyileştirme. Günlük hayatımda neye dikkat edilmesi gerekiyor? Kendimi kaybetmeden nasıl daha iyi hizmet edebilirim?', color: 'beige' },
+      { sign: 'Terazi ♎', theme: 'İlişkiler ve Denge', description: 'Tema: ortaklıklar, uyum, güzellik. Hangi ilişkilere dikkat gerekiyor? Dengeli bir şekilde veriyor ve alıyor muyum?', color: 'rose' },
+      { sign: 'Akrep ♏', theme: 'Dönüşüm ve Derinlik', description: 'Tema: derin psikoloji, güç, yenilenme. Yeni bir şeyin doğması için ne ölmeli? Hangi gölgeyle cesurca yüzleşebilirim?', color: 'burgundy' },
+      { sign: 'Yay ♐', theme: 'Genişleme ve Anlam', description: 'Tema: inanç, macera, yaşam felsefesi. Dünya görüşümü ne genişletiyor? Hangi macera veya öğrenme beni çağırıyor?', color: 'purple' },
+      { sign: 'Oğlak ♑', theme: 'Hedefler ve Yapı', description: 'Tema: hırs, olgunluk, miras. Hangi yapıyı inşa etmek istiyorum? Kendi yolum için nasıl daha fazla sorumluluk üstlenebilirim?', color: 'gray' },
+      { sign: 'Kova ♒', theme: 'Özgünlük ve Kolektif', description: 'Tema: topluluk, yenilik, özgürlük. Daha büyük bir şeye nasıl katkıda bulunabilirim? Hangi parçam özgün olmak için daha fazla özgürlüğe ihtiyaç duyuyor?', color: 'electric blue' },
+      { sign: 'Balık ♓', theme: 'Çözünüm ve Maneviyat', description: 'Tema: sezgi, şefkat, sanat, aşkınlık. Hangi illüzyonu bırakabilirim? Egomdan daha büyük olan şeyle nasıl bağlantı kurabilirim?', color: 'turquoise' },
+    ],
+  },
+  intentions: {
+    title: 'Yeni Ay\'ı Niyetler İçin Nasıl Kullanabilirsiniz',
+    intro: 'Yeni Ay\'da niyet belirlemek, bilinçli odaklanma pratiğidir — döngünün sembolünü ayna olarak kullanırsınız ve kendinize sorarsınız: önümüzdeki 28 günde ne yetiştirmek istiyorum?',
+    steps: [
+      { step: '1. Alanı hazırlamak', text: 'Yeni Ay\'ın etrafındaki 48 saat içinde (tercihen kesin Yeni Ay\'dan sonra), bir sessizlik anı ayırın. Ayrıntılı bir ritüel olmasına gerek yok — bir günlükle 10 dakika mükemmel çalışır.' },
+      { step: '2. Yeni Ay\'ın burcunu kontrol etmek', text: 'Yeni Ay\'ın hangi burçta gerçekleştiğini belirleyin. Bu döngünün temasıdır. Yengeç ise, odak nokta ev, aile, duygusal beslenme.' },
+      { step: '3. Niyetleri hedefler değil dilekler olarak formüle etmek', text: 'Fark ince ama önemli. Hedef: "X miktarı kazanmam gerekiyor". Niyet: "gerçek sevincimle örtüşen bolluk biçimleri bulmayı diliyorum". Niyetler yönelimlidir, reçete niteliğinde değildir.' },
+      { step: '4. Önemli olan konusunda spesifik olmak', text: '10 belirsiz niyetten 2-3 net niyet daha iyidir. Her niyet gerçekten yankı uyandırmalı — "olması gerektiğini" düşündüğünüz şey değil.' },
+      { step: '5. Bırakmak ve güvenmek', text: 'Niyet belirlemek evreni programlamak değildir. İç odağınızı anın sunduğu temaya hizalamaktır. Ekin ve yaşamaya devam edin.' },
+      { step: '6. Dolunay\'da gözden geçirmek', text: '14 gün sonraki Dolunay, nelerin aydınlandığını görme anıdır. Bilince ne ulaştı? Neyin entegre edilmesi veya bırakılması gerekiyor?' },
+    ],
+    important: {
+      title: 'Önemli bir not',
+      text: 'Yeni Ay\'ın hayatınız üzerinde sihirli bir gücü yoktur. Sembolik bir çıpa olarak çalışır: 28 gün boyunca bir şeye odaklanmayı kasıtlı olarak kararlaştırdığınızda, ona sadece daha fazla dikkat edersiniz — ve dikkat var olan en güçlü dönüşüm aracıdır.',
+    },
+  },
+  solarEclipses: {
+    title: 'Güneş Tutulmaları — Güçlendirilmiş Yeni Aylar',
+    text: 'Ay düğümlerine yakın bir Yeni Ay gerçekleştiğinde, Güneş Tutulması yaşarız. Tutulmalar, Yeni Ay ile aynı arketip olan — tohum, niyet, yeni başlangıç — ama güçlendirilmiş şekliyle gelir. Tutulmalar çoğunlukla önemli değişiklikler, dönüm noktaları ve önemli vahiyler getirir. Bunlar, sıradan yeni aylardan daha yoğun dönüşüm portalleridir.',
+  },
+  cta: 'Takviminizde yaklaşan Yeni Ayları takip edin',
+  ctaButton: 'Ay Evrelerini Gör →',
+};
