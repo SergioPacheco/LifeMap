@@ -138,12 +138,22 @@ Isso faz o TypeScript reclamar se acessar `t().chave.que.nao.existe`.
 1. ~~**Fase 1** — Mover PRODUCTS/CATEGORIES/TRUST do ReportsShop~~ ✅ (commit 1ef2267)
 2. ~~**Fase 3a** — Constantes compartilhadas (signs, planets, months) extraídas para report-labels.ts~~ ✅ (commit 5162153)
 3. ~~**Fase 3b-annual** — Textos do generateAnnualPdf extraídos para annual-texts.ts (EN+PT)~~ ✅ (commit 38b7b4e)
-4. **Fase 3b-relationship** — Textos do generateRelationshipPdf para relationship-texts.ts
-5. **Fase 3b-psychological** — Textos do generatePsychologicalPdf
-6. **Fase 3b-career** — Textos do generateCareerPdf
-7. **Fase 3b-sevenSins** — Textos do generateSevenSinsPdf
-8. **Fase 4** — Type-safety (gerar tipo TypeScript a partir do pt.json)
+4. ~~**Fase 4** — Type-safety (tipos auxiliares exportados, casts removidos)~~ ✅ (commit f5db6c8)
+5. **Fase 3b-sevenSins** — Textos do generateSevenSinsPdf para seven-sins-texts.ts (EN+PT)
+6. **Fase 3b-relationship** — Textos do generateRelationshipPdf (mais complexo: condicionais partner/solo)
+7. **Fase 3b-psychological** — Textos do generatePsychologicalPdf
+8. **Fase 3b-career** — Textos do generateCareerPdf
 9. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
+
+### Padrão estabelecido para Fase 3b
+
+Cada relatório segue o mesmo pattern:
+1. Criar `src/reports/<name>-texts.ts` com interface + EN (base completa) + PT (override)
+2. Exportar `get<Name>Texts(locale)` que retorna EN por default
+3. No gerador, adicionar `const xt = get<Name>Texts(options.locale)` e substituir strings inline
+4. Outros idiomas: adicionar override para cada locale via `buildLocale()`
+
+**Estimativa**: cada relatório leva ~30min (extrair EN+PT). Traduzir para os 9 idiomas restantes pode ser feito em batch com AI depois.
 
 ---
 
@@ -174,7 +184,7 @@ Projeto: /home/user-sn-387444/Documentos/code/LifeMap
 
 ---
 
-*Atualizado: 2026-07-06 22:50*
+*Atualizado: 2026-07-06 22:55*
 *Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
 *Branch: main*
-*Último commit: 38b7b4e*
+*Último commit: f5db6c8*
