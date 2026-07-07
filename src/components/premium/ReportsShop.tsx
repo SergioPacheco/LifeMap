@@ -39,10 +39,10 @@ export default function ReportsShop(props: Props) {
   const [lastAdded, setLastAdded] = createSignal('');
   const t = () => getTranslations(locale());
 
-  const products = () => t().reports.products as Record<string, { name: string; description: string; pages: string; features: string[] }>;
-  const categories = () => t().reports.categories as Record<string, string>;
-  const trust = () => t().reports.trust as { instant: string; privacy: string; offline: string };
-  const added = () => (t().reports as any).added as string;
+  const products = () => t().reports.products;
+  const categories = () => t().reports.categories;
+  const trust = () => t().reports.trust;
+  const added = () => t().reports.added;
 
   const filteredProducts = () => {
     if (selectedCategory() === 'all') return PRODUCTS_META;

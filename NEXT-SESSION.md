@@ -136,10 +136,14 @@ Isso faz o TypeScript reclamar se acessar `t().chave.que.nao.existe`.
 ## Ordem de prioridade geral
 
 1. ~~**Fase 1** — Mover PRODUCTS/CATEGORIES/TRUST do ReportsShop~~ ✅ (commit 1ef2267)
-2. **Fase 3a** ✅ — Constantes compartilhadas (signs, planets, months) extraídas para report-labels.ts (commit 5162153)
-3. **Fase 3b** — Extrair textos longos dos 6 relatórios originais (PROFECTION_HOUSE_TEXTS, RULER_OF_YEAR, getMonthText + ~190 wrapText em PT) para report-texts.ts com 11 idiomas — trabalho massivo, ~5000 linhas
-4. **Fase 4** — Type-safety (gerar tipo a partir do pt.json)
-5. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
+2. ~~**Fase 3a** — Constantes compartilhadas (signs, planets, months) extraídas para report-labels.ts~~ ✅ (commit 5162153)
+3. ~~**Fase 3b-annual** — Textos do generateAnnualPdf extraídos para annual-texts.ts (EN+PT)~~ ✅ (commit 38b7b4e)
+4. **Fase 3b-relationship** — Textos do generateRelationshipPdf para relationship-texts.ts
+5. **Fase 3b-psychological** — Textos do generatePsychologicalPdf
+6. **Fase 3b-career** — Textos do generateCareerPdf
+7. **Fase 3b-sevenSins** — Textos do generateSevenSinsPdf
+8. **Fase 4** — Type-safety (gerar tipo TypeScript a partir do pt.json)
+9. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
 
 ---
 
@@ -170,7 +174,7 @@ Projeto: /home/user-sn-387444/Documentos/code/LifeMap
 
 ---
 
-*Atualizado: 2026-07-06 22:40*
+*Atualizado: 2026-07-06 22:50*
 *Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
 *Branch: main*
-*Último commit: 5162153*
+*Último commit: 38b7b4e*

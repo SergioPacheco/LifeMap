@@ -27,6 +27,11 @@ export const languages = {
 export type Locale = keyof typeof languages;
 export type TranslationKeys = typeof pt;
 
+// Auxiliary types for typed access to nested structures
+export type ProductTranslation = TranslationKeys['reports']['products'][keyof TranslationKeys['reports']['products']];
+export type ReportCategories = TranslationKeys['reports']['categories'];
+export type ReportTrust = TranslationKeys['reports']['trust'];
+
 export const defaultLocale: Locale = 'pt';
 export const supportedLocales = Object.keys(languages) as Locale[];
 
