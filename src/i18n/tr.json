@@ -122,7 +122,132 @@
     "houseCusps": "Ev başlangıçları",
     "planetInterpretation": "Gezegen gezegen yorumlama",
     "aspectsAnalysis": "Analizli açılar",
-    "dignities": "İtibar ve zayıflıklar"
+    "dignities": "İtibar ve zayıflıklar",
+    "products": {
+      "natal-completo": {
+        "name": "Tam Doğum Raporu",
+        "description": "Doğum haritanızdaki tüm konum, açı ve evlerin derinlemesine analizi.",
+        "pages": "20-30 sayfa",
+        "features": [
+          "Tüm gezegenler burçlarda ve evlerde",
+          "Ayrıntılı yorumlu açılar",
+          "Onurlar ve zayıflıklar",
+          "Kişilik sentezi",
+          "Yüksek çözünürlüklü görsel harita"
+        ]
+      },
+      "relacionamento": {
+        "name": "İlişki Raporu",
+        "description": "İki kişi arasında tam sinastri ve kompozit analizi.",
+        "pages": "25-35 sayfa",
+        "features": [
+          "Tam sinastri (gezegen × gezegen)",
+          "Yorumlu kompozit harita",
+          "Çekim ve gerilim noktaları",
+          "Yaşam alanına göre uyumluluk",
+          "İlişki tavsiyeleri"
+        ]
+      },
+      "previsao-anual": {
+        "name": "Yıllık Öngörü",
+        "description": "Önümüzdeki 12 ay için transitler, profeksiyon ve güneş dönüşü.",
+        "pages": "30-40 sayfa",
+        "features": [
+          "Yılın güneş dönüşü",
+          "Ay ay transitler",
+          "Yıllık profeksiyon",
+          "Kişisel tutulmalar",
+          "Olumlu ve zorlu dönemler"
+        ]
+      },
+      "carreira": {
+        "name": "Kariyer ve Meslek",
+        "description": "MC, 10. Ev, Satürn ve Jüpiter bazlı profesyonel potansiyel analizi.",
+        "pages": "15-20 sayfa",
+        "features": [
+          "MC ve 10. Ev — meslek",
+          "Satürn — disiplin ve başarı",
+          "Jüpiter — genişleme ve fırsatlar",
+          "6. Ev — çalışma rutini",
+          "Kariyer değişim zamanlaması"
+        ]
+      },
+      "psicologico": {
+        "name": "Derin Psikolojik Analiz",
+        "description": "Natal haritaya dayalı detaylı psişe keşfi — bilinçdışı kalıplar.",
+        "pages": "25-35 sayfa",
+        "features": [
+          "Ay — duygusal dünya ve çocukluk",
+          "Plüton — güç ve dönüşüm",
+          "Kiron — yara ve iyileşme",
+          "12. Ev — bilinçdışı",
+          "Karmik kalıplar (Düğümler)"
+        ]
+      },
+      "seven-sins": {
+        "name": "Yedi Günah",
+        "description": "Burcun eğlenceli gölgesi — 7 astrolojik günahınız.",
+        "pages": "15-20 sayfa",
+        "features": [
+          "Kibir (Güneş)",
+          "Şehvet (Venüs/Mars)",
+          "Açgözlülük (Satürn)",
+          "Oburluk (Jüpiter)",
+          "Öfke (Mars)",
+          "Kıskançlık (Plüton)",
+          "Tembellik (Neptün)"
+        ]
+      },
+      "financeiro": {
+        "name": "Finansal Harita",
+        "description": "2/8. Ev, Venüs, Jüpiter ve Satürn bazlı finansal potansiyel analizi.",
+        "pages": "12-15 sayfa",
+        "features": [
+          "2. Ev — para kazandıran kaynaklar ve yetenekler",
+          "8. Ev — yatırımlar ve paylaşılan kaynaklar",
+          "Venüs — neyi çektiğiniz",
+          "Jüpiter — bolluğun aktığı yer",
+          "Satürn — zenginlik inşa eden disiplin"
+        ]
+      },
+      "espiritual": {
+        "name": "Ruhsal ve Karmik Harita",
+        "description": "Ruhun yolculuğu: Ay Düğümleri, 12. Ev, Neptün, Kiron ve Plüton.",
+        "pages": "15-20 sayfa",
+        "features": [
+          "Kuzey Düğümü — evrimsel amaç",
+          "12. Ev — aşkın ile bağlantı",
+          "Kiron — kutsal yara ve şifa armağanı",
+          "Neptün — ruhsal portal",
+          "Plüton — derin dönüştürücü güç"
+        ]
+      },
+      "retorno-saturno": {
+        "name": "Satürn Dönüşü",
+        "description": "Satürn'ün 29 yıllık döngüsü rehberi — yeniden yapılanma ve olgunluk.",
+        "pages": "12-15 sayfa",
+        "features": [
+          "Natal Satürn — temel ders",
+          "Satürn tarafından yönetilen evler — aktive edilen alanlar",
+          "Dönüşün evreleri",
+          "Satürn'ün sizden talepleri",
+          "Satürn'ün ödüllendirdikleri"
+        ]
+      }
+    },
+    "categories": {
+      "all": "Tümü",
+      "personality": "Kişilik",
+      "forecast": "Öngörü",
+      "relationship": "İlişki",
+      "career": "Kariyer"
+    },
+    "trust": {
+      "instant": "Tarayıcınızda anında oluşturuldu",
+      "privacy": "Verileriniz asla cihazınızdan çıkmaz",
+      "offline": "PDF oluşturma sonrası çevrimdışı kullanılabilir"
+    },
+    "added": "✓ Eklendi!"
   },
   "purchases": {
     "title": "📄 Raporlarım",

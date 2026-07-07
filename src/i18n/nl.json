@@ -122,7 +122,132 @@
     "houseCusps": "Huistoppen",
     "planetInterpretation": "Interpretatie per planeet",
     "aspectsAnalysis": "Aspecten met analyse",
-    "dignities": "Waardigheid en zwaktes"
+    "dignities": "Waardigheid en zwaktes",
+    "products": {
+      "natal-completo": {
+        "name": "Volledig Geboorterapport",
+        "description": "Diepgaande analyse van alle posities, aspecten en huizen in uw geboortekaart.",
+        "pages": "20-30 pagina's",
+        "features": [
+          "Alle planeten in tekens en huizen",
+          "Aspecten met gedetailleerde interpretatie",
+          "Waardigheden en zwakheden",
+          "Persoonlijkheidssynthese",
+          "Visuele kaart hoge resolutie"
+        ]
+      },
+      "relacionamento": {
+        "name": "Relatierapport",
+        "description": "Volledige synastrie- en composietanalyse tussen twee personen.",
+        "pages": "25-35 pagina's",
+        "features": [
+          "Volledige synastrie (planeet × planeet)",
+          "Composietkaart met interpretatie",
+          "Aantrekkings- en spanningspunten",
+          "Compatibiliteit per levensgebied",
+          "Relatieadvies"
+        ]
+      },
+      "previsao-anual": {
+        "name": "Jaarvoorspelling",
+        "description": "Transits, profectie en zonneretour gecombineerd voor de komende 12 maanden.",
+        "pages": "30-40 pagina's",
+        "features": [
+          "Zonneretour van het jaar",
+          "Maand-voor-maand transits",
+          "Jaarlijkse profectie",
+          "Persoonlijke eclipsen",
+          "Gunstige en uitdagende periodes"
+        ]
+      },
+      "carreira": {
+        "name": "Carrière en Roeping",
+        "description": "Professionele potentieelanalyse op basis van MC, 10e Huis, Saturnus en Jupiter.",
+        "pages": "15-20 pagina's",
+        "features": [
+          "MC en 10e Huis — roeping",
+          "Saturnus — discipline en prestatie",
+          "Jupiter — expansie en kansen",
+          "6e Huis — werkroutine",
+          "Timing van carrièrewisselingen"
+        ]
+      },
+      "psicologico": {
+        "name": "Diepte Psychologische Analyse",
+        "description": "Gedetailleerde verkenning van de psyche — onbewuste patronen en potenties.",
+        "pages": "25-35 pagina's",
+        "features": [
+          "Maan — emotionele wereld en kindertijd",
+          "Pluto — macht en transformatie",
+          "Chiron — wond en genezing",
+          "12e Huis — onbewuste",
+          "Karmische patronen (Knopen)"
+        ]
+      },
+      "seven-sins": {
+        "name": "De Zeven Zonden",
+        "description": "De speelse schaduw van de dierenriem — uw 7 astrologische zonden.",
+        "pages": "15-20 pagina's",
+        "features": [
+          "Trots (Zon)",
+          "Wellust (Venus/Mars)",
+          "Hebzucht (Saturnus)",
+          "Gulzigheid (Jupiter)",
+          "Woede (Mars)",
+          "Jaloezie (Pluto)",
+          "Luiheid (Neptunus)"
+        ]
+      },
+      "financeiro": {
+        "name": "Financiële Kaart",
+        "description": "Financieel potentieelanalyse: Huizen 2/8, Venus, Jupiter en Saturnus.",
+        "pages": "12-15 pagina's",
+        "features": [
+          "2e Huis — monetariseerbare bronnen en talenten",
+          "8e Huis — investeringen en gedeelde bronnen",
+          "Venus — wat u aantrekt",
+          "Jupiter — waar overvloed stroomt",
+          "Saturnus — discipline die rijkdom opbouwt"
+        ]
+      },
+      "espiritual": {
+        "name": "Spirituele & Karmische Kaart",
+        "description": "Het pad van de ziel: Maansknopen, 12e Huis, Neptunus, Chiron en Pluto.",
+        "pages": "15-20 pagina's",
+        "features": [
+          "Noordknoop — evolutionair doel",
+          "12e Huis — verbinding met het transcendente",
+          "Chiron — heilige wond en genezingsgave",
+          "Neptunus — spiritueel portaal",
+          "Pluto — diepe transformatieve kracht"
+        ]
+      },
+      "retorno-saturno": {
+        "name": "Saturnus Terugkeer",
+        "description": "Gids voor de 29-jarige cyclus van Saturnus — herstructurering en rijpheid.",
+        "pages": "12-15 pagina's",
+        "features": [
+          "Natale Saturnus — de kernles",
+          "Door Saturnus geregeerde huizen — geactiveerde gebieden",
+          "Fasen van de terugkeer",
+          "Wat Saturnus van u verlangt",
+          "Wat Saturnus beloont"
+        ]
+      }
+    },
+    "categories": {
+      "all": "Alle",
+      "personality": "Persoonlijkheid",
+      "forecast": "Voorspelling",
+      "relationship": "Relatie",
+      "career": "Carrière"
+    },
+    "trust": {
+      "instant": "Direct gegenereerd in uw browser",
+      "privacy": "Uw gegevens verlaten nooit uw apparaat",
+      "offline": "PDF offline beschikbaar na generatie"
+    },
+    "added": "✓ Toegevoegd!"
   },
   "purchases": {
     "title": "📄 Mijn Rapporten",

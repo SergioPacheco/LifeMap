@@ -122,7 +122,132 @@
     "houseCusps": "Cúspides de las casas",
     "planetInterpretation": "Interpretación planeta a planeta",
     "aspectsAnalysis": "Aspectos con análisis",
-    "dignities": "Dignidades y debilidades"
+    "dignities": "Dignidades y debilidades",
+    "products": {
+      "natal-completo": {
+        "name": "Carta Natal Completa",
+        "description": "Análisis profundo de todas las posiciones, aspectos y casas de tu carta natal.",
+        "pages": "20-30 páginas",
+        "features": [
+          "Todos los planetas en signos y casas",
+          "Aspectos con interpretación detallada",
+          "Dignidades y debilidades",
+          "Síntesis de personalidad",
+          "Gráfico visual de alta resolución"
+        ]
+      },
+      "relacionamento": {
+        "name": "Informe de Relación",
+        "description": "Análisis completo de sinastría y carta compuesta entre dos personas.",
+        "pages": "25-35 páginas",
+        "features": [
+          "Sinastría completa (planeta × planeta)",
+          "Carta compuesta con interpretación",
+          "Puntos de atracción y tensión",
+          "Compatibilidad por área de vida",
+          "Consejos para la relación"
+        ]
+      },
+      "previsao-anual": {
+        "name": "Previsión Anual",
+        "description": "Tránsitos, profección y revolución solar combinados para los próximos 12 meses.",
+        "pages": "30-40 páginas",
+        "features": [
+          "Revolución Solar del año",
+          "Tránsitos mes a mes",
+          "Profección anual",
+          "Eclipses personales",
+          "Períodos favorables y desafiantes"
+        ]
+      },
+      "carreira": {
+        "name": "Carrera y Vocación",
+        "description": "Análisis del potencial profesional basado en MC, Casa 10, Saturno y Júpiter.",
+        "pages": "15-20 páginas",
+        "features": [
+          "MC y Casa 10 — vocación",
+          "Saturno — disciplina y logro",
+          "Júpiter — expansión y oportunidades",
+          "Casa 6 — rutina de trabajo",
+          "Timing de cambios de carrera"
+        ]
+      },
+      "psicologico": {
+        "name": "Análisis Psicológico Profundo",
+        "description": "Exploración detallada de la psique basada en la carta natal — patrones inconscientes.",
+        "pages": "25-35 páginas",
+        "features": [
+          "Luna — mundo emocional e infancia",
+          "Plutón — poder y transformación",
+          "Quirón — herida y sanación",
+          "Casa 12 — inconsciente",
+          "Patrones kármicos (Nodos)"
+        ]
+      },
+      "seven-sins": {
+        "name": "Los Siete Pecados",
+        "description": "La sombra lúdica del zodíaco — tus 7 pecados astrológicos.",
+        "pages": "15-20 páginas",
+        "features": [
+          "Soberbia (Sol)",
+          "Lujuria (Venus/Marte)",
+          "Avaricia (Saturno)",
+          "Gula (Júpiter)",
+          "Ira (Marte)",
+          "Envidia (Plutón)",
+          "Pereza (Neptuno)"
+        ]
+      },
+      "financeiro": {
+        "name": "Mapa Financiero",
+        "description": "Análisis del potencial financiero: Casas 2/8, Venus, Júpiter y Saturno.",
+        "pages": "12-15 páginas",
+        "features": [
+          "Casa 2 — recursos y talentos monetizables",
+          "Casa 8 — inversiones y recursos compartidos",
+          "Venus — lo que atraes",
+          "Júpiter — donde fluye la abundancia",
+          "Saturno — disciplina que construye riqueza"
+        ]
+      },
+      "espiritual": {
+        "name": "Mapa Espiritual y Kármico",
+        "description": "El camino del alma: Nodos Lunares, Casa 12, Neptuno, Quirón y Plutón.",
+        "pages": "15-20 páginas",
+        "features": [
+          "Nodo Norte — propósito evolutivo",
+          "Casa 12 — conexión con lo trascendente",
+          "Quirón — herida sagrada y don de sanación",
+          "Neptuno — portal espiritual",
+          "Plutón — poder transformador profundo"
+        ]
+      },
+      "retorno-saturno": {
+        "name": "Retorno de Saturno",
+        "description": "Guía para el ciclo de 29 años de Saturno — reestructuración y madurez.",
+        "pages": "12-15 páginas",
+        "features": [
+          "Saturno natal — la lección central",
+          "Casas regidas por Saturno — áreas activadas",
+          "Fases del retorno",
+          "Lo que Saturno exige de ti",
+          "Lo que Saturno recompensa"
+        ]
+      }
+    },
+    "categories": {
+      "all": "Todos",
+      "personality": "Personalidad",
+      "forecast": "Previsión",
+      "relationship": "Relación",
+      "career": "Carrera"
+    },
+    "trust": {
+      "instant": "Generado instantáneamente en tu navegador",
+      "privacy": "Tus datos nunca salen del dispositivo",
+      "offline": "PDF disponible sin conexión después de la generación"
+    },
+    "added": "✓ Añadido!"
   },
   "purchases": {
     "title": "📄 Mis Informes",

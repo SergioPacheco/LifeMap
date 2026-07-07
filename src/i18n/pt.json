@@ -122,7 +122,76 @@
     "houseCusps": "Cúspides das casas",
     "planetInterpretation": "Interpretação planeta a planeta",
     "aspectsAnalysis": "Aspectos com análise",
-    "dignities": "Dignidades e debilidades"
+    "dignities": "Dignidades e debilidades",
+    "products": {
+      "natal-completo": {
+        "name": "Mapa Natal Completo",
+        "description": "Análise profunda de todas as posições, aspectos, dignidades e casas do seu mapa natal.",
+        "pages": "20-30 páginas",
+        "features": ["Todos os planetas em signos e casas", "Aspectos com interpretação detalhada", "Dignidades e debilidades", "Síntese da personalidade", "Mapa visual em alta resolução"]
+      },
+      "relacionamento": {
+        "name": "Relatório de Relacionamento",
+        "description": "Análise completa da sinastria e mapa composto entre duas pessoas.",
+        "pages": "25-35 páginas",
+        "features": ["Sinastria completa (planeta × planeta)", "Mapa Composto com interpretação", "Pontos de atração e tensão", "Compatibilidade por área de vida", "Conselhos para o relacionamento"]
+      },
+      "previsao-anual": {
+        "name": "Previsão Anual",
+        "description": "Trânsitos, profecção e revolução solar combinados para os próximos 12 meses.",
+        "pages": "30-40 páginas",
+        "features": ["Revolução Solar do ano", "Trânsitos mês a mês", "Profecção anual", "Eclipses pessoais", "Períodos favoráveis e desafiadores"]
+      },
+      "carreira": {
+        "name": "Carreira e Vocação",
+        "description": "Análise do potencial profissional baseada no MC, Casa 10, Saturno e Júpiter.",
+        "pages": "15-20 páginas",
+        "features": ["MC e Casa 10 — vocação", "Saturno — disciplina e conquista", "Júpiter — expansão e oportunidades", "Casa 6 — rotina de trabalho", "Timing de mudanças de carreira"]
+      },
+      "psicologico": {
+        "name": "Análise Psicológica Profunda",
+        "description": "Exploração detalhada da psique baseada no mapa natal — padrões inconscientes e potenciais.",
+        "pages": "25-35 páginas",
+        "features": ["Lua — mundo emocional e infância", "Plutão — poder e transformação", "Quíron — ferida e cura", "Casa 12 — inconsciente", "Padrões kármicos (Nodos)"]
+      },
+      "seven-sins": {
+        "name": "Os Sete Pecados",
+        "description": "A sombra lúdica do zodíaco — seus 7 pecados astrológicos com humor e profundidade.",
+        "pages": "15-20 páginas",
+        "features": ["Orgulho (Sol)", "Luxúria (Vênus/Marte)", "Avareza (Saturno)", "Gula (Júpiter)", "Ira (Marte)", "Inveja (Plutão)", "Preguiça (Netuno)"]
+      },
+      "financeiro": {
+        "name": "Mapa Financeiro",
+        "description": "Análise do potencial financeiro: Casa 2/8, Vênus, Júpiter e Saturno.",
+        "pages": "12-15 páginas",
+        "features": ["Casa 2 — recursos e talentos monetizáveis", "Casa 8 — investimentos e recursos compartilhados", "Vênus — o que você atrai", "Júpiter — onde a abundância flui", "Saturno — disciplina que constrói riqueza"]
+      },
+      "espiritual": {
+        "name": "Mapa Espiritual e Kármico",
+        "description": "O caminho da alma: Nodos Lunares, Casa 12, Netuno, Quíron e Plutão.",
+        "pages": "15-20 páginas",
+        "features": ["Nodo Norte — propósito evolutivo", "Casa 12 — conexão com o transcendente", "Quíron — ferida sagrada e dom de cura", "Netuno — portal espiritual", "Plutão — poder transformador profundo"]
+      },
+      "retorno-saturno": {
+        "name": "Retorno de Saturno",
+        "description": "Guia para o ciclo de 29 anos de Saturno — reestruturação, maturidade e propósito.",
+        "pages": "12-15 páginas",
+        "features": ["Saturno natal — a lição central", "Casas regidas por Saturno — áreas ativadas", "Fases do retorno", "O que Saturno exige de você", "O que Saturno recompensa"]
+      }
+    },
+    "categories": {
+      "all": "Todos",
+      "personality": "Personalidade",
+      "forecast": "Previsão",
+      "relationship": "Relacionamento",
+      "career": "Carreira"
+    },
+    "trust": {
+      "instant": "Gerado instantaneamente no seu navegador",
+      "privacy": "Seus dados nunca saem do dispositivo",
+      "offline": "PDF disponível offline após geração"
+    },
+    "added": "✓ Adicionado!"
   },
   "reportPreview": {
     "natalTitle": "Relatório Natal Completo",

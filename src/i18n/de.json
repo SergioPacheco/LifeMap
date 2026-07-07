@@ -122,7 +122,132 @@
     "houseCusps": "Hausspitzen",
     "planetInterpretation": "Deutung Planet für Planet",
     "aspectsAnalysis": "Aspekte mit Analyse",
-    "dignities": "Würden und Schwächen"
+    "dignities": "Würden und Schwächen",
+    "products": {
+      "natal-completo": {
+        "name": "Vollständiger Geburtsbericht",
+        "description": "Tiefgehende Analyse aller Positionen, Aspekte und Häuser in Ihrem Geburtshoroskop.",
+        "pages": "20-30 Seiten",
+        "features": [
+          "Alle Planeten in Zeichen und Häusern",
+          "Aspekte mit detaillierter Interpretation",
+          "Würden und Schwächen",
+          "Persönlichkeitssynthese",
+          "Hochauflösendes Sternbild"
+        ]
+      },
+      "relacionamento": {
+        "name": "Beziehungsbericht",
+        "description": "Vollständige Synastrie- und Komposit-Analyse zwischen zwei Personen.",
+        "pages": "25-35 Seiten",
+        "features": [
+          "Vollständige Synastrie (Planet × Planet)",
+          "Komposit-Karte mit Interpretation",
+          "Anziehungs- und Spannungspunkte",
+          "Kompatibilität nach Lebensbereich",
+          "Beziehungsratschläge"
+        ]
+      },
+      "previsao-anual": {
+        "name": "Jahresvorschau",
+        "description": "Transite, Profektionen und Solarrückkehr kombiniert für die nächsten 12 Monate.",
+        "pages": "30-40 Seiten",
+        "features": [
+          "Solarrückkehr des Jahres",
+          "Monatliche Transite",
+          "Jährliche Profektion",
+          "Persönliche Finsternisse",
+          "Günstige und herausfordernde Perioden"
+        ]
+      },
+      "carreira": {
+        "name": "Karriere und Berufung",
+        "description": "Berufsanalyse basierend auf MC, 10. Haus, Saturn und Jupiter.",
+        "pages": "15-20 Seiten",
+        "features": [
+          "MC und 10. Haus — Berufung",
+          "Saturn — Disziplin und Leistung",
+          "Jupiter — Expansion und Chancen",
+          "6. Haus — Arbeitsroutine",
+          "Timing für Karriereveränderungen"
+        ]
+      },
+      "psicologico": {
+        "name": "Tiefenpsychologische Analyse",
+        "description": "Detaillierte Erforschung der Psyche — unbewusste Muster und Potenziale.",
+        "pages": "25-35 Seiten",
+        "features": [
+          "Mond — emotionale Welt und Kindheit",
+          "Pluto — Macht und Transformation",
+          "Chiron — Wunde und Heilung",
+          "12. Haus — Unterbewusstsein",
+          "Karmische Muster (Mondknoten)"
+        ]
+      },
+      "seven-sins": {
+        "name": "Die Sieben Sünden",
+        "description": "Der spielerische Schatten des Tierkreises — Ihre 7 astrologischen Sünden.",
+        "pages": "15-20 Seiten",
+        "features": [
+          "Stolz (Sonne)",
+          "Wollust (Venus/Mars)",
+          "Gier (Saturn)",
+          "Völlerei (Jupiter)",
+          "Zorn (Mars)",
+          "Neid (Pluto)",
+          "Faulheit (Neptun)"
+        ]
+      },
+      "financeiro": {
+        "name": "Finanzielle Karte",
+        "description": "Finanzpotenzialanalyse: Häuser 2/8, Venus, Jupiter und Saturn.",
+        "pages": "12-15 Seiten",
+        "features": [
+          "2. Haus — monetarisierbare Ressourcen und Talente",
+          "8. Haus — Investitionen und geteilte Ressourcen",
+          "Venus — was Sie anziehen",
+          "Jupiter — wo Fülle fließt",
+          "Saturn — Disziplin, die Reichtum aufbaut"
+        ]
+      },
+      "espiritual": {
+        "name": "Spirituelle & Karmische Karte",
+        "description": "Der Weg der Seele: Mondknoten, 12. Haus, Neptun, Chiron und Pluto.",
+        "pages": "15-20 Seiten",
+        "features": [
+          "Nordknoten — evolutionärer Zweck",
+          "12. Haus — Verbindung zum Transzendenten",
+          "Chiron — heilige Wunde und Heilungsgabe",
+          "Neptun — spirituelles Portal",
+          "Pluto — tiefe transformative Kraft"
+        ]
+      },
+      "retorno-saturno": {
+        "name": "Saturn-Rückkehr",
+        "description": "Leitfaden für Saturns 29-Jahres-Zyklus — Neustrukturierung und Reife.",
+        "pages": "12-15 Seiten",
+        "features": [
+          "Nataler Saturn — die Kernlektion",
+          "Von Saturn beherrschte Häuser — aktivierte Bereiche",
+          "Phasen der Rückkehr",
+          "Was Saturn von Ihnen fordert",
+          "Was Saturn belohnt"
+        ]
+      }
+    },
+    "categories": {
+      "all": "Alle",
+      "personality": "Persönlichkeit",
+      "forecast": "Vorschau",
+      "relationship": "Beziehung",
+      "career": "Karriere"
+    },
+    "trust": {
+      "instant": "Sofort in Ihrem Browser generiert",
+      "privacy": "Ihre Daten verlassen nie Ihr Gerät",
+      "offline": "PDF offline verfügbar nach Generierung"
+    },
+    "added": "✓ Hinzugefügt!"
   },
   "purchases": {
     "title": "📄 Meine Berichte",

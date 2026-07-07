@@ -122,7 +122,132 @@
     "houseCusps": "House cusps",
     "planetInterpretation": "Planet-by-planet interpretation",
     "aspectsAnalysis": "Aspects with analysis",
-    "dignities": "Dignities and debilities"
+    "dignities": "Dignities and debilities",
+    "products": {
+      "natal-completo": {
+        "name": "Complete Natal Report",
+        "description": "In-depth analysis of all positions, aspects, dignities and houses in your natal chart.",
+        "pages": "20-30 pages",
+        "features": [
+          "All planets in signs and houses",
+          "Aspects with detailed interpretation",
+          "Dignities and debilities",
+          "Personality synthesis",
+          "High-resolution visual chart"
+        ]
+      },
+      "relacionamento": {
+        "name": "Relationship Report",
+        "description": "Complete synastry and composite analysis between two people.",
+        "pages": "25-35 pages",
+        "features": [
+          "Complete synastry (planet × planet)",
+          "Composite chart with interpretation",
+          "Attraction and tension points",
+          "Compatibility by life area",
+          "Relationship advice"
+        ]
+      },
+      "previsao-anual": {
+        "name": "Annual Forecast",
+        "description": "Transits, profection and solar return combined for the next 12 months.",
+        "pages": "30-40 pages",
+        "features": [
+          "Solar Return of the year",
+          "Month-by-month transits",
+          "Annual profection",
+          "Personal eclipses",
+          "Favorable and challenging periods"
+        ]
+      },
+      "carreira": {
+        "name": "Career & Vocation",
+        "description": "Professional potential analysis based on MC, 10th House, Saturn and Jupiter.",
+        "pages": "15-20 pages",
+        "features": [
+          "MC and 10th House — vocation",
+          "Saturn — discipline and achievement",
+          "Jupiter — expansion and opportunities",
+          "6th House — work routine",
+          "Career change timing"
+        ]
+      },
+      "psicologico": {
+        "name": "Deep Psychological Analysis",
+        "description": "Detailed exploration of the psyche based on the natal chart — unconscious patterns and potentials.",
+        "pages": "25-35 pages",
+        "features": [
+          "Moon — emotional world and childhood",
+          "Pluto — power and transformation",
+          "Chiron — wound and healing",
+          "12th House — unconscious",
+          "Karmic patterns (Nodes)"
+        ]
+      },
+      "seven-sins": {
+        "name": "The Seven Sins",
+        "description": "The playful shadow of the zodiac — your 7 astrological sins with humor and depth.",
+        "pages": "15-20 pages",
+        "features": [
+          "Pride (Sun)",
+          "Lust (Venus/Mars)",
+          "Greed (Saturn)",
+          "Gluttony (Jupiter)",
+          "Wrath (Mars)",
+          "Envy (Pluto)",
+          "Sloth (Neptune)"
+        ]
+      },
+      "financeiro": {
+        "name": "Financial Map",
+        "description": "Financial potential analysis: Houses 2/8, Venus, Jupiter and Saturn.",
+        "pages": "12-15 pages",
+        "features": [
+          "House 2 — monetizable resources and talents",
+          "House 8 — investments and shared resources",
+          "Venus — what you attract",
+          "Jupiter — where abundance flows",
+          "Saturn — discipline that builds wealth"
+        ]
+      },
+      "espiritual": {
+        "name": "Spiritual & Karmic Map",
+        "description": "The soul's journey: Lunar Nodes, 12th House, Neptune, Chiron and Pluto.",
+        "pages": "15-20 pages",
+        "features": [
+          "North Node — evolutionary purpose",
+          "12th House — connection to the transcendent",
+          "Chiron — sacred wound and healing gift",
+          "Neptune — spiritual portal",
+          "Pluto — deep transformative power"
+        ]
+      },
+      "retorno-saturno": {
+        "name": "Saturn Return",
+        "description": "Guide for Saturn's 29-year cycle — restructuring, maturity and purpose.",
+        "pages": "12-15 pages",
+        "features": [
+          "Natal Saturn — the core lesson",
+          "Saturn-ruled houses — activated areas",
+          "Phases of the return",
+          "What Saturn demands from you",
+          "What Saturn rewards"
+        ]
+      }
+    },
+    "categories": {
+      "all": "All",
+      "personality": "Personality",
+      "forecast": "Forecast",
+      "relationship": "Relationship",
+      "career": "Career"
+    },
+    "trust": {
+      "instant": "Generated instantly in your browser",
+      "privacy": "Your data never leaves your device",
+      "offline": "PDF available offline after generation"
+    },
+    "added": "✓ Added!"
   },
   "reportPreview": {
     "natalTitle": "Complete Natal Report",
