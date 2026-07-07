@@ -418,5 +418,18 @@
     "angle": "Ángulo",
     "nature": "Naturaleza",
     "analogSign": "Análogo natural"
+  },
+  "ephemerisPage": {
+    "title": "Efemérides Planetarias",
+    "description": "Posición exacta de los planetas para cada día del mes. Úselo para consultar tránsitos, verificar ingresos en signos, identificar períodos retrógrados (℞) y planificar acciones según el movimiento celeste.",
+    "months": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+    "day": "Día",
+    "loading": "Calculando efemérides...",
+    "howToRead": "Cómo leer la tabla",
+    "retrograde": "Retrógrado",
+    "degreeInSign": "Grado en el signo (0°–29°)",
+    "northNode": "Nodo Norte (punto kármico)",
+    "chiron": "Quirón (sanador herido)",
+    "source": "Posiciones calculadas para el mediodía (12h UTC) de cada día. Fuente: Swiss Ephemeris (precisión de segundo de arco)."
   }
 }

@@ -418,5 +418,18 @@
     "angle": "Winkel",
     "nature": "Natur",
     "analogSign": "Natürliches Analogon"
+  },
+  "ephemerisPage": {
+    "title": "Planetarische Ephemeriden",
+    "description": "Exakte Position der Planeten für jeden Tag des Monats. Nutzen Sie sie für Transite, Zeichenwechsel, rückläufige Perioden (℞) und die Planung von Aktionen auf Basis der Himmelsbewegung.",
+    "months": ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+    "day": "Tag",
+    "loading": "Ephemeriden werden berechnet...",
+    "howToRead": "So lesen Sie die Tabelle",
+    "retrograde": "Rückläufig",
+    "degreeInSign": "Grad im Zeichen (0°–29°)",
+    "northNode": "Mondknoten (karmischer Punkt)",
+    "chiron": "Chiron (verwundeter Heiler)",
+    "source": "Positionen berechnet für Mittag (12h UTC) jeden Tages. Quelle: Swiss Ephemeris (Bogensekunden-Genauigkeit)."
   }
 }

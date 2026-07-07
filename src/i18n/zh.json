@@ -418,5 +418,18 @@
     "angle": "角度",
     "nature": "性质",
     "analogSign": "自然类比"
+  },
+  "ephemerisPage": {
+    "title": "行星星历表",
+    "description": "每月每日行星的精确位置。用于查询行运、验证星座入境、识别逆行期（℞），并根据天体运动规划行动。",
+    "months": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+    "day": "日",
+    "loading": "正在计算星历...",
+    "howToRead": "如何阅读表格",
+    "retrograde": "逆行",
+    "degreeInSign": "星座内度数（0°–29°）",
+    "northNode": "北交点（业力点）",
+    "chiron": "凯龙（受伤的治愈者）",
+    "source": "每日正午（12h UTC）计算的位置。来源：Swiss Ephemeris（角秒精度）。"
   }
 }

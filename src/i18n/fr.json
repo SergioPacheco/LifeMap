@@ -418,5 +418,18 @@
     "angle": "Angle",
     "nature": "Nature",
     "analogSign": "Analogue naturel"
+  },
+  "ephemerisPage": {
+    "title": "Éphémérides Planétaires",
+    "description": "Position exacte des planètes pour chaque jour du mois. Consultez les transits, vérifiez les ingress en signes, identifiez les périodes rétrogrades (℞) et planifiez vos actions selon le mouvement céleste.",
+    "months": ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Déc"],
+    "day": "Jour",
+    "loading": "Calcul des éphémérides...",
+    "howToRead": "Comment lire le tableau",
+    "retrograde": "Rétrograde",
+    "degreeInSign": "Degré dans le signe (0°–29°)",
+    "northNode": "Nœud Nord (point karmique)",
+    "chiron": "Chiron (guérisseur blessé)",
+    "source": "Positions calculées pour midi (12h UTC) chaque jour. Source : Swiss Ephemeris (précision à la seconde d'arc)."
   }
 }

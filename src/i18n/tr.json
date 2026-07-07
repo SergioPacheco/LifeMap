@@ -418,5 +418,18 @@
     "angle": "Açı",
     "nature": "Doğa",
     "analogSign": "Doğal analog"
+  },
+  "ephemerisPage": {
+    "title": "Gezegensel Efemeris",
+    "description": "Ayın her günü için gezegenlerin tam konumu. Transitler, burç girişleri, retrograd dönemler (℞) ve göksel harekete dayalı eylem planlaması için kullanın.",
+    "months": ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+    "day": "Gün",
+    "loading": "Efemeris hesaplanıyor...",
+    "howToRead": "Tablo nasıl okunur",
+    "retrograde": "Retrograd",
+    "degreeInSign": "Burçtaki derece (0°–29°)",
+    "northNode": "Kuzey Düğümü (karmik nokta)",
+    "chiron": "Chiron (yaralı şifacı)",
+    "source": "Her gün öğlen (12:00 UTC) için hesaplanan konumlar. Kaynak: Swiss Ephemeris (yay saniyesi hassasiyeti)."
   }
 }

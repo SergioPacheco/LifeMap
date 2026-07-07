@@ -418,5 +418,18 @@
     "angle": "Hoek",
     "nature": "Natuur",
     "analogSign": "Natuurlijk analoog"
+  },
+  "ephemerisPage": {
+    "title": "Planetaire Efemeriden",
+    "description": "Exacte positie van de planeten voor elke dag van de maand. Gebruik het voor transits, tekenwisselingen, retrograde periodes (℞) en het plannen van acties op basis van hemelbeweging.",
+    "months": ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    "day": "Dag",
+    "loading": "Efemeriden berekenen...",
+    "howToRead": "Hoe de tabel te lezen",
+    "retrograde": "Retrograde",
+    "degreeInSign": "Graad in teken (0°–29°)",
+    "northNode": "Noordknoop (karmisch punt)",
+    "chiron": "Chiron (gewonde genezer)",
+    "source": "Posities berekend voor het middaguur (12u UTC) van elke dag. Bron: Swiss Ephemeris (boogseconde-precisie)."
   }
 }

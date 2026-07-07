@@ -418,5 +418,18 @@
     "angle": "Angolo",
     "nature": "Natura",
     "analogSign": "Analogo naturale"
+  },
+  "ephemerisPage": {
+    "title": "Effemeridi Planetarie",
+    "description": "Posizione esatta dei pianeti per ogni giorno del mese. Usale per consultare transiti, verificare ingressi nei segni, identificare periodi retrogradi (℞) e pianificare azioni in base al movimento celeste.",
+    "months": ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+    "day": "Giorno",
+    "loading": "Calcolo delle effemeridi...",
+    "howToRead": "Come leggere la tabella",
+    "retrograde": "Retrogrado",
+    "degreeInSign": "Grado nel segno (0°–29°)",
+    "northNode": "Nodo Nord (punto karmico)",
+    "chiron": "Chirone (guaritore ferito)",
+    "source": "Posizioni calcolate per mezzogiorno (12h UTC) di ogni giorno. Fonte: Swiss Ephemeris (precisione al secondo d'arco)."
   }
 }

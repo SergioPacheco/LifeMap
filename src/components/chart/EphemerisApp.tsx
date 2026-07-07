@@ -1,5 +1,6 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/index';
+import { getTranslations, type Locale } from '../../i18n';
 
 const PLANET_IDS = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'northNode', 'chiron'];
 const PLANET_SYMBOLS: Record<string, string> = {
@@ -8,13 +9,21 @@ const PLANET_SYMBOLS: Record<string, string> = {
   northNode: '☊', chiron: '⚷',
 };
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const SIGN_KEYS = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'] as const;
 
 interface EphRow {
   date: string;
   positions: Record<string, { sign: number; deg: number; retro: boolean }>;
 }
 
-export default function EphemerisApp() {
+interface Props {
+  locale?: string;
+}
+
+export default function EphemerisApp(props: Props) {
+  const locale = () => (props.locale || 'pt') as Locale;
+  const t = () => getTranslations(locale());
+
   const [year, setYear] = createSignal(new Date().getFullYear());
   const [month, setMonth] = createSignal(new Date().getMonth() + 1);
   const [rows, setRows] = createSignal<EphRow[]>([]);
@@ -51,16 +60,13 @@ export default function EphemerisApp() {
     setLoading(false);
   };
 
-  const MONTHS_PT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-
   return (
     <div class="space-y-4">
       {/* Header */}
       <div class="mb-2">
-        <h1 class="text-2xl font-serif font-bold text-cream">Efemérides Planetárias</h1>
+        <h1 class="text-2xl font-serif font-bold text-cream">{t().ephemerisPage.title}</h1>
         <p class="text-muted mt-1 text-sm leading-relaxed max-w-3xl">
-          Posição exata dos planetas para cada dia do mês. Use para consultar trânsitos, verificar ingressos em signos, 
-          identificar períodos retrógrados (℞) e planejar ações com base no movimento celeste.
+          {t().ephemerisPage.description}
         </p>
       </div>
 
@@ -72,7 +78,7 @@ export default function EphemerisApp() {
           <button onClick={() => { setYear(year() + 1); calculate(); }} class="px-2 py-1 text-sm bg-base-200 rounded">→</button>
         </div>
         <div class="flex gap-1 flex-wrap">
-          <For each={MONTHS_PT}>
+          <For each={t().ephemerisPage.months}>
             {(m, i) => (
               <button
                 onClick={() => { setMonth(i() + 1); calculate(); }}
@@ -86,12 +92,12 @@ export default function EphemerisApp() {
       </div>
 
       {/* Table */}
-      <Show when={!loading()} fallback={<div class="text-center py-8 text-muted">Calculando efemérides...</div>}>
+      <Show when={!loading()} fallback={<div class="text-center py-8 text-muted">{t().ephemerisPage.loading}</div>}>
         <div class="glass rounded-2xl border-glow shadow-sm overflow-x-auto">
           <table class="w-full text-xs">
             <thead>
               <tr class="border-b border-base-300 bg-base-100">
-                <th class="px-2 py-2 text-left font-medium text-muted">Dia</th>
+                <th class="px-2 py-2 text-left font-medium text-muted">{t().ephemerisPage.day}</th>
                 <For each={PLANET_IDS}>
                   {(pid) => (
                     <th class="px-1 py-2 text-center font-medium text-muted" title={pid}>
@@ -129,20 +135,22 @@ export default function EphemerisApp() {
 
       {/* Legend */}
       <div class="glass rounded-xl p-4 text-xs text-muted space-y-2">
-        <p class="font-medium text-cream-dark text-sm">Como ler a tabela</p>
+        <p class="font-medium text-cream-dark text-sm">{t().ephemerisPage.howToRead}</p>
         <div class="flex flex-wrap gap-x-6 gap-y-1">
-          <span>♈ Áries</span><span>♉ Touro</span><span>♊ Gêmeos</span><span>♋ Câncer</span>
-          <span>♌ Leão</span><span>♍ Virgem</span><span>♎ Libra</span><span>♏ Escorpião</span>
-          <span>♐ Sagitário</span><span>♑ Capricórnio</span><span>♒ Aquário</span><span>♓ Peixes</span>
+          <For each={SIGN_KEYS}>
+            {(key, i) => (
+              <span>{SIGN_SYMBOLS[i()]} {t().signs[key]}</span>
+            )}
+          </For>
         </div>
         <div class="flex flex-wrap gap-x-6 gap-y-1 pt-1 border-t border-base-300/50">
-          <span><span class="text-red-500">r</span> = Retrógrado</span>
-          <span>°  = Grau no signo (0°–29°)</span>
-          <span>☊ = Nodo Norte (ponto kármico)</span>
-          <span>⚷ = Quíron (curador ferido)</span>
+          <span><span class="text-red-500">r</span> = {t().ephemerisPage.retrograde}</span>
+          <span>° = {t().ephemerisPage.degreeInSign}</span>
+          <span>☊ = {t().ephemerisPage.northNode}</span>
+          <span>⚷ = {t().ephemerisPage.chiron}</span>
         </div>
         <p class="pt-1 border-t border-base-300/50 text-[11px]">
-          Posições calculadas para o meio-dia (12h UTC) de cada dia. Fonte: Swiss Ephemeris (precisão de arco-segundo).
+          {t().ephemerisPage.source}
         </p>
       </div>
     </div>

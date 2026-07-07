@@ -418,5 +418,18 @@
     "angle": "Angle",
     "nature": "Nature",
     "analogSign": "Natural analog"
+  },
+  "ephemerisPage": {
+    "title": "Planetary Ephemeris",
+    "description": "Exact position of the planets for each day of the month. Use it to check transits, verify sign ingresses, identify retrograde periods (℞) and plan actions based on celestial movement.",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "day": "Day",
+    "loading": "Calculating ephemeris...",
+    "howToRead": "How to read the table",
+    "retrograde": "Retrograde",
+    "degreeInSign": "Degree in sign (0°–29°)",
+    "northNode": "North Node (karmic point)",
+    "chiron": "Chiron (wounded healer)",
+    "source": "Positions calculated for noon (12h UTC) each day. Source: Swiss Ephemeris (arc-second precision)."
   }
 }
