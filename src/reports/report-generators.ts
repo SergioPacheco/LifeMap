@@ -15,6 +15,7 @@ import { downloadPdf } from './pdf-generator';
 import { generateSynastryReport } from '../engine/synastry-interpretation';
 import { getInterpretations } from '../engine/interpretations/index';
 import { getReportLabels, SIGN_SYMBOLS } from './report-labels';
+import { getAnnualTexts } from './annual-texts';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -289,6 +290,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   const SIGN_NAMES = labels.signs;
   const PLANET_NAMES = labels.planets;
   const MONTHS_PT = labels.months;
+  const at = getAnnualTexts(options.locale || 'pt');
 
   // P1: Capa
   renderCover(doc, `${texts.LABELS.annualTitle} ${currentYear}`, `${texts.LABELS.annualSubtitle} ${currentYear}`, options, '🔮');
@@ -316,28 +318,28 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Aos ${age} anos, a profecção anual ativa sua Casa ${profHouse} — cujo signo é ${SIGN_SYMBOLS[profSign]} ${SIGN_NAMES[profSign]}. Esta é a casa que comanda o ritmo e os temas dominantes do ano. Cada 12 meses, a roda avança uma casa: dos 0 aos 11 anos percorre o ciclo completo e reinicia. Ao identificar a casa ativada, você localiza o "palco" onde a sua história se desenrola neste período.`, margin, y, 170);
+  y = wrapText(doc, at.profectionIntro(age, profHouse, SIGN_SYMBOLS[profSign], SIGN_NAMES[profSign]), margin, y, 170);
   y += 8;
 
-  y = addSubTitle(doc, `Casa ${profHouse} em Foco — ${SIGN_NAMES[profSign]}`, y, margin);
+  y = addSubTitle(doc, at.profHouseSubtitle(profHouse, SIGN_NAMES[profSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, PROFECTION_HOUSE_TEXTS[profHouse - 1], margin, y, 170);
+  y = wrapText(doc, at.profectionHouse[profHouse - 1], margin, y, 170);
   y += 8;
 
-  y = addSubTitle(doc, `Regente do Ano — ${SIGN_NAMES[profSign]}`, y, margin);
+  y = addSubTitle(doc, at.rulerSubtitle(SIGN_NAMES[profSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, RULER_OF_YEAR[profSign], margin, y, 170);
+  y = wrapText(doc, at.rulerOfYear[profSign], margin, y, 170);
   y += 8;
 
-  y = addSubTitle(doc, 'Como Trabalhar Este Ano', y, margin);
+  y = addSubTitle(doc, at.workingSubtitle, y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  const workingTip = `Com a Casa ${profHouse} ativada, sua atenção deve se concentrar nos temas dessa esfera da vida. Agende revisões mensais para verificar onde está investindo energia e se está alinhado ao tema do ano. O mapa anual não determina o destino — ele revela o terreno. Você escolhe como percorrê-lo. Use as lunações (Lua Nova e Lua Cheia) como balizas mensais: plante nas novas e colha/revise nas cheias. Registre em diário os eventos marcantes para, ao final do ano, mapear o padrão completo.`;
+  const workingTip = at.workingThisYear(profHouse);
   y = wrapText(doc, workingTip, margin, y, 170);
 
   // TRYOUT CUT — return after cover + profecção overview (3 pages)
@@ -368,14 +370,14 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
     y += 8;
 
     // Dicas práticas do mês
-    y = addSubTitle(doc, 'Dicas Práticas', y, margin);
+    y = addSubTitle(doc, at.practicalTipsTitle, y, margin);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.setTextColor(...COLORS.text);
     const tips = [
-      `Foque nos temas da Casa ${profHouse} — eles definem o contexto do mês.`,
-      m % 3 === 0 ? 'Revise metas e registre progresso no diário astral.' : m % 3 === 1 ? 'Atenção a aspectos de Vênus: relacionamentos e finanças em movimento.' : 'Mercúrio ativo: comunicações e decisões fluem mais rápido.',
-      jupHouse === (m % 12) + 1 ? `Júpiter ativa sua Casa ${jupHouse} — janela de oportunidade este mês.` : `Júpiter em ${SIGN_NAMES[jupSign]} sustenta expansão em segundo plano.`,
+      at.tipProfHouse(profHouse),
+      m % 3 === 0 ? at.tipReviewGoals : m % 3 === 1 ? at.tipVenusActive : at.tipMercuryActive,
+      jupHouse === (m % 12) + 1 ? at.tipJupiterActive(jupHouse) : at.tipJupiterBackground(SIGN_NAMES[jupSign]),
     ];
     for (const tip of tips) {
       y = wrapText(doc, `• ${tip}`, margin, y, 168);
@@ -384,11 +386,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
 
     y += 6;
     // Frase do mês
-    const phrases = [
-      'Ação define destino.', 'Valor gera valor.', 'A mente aberta atrai conexões.', 'Raízes sustentam voo.',
-      'Criatividade é coragem.', 'Disciplina é liberdade.', 'Parceria revela propósito.', 'Transformação é necessária.',
-      'Horizontes se expandem para quem caminha.', 'Visibilidade requer integridade.', 'Coletivo fortalece o individual.', 'Silêncio é sabedoria.',
-    ];
+    const phrases = at.monthPhrases;
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(10);
     doc.setTextColor(...COLORS.brandLight);
@@ -398,26 +396,26 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   // P15: Eclipses do ano
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, `Eclipses do Ano — Eixo ${SIGN_NAMES[nnSign]}/${SIGN_NAMES[snSign]}`, y, margin);
+  y = addSectionTitle(doc, at.eclipseTitle(SIGN_NAMES[nnSign], SIGN_NAMES[snSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  const eclipseText = `Os eclipses de 2026 ocorrem no eixo ${SIGN_NAMES[nnSign]}–${SIGN_NAMES[snSign]}, ativando as casas correspondentes do seu mapa natal. Eclipses solares (Lua Nova) abrem portais de novos começos acelerados e irreversíveis. Eclipses lunares (Lua Cheia) revelam e concluem — o que estava oculto vem à superfície. Fique especialmente atento a eclipses que caem a menos de 5° de algum dos seus planetas ou ângulos natais: esses são os pontos de virada mais significativos da sua história pessoal neste ano.\n\nO Nodo Norte em ${SIGN_NAMES[nnSign]} aponta para onde a evolução coletiva (e a sua individual) está chamando. O Nodo Sul em ${SIGN_NAMES[snSign]} representa o que já foi integrado — recursos a usar, mas não nos quais se acomodar. Trabalhar ativamente com o eixo nodal é uma das práticas mais transformadoras da astrologia de trânsitos.\n\nEclipses em sua Casa ${profHouse} ou na casa oposta têm peso especial este ano, pois reforçam o tema da profecção. Quando eclipse e profecção coincidem na mesma área, o ano tem uma "aceleração de destino" — eventos que normalmente tomariam 2-3 anos se comprimem em semanas. Prepare-se para mudanças rápidas e confie no processo, mesmo quando parecer desordenado.`;
+  const eclipseText = at.eclipseText(SIGN_NAMES[nnSign], SIGN_NAMES[snSign], profHouse);
   y = wrapText(doc, eclipseText, margin, y, 170);
 
   // P16: Saturno no ano
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, `♄ Saturno em ${SIGN_NAMES[satSign]} — A Lição do Ano`, y, margin);
+  y = addSectionTitle(doc, at.saturnTitle(SIGN_NAMES[satSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  const saturnIntro = `Saturno é o planeta do tempo, da estrutura e da responsabilidade. Onde quer que esteja no céu, ele cobra maturidade e recompensa quem aceita trabalhar com paciência. Em ${SIGN_NAMES[satSign]}, o tema saturniano ganha a coloração específica desse signo — e quando aspecta seu mapa natal, o efeito se torna pessoal e intenso.`;
+  const saturnIntro = at.saturnIntro(SIGN_NAMES[satSign]);
   y = wrapText(doc, saturnIntro, margin, y, 170);
   y += 6;
 
   const satHouseText = SATURN_IN_HOUSE[satHouse - 1] || `Saturno na Casa ${satHouse} pede estrutura e responsabilidade nessa área.`;
-  y = addSubTitle(doc, `Saturno em sua Casa ${satHouse} natal`, y, margin);
+  y = addSubTitle(doc, at.saturnHouseSubtitle(satHouse), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
@@ -425,7 +423,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   y += 6;
 
   const satSignText = SATURN_IN_SIGN[satSign] || `Saturno em ${SIGN_NAMES[satSign]} exige disciplina nessa expressão.`;
-  y = addSubTitle(doc, `Saturno em ${SIGN_NAMES[satSign]} — Expressão do Desafio`, y, margin);
+  y = addSubTitle(doc, at.saturnSignSubtitle(SIGN_NAMES[satSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
@@ -436,21 +434,21 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Saturno não pune — estrutura. Os períodos mais difíceis com Saturno são geralmente os mais produtivos em retrospecto. Identifique onde você tem evitado responsabilidade e enfrente esse ponto com método. Crie sistemas: hábitos diários pequenos e consistentes produzem mais resultado do que grandes esforços esporádicos. Quando Saturno transita um ponto sensível do seu mapa, é hora de perguntar: "o que precisa ser construído aqui, de verdade?". Responda com ação concreta, não com teoria.`, margin, y, 170);
+  y = wrapText(doc, at.saturnWork, margin, y, 170);
 
   // P17: Júpiter no ano
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, `♃ Júpiter em ${SIGN_NAMES[jupSign]} — A Expansão do Ano`, y, margin);
+  y = addSectionTitle(doc, at.jupiterTitle(SIGN_NAMES[jupSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  const jupIntro = `Júpiter é o planeta da expansão, da fé e das oportunidades. Onde quer que esteja no céu, ele abre portas e amplifica o que toca. Em ${SIGN_NAMES[jupSign]}, a expansão ganha a qualidade desse signo. Júpiter fica cerca de 1 ano em cada signo — aproveite a janela enquanto ela está aberta.`;
+  const jupIntro = at.jupiterIntro(SIGN_NAMES[jupSign]);
   y = wrapText(doc, jupIntro, margin, y, 170);
   y += 6;
 
   const jupHouseText = JUPITER_IN_HOUSE[jupHouse - 1] || `Júpiter na Casa ${jupHouse} traz oportunidades nessa área.`;
-  y = addSubTitle(doc, `Júpiter em sua Casa ${jupHouse} natal`, y, margin);
+  y = addSubTitle(doc, at.jupiterHouseSubtitle(jupHouse), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
@@ -458,7 +456,7 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   y += 6;
 
   const jupSignText = JUPITER_IN_SIGN[jupSign] || `Júpiter em ${SIGN_NAMES[jupSign]} expande essa qualidade.`;
-  y = addSubTitle(doc, `Júpiter em ${SIGN_NAMES[jupSign]} — Tom da Expansão`, y, margin);
+  y = addSubTitle(doc, at.jupiterSignSubtitle(SIGN_NAMES[jupSign]), y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
@@ -469,24 +467,21 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Júpiter favorece quem age com confiança e se arrisca a crescer. Identifique onde você tem se contraído desnecessariamente e dê um passo além do que parece seguro. O risco com Júpiter é o excesso — ampliar sem critério pode gerar gastos, compromissos ou promessas que depois pesam. Use a expansão jupiteriana com intenção: crescimento que serve ao seu propósito, não crescimento por crescimento. Quando Júpiter aspecta seus planetas natais, essas são as semanas douradas do ano — marque no calendário e aja nessas janelas.`, margin, y, 170);
+  y = wrapText(doc, at.jupiterWork, margin, y, 170);
 
   // P18: Períodos críticos e oportunidades
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, 'Períodos Críticos e Janelas de Oportunidade', y, margin);
+  y = addSectionTitle(doc, at.criticalPeriodsTitle, y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
 
-  const criticalPeriods = [
-    { period: 'Janeiro–Fevereiro', type: 'oportunidade', text: `Início do ano com energia de renovação. Júpiter em ${SIGN_NAMES[jupSign]} favorece expansão nas áreas que você priorizar agora. Defina intenções com precisão — o que plantar neste período tem força para crescer ao longo do ano. Ideal para contratos, novos estudos e compromissos de longo prazo.` },
-    { period: 'Março–Abril', type: 'atenção', text: `Trânsitos de Marte podem trazer aceleração ou conflito. Este é um período de ação — mas a ação precisa ser direcionada, não impulsiva. Se você está em processo de mudança, este é o momento de execução. Conflitos que surgirem são convites para esclarecer limites e direção.` },
-    { period: 'Maio–Junho', type: 'oportunidade', text: `Período de colheita parcial das sementes de início de ano. Vênus favorece relacionamentos e negociações. Ideal para revisitar acordos, formalizar parcerias e avançar em projetos criativos. A lua de junho frequentemente traz revelação emocional importante.` },
-    { period: 'Julho–Agosto', type: 'reflexão', text: `Período de revisão e introspecção. Planetas retrógrados podem tornar o ritmo mais lento — use essa lentidão a seu favor para avaliar o primeiro semestre. O que funcionou? O que precisa de ajuste? Não force novos começos agora; consolide o que está em andamento.` },
-    { period: 'Setembro–Outubro', type: 'oportunidade', text: `Segunda grande janela do ano. Saturno e Júpiter começam a se preparar para trânsitos importantes. Ações tomadas agora têm impacto direto no próximo ciclo. Ideal para retomar o que foi pausado no verão e agir com a maturidade acumulada no primeiro semestre.` },
-    { period: 'Novembro–Dezembro', type: 'conclusão', text: `Fechamento do ciclo. O que não foi concluído pede resolução — não para o próximo ano. Saturno encerra cobranças e permite liberação do que foi trabalhado com responsabilidade. Planeje o próximo ano com clareza: o que quer inaugurar? O que quer definitivamente soltar?` },
-  ];
+  const criticalPeriods = at.criticalPeriods.map(cp => ({
+    period: cp.period,
+    type: cp.type,
+    text: cp.text(SIGN_NAMES[jupSign]),
+  }));
 
   for (const cp of criticalPeriods) {
     const typeColor: [number, number, number] = cp.type === 'oportunidade' ? COLORS.brand : cp.type === 'atenção' ? COLORS.red : COLORS.gold;
@@ -506,49 +501,15 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   // P19: Recomendações por trimestre
   doc.addPage();
   y = 30;
-  y = addSectionTitle(doc, 'Recomendações Práticas por Trimestre', y, margin);
+  y = addSectionTitle(doc, at.quarterTitle, y, margin);
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
 
-  const quarters = [
-    {
-      q: 'Q1 — Janeiro, Fevereiro, Março',
-      recs: [
-        `Defina 3 intenções alinhadas à Casa ${profHouse} e registre em diário.`,
-        'Inicie a rotina de acompanhar Lua Nova (plantio) e Lua Cheia (colheita).',
-        `Identifique onde Júpiter (Casa ${jupHouse}) pode trazer oportunidade e aja.',`,
-        'Crie um sistema financeiro básico se ainda não tem — este trimestre define o ritmo do ano.',
-      ],
-    },
-    {
-      q: 'Q2 — Abril, Maio, Junho',
-      recs: [
-        'Revise as intenções de Q1: o que avançou? O que precisa de mais energia?',
-        'Trabalhe questões de relacionamento (Casa 7) se houver tensão acumulada.',
-        'Invista em formação: Júpiter favorece aprendizado com retorno consistente.',
-        'Faça uma limpeza física e energética no espaço onde trabalha ou mora.',
-      ],
-    },
-    {
-      q: 'Q3 — Julho, Agosto, Setembro',
-      recs: [
-        'Avalie o semestre sem autocrítica excessiva — progredir é suficiente.',
-        `Se Saturno está ativo em sua Casa ${satHouse}, este trimestre pede disciplina extra.`,
-        'Retome projetos pausados com energia renovada de setembro.',
-        'Prepare um mapa de metas para os últimos 3 meses do ano.',
-      ],
-    },
-    {
-      q: 'Q4 — Outubro, Novembro, Dezembro',
-      recs: [
-        'Encerre o que ficou incompleto — não arraste dívidas emocionais ou práticas para o próximo ano.',
-        'Celebre conquistas do ano: o que você construiu merece reconhecimento.',
-        `Prepare-se para a próxima profecção: Casa ${(profHouse % 12) + 1} será ativada no seu próximo aniversário.`,
-        'Descanse em dezembro — recarregar é tão estratégico quanto agir.',
-      ],
-    },
-  ];
+  const quarters = at.quarters.map(qt => ({
+    q: qt.q,
+    recs: qt.recs.map(fn => fn(profHouse, satHouse, jupHouse)),
+  }));
 
   for (const qt of quarters) {
     y = addSubTitle(doc, qt.q, y, margin);
@@ -570,14 +531,14 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(...COLORS.text);
-  const conclusion = `${options.profileName}, este é um ano de ${PROFECTION_HOUSE_TEXTS[profHouse - 1].split('.')[0].toLowerCase()}. O mapa não define o que vai acontecer — ele revela o terreno que você vai percorrer e as forças que estarão ativas. Você é o protagonista desta história.\n\nA profecção de Casa ${profHouse} em ${SIGN_NAMES[profSign]} pede que você direcione energia consciente para os temas dessa área. O regente do ano — ${RULER_OF_YEAR[profSign].split('.')[0]} — define o tom e o recurso principal disponível.\n\nJúpiter em ${SIGN_NAMES[jupSign]} oferece expansão onde você se comprometer a crescer. Saturno em ${SIGN_NAMES[satSign]} cobra estrutura e recompensa quem constrói com método. Os eclipses trazem aceleração nas áreas do eixo ${SIGN_NAMES[nnSign]}–${SIGN_NAMES[snSign]}.\n\nUse este relatório como bússola — não como destino fixo. Revisitá-lo a cada mês, anotando como os eventos reais se relacionam com as previsões, é uma das práticas mais poderosas de autoconhecimento que a astrologia oferece. O mapa é seu — e a jornada, também.`;
+  const conclusion = at.conclusion(options.profileName, profHouse, SIGN_NAMES[profSign], at.rulerOfYear[profSign].split('.')[0], SIGN_NAMES[jupSign], SIGN_NAMES[satSign], SIGN_NAMES[nnSign], SIGN_NAMES[snSign]);
   y = wrapText(doc, conclusion, margin, y, 170);
   y += 10;
 
   doc.setFont('helvetica', 'italic');
   doc.setFontSize(11);
   doc.setTextColor(...COLORS.brandLight);
-  doc.text('"O astro inclina, não obriga." — máxima da astrologia humanista', margin, y, { align: 'left' });
+  doc.text(at.quote, margin, y, { align: 'left' });
 
   addFooters(doc, options.profileName);
   return doc.output('blob');
