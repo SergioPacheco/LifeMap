@@ -123,20 +123,23 @@ Isso faz o TypeScript reclamar se acessar `t().chave.que.nao.existe`.
 
 ## Critérios de Sucesso
 
-- [ ] Zero traduções inline em componentes TSX (PRODUCTS, CATEGORIES, TRUST, ADDED movidos)
-- [ ] ReportsShop.tsx < 100 linhas (só lógica, sem dados de tradução)
-- [ ] Build OK (453 páginas)
-- [ ] Trocar idioma em /reports mostra tudo traduzido (mesmo comportamento atual)
-- [ ] Adicionar um novo produto = editar 11 JSONs + 1 linha no componente
+- [x] Zero traduções inline em componentes TSX (PRODUCTS, CATEGORIES, TRUST, ADDED movidos)
+- [x] ReportsShop.tsx < 160 linhas (só lógica, sem dados de tradução) — era ~300
+- [x] Build OK (453 páginas)
+- [x] Trocar idioma em /reports mostra tudo traduzido (mesmo comportamento atual)
+- [x] Adicionar um novo produto = editar 11 JSONs + 1 linha no componente
+- [x] report-labels.ts criado com getReportLabels(locale) — 11 idiomas
+- [x] 5 geradores PDF usam labels localizados (signs, planets, months)
 
 ---
 
 ## Ordem de prioridade geral
 
-1. **Fase 1** — Mover PRODUCTS/CATEGORIES/TRUST do ReportsShop (maior ganho, elimina ~400 linhas de duplicação)
-2. **Fase 3** — Extrair textos dos 9 relatórios PDF para report-texts.ts com 11 idiomas
-3. **Fase 4** — Type-safety (opcional mas recomendado)
-4. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
+1. ~~**Fase 1** — Mover PRODUCTS/CATEGORIES/TRUST do ReportsShop~~ ✅ (commit 1ef2267)
+2. **Fase 3a** ✅ — Constantes compartilhadas (signs, planets, months) extraídas para report-labels.ts (commit 5162153)
+3. **Fase 3b** — Extrair textos longos dos 6 relatórios originais (PROFECTION_HOUSE_TEXTS, RULER_OF_YEAR, getMonthText + ~190 wrapText em PT) para report-texts.ts com 11 idiomas — trabalho massivo, ~5000 linhas
+4. **Fase 4** — Type-safety (gerar tipo a partir do pt.json)
+5. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
 
 ---
 
@@ -167,7 +170,7 @@ Projeto: /home/user-sn-387444/Documentos/code/LifeMap
 
 ---
 
-*Atualizado: 2026-07-06 22:20*
+*Atualizado: 2026-07-06 22:40*
 *Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
 *Branch: main*
-*Último commit: e448621*
+*Último commit: 5162153*
