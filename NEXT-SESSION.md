@@ -1,27 +1,9 @@
-# PRÓXIMA SESSÃO — Tradução de Relatórios PDF
+# PRÓXIMA SESSÃO — Consolidação do Sistema i18n
 
 ## O que fazer
 
-Traduzir os textos interpretativos dos relatórios PDF para os 7 idiomas pendentes.
-Cada sessão foca em **1 idioma** e traduz 168 parágrafos (14 arrays × 12 casas/signos).
-
-### ✅ TODAS AS TRADUÇÕES COMPLETAS!
-1. ~~FR (Francês)~~ ✅
-2. ~~DE (Alemão)~~ ✅
-3. ~~IT (Italiano)~~ ✅
-4. ~~RU (Russo)~~ ✅
-5. ~~ZH (Chinês)~~ ✅
-6. ~~JA (Japonês)~~ ✅
-7. ~~NL (Holandês)~~ ✅
-8. ~~TR (Turco)~~ ✅
-
-### Comando para iniciar sessão:
-```
-Traduza os textos interpretativos de src/engine/interpretations/en.ts para RUSSO.
-Reescreva src/engine/interpretations/ru.ts com todos os 14 arrays (168 textos) 
-traduzidos para russo nativo. Mantenha os metadados (SIGN_NAMES, LABELS etc) como estão.
-Siga as instruções de TRANSLATION-SESSIONS.md.
-```
+Refatorar o sistema de internacionalização para eliminar duplicação e seguir boas práticas.
+Mover todas as traduções inline dos componentes para o sistema centralizado `src/i18n/*.json`.
 
 ---
 
@@ -30,55 +12,162 @@ Siga as instruções de TRANSLATION-SESSIONS.md.
 - **Projeto:** LifeMap Pro — plataforma de astrologia 100% client-side
 - **Path:** /home/user-sn-387444/Documentos/code/LifeMap
 - **Branch:** main
-- **Último commit:** 3743ab2
 - **Build:** `source ~/.nvm/nvm.sh && nvm use 22 && npx astro build`
-- **420 páginas, 11 idiomas, ~60 arquivos de código**
+- **453 páginas, 11 idiomas, 9 relatórios premium**
 
 ---
 
-## Estado dos relatórios
+## Problema Atual
 
-### ✅ Motor refatorado (REPORTS-ARCHITECTURE.md)
-- Determinístico, zero IA em runtime
-- Repositório centralizado de interpretações por idioma
-- getInterpretations(locale) com 11 idiomas registrados
-- Top 5 Potenciais + Top 5 Desafios (scoring automático)
-- tryoutCut() com labels traduzidos
+4 sistemas de i18n coexistem:
+1. `src/i18n/*.json` — UI labels (sistema principal, bom)
+2. `src/content/{locale}/*.ts` — conteúdo educacional longo (aceitável separado)
+3. `src/engine/interpretations/{locale}.ts` — textos PDF de relatórios (aceitável separado)
+4. **Traduções inline nos componentes** ← PROBLEMA
 
-### ✅ Relatórios implementados (6 tipos)
-1. Mapa Natal Completo (20-30 páginas)
-2. Previsão Anual (15-20 páginas)
-3. Relatório de Relacionamento (20-30 páginas)
-4. Análise Psicológica Profunda (20-30 páginas)
-5. Carreira e Vocação (15-20 páginas)
-6. Os Sete Pecados (15-20 páginas)
-
-### ✅ Traduções completas (interface + metadados)
-- 11 i18n/*.json com todas as chaves da UI
-- 11 interpretations/*.ts com SIGN_NAMES, PLANET_NAMES, MONTHS, LABELS, SECTION_TITLES, PLANET_SUBTITLES, TRANSITIONS traduzidos
-
-### ⏳ Pendente: textos interpretativos narrativos
-- **PT, EN, ES:** 100% traduzidos (168 textos cada)
-- **FR, DE, IT, RU, ZH, JA, NL, TR:** 100% traduzidos (168 textos cada)
-- **✅ TODOS OS 11 IDIOMAS COMPLETOS!**
+O item 4 é o que precisa ser resolvido. Componentes como `ReportsShop.tsx` têm ~500 linhas de traduções hardcoded dentro do código.
 
 ---
 
-## Outros itens pendentes (não urgentes)
+## Plano de Execução
 
-### Bug: Retrógrados não carrega no browser
-- Funciona no Node.js, falha no browser (SolidJS hydration)
-- Ver NEXT-SESSION.md anterior para diagnóstico
+### Fase 1 — Mover produtos do ReportsShop para i18n/*.json
 
-### Monetização
-- T38: Integração Stripe Checkout real (mock atual sempre aprova)
-- T39: Cloudflare Function para webhook Stripe
+**Arquivo fonte:** `src/components/premium/ReportsShop.tsx`
 
-### Documentação
-- REPORTS-ARCHITECTURE.md — arquitetura completa documentada
-- CATALOG.md — 40+ tipos de mapas para implementação futura
-- TRANSLATION-SESSIONS.md — guia para sessões de tradução
+**O que extrair:**
+- Array PRODUCTS (9 produtos × { name, description, features, pages } × 11 idiomas)
+- CATEGORIES (5 categorias × 11 idiomas)
+- TRUST (3 frases × 11 idiomas)
+- ADDED (1 frase × 11 idiomas)
+
+**Destino:** Namespace `reports.products` dentro de cada `src/i18n/{locale}.json`:
+
+```json
+{
+  "reports": {
+    "products": {
+      "natal-completo": {
+        "name": "Mapa Natal Completo",
+        "description": "Análise profunda de todas as posições...",
+        "pages": "20-30 páginas",
+        "features": [
+          "Todos os planetas em signos e casas",
+          "Aspectos com interpretação detalhada",
+          "..."
+        ]
+      },
+      "relacionamento": { ... },
+      ...
+    },
+    "categories": {
+      "all": "Todos",
+      "personality": "Personalidade",
+      "forecast": "Previsão",
+      "relationship": "Relacionamento",
+      "career": "Carreira"
+    },
+    "trust": {
+      "instant": "Gerado instantaneamente no seu navegador",
+      "privacy": "Seus dados nunca saem do dispositivo",
+      "offline": "PDF disponível offline após geração"
+    },
+    "added": "✓ Adicionado!"
+  }
+}
+```
+
+**ReportsShop.tsx depois:**
+```typescript
+const t = () => getTranslations(locale());
+const products = () => t().reports.products;
+// PRODUCTS vira array de { id, icon, category, price, currency } — SEM traduções
+```
+
+### Fase 2 — Mover textos do ReportPreview para i18n
+
+O `ReportPreview.tsx` já usa `t().reportPreview.*` — só confirmar que não tem strings soltas.
+
+### Fase 3 — Mover textos dos relatórios PDF para sistema unificado
+
+**Arquivo:** `src/reports/report-texts.ts` (já criado parcialmente)
+
+Os relatórios (financial, spiritual, saturn-return + os 6 originais) têm parágrafos de contexto hardcoded em inglês/português. A melhor abordagem:
+
+1. Manter `src/reports/report-texts.ts` como repositório central de textos de relatórios
+2. Organizar por: `{ financial: { ... }, spiritual: { ... }, saturnReturn: { ... }, career: { ... }, ... }`
+3. Cada gerador importa de lá: `const rt = getReportTexts(options.locale)`
+4. Os 6 relatórios originais em `report-generators.ts` (~189 wrapText com strings PT) precisam ser extraídos também
+
+**Nota:** Os textos de relatórios são LONGOS (parágrafos de 50-200 palavras cada). Mantê-los em arquivo TS separado é aceitável — não faz sentido colocar parágrafos de 200 palavras num JSON.
+
+### Fase 4 — Type-safety (opcional, alto impacto)
+
+Gerar tipo TypeScript a partir do JSON PT (canônico):
+```typescript
+// Auto-gerado a partir de pt.json
+export interface Translations {
+  nav: { home: string; dashboard: string; ... };
+  reports: {
+    products: Record<string, { name: string; description: string; pages: string; features: string[] }>;
+    categories: Record<string, string>;
+    ...
+  };
+  ...
+}
+```
+
+Isso faz o TypeScript reclamar se acessar `t().chave.que.nao.existe`.
 
 ---
 
-*Atualizado: 2026-07-06 11:10*
+## Critérios de Sucesso
+
+- [ ] Zero traduções inline em componentes TSX (PRODUCTS, CATEGORIES, TRUST, ADDED movidos)
+- [ ] ReportsShop.tsx < 100 linhas (só lógica, sem dados de tradução)
+- [ ] Build OK (453 páginas)
+- [ ] Trocar idioma em /reports mostra tudo traduzido (mesmo comportamento atual)
+- [ ] Adicionar um novo produto = editar 11 JSONs + 1 linha no componente
+
+---
+
+## Ordem de prioridade geral
+
+1. **Fase 1** — Mover PRODUCTS/CATEGORIES/TRUST do ReportsShop (maior ganho, elimina ~400 linhas de duplicação)
+2. **Fase 3** — Extrair textos dos 9 relatórios PDF para report-texts.ts com 11 idiomas
+3. **Fase 4** — Type-safety (opcional mas recomendado)
+4. **Monetização** — Stripe Checkout real + Cloudflare webhook (T38/T39)
+
+---
+
+## Comando para iniciar sessão:
+```
+Refatore o sistema i18n do LifeMap Pro conforme NEXT-SESSION.md.
+Fase 1: mover traduções inline do ReportsShop.tsx para os i18n/*.json.
+Projeto: /home/user-sn-387444/Documentos/code/LifeMap
+```
+
+---
+
+## Estado do Projeto (completo)
+
+### ✅ Implementado
+- 453 páginas (11 idiomas × 41 rotas)
+- 9 relatórios premium (natal, relacionamento, anual, carreira, psicológico, 7 pecados, financeiro, espiritual, retorno de saturno)
+- 11 idiomas com cobertura total em UI, conteúdo educacional e relatórios PDF
+- Seletor de idioma independente para relatórios
+- Carrinho com prevenção de duplicatas e exigência de perfil
+- UX do carrinho com toast, badge e estado persistente
+- Bug de hydration corrigido (sweph excluído do bundle client)
+
+### 📋 Pendente
+- Refatoração i18n (esta sessão)
+- Monetização real: Stripe Checkout + Cloudflare webhook
+- Textos de contexto dos PDFs em idioma nativo (report-texts.ts para 11 idiomas)
+
+---
+
+*Atualizado: 2026-07-06 22:20*
+*Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
+*Branch: main*
+*Último commit: e448621*
