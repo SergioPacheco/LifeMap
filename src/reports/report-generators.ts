@@ -17,6 +17,8 @@ import { getInterpretations } from '../engine/interpretations/index';
 import { getReportLabels, SIGN_SYMBOLS } from './report-labels';
 import { getAnnualTexts } from './annual-texts';
 import { getSevenSinsTexts } from './seven-sins-texts';
+import { getCareerTexts } from './career-texts';
+import { getPsychologicalTexts } from './psychological-texts';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -961,6 +963,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   const labels = getReportLabels(options.locale || 'pt');
   const SIGN_NAMES = labels.signs;
   const PLANET_NAMES = labels.planets;
+  const pst = getPsychologicalTexts(options.locale || 'pt');
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
@@ -990,7 +993,7 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   doc.addPage(); let y = 30;
   y = addSectionTitle(doc, texts.LABELS.psychTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `A astrologia psicológica — desenvolvida por Liz Greene, Howard Sasportas e outros — parte de um princípio simples e radical: o mapa natal não descreve eventos externos, mas estruturas internas. Os planetas são funções psíquicas; os signos, qualidades de expressão; as casas, arenas da experiência. Quando Marte está em Escorpião, não é que o destino seja "intensidade e conflito" — é que a função de ação e desejo (Marte) se expressa com a qualidade de profundidade, estratégia e intensidade de Escorpião.`, margin, y, 170);
+  y = wrapText(doc, pst.intro, margin, y, 170);
   y += 6;
   y = wrapText(doc, `Este relatório não classifica você. Ele oferece uma linguagem para os padrões que você já sente, mas talvez não tenha conseguido nomear. Reconhecer um padrão não o dissolve automaticamente — mas é o primeiro passo necessário para trabalhar com ele conscientemente, em vez de ser governado por ele sem perceber.`, margin, y, 170);
   y += 6;
@@ -1299,10 +1302,10 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   doc.addPage(); y = 30;
   y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `${options.profileName}, este relatório percorreu as camadas principais do seu mapa psicológico: a estrutura do ego, o mundo emocional, os padrões de relacionamento, a sombra, a ferida, o inconsciente, os padrões herdados e os caminhos de integração.\n\nO que o mapa revela não é um julgamento — é um convite. Convite para conhecer-se com mais precisão, para trabalhar com os padrões que se repetem, para desenvolver o que ainda está inexplorado e para caminhar em direção ao propósito que o Nodo Norte indica.\n\nA psicologia astrológica não substitui a psicoterapia — ela a complementa com uma linguagem simbólica que muitas vezes acessa camadas que as palavras diretas não alcançam. Use este relatório como companheiro no processo — não como autoridade final.\n\nVocê é mais do que seu mapa. O mapa é o ponto de partida, não o destino.`, margin, y, 170);
+  y = wrapText(doc, pst.conclusionText(options.profileName), margin, y, 170);
   y += 10;
   doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(...COLORS.brandLight);
-  doc.text('"Conhece-te a ti mesmo." — inscrição do templo de Delfos', margin, y);
+  doc.text(pst.quote, margin, y);
 
   addFooters(doc, options.profileName);
   return doc.output('blob');
@@ -1319,6 +1322,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   const labels = getReportLabels(options.locale || 'pt');
   const SIGN_NAMES = labels.signs;
   const PLANET_NAMES = labels.planets;
+  const ct = getCareerTexts(options.locale || 'pt');
 
   const mcSign = getSignIndex(chart.houses.midheaven);
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
@@ -1336,13 +1340,13 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   const mercHouse = chart.planetHouses.mercury || 1;
 
   // P1: Capa
-  renderCover(doc, texts.LABELS.careerTitle, 'Propósito profissional revelado pelo mapa', options, '♄');
+  renderCover(doc, texts.LABELS.careerTitle, ct.coverSubtitle, options, '♄');
 
   // P2: Visão Geral — MC
   doc.addPage(); let y = 30;
   y = addSectionTitle(doc, `${texts.LABELS.overview} — ${texts.LABELS.midheaven}`, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `O Meio do Céu (MC) é o ponto mais alto do mapa — representa sua vocação pública, a marca que você deixa no mundo e o tipo de reconhecimento que busca. Não é apenas "que profissão seguir" — é "qual o tom da sua presença no mundo profissional". O signo do MC define a qualidade dessa presença; os planetas que o aspectam definem os recursos e desafios.`, margin, y, 170);
+  y = wrapText(doc, ct.mcOverviewIntro, margin, y, 170);
   y += 6;
   y = addSubTitle(doc, `MC em ${SIGN_SYMBOLS[mcSign]} ${SIGN_NAMES[mcSign]}`, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
@@ -1368,9 +1372,9 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
 
   // P3: Casa 10
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, `Casa 10 em ${SIGN_NAMES[h10Sign]} — Vocação e Reconhecimento`, y, margin);
+  y = addSectionTitle(doc, ct.h10Title(SIGN_NAMES[h10Sign]), y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `A Casa 10 é onde você busca reconhecimento e onde constrói reputação. Com a cúspide em ${SIGN_NAMES[h10Sign]}, o estilo de sua presença pública e o tipo de reconhecimento que você recebe — e busca — carregam a qualidade deste signo. Planetas na Casa 10 intensificam e qualificam essa presença.`, margin, y, 170);
+  y = wrapText(doc, ct.h10Intro(SIGN_NAMES[h10Sign]), margin, y, 170);
   y += 6;
   const planetsIn10 = Object.entries(chart.planetHouses).filter(([_, h]) => h === 10).map(([p]) => p);
   if (planetsIn10.length > 0) {
@@ -1392,7 +1396,7 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
     }
   } else {
     doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-    y = wrapText(doc, `Sem planetas na Casa 10, o regente da cúspide (o planeta que governa ${SIGN_NAMES[h10Sign]}) define principalmente o tom da carreira. Acompanhe os trânsitos pelo regente para identificar os momentos de maior movimento profissional.`, margin, y, 170);
+    y = wrapText(doc, ct.h10NoPlanets(SIGN_NAMES[h10Sign]), margin, y, 170);
   }
 
   // P4: Casa 6
@@ -1572,10 +1576,10 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   doc.addPage(); y = 30;
   y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `${options.profileName}, seu mapa de carreira revela uma combinação única de vocação, talento e timing. O MC em ${SIGN_NAMES[mcSign]} define a direção geral; Saturno na Casa ${satHouse} indica onde o trabalho duro produz resultados duradouros; Júpiter na Casa ${jupHouse} revela onde as oportunidades fluem com mais naturalidade.\n\nO Sol em ${SIGN_NAMES[sunSign]} define onde você brilha genuinamente — não apenas onde você é competente, mas onde há satisfação real. Marte em ${SIGN_NAMES[marsSign]} determina como você age e compete. Mercúrio em ${SIGN_NAMES[mercSign]} define seu diferencial intelectual.\n\nA carreira ideal não é a mais glamorosa ou a mais lucrativa — é aquela que ativa seus talentos naturais, honra seus valores e evolui junto com você. Use este relatório como bússola, não como destino fixo. O mapa sugere caminhos; você escolhe qual percorrer — e como.`, margin, y, 170);
+  y = wrapText(doc, ct.conclusionText(options.profileName, SIGN_NAMES[mcSign], satHouse, jupHouse, SIGN_NAMES[sunSign], SIGN_NAMES[marsSign], SIGN_NAMES[mercSign]), margin, y, 170);
   y += 10;
   doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(...COLORS.brandLight);
-  doc.text('"Escolha um trabalho que você ame e não terá de trabalhar um dia sequer." — Confúcio', margin, y);
+  doc.text(ct.quote, margin, y);
 
   addFooters(doc, options.profileName);
   return doc.output('blob');
