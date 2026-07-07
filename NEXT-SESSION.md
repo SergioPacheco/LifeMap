@@ -139,7 +139,7 @@ Isso faz o TypeScript reclamar se acessar `t().chave.que.nao.existe`.
 2. ~~**Fase 3a** — Constantes compartilhadas (signs, planets, months) extraídas para report-labels.ts~~ ✅ (commit 5162153)
 3. ~~**Fase 3b-annual** — Textos do generateAnnualPdf extraídos para annual-texts.ts (EN+PT)~~ ✅ (commit 38b7b4e)
 4. ~~**Fase 4** — Type-safety (tipos auxiliares exportados, casts removidos)~~ ✅ (commit f5db6c8)
-5. **Fase 3b-sevenSins** — Textos do generateSevenSinsPdf para seven-sins-texts.ts (EN+PT)
+5. ~~**Fase 3b-sevenSins** — Textos do generateSevenSinsPdf para seven-sins-texts.ts (EN+PT)~~ ✅ (commit 10c0bab)
 6. **Fase 3b-relationship** — Textos do generateRelationshipPdf (mais complexo: condicionais partner/solo)
 7. **Fase 3b-psychological** — Textos do generatePsychologicalPdf
 8. **Fase 3b-career** — Textos do generateCareerPdf
@@ -184,7 +184,7 @@ Projeto: /home/user-sn-387444/Documentos/code/LifeMap
 
 ---
 
-*Atualizado: 2026-07-06 22:55*
+*Atualizado: 2026-07-06 23:05*
 *Projeto: /home/user-sn-387444/Documentos/code/LifeMap*
 *Branch: main*
-*Último commit: f5db6c8*
+*Último commit: 10c0bab*
