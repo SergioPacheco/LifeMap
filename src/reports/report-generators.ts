@@ -16,6 +16,7 @@ import { generateSynastryReport } from '../engine/synastry-interpretation';
 import { getInterpretations } from '../engine/interpretations/index';
 import { getReportLabels, SIGN_SYMBOLS } from './report-labels';
 import { getAnnualTexts } from './annual-texts';
+import { getSevenSinsTexts } from './seven-sins-texts';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -1726,6 +1727,7 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   const labels = getReportLabels(options.locale || 'pt');
   const SIGN_NAMES = labels.signs;
   const PLANET_NAMES = labels.planets;
+  const st = getSevenSinsTexts(options.locale || 'pt');
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
@@ -1736,25 +1738,25 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   const plutoSign = getSignIndex(chart.positions.pluto?.longitude || 0);
 
   // P1: Capa
-  renderCover(doc, texts.LABELS.sinsTitle, 'Sua sombra revelada com humor e verdade', options, '👹');
+  renderCover(doc, texts.LABELS.sinsTitle, st.coverSubtitle, options, '👹');
 
   // P2: Introdução
   doc.addPage(); let y = 30;
-  y = addSectionTitle(doc, 'A Sombra Lúdica do Zodíaco', y, margin);
+  y = addSectionTitle(doc, st.introTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Os sete pecados capitais não foram inventados para nos envergonhar. Foram inventados para nomear os padrões humanos universais que, sem consciência, nos governam em vez de nos servir. A astrologia faz o mesmo — só que com mais cor, simbolismo e uma pitada de humor cósmico.`, margin, y, 170); y += 5;
-  y = wrapText(doc, `Cada planeta carrega uma sombra — não como defeito, mas como a versão não-integrada de uma qualidade genuinamente poderosa. Marte não-integrado não é energia — é agressividade sem direção. Júpiter não-integrado não é fé — é preguiça disfarçada de otimismo. Quando ignoramos a sombra, ela age através de nós sem permissão. Quando a encaramos com honestidade e um sorriso, ela se transforma.`, margin, y, 170); y += 5;
-  y = wrapText(doc, `Este relatório não vai te julgar. Vai te mostrar o espelho — e esperar que você ria do que vê antes de decidir o que fazer com isso. Porque a sombra que você pode rir já não tem o mesmo poder sobre você.`, margin, y, 170); y += 8;
-  y = addSubTitle(doc, 'O Mapa dos Seus 7 Pecados', y, margin);
+  y = wrapText(doc, st.intro1, margin, y, 170); y += 5;
+  y = wrapText(doc, st.intro2, margin, y, 170); y += 5;
+  y = wrapText(doc, st.intro3, margin, y, 170); y += 8;
+  y = addSubTitle(doc, st.sinMapTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   const sinMap = [
-    `👑 ORGULHO — Sol em ${SIGN_NAMES[sunSign]}`,
-    `🍰 GULA — Lua em ${SIGN_NAMES[moonSign]}`,
-    `🔥 LUXÚRIA — Vênus em ${SIGN_NAMES[venusSign]}`,
-    `⚡ IRA — Marte em ${SIGN_NAMES[marsSign]}`,
-    `💰 AVAREZA — Saturno em ${SIGN_NAMES[saturnSign]}`,
-    `🐍 INVEJA — Plutão em ${SIGN_NAMES[plutoSign]}`,
-    `🛋️ PREGUIÇA — Júpiter em ${SIGN_NAMES[jupiterSign]}`,
+    `${st.sinMapLabels[0]} — ${SIGN_NAMES[sunSign]}`,
+    `${st.sinMapLabels[1]} — ${SIGN_NAMES[moonSign]}`,
+    `${st.sinMapLabels[2]} — ${SIGN_NAMES[venusSign]}`,
+    `${st.sinMapLabels[3]} — ${SIGN_NAMES[marsSign]}`,
+    `${st.sinMapLabels[4]} — ${SIGN_NAMES[saturnSign]}`,
+    `${st.sinMapLabels[5]} — ${SIGN_NAMES[plutoSign]}`,
+    `${st.sinMapLabels[6]} — ${SIGN_NAMES[jupiterSign]}`,
   ];
   for (const s of sinMap) { y = wrapText(doc, s, margin, y, 170); y += 5; }
 
@@ -1764,21 +1766,21 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
 
   // P3-P4: ORGULHO — Sol (2 páginas)
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, `👑 ORGULHO — Sol em ${SIGN_NAMES[sunSign]}`, y, margin);
+  y = addSectionTitle(doc, st.prideTitle(SIGN_NAMES[sunSign]), y, margin);
   doc.setFont('helvetica', 'italic'); doc.setFontSize(10); doc.setTextColor(...COLORS.textLight);
-  doc.text('Planeta: Sol  |  Pecado: Orgulho  |  Dom oculto: Identidade e propósito', margin, y); y += 8;
+  doc.text(st.prideMeta, margin, y); y += 8;
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `O Sol governa o ego — e o ego, quando não vigiado, vira orgulho. Não o orgulho saudável de se respeitar, mas o orgulho que precisa de plateia, que não admite erro, que mede o próprio valor pela régua do outro. Em ${SIGN_NAMES[sunSign]}, o orgulho tem um sabor muito específico:`, margin, y, 170); y += 6;
+  y = wrapText(doc, st.prideIntro(SIGN_NAMES[sunSign]), margin, y, 170); y += 6;
   y = wrapText(doc, getSinText('orgulho', sunSign), margin, y, 170); y += 6;
-  y = wrapText(doc, `O Sol não é o vilão aqui. Ele só está pedindo para existir de verdade, sem precisar de comparação ou validação externa para justificar sua presença. O orgulho surge quando o ego ainda não aprendeu que é suficiente sem precisar provar nada.`, margin, y, 170);
+  y = wrapText(doc, st.prideOutro, margin, y, 170);
 
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, `👑 ORGULHO — Caminho de Integração`, y, margin);
+  y = addSectionTitle(doc, st.prideIntegrationTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, getSinIntegration('orgulho', sunSign), margin, y, 170); y += 8;
-  y = addSubTitle(doc, 'O Dom do Orgulho Integrado', y, margin);
+  y = addSubTitle(doc, st.prideDomTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `O orgulho bem integrado se transforma em dignidade — a capacidade de se valorizar sem precisar diminuir o outro. Em ${SIGN_NAMES[sunSign]}, isso significa usar a intensidade do ego como motor de criação genuína: não para superar, mas para expressar. O Sol que não precisa mais provar nada paradoxalmente irradia mais. A segurança interna é magnética de um jeito que a performance nunca consegue imitar.`, margin, y, 170);
+  y = wrapText(doc, st.prideDom(SIGN_NAMES[sunSign]), margin, y, 170);
 
   // P5-P6: GULA — Lua
   doc.addPage(); y = 30;
@@ -1875,9 +1877,9 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
 
   // P14: Caminho de Integração — Resumo dos 7
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Caminho de Integração — Os 7 Reunidos', y, margin);
+  y = addSectionTitle(doc, st.integrationTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Agora que conhece seus 7 pecados astrológicos, uma boa notícia: você não precisa "corrigir" todos ao mesmo tempo. A sombra não se integra por esforço bruto — se integra por consciência gradual e humor. Escolha um pecado por mês para observar. Sem julgamento, só curiosidade: "quando esse padrão aparece? O que ele está pedindo? O que eu precisaria acreditar para soltá-lo?"`, margin, y, 170); y += 6;
+  y = wrapText(doc, st.integrationIntro, margin, y, 170); y += 6;
   const summaryItems = [
     { sin: '👑 Orgulho', key: `Sol em ${SIGN_NAMES[sunSign]}`, action: 'Observe quando precisa ter razão. Pergunte: "posso aprender algo aqui?"' },
     { sin: '🍰 Gula', key: `Lua em ${SIGN_NAMES[moonSign]}`, action: 'Identifique a fome real antes de preencher o vazio com o próximo consumo.' },
@@ -1897,14 +1899,14 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
 
   // P15: Conclusão bem-humorada
   doc.addPage(); y = 30;
-  y = addSectionTitle(doc, 'Conclusão — O Conselho do Diabo Bem-Intencionado', y, margin);
+  y = addSectionTitle(doc, st.conclusionTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `${options.profileName}, você chegou ao final do seu inventário de pecados astrológicos. E se ainda está lendo, é porque reconheceu pelo menos um de si mesmo — provavelmente mais que um, e provavelmente com aquela mistura incômoda de vergonha e alívio de finalmente ter palavras para algo que já sabia.`, margin, y, 170); y += 5;
-  y = wrapText(doc, `A boa notícia: todos esses pecados são apenas energias que ainda não aprenderam o caminho de casa. O orgulho quer ser dignidade. A gula quer ser nutrição consciente. A luxúria quer ser amor com presença. A ira quer ser assertividade corajosa. A avareza quer ser gestão sábia. A inveja quer ser clareza de propósito. A preguiça quer ser fé com ação.`, margin, y, 170); y += 5;
-  y = wrapText(doc, `Nenhum de nós integra tudo de uma vez. O processo é circular, não linear — você vai encontrar esses padrões de novo, em camadas mais profundas, ao longo da vida. E cada vez que os reconhece com um pouco mais de humor e um pouco menos de julgamento, você recupera um pedaço de energia que estava preso neles.`, margin, y, 170); y += 5;
-  y = wrapText(doc, `Use este relatório como espelho periódico — releia quando sentir que algum padrão está pesado. A sombra que você nomeia não desaparece, mas perde o poder de agir às suas costas.`, margin, y, 170); y += 10;
+  y = wrapText(doc, st.conclusion1(options.profileName), margin, y, 170); y += 5;
+  y = wrapText(doc, st.conclusion2, margin, y, 170); y += 5;
+  y = wrapText(doc, st.conclusion3, margin, y, 170); y += 5;
+  y = wrapText(doc, st.conclusion4, margin, y, 170); y += 10;
   doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(...COLORS.brandLight);
-  doc.text('"Conheço poucos erros tão grandes quanto o de levar-se demasiadamente a sério." — Oscar Wilde', margin, y);
+  doc.text(st.quote, margin, y);
 
   addFooters(doc, options.profileName);
   return doc.output('blob');
