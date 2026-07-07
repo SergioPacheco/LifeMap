@@ -14,6 +14,7 @@ import { CHIRON_IN_HOUSE, CHIRON_IN_SIGN } from '../engine/chiron';
 import { downloadPdf } from './pdf-generator';
 import { generateSynastryReport } from '../engine/synastry-interpretation';
 import { getInterpretations } from '../engine/interpretations/index';
+import { getReportLabels, SIGN_SYMBOLS } from './report-labels';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -30,8 +31,10 @@ const COLORS = {
   red: [180, 40, 40] as [number, number, number],
 };
 
+// Fallback constants (PT) — used by helper functions that don't receive locale.
+// Within each generator function, these are shadowed by localized versions from getReportLabels().
 const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+// SIGN_SYMBOLS imported from report-labels.ts
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
   jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
@@ -282,6 +285,10 @@ export function generateAnnualPdf(chart: NatalChart, options: ReportOptions): Bl
   const margin = 20;
   const currentYear = new Date().getFullYear();
   const texts = getInterpretations(options.locale || 'pt');
+  const labels = getReportLabels(options.locale || 'pt');
+  const SIGN_NAMES = labels.signs;
+  const PLANET_NAMES = labels.planets;
+  const MONTHS_PT = labels.months;
 
   // P1: Capa
   renderCover(doc, `${texts.LABELS.annualTitle} ${currentYear}`, `${texts.LABELS.annualSubtitle} ${currentYear}`, options, '🔮');
@@ -638,6 +645,9 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
   const texts = getInterpretations(options.locale || 'pt');
+  const labels = getReportLabels(options.locale || 'pt');
+  const SIGN_NAMES = labels.signs;
+  const PLANET_NAMES = labels.planets;
   const nameA = options.profileName;
   const nameB = options.partnerName || (options.locale === 'en' ? 'Partner' : 'Parceiro(a)');
 
@@ -986,6 +996,9 @@ export function generatePsychologicalPdf(chart: NatalChart, options: ReportOptio
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
   const texts = getInterpretations(options.locale || 'pt');
+  const labels = getReportLabels(options.locale || 'pt');
+  const SIGN_NAMES = labels.signs;
+  const PLANET_NAMES = labels.planets;
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
@@ -1341,6 +1354,9 @@ export function generateCareerPdf(chart: NatalChart, options: ReportOptions): Bl
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
   const texts = getInterpretations(options.locale || 'pt');
+  const labels = getReportLabels(options.locale || 'pt');
+  const SIGN_NAMES = labels.signs;
+  const PLANET_NAMES = labels.planets;
 
   const mcSign = getSignIndex(chart.houses.midheaven);
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
@@ -1746,6 +1762,9 @@ export function generateSevenSinsPdf(chart: NatalChart, options: ReportOptions):
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const margin = 20;
   const texts = getInterpretations(options.locale || 'pt');
+  const labels = getReportLabels(options.locale || 'pt');
+  const SIGN_NAMES = labels.signs;
+  const PLANET_NAMES = labels.planets;
 
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
