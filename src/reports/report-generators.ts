@@ -19,6 +19,7 @@ import { getAnnualTexts } from './annual-texts';
 import { getSevenSinsTexts } from './seven-sins-texts';
 import { getCareerTexts } from './career-texts';
 import { getPsychologicalTexts } from './psychological-texts';
+import { getRelationshipTexts } from './relationship-texts';
 
 // ============================================================
 // SHARED CONSTANTS
@@ -612,6 +613,7 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   const labels = getReportLabels(options.locale || 'pt');
   const SIGN_NAMES = labels.signs;
   const PLANET_NAMES = labels.planets;
+  const rt = getRelationshipTexts(options.locale || 'pt');
   const nameA = options.profileName;
   const nameB = options.partnerName || (options.locale === 'en' ? 'Partner' : 'Parceiro(a)');
 
@@ -667,14 +669,14 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   y += 4;
   doc.setDrawColor(...COLORS.line); doc.setLineWidth(0.4); doc.line(margin, y, 190, y); y += 8;
 
-  y = addSubTitle(doc, 'Visão Geral', y, margin);
+  y = addSubTitle(doc, rt.overviewSubtitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
   y = wrapText(doc, overviewText, margin, y, 170);
   y += 8;
 
-  y = addSubTitle(doc, 'O Que Este Relatório Cobre', y, margin);
+  y = addSubTitle(doc, rt.whatCoversTitle, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  y = wrapText(doc, `Este relatório analisa 5 dimensões do relacionamento: atração e química física, conexão emocional e segurança, estilo de comunicação, alinhamento de valores e dinâmicas de poder, e potencial de crescimento mútuo. Cada seção combina os elementos dos dois mapas para revelar onde a relação tem mais facilidade — e onde os desafios pedem trabalho consciente.`, margin, y, 170);
+  y = wrapText(doc, rt.whatCoversText, margin, y, 170);
 
   // TRYOUT CUT — return after cover + overview (3 pages)
   const tryoutBlob2 = tryoutCut(doc, options, 'Relatório de Relacionamento', '39.90');
@@ -942,11 +944,11 @@ export function generateRelationshipPdf(chart: NatalChart, options: ReportOption
   doc.addPage(); y = 30;
   y = addSectionTitle(doc, texts.LABELS.conclusion, y, margin);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(...COLORS.text);
-  const relConclusion = `Nenhum mapa natal predetermina o sucesso ou fracasso de um relacionamento. O que a astrologia oferece é uma linguagem simbólica para entender padrões — e padrões podem ser trabalhados quando são vistos com clareza.\n\nEste relatório revelou os temas centrais da dinâmica entre ${nameA}${options.partnerChart ? ` e ${nameB}` : ''}: onde há facilidade natural, onde há desafios que pedem atenção, e como os padrões individuais de cada um interagem na relação.\n\nO amor não é apenas sentimento — é uma prática. Prática de presença, de comunicação, de crescimento e de escolha renovada. Os melhores relacionamentos não são os que têm menos dificuldades, mas os que desenvolvem ferramentas para atravessá-las juntos.\n\nUse este relatório como ponto de partida para conversas honestas, não como veredicto. O mapa aponta direções — vocês escolhem o caminho.`;
+  const relConclusion = rt.conclusionText(nameA, options.partnerChart ? nameB : null);
   y = wrapText(doc, relConclusion, margin, y, 170);
   y += 10;
   doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(...COLORS.brandLight);
-  doc.text('"Amar é encontrar na felicidade de outrem a própria felicidade." — Leibniz', margin, y);
+  doc.text(rt.quote, margin, y);
 
   addFooters(doc, options.profileName);
   return doc.output('blob');
