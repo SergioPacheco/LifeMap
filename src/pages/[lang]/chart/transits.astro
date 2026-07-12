@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
 export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
 const { lang } = Astro.params;
 const locale = lang as Locale;
@@ -9,10 +9,112 @@ import TransitsApp from '../../../components/chart/TransitsApp.tsx';
 ---
 <BaseLayout title={t.nav.transits} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <div class="mb-6">
-      <h1 class="text-2xl font-serif font-bold text-cream">{t.nav.transits}</h1>
-      <p class="text-sm text-muted mt-1">Planetas em movimento hoje sobre o seu mapa — o que está ativado agora na sua vida</p>
+
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="text-sm text-muted mb-4">
+        <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.charts}</a> → <span class="text-cream">{t.nav.transits}</span>
+      </nav>
+
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Trânsitos</h1>
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        Os trânsitos mostram <strong class="text-cream">onde os planetas estão AGORA no céu</strong> e como interagem com o seu mapa natal.
+        São os "eventos astrológicos" da sua vida — oportunidades, desafios e transformações que o universo apresenta.
+      </p>
     </div>
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
+        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        Como funciona? O que estou vendo?
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">↻</span> O que são Trânsitos?
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Os planetas continuam se movendo após o seu nascimento. Quando um planeta <strong class="text-cream">hoje</strong> forma um ângulo significativo com um planeta <strong class="text-cream">do seu mapa natal</strong>, dizemos que há um trânsito ativo.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            É como se o céu "apertasse botões" no seu mapa — ativando temas específicos da sua vida em momentos específicos.
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">⏱</span> Duração dos Trânsitos
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">Lua</strong> — horas (humor do dia)</li>
+            <li><strong class="text-cream">Sol, Mercúrio, Vênus</strong> — 1-3 dias</li>
+            <li><strong class="text-cream">Marte</strong> — 1-2 semanas</li>
+            <li><strong class="text-cream">Júpiter</strong> — 2-3 semanas (oportunidades)</li>
+            <li><strong class="text-cream">Saturno</strong> — 2-3 meses (reestruturação)</li>
+            <li><strong class="text-cream">Urano, Netuno, Plutão</strong> — 1-2 anos (transformação profunda)</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🔍</span> Como interpretar
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Olhe para os <strong class="text-cream">aspectos que se formam</strong> entre planetas em trânsito (anel externo) e seus planetas natais (anel interno).
+          </p>
+          <ul class="space-y-1 text-xs text-cream-dark">
+            <li>• <strong class="text-cream">Conjunção</strong> = começo de um ciclo no tema daquele planeta</li>
+            <li>• <strong class="text-cream">Quadratura</strong> = crise que exige ação ou decisão</li>
+            <li>• <strong class="text-cream">Oposição</strong> = culminação, confronto, consciência plena</li>
+            <li>• <strong class="text-cream">Trígono</strong> = fluxo, oportunidade, facilidade</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">⚡</span> Prioridade de atenção
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Nem todo trânsito é igualmente importante. Priorize:
+          </p>
+          <ol class="space-y-1 text-xs text-cream-dark list-decimal list-inside">
+            <li>Trânsitos de <strong class="text-cream">Saturno, Urano, Netuno, Plutão</strong> — os mais transformadores</li>
+            <li>Trânsitos ao <strong class="text-cream">Sol, Lua ou Ascendente</strong> natal — afetam o "centro" de quem você é</li>
+            <li>Trânsitos de <strong class="text-cream">Júpiter</strong> — oportunidades e expansão</li>
+            <li>Planetas rápidos — só se confirmar um padrão com os anteriores</li>
+          </ol>
+        </div>
+      </div>
+    </details>
+
+    <!-- App -->
     <TransitsApp client:load />
+
+    <!-- Legenda -->
+    <div class="mt-8 glass rounded-xl p-5 border border-base-300 max-w-2xl">
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Legenda de leitura</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-cream-dark">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-blue-400/60"></span>
+          <span>Anel interno = seu mapa natal (fixo, não muda)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-gold/60"></span>
+          <span>Anel externo = planetas em trânsito (posição hoje)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-red-400/60"></span>
+          <span>Linhas = aspectos ativos entre trânsito e natal</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-purple-400/60"></span>
+          <span>Altere a data para explorar trânsitos futuros ou passados</span>
+        </div>
+      </div>
+    </div>
   </div>
 </BaseLayout>
