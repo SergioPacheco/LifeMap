@@ -105,12 +105,20 @@ export default function AstroCalendarApp(props: Props) {
 
     const cacheKey = `${newYear}-${newMonth}-${profileName()}`;
 
+    const selectToday = (data: MonthData) => {
+      const todayData = data.days.find(d => d.date.getDate() === now.getDate());
+      setSelectedDay(todayData || null);
+      // Scroll to selected day if grid is rendered
+      setTimeout(() => {
+        const el = document.querySelector('[data-today="true"]');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+    };
+
     if (monthCache.has(cacheKey)) {
       const data = monthCache.get(cacheKey)!;
       setMonthData(data);
-      // Auto-select today
-      const todayData = data.days.find(d => d.date.getDate() === now.getDate());
-      setSelectedDay(todayData || null);
+      selectToday(data);
     } else {
       setLoading(true);
       setTimeout(() => {
@@ -118,8 +126,7 @@ export default function AstroCalendarApp(props: Props) {
           const data = calculateMonth(n, newYear, newMonth, config());
           monthCache.set(cacheKey, data);
           setMonthData(data);
-          const todayData = data.days.find(d => d.date.getDate() === now.getDate());
-          setSelectedDay(todayData || null);
+          selectToday(data);
         } catch (e) {
           console.error('Calendar calculation error:', e);
         } finally {

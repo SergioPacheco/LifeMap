@@ -81,6 +81,7 @@ export function CalendarGrid(props: Props) {
           {(day) => (
             <button
               onClick={() => props.onSelectDay(day)}
+              data-today={isToday(day) ? "true" : undefined}
               class={`
                 aspect-square p-1 rounded-lg border transition-all cursor-pointer
                 hover:border-gold/50 hover:shadow-sm
