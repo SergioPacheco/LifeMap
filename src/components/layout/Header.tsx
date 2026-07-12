@@ -75,6 +75,11 @@ export default function Header(props: Props) {
         { icon: '🌅', label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale), desc: 'Temas do próximo ano solar' },
         { icon: '⏩', label: t().nav.progressions, href: localePath('/chart/progressions', props.locale), desc: 'Evolução interna ao longo da vida' },
         { icon: '♾️', label: t().nav.composite, href: localePath('/chart/composite', props.locale), desc: 'O mapa da relação como entidade' },
+        { icon: '🔀', label: 'Davison', href: localePath('/chart/davison', props.locale), desc: 'Ponto médio temporal da relação' },
+        { icon: '📍', label: 'Relocado', href: localePath('/chart/relocated', props.locale), desc: 'Seu mapa em outra cidade' },
+        { icon: '🗺️', label: 'Astrocartografia', href: localePath('/chart/astrocartography', props.locale), desc: 'Melhores cidades para você' },
+        { icon: '🌙', label: 'Revolução Lunar', href: localePath('/chart/lunar-return', props.locale), desc: 'Tendências emocionais do mês' },
+        { icon: '👶', label: 'Mapa Infantil', href: localePath('/chart/child', props.locale), desc: 'Talentos e necessidades da criança' },
       ],
     },
     {

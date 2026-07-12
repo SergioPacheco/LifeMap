@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTranslations, supportedLocales, localePath, type Locale } from '../../../i18n';
+export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
+const { lang } = Astro.params;
+const locale = lang as Locale;
+const t = getTranslations(locale);
+import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.tsx';
+---
+<BaseLayout title="Astrocartografia" locale={locale}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Breadcrumb + Header -->
+    <div class="mb-8">
+      <nav class="text-sm text-muted mb-4">
+        <a href={localePath('/chart/natal', locale)} class="hover:text-gold transition-colors">{t.nav.charts}</a>
+        <span class="mx-2 opacity-40">→</span>
+        <span class="text-cream">Astrocartografia</span>
+      </nav>
+
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">
+        🗺️ Astrocartografia
+      </h1>
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        A Astrocartografia mostra como seu mapa natal se expressa em diferentes locais do mundo.
+        <strong class="text-cream">Cidades onde planetas benéficos ficam angulares</strong> (Casas 1, 4, 7, 10)
+        tendem a ativar essas energias positivamente.
+      </p>
+    </div>
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors select-none">
+        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        Como funciona? O que são planetas angulares?
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🌍</span> O que é Astrocartografia?
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Quando você nasce, os planetas ocupam posições específicas no zodíaco.
+            Mas as <strong class="text-cream">casas astrológicas</strong> dependem do local — elas giram conforme a latitude e longitude.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            Em cidades diferentes, os mesmos planetas caem em casas diferentes.
+            A Astrocartografia usa esse princípio para encontrar locais onde planetas específicos
+            ficam nas casas angulares — as mais poderosas do mapa.
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🏛️</span> Casas Angulares
+          </h3>
+          <ul class="space-y-2 text-xs text-cream-dark">
+            <li class="flex items-start gap-2">
+              <span class="text-gold font-bold w-16 shrink-0">Casa 1 (ASC)</span>
+              <span>Identidade, aparência, como você se apresenta e é visto</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-gold font-bold w-16 shrink-0">Casa 4 (IC)</span>
+              <span>Lar, raízes, família, vida privada e emocional</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-gold font-bold w-16 shrink-0">Casa 7 (DSC)</span>
+              <span>Parcerias, relacionamentos, contratos, outros</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-gold font-bold w-16 shrink-0">Casa 10 (MC)</span>
+              <span>Carreira, vocação, reputação e esfera pública</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">✅</span> Cidades Favoráveis
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Cidades onde <strong class="text-cream">Júpiter, Vênus, Sol ou Lua</strong> ficam angulares
+            costumam trazer expansão, beleza, vitalidade ou bem-estar emocional —
+            dependendo de qual planeta e qual casa estão ativados.
+          </p>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">♃ Júpiter → expansão</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">♀ Vênus → amor/arte</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">☉ Sol → vitalidade</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/20">☽ Lua → conforto</span>
+          </div>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">⚠️</span> Cidades Desafiadoras
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Cidades com <strong class="text-cream">Saturno, Plutão ou Marte</strong> angulares tendem a
+            intensificar desafios, limitações ou transformações — não necessariamente "ruins",
+            mas mais exigentes e intensos.
+          </p>
+          <div class="flex flex-wrap gap-1 mt-2">
+            <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/20">♄ Saturno → restrições</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/20">♇ Plutão → transformação</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/20">♂ Marte → conflito/ação</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- App -->
+    <AstrocartographyApp client:load />
+
+  </div>
+</BaseLayout>
