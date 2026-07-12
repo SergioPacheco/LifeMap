@@ -32,7 +32,6 @@ export default function Header(props: Props) {
   };
 
   const navItems = () => [
-    { label: '📅 Calendário', href: localePath('/tools/calendar', props.locale) },
     { label: t().nav.charts, href: localePath('/chart/natal', props.locale), children: [
       { label: t().nav.natal, href: localePath('/chart/natal', props.locale) },
       { label: t().nav.transits, href: localePath('/chart/transits', props.locale) },
@@ -46,6 +45,7 @@ export default function Header(props: Props) {
       { label: '🔮 Semanal', href: localePath('/horoscope/weekly', props.locale) },
       { label: '🌟 Eventos Celestes', href: localePath('/horoscope/events', props.locale) },
     ]},
+    { label: 'Calendário', href: localePath('/tools/calendar', props.locale) },
     { label: t().nav.reports, href: localePath('/reports', props.locale) },
     { label: t().nav.learn, href: localePath('/learn', props.locale) },
   ];
