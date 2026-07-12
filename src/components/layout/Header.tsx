@@ -46,11 +46,6 @@ export default function Header(props: Props) {
       { label: '🔮 Semanal', href: localePath('/horoscope/weekly', props.locale) },
       { label: '🌟 Eventos Celestes', href: localePath('/horoscope/events', props.locale) },
     ]},
-    { label: t().nav.tools, href: localePath('/tools/ephemeris', props.locale), children: [
-      { label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale) },
-      { label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale) },
-      { label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale) },
-    ]},
     { label: t().nav.reports, href: localePath('/reports', props.locale) },
     { label: t().nav.learn, href: localePath('/learn', props.locale) },
   ];
