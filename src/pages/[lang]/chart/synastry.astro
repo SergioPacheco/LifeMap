@@ -7,4 +7,12 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 import SynastryApp from '../../../components/chart/SynastryApp.tsx';
 ---
-<BaseLayout title={t.nav.synastry} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><SynastryApp client:load /></div></BaseLayout>
+<BaseLayout title={t.nav.synastry} locale={locale}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-6">
+      <h1 class="text-2xl font-serif font-bold text-cream">{t.nav.synastry}</h1>
+      <p class="text-sm text-muted mt-1">Compatibilidade entre duas pessoas — aspectos cruzados, pontos de atração e desafio</p>
+    </div>
+    <SynastryApp client:load />
+  </div>
+</BaseLayout>

@@ -14,6 +14,10 @@ const t = getTranslations(locale);
 
 <BaseLayout title="Calendário Astrológico" locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-6">
+      <h1 class="text-2xl font-serif font-bold text-cream">Calendário Astrológico</h1>
+      <p class="text-sm text-muted mt-1">Seus trânsitos dia a dia — energia, temas e dicas personalizadas para cada momento</p>
+    </div>
     <AstroCalendarApp client:load locale={locale} />
   </div>
 </BaseLayout>
