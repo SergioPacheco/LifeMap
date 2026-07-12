@@ -1,6 +1,8 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import PlanetTable from '../chart/PlanetTable';
+import AspectGrid from '../chart/AspectGrid';
+import ElementTable from '../chart/ElementTable';
 import { calculateNatalChart, calculateComposite, initSweph, getSignIndex, getDegreeInSign } from '../../engine/index';
 import { renderWheel } from '../../renderer/wheel';
 import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
@@ -257,6 +259,12 @@ export default function CompositeApp() {
 
         {/* Planet positions table */}
         <PlanetTable chart={composite() as any} />
+
+        {/* Aspect Grid + Element Table */}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <AspectGrid chart={composite() as any} />
+          <ElementTable chart={composite() as any} />
+        </div>
       </Show>
     </div>
   );

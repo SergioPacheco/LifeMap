@@ -1,5 +1,7 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
 import PlanetTable from '../chart/PlanetTable';
+import AspectGrid from '../chart/AspectGrid';
+import ElementTable from '../chart/ElementTable';
 import { calculateNatalChart, calculateSolarReturn, initSweph } from '../../engine/index';
 import { renderWheel } from '../../renderer/wheel';
 import { getSignIndex } from '../../engine/calculations';
@@ -104,6 +106,12 @@ export default function SolarReturnApp() {
             <div class="space-y-4">
               <SRInterpretation chart={srChart()} year={year()} />
             </div>
+          </div>
+
+          {/* Aspect Grid + Element Table */}
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+            <AspectGrid chart={srChart()} />
+            <ElementTable chart={srChart()} />
           </div>
         </Show>
       </div>
