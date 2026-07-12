@@ -8,6 +8,16 @@ const PLANET_SYMBOLS: Record<string, string> = {
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
   northNode: '☊', chiron: '⚷',
 };
+const PLANET_COLORS: Record<string, string> = {
+  sun: '#f0b840', moon: '#c0c8d8', mercury: '#80d090', venus: '#f0a0c0',
+  mars: '#ff6050', jupiter: '#b080e0', saturn: '#90a8c0', uranus: '#60d8f0',
+  neptune: '#7090ff', pluto: '#d06080', northNode: '#a0a0b0', chiron: '#c0a0e0',
+};
+const PLANET_NAMES_SHORT: Record<string, string> = {
+  sun: 'Sol', moon: 'Lua', mercury: 'Mer', venus: 'Vên', mars: 'Mar',
+  jupiter: 'Júp', saturn: 'Sat', uranus: 'Ura', neptune: 'Net', pluto: 'Plu',
+  northNode: 'NN', chiron: 'Qui',
+};
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const SIGN_KEYS = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'] as const;
 
@@ -100,8 +110,11 @@ export default function EphemerisApp(props: Props) {
                 <th class="px-2 py-2 text-left font-medium text-muted">{t().ephemerisPage.day}</th>
                 <For each={PLANET_IDS}>
                   {(pid) => (
-                    <th class="px-1 py-2 text-center font-medium text-muted" title={pid}>
-                      {PLANET_SYMBOLS[pid]}
+                    <th class="px-1 py-2 text-center" title={pid}>
+                      <div class="flex flex-col items-center gap-0.5">
+                        <span class="text-lg leading-none" style={{ color: PLANET_COLORS[pid] }}>{PLANET_SYMBOLS[pid]}</span>
+                        <span class="text-[9px] text-muted font-normal">{PLANET_NAMES_SHORT[pid]}</span>
+                      </div>
                     </th>
                   )}
                 </For>
@@ -117,10 +130,10 @@ export default function EphemerisApp(props: Props) {
                         const data = row.positions[pid];
                         if (!data) return <td></td>;
                         return (
-                          <td class={`px-1 py-1 text-center font-mono ${data.retro ? 'text-red-600' : 'text-muted'}`}>
-                            <span class="text-[10px]">{SIGN_SYMBOLS[data.sign]}</span>
-                            {Math.floor(data.deg)}°
-                            {data.retro ? <span class="text-red-500 text-[8px]">r</span> : ''}
+                          <td class={`px-1 py-1.5 text-center font-mono ${data.retro ? 'text-red-400' : 'text-cream-dark'}`}>
+                            <span class="text-xs" style={{ color: PLANET_COLORS[pid], opacity: '0.8' }}>{SIGN_SYMBOLS[data.sign]}</span>
+                            <span class="text-[11px]">{Math.floor(data.deg)}°</span>
+                            {data.retro ? <span class="text-red-400 text-[9px] font-bold ml-0.5">℞</span> : ''}
                           </td>
                         );
                       }}
