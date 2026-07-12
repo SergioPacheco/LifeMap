@@ -1,6 +1,6 @@
 // ============================================================
-// WHEEL.TS — Clean Astrological Wheel (Astro.com Classic Style)
-// Simple, readable, professional — white/beige background, thin black lines
+// WHEEL.TS — Readable astrological wheel
+// Dark LifeMap theme with Astro.com-inspired geometry and sizing
 // Layout: Sign ring (outer) → House ring with planets → Aspect center
 // ============================================================
 
@@ -18,24 +18,24 @@ const R_PLANET = 252;        // Planet symbols start here, then stack inward
 const R_HOUSE_IN = 116;      // Inner edge of house ring
 const R_CENTER = 116;        // Aspect lines inside here
 
-// Colors — high-contrast Astrodienst-inspired light wheel
+// Colors — high-contrast LifeMap dark theme
 const COL = {
-  bg: '#eafafa',
-  signRing: '#fffcef',
-  houseBg: '#eefafa',
-  centerBg: '#fffdf0',
-  line: '#202020',
-  lineLight: '#9b9b8c',
-  axis: '#000000',
-  axisLabel: '#000000',
-  text: '#111111',
-  textDim: '#404040',
-  labelBlue: '#064fb6',
-  retroRed: '#c91919',
-  signFire: '#df1b12',
-  signEarth: '#19a243',
-  signAir: '#f08a00',
-  signWater: '#095ee8',
+  bg: '#0d0d14',
+  signRing: '#161622',
+  houseBg: '#1a1a28',
+  centerBg: '#101018',
+  line: '#4a4a63',
+  lineLight: '#56566d',
+  axis: '#d8d2c0',
+  axisLabel: '#f4efe3',
+  text: '#f4efe3',
+  textDim: '#c9c2ae',
+  labelBlue: '#66a6ff',
+  retroRed: '#ff5a5a',
+  signFire: '#ff5a45',
+  signEarth: '#70d66a',
+  signAir: '#f0b344',
+  signWater: '#5fa8ff',
 };
 
 const SIGN_SYMBOLS = ['♈︎','♉︎','♊︎','♋︎','♌︎','♍︎','♎︎','♏︎','♐︎','♑︎','♒︎','♓︎'];
@@ -50,19 +50,19 @@ const PLANET_SYMBOLS: Record<string, string> = {
 };
 
 const PLANET_COLORS: Record<string, string> = {
-  sun: '#111111', moon: '#111111', mercury: '#9a5b00', venus: '#16823a', mars: '#c51d1d',
-  jupiter: '#7a3eb1', saturn: '#202020', uranus: '#0a5ec8', neptune: '#007a72',
-  pluto: '#7a1a1a', northNode: '#202020', southNode: '#5a5a5a', lilith: '#202020', chiron: '#8a5b00',
-  ceres: '#477a18', vesta: '#a15e00', pallas: '#0b648d', juno: '#9a2e6d',
-  vertex: '#5a3ea1', partOfFortune: '#8a6500',
+  sun: '#f1c95b', moon: '#f3f0e6', mercury: '#d8a63a', venus: '#62d96f', mars: '#ff5a5a',
+  jupiter: '#b783ff', saturn: '#c9c2ae', uranus: '#58b7ff', neptune: '#4ed0bf',
+  pluto: '#ff6b6b', northNode: '#f3f0e6', southNode: '#9d9686', lilith: '#f3f0e6', chiron: '#d8a63a',
+  ceres: '#9fda5a', vesta: '#ffad42', pallas: '#62c7ff', juno: '#f07ab2',
+  vertex: '#b783ff', partOfFortune: '#f1c95b',
 };
 
 const ASPECT_STYLES: Record<AspectType, { color: string; width: number; dash: string }> = {
-  conjunction: { color: '#159447', width: 1.7, dash: '' },
-  sextile: { color: '#064fb6', width: 1.1, dash: '' },
-  square: { color: '#d21717', width: 1.5, dash: '' },
-  trine: { color: '#064fb6', width: 1.5, dash: '' },
-  opposition: { color: '#d21717', width: 1.3, dash: '' },
+  conjunction: { color: '#4bd06d', width: 1.7, dash: '' },
+  sextile: { color: '#438cff', width: 1.1, dash: '' },
+  square: { color: '#ff4b4b', width: 1.5, dash: '' },
+  trine: { color: '#438cff', width: 1.5, dash: '' },
+  opposition: { color: '#ff4b4b', width: 1.3, dash: '' },
 };
 
 const OMITTED_WHEEL_POINTS = new Set(['southNode']);
