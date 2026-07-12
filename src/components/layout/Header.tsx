@@ -12,6 +12,7 @@ export default function Header(props: Props) {
   const [cartCount, setCartCount] = createSignal(0);
 
   const navItems = () => [
+    { label: '📅 Calendário', href: localePath('/tools/calendar', props.locale) },
     { label: t().nav.charts, href: localePath('/chart/natal', props.locale), children: [
       { label: t().nav.natal, href: localePath('/chart/natal', props.locale) },
       { label: t().nav.transits, href: localePath('/chart/transits', props.locale) },
@@ -19,11 +20,16 @@ export default function Header(props: Props) {
       { label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale) },
       { label: t().nav.progressions, href: localePath('/chart/progressions', props.locale) },
     ]},
+    { label: 'Horóscopo', href: localePath('/horoscope/daily', props.locale), children: [
+      { label: '✦ Todos os Signos', href: localePath('/horoscope/daily', props.locale) },
+      { label: '♡ Amor', href: localePath('/horoscope/love', props.locale) },
+      { label: '🔮 Semanal', href: localePath('/horoscope/weekly', props.locale) },
+      { label: '🌟 Eventos Celestes', href: localePath('/horoscope/events', props.locale) },
+    ]},
     { label: t().nav.tools, href: localePath('/tools/ephemeris', props.locale), children: [
       { label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale) },
       { label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale) },
       { label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale) },
-      { label: 'Calendário', href: localePath('/tools/calendar', props.locale) },
     ]},
     { label: t().nav.reports, href: localePath('/reports', props.locale) },
     { label: t().nav.learn, href: localePath('/learn', props.locale) },
