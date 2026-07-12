@@ -678,8 +678,8 @@ function renderTopPotentialsAndChallenges(doc: jsPDF, chart: NatalChart, report:
   }
 
   // Planetas angulares → potenciais
-  if (chart.angularPlanets) {
-    for (const p of chart.angularPlanets) {
+  if ((chart as any).angularPlanets) {
+    for (const p of (chart as any).angularPlanets) {
       const name = planetNames[p] || p;
       const txt = isEN
         ? `${name} angular — prominent energy that defines your public presence`
@@ -692,7 +692,7 @@ function renderTopPotentialsAndChallenges(doc: jsPDF, chart: NatalChart, report:
   if (chart.dignities) {
     for (const [planet, dignity] of Object.entries(chart.dignities)) {
       const name = planetNames[planet] || planet;
-      if (dignity === 'domicile' || dignity === 'exalted') {
+      if (dignity === 'domicile' || dignity === 'exaltation') {
         const txt = isEN
           ? `${name} dignified (${dignity}) — operates with natural strength and clarity`
           : `${name} dignificado (${dignity === 'domicile' ? 'domicílio' : 'exaltação'}) — opera com força e clareza natural`;

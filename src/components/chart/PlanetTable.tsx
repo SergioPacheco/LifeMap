@@ -46,7 +46,7 @@ export default function PlanetTable(props: Props) {
               {([id, pos]) => {
                 const si = getSignIndex(pos.longitude);
                 const deg = getDegreeInSign(pos.longitude);
-                const house = props.chart!.planetHouses[id];
+                const house = props.chart!.planetHouses?.[id];
                 const isRetro = pos.isRetrograde;
 
                 return (
@@ -62,7 +62,7 @@ export default function PlanetTable(props: Props) {
                       {formatDegMin(deg)}
                     </td>
                     <td class="py-1.5 text-center text-muted">
-                      {house}
+                      {house ?? '—'}
                     </td>
                     <td class="py-1.5 text-center">
                       <Show when={isRetro}>

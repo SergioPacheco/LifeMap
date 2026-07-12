@@ -29,7 +29,16 @@
     "loveHoroscope": "Horóscopo do Amor",
     "celestialEvents": "Eventos Celestes",
     "currentPlanets": "Posições Atuais",
-    "dashboard": "Painel"
+    "dashboard": "Painel",
+    "lovers": "Compatibilidade",
+    "colorOracle": "Oráculo de Cores",
+    "bestTime": "Melhor Momento",
+    "learnPlanets": "Planetas",
+    "learnSigns": "Signos",
+    "learnHouses": "Casas",
+    "learnAspects": "Aspectos",
+    "learnCycles": "Ciclos Planetários",
+    "learnChiron": "Quíron"
   },
   "chart": {
     "title": "Mapa Natal",
@@ -375,5 +384,41 @@
     "northNode": "Nodo Norte (ponto kármico)",
     "chiron": "Quíron (curador ferido)",
     "source": "Posições calculadas para o meio-dia (12h UTC) de cada dia. Fonte: Swiss Ephemeris (precisão de arco-segundo)."
+  },
+  "astroWeather": {
+    "title": "Clima Astral",
+    "today": "Energia do dia",
+    "aspects": [
+      { "name": "Sol ☌ Lua", "text": "Lua Nova — momento de plantar intenções" },
+      { "name": "Vênus □ Urano", "text": "Reviravoltas inesperadas no amor e finanças" },
+      { "name": "Marte △ Júpiter", "text": "Energia expandida — ótimo para ação ousada" },
+      { "name": "Mercúrio ☍ Saturno", "text": "Comunicação exige cuidado e precisão" },
+      { "name": "Sol △ Netuno", "text": "Criatividade e intuição em alta" },
+      { "name": "Lua □ Plutão", "text": "Emoções intensas pedem autoconhecimento" },
+      { "name": "Vênus ⚹ Marte", "text": "Harmonia entre desejo e afeto" }
+    ]
+  },
+  "colorOracle": {
+    "title": "Oráculo de Cores",
+    "subtitle": "Sua cor pessoal para hoje",
+    "meaning": "Significado",
+    "tip": "Dica"
+  },
+  "bestTime": {
+    "title": "Melhor Momento",
+    "subtitle": "O que favorece este dia",
+    "favorable": "Favorável",
+    "challenging": "Desafiador",
+    "neutral": "Neutro",
+    "next7days": "Próximos 7 dias",
+    "planetRuler": "Planeta regente"
+  },
+  "lovers": {
+    "title": "Compatibilidade por Signos",
+    "subtitle": "Descubra a química entre dois signos",
+    "iAm": "Eu sou",
+    "theyAre": "Ele/Ela é",
+    "result": "Resultado",
+    "tryAnother": "Tentar outra combinação"
   }
 }

@@ -68,7 +68,7 @@ export function calculateMonth(
 
   // 3. Pre-calculate: profection
   const profection = cfg.profection.show
-    ? getProfectionForDate(natal, new Date(year, month, 15), cfg)
+    ? getProfectionForDate(natal, new Date(year, month, 15), cfg) ?? undefined
     : undefined;
 
   // 4. Eclipses

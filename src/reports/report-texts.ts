@@ -88,7 +88,7 @@ export interface FinancialTexts {
   challengeJSTense: (symbol: string) => string;
   challengeAxis: (h2Sign: string, h8Sign: string) => string;
   challengeSelfWorth: string;
-  adviceItems: Array<{ title: (rulerName: string, houseNum: number, ordHouse: string) => string; text: (rulerName: string, houseNum: number, ordHouse: string, venusSign: string, h2Sign: string) => string }>;
+  adviceItems: Array<{ title: (rulerName: string, houseNum: number, ordHouse: string, venusSign?: string, h2Sign?: string) => string; text: (rulerName: string, houseNum: number, ordHouse: string, venusSign: string, h2Sign: string) => string }>;
   aspectGeneric: Record<string, Record<string, string>>;
 }
 
@@ -926,6 +926,7 @@ const TEXTS: Record<string, ReportTexts> = {
       ],
     },
   },
+};
 
 // ============================================================
 // HELPER: build translated locale by overriding key strings

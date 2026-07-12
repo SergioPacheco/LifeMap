@@ -40,7 +40,7 @@ export const supportedLocales = Object.keys(languages) as Locale[];
  */
 export function getTranslations(locale: string): TranslationKeys {
   const lang = locale as Locale;
-  return languages[lang]?.translations || languages[defaultLocale].translations;
+  return (languages[lang]?.translations || languages[defaultLocale].translations) as TranslationKeys;
 }
 
 /**

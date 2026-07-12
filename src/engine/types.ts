@@ -110,6 +110,7 @@ export interface ProgressedChart {
   positions: Positions;
   houses: HouseData;
   aspects: Aspect[];
+  planetHouses: Record<string, number>;
 }
 
 export interface ChartMeta {

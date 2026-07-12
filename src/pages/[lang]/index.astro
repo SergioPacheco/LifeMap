@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getTranslations, supportedLocales, localePath, type Locale } from '../../i18n';
 import { getContent } from '../../content';
+import AstroWeather from '../../components/dashboard/AstroWeather';
+import ChartMoment from '../../components/chart/ChartMoment';
 
 export function getStaticPaths() {
   return supportedLocales.map(lang => ({ params: { lang } }));
@@ -86,6 +88,11 @@ const learn = await getContent(locale, 'learn');
     </div>
   </section>
 
+  <!-- Astro Weather Banner -->
+  <section class="py-10">
+    <AstroWeather client:load />
+  </section>
+
   <!-- Features grid -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-20">
     <div class="text-center mb-12">
@@ -129,6 +136,11 @@ const learn = await getContent(locale, 'learn');
         <p class="text-sm text-gold-muted mt-1">{t.home.premiumDesc}</p>
       </a>
     </div>
+  </section>
+
+  <!-- Chart of the Moment widget -->
+  <section class="py-10">
+    <ChartMoment client:load locale={locale} />
   </section>
 
   <!-- Trust section -->

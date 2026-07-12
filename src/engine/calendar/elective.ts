@@ -390,4 +390,3 @@ function angularDiff(lon1: number, lon2: number): number {
 // ============================================================
 
 export { ELECTIVE_RULES };
-export type { ElectiveRules };

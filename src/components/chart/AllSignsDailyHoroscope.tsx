@@ -45,7 +45,7 @@ function buildSyntheticChart(signIndex: number, date: Date): NatalChart {
   // Override sun with sign's representative position
   const positions: Positions = {
     ...transitPositions,
-    sun: { longitude: sunLon, latitude: 0, speed: 1 },
+    sun: { longitude: sunLon, latitude: 0, speed: 1, isRetrograde: false },
   };
 
   const houses: HouseData = {
@@ -78,7 +78,7 @@ function buildSyntheticChart(signIndex: number, date: Date): NatalChart {
     aspects: [],
     planetHouses,
     dignities: {},
-    meta: { lat: 0, lng: 0, timezone: 'UTC', houseSystem: 'whole-sign', name: '' },
+    meta: { lat: 0, lng: 0, timezone: 0, houseSystem: 'whole-sign', name: '' },
   };
 }
 

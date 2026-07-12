@@ -39,7 +39,7 @@ export default function SolarReturnApp() {
   const calculateSR = (natal: NatalChart, yr: number, lat: number, lng: number, tz: number) => {
     const sr = calculateSolarReturn(natal, yr, lat, lng, tz);
     setSrChart(sr);
-    setWheelSvg(renderWheel(sr));
+    setWheelSvg(renderWheel(sr as any));
   };
 
   const handleYearChange = (yr: number) => {

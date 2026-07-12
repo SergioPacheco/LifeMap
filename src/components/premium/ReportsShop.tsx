@@ -59,7 +59,7 @@ export default function ReportsShop(props: Props) {
   });
 
   const addToCart = async (product: ProductMeta) => {
-    const productTexts = products()[product.id];
+    const productTexts = (products() as any)[product.id];
     const productName = productTexts?.name || product.id;
 
     // Check if already in cart
@@ -163,7 +163,7 @@ export default function ReportsShop(props: Props) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <For each={filteredProducts()}>
           {(product) => {
-            const texts = () => products()[product.id] || { name: product.id, description: '', pages: '', features: [] };
+            const texts = () => (products() as any)[product.id] || { name: product.id, description: '', pages: '', features: [] };
             return (
               <div class={`glass rounded-2xl border-glow overflow-hidden hover:border-gold/40 hover:shadow-gold transition-all group ${
                 addedToCart() === product.id ? 'ring-2 ring-green-500/50 scale-[1.02]' : ''

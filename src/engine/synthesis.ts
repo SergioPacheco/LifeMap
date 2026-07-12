@@ -191,9 +191,9 @@ function synthesizeLove(chart: NatalChart): ThemeSynthesis {
     const interp = getAspectInterpretation('venus', asp.otherPlanet, asp.type);
     if (interp) {
       sections.push({
-        subtitle: `Vênus ${ASPECT_NATURE[asp.type]?.keyword || ''} ${PLANET_NAMES[asp.otherPlanet] || asp.otherPlanet}`,
+        subtitle: `Vênus ${ASPECT_NATURE[asp.type as keyof typeof ASPECT_NATURE]?.keyword || ''} ${PLANET_NAMES[asp.otherPlanet] || asp.otherPlanet}`,
         text: interp,
-        importance: ASPECT_NATURE[asp.type]?.nature === 'hard' ? 'high' : 'medium',
+        importance: ASPECT_NATURE[asp.type as keyof typeof ASPECT_NATURE]?.nature === 'hard' ? 'high' : 'medium',
       });
     }
   }

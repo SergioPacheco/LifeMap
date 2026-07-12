@@ -44,6 +44,12 @@ export function calculateProgressions(
   // Calculate houses for progressed ASC/MC
   const houses = calculateFullHouses(progressedDate, birth.lat, birth.lng, houseSystem);
 
+  // Assign planets to houses
+  const planetHouses: Record<string, number> = {};
+  for (const [planet, pos] of Object.entries(positions)) {
+    planetHouses[planet] = getHouseForLongitude(pos.longitude, houses.cusps);
+  }
+
   // Aspects between progressed positions
   const aspects = calculateAspects(positions, positions, true, options);
 
@@ -54,6 +60,7 @@ export function calculateProgressions(
     positions,
     houses,
     aspects,
+    planetHouses,
   };
 }
 
@@ -104,6 +111,12 @@ export function calculateSolarArc(
   const houses = calculateFullHouses(progressedDate, birth.lat, birth.lng, houseSystem);
   const aspects = calculateAspects(positions, positions, true, options);
 
+  // Assign planets to houses
+  const planetHouses: Record<string, number> = {};
+  for (const [planet, pos] of Object.entries(positions)) {
+    planetHouses[planet] = getHouseForLongitude(pos.longitude, houses.cusps);
+  }
+
   return {
     type: 'progressions',
     date: progressedDate,
@@ -111,6 +124,7 @@ export function calculateSolarArc(
     positions,
     houses,
     aspects,
+    planetHouses,
   };
 }
 

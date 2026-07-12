@@ -16,7 +16,7 @@ import { calculateAspects } from './aspects';
 import type {
   BirthData, NatalChart, TransitChart, SynastryChart,
   SolarReturnChart, CompositeChart, CalculationOptions,
-  HouseSystem, Positions, CelestialPosition
+  HouseSystem, Positions, CelestialPosition, DignityType
 } from './types';
 
 const DEFAULT_HOUSE_SYSTEM: HouseSystem = 'placidus';
@@ -183,8 +183,8 @@ const DIGNITY_MAP: Record<string, { domicile: number[]; exaltation: number; detr
   saturn: { domicile: [9, 10], exaltation: 6, detriment: [3, 4], fall: 0 },
 };
 
-function calculateDignities(positions: Positions): Record<string, string> {
-  const result: Record<string, string> = {};
+function calculateDignities(positions: Positions): Record<string, DignityType> {
+  const result: Record<string, DignityType> = {};
 
   for (const [planet, data] of Object.entries(DIGNITY_MAP)) {
     if (!positions[planet]) continue;
