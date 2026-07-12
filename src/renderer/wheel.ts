@@ -387,37 +387,31 @@ function forwardAngle(from: number, to: number): number {
 function drawAxes(houses: { cusps: number[]; ascendant: number; midheaven: number }, asc: number): string {
   let s = '';
 
-  const signNames = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
-
   // AC — left
-  const acSign = signNames[getSignIndex(asc)];
   const acDeg = Math.floor(getDegreeInSign(asc));
   s += `<text x="${CX - R_OUTER - 17}" y="${CY + 4}" text-anchor="start" font-size="17" font-weight="700" fill="${COL.axisLabel}" font-family="Arial, Helvetica, sans-serif">AC</text>`;
-  s += `<text x="${CX - R_OUTER - 17}" y="${CY + 20}" text-anchor="start" font-size="11" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${acDeg}°${acSign}</text>`;
+  s += `<text x="${CX - R_OUTER - 17}" y="${CY + 20}" text-anchor="start" font-size="11" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${acDeg}°</text>`;
 
   // DC — right
   const dcLon = norm(asc + 180);
-  const dcSign = signNames[getSignIndex(dcLon)];
   const dcDeg = Math.floor(getDegreeInSign(dcLon));
   s += `<text x="${CX + R_OUTER + 17}" y="${CY + 4}" text-anchor="end" font-size="17" font-weight="700" fill="${COL.axisLabel}" font-family="Arial, Helvetica, sans-serif">DC</text>`;
-  s += `<text x="${CX + R_OUTER + 17}" y="${CY + 20}" text-anchor="end" font-size="11" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${dcDeg}°${dcSign}</text>`;
+  s += `<text x="${CX + R_OUTER + 17}" y="${CY + 20}" text-anchor="end" font-size="11" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${dcDeg}°</text>`;
 
   // MC — top
   const mcAngle = houses.midheaven - asc;
   const mcP = pol(R_OUTER + 3, mcAngle);
-  const mcSign = signNames[getSignIndex(houses.midheaven)];
   const mcDeg = Math.floor(getDegreeInSign(houses.midheaven));
   s += `<text x="${mcP.x}" y="${mcP.y}" text-anchor="middle" font-size="18" font-weight="700" fill="${COL.axisLabel}" font-family="Arial, Helvetica, sans-serif">MC</text>`;
-  s += `<text x="${mcP.x}" y="${mcP.y + 17}" text-anchor="middle" font-size="12" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${mcDeg}°${mcSign}</text>`;
+  s += `<text x="${mcP.x}" y="${mcP.y + 17}" text-anchor="middle" font-size="12" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${mcDeg}°</text>`;
 
   // IC — bottom
   const icLon = norm(houses.midheaven + 180);
   const icAngle = icLon - asc;
   const icP = pol(R_OUTER + 3, icAngle);
-  const icSign = signNames[getSignIndex(icLon)];
   const icDeg = Math.floor(getDegreeInSign(icLon));
   s += `<text x="${icP.x}" y="${icP.y}" text-anchor="middle" font-size="18" font-weight="700" fill="${COL.axisLabel}" font-family="Arial, Helvetica, sans-serif">IC</text>`;
-  s += `<text x="${icP.x}" y="${icP.y + 17}" text-anchor="middle" font-size="12" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${icDeg}°${icSign}</text>`;
+  s += `<text x="${icP.x}" y="${icP.y + 17}" text-anchor="middle" font-size="12" font-weight="700" fill="${COL.textDim}" font-family="Arial, Helvetica, sans-serif">${icDeg}°</text>`;
 
   return s;
 }
