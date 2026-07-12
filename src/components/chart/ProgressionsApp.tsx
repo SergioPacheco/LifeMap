@@ -21,6 +21,7 @@ export default function ProgressionsApp() {
   const [targetDate, setTargetDate] = createSignal(new Date().toISOString().split('T')[0]);
   const [profileName, setProfileName] = createSignal('');
   const [p2nAspects, setP2nAspects] = createSignal<any[]>([]);
+  const [error, setError] = createSignal('');
 
   onMount(async () => {
     await initSweph();
@@ -34,25 +35,37 @@ export default function ProgressionsApp() {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const bd: BirthData = {
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    };
-    const chart = calculateNatalChart(bd);
-    setNatal(chart);
-    setBirthData(bd);
-    setProfileName(profile.name);
-    calculate(chart, bd, targetDate());
+    try {
+      setError('');
+      const bd: BirthData = {
+        name: profile.name, date: profile.date, time: profile.time,
+        lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
+        city: profile.city, country: profile.country,
+      };
+      const chart = calculateNatalChart(bd);
+      setNatal(chart);
+      setBirthData(bd);
+      setProfileName(profile.name);
+      calculate(chart, bd, targetDate());
+    } catch (e: any) {
+      console.error('Progressions error:', e);
+      setError(e?.message || 'Erro ao calcular progressões');
+    }
   };
 
   const calculate = (chart: NatalChart, bd: BirthData, dateStr: string) => {
-    const date = new Date(dateStr + 'T12:00:00Z');
-    const prog = calculateProgressions(chart, bd, date);
-    setProgressed(prog);
-    setWheelSvg(renderWheel(prog as any));
-    const aspects = calculateProgressedToNatalAspects(prog, chart);
-    setP2nAspects(aspects);
+    try {
+      setError('');
+      const date = new Date(dateStr + 'T12:00:00Z');
+      const prog = calculateProgressions(chart, bd, date);
+      setProgressed(prog);
+      setWheelSvg(renderWheel(prog as any));
+      const aspects = calculateProgressedToNatalAspects(prog, chart);
+      setP2nAspects(aspects);
+    } catch (e: any) {
+      console.error('Progressions calculation error:', e);
+      setError(e?.message || 'Erro ao calcular progressões');
+    }
   };
 
   const handleDateChange = (dateStr: string) => {
@@ -101,8 +114,14 @@ export default function ProgressionsApp() {
       <div class="lg:col-span-2 space-y-6">
         <Show when={progressed()} fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
+            <Show when={error()}>
+              <div class="p-3 mb-4 bg-red-900/20 border border-red-800/30 rounded-lg text-sm text-red-400">
+                {error()}
+              </div>
+            </Show>
             <div class="text-5xl mb-3">⟳</div>
-            <p>Selecione um perfil para calcular as progressões</p>
+            <p>Carregando progressões...</p>
+            <p class="text-xs mt-2">Selecione um perfil no menu superior (👤)</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
