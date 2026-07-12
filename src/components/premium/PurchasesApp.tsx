@@ -53,7 +53,7 @@ export default function PurchasesApp() {
             <div class="text-5xl mb-4">📄</div>
             <h2 class="text-lg font-medium text-cream mb-2">Nenhum relatório comprado ainda</h2>
             <p class="text-sm text-muted mb-6">Explore nossos relatórios personalizados e adquira uma análise profunda do seu mapa.</p>
-            <a href="/pt/reports" class="inline-block px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-lg hover:shadow-gold transition-all">
+            <a href={`${import.meta.env.BASE_URL?.replace(/\/$/, '') || ''}/pt/reports`} class="inline-block px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-lg hover:shadow-gold transition-all">
               Ver Relatórios Disponíveis
             </a>
           </div>

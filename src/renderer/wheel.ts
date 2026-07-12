@@ -138,7 +138,7 @@ function drawSigns(asc: number): string {
 
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="16" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
+    s += `<text x="${p.x}" y="${p.y + 7}" text-anchor="middle" font-size="22" fill="${color}" font-family="serif">${SIGN_SYMBOLS[i]}</text>`;
     s += `</g>`;
 
     // DEGREE RULER — 30 ticks per sign (inside edge of sign ring)
@@ -207,7 +207,7 @@ function drawHouses(cusps: number[], asc: number): string {
 
     s += `<g style="cursor:pointer">`;
     s += `<title>${houseTooltip}</title>`;
-    s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="10" fill="${COL.textDim}" font-family="sans-serif">${i + 1}</text>`;
+    s += `<text x="${numP.x}" y="${numP.y + 4}" text-anchor="middle" font-size="12" fill="${COL.textDim}" font-family="sans-serif">${i + 1}</text>`;
     s += `</g>`;
 
     // DEGREE RULER on inner circle edge (R_HOUSE_IN) — ticks pointing inward
@@ -326,13 +326,13 @@ function drawPlanets(positions: Positions, asc: number): string {
     // Planet symbol (no circle background — cleaner)
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<text x="${p.x}" y="${p.y + 5}" text-anchor="middle" font-size="${isExtra ? 12 : 16}" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="${isExtra ? 15 : 20}" fill="${color}" font-family="serif">${symbol}</text>`;
     s += `</g>`;
 
     // Degree label (small, gray)
     const degP = pol(orbit - 18, item.angle);
     const label = `${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? '℞' : ''}`;
-    s += `<text x="${degP.x}" y="${degP.y + 3}" text-anchor="middle" font-size="7" fill="${item.retro ? '#cc4444' : COL.textDim}" font-family="monospace">${label}</text>`;
+    s += `<text x="${degP.x}" y="${degP.y + 3}" text-anchor="middle" font-size="9" fill="${item.retro ? '#cc4444' : COL.textDim}" font-family="monospace">${label}</text>`;
 
     // Pointer line from planet to exact zodiac position
     const exactP = pol(R_SIGN_IN + 2, item.lon - asc);
@@ -355,23 +355,23 @@ function drawAxes(houses: { cusps: number[]; ascendant: number; midheaven: numbe
   // AC — left
   const acSign = signNames[getSignIndex(asc)];
   const acDeg = Math.floor(getDegreeInSign(asc));
-  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 4}" text-anchor="end" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">AC</text>`;
-  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 15}" text-anchor="end" font-size="8" fill="${COL.textDim}" font-family="monospace">${acDeg}°${acSign}</text>`;
+  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 4}" text-anchor="end" font-size="13" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">AC</text>`;
+  s += `<text x="${CX - R_HOUSE_OUT - 8}" y="${CY + 17}" text-anchor="end" font-size="9" fill="${COL.textDim}" font-family="monospace">${acDeg}°${acSign}</text>`;
 
   // DC — right
   const dcLon = norm(asc + 180);
   const dcSign = signNames[getSignIndex(dcLon)];
   const dcDeg = Math.floor(getDegreeInSign(dcLon));
-  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 4}" text-anchor="start" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">DC</text>`;
-  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 15}" text-anchor="start" font-size="8" fill="${COL.textDim}" font-family="monospace">${dcDeg}°${dcSign}</text>`;
+  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 4}" text-anchor="start" font-size="13" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">DC</text>`;
+  s += `<text x="${CX + R_HOUSE_OUT + 8}" y="${CY + 17}" text-anchor="start" font-size="9" fill="${COL.textDim}" font-family="monospace">${dcDeg}°${dcSign}</text>`;
 
   // MC — top
   const mcAngle = houses.midheaven - asc;
   const mcP = pol(R_HOUSE_OUT + 15, mcAngle);
   const mcSign = signNames[getSignIndex(houses.midheaven)];
   const mcDeg = Math.floor(getDegreeInSign(houses.midheaven));
-  s += `<text x="${mcP.x}" y="${mcP.y}" text-anchor="middle" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">MC</text>`;
-  s += `<text x="${mcP.x}" y="${mcP.y + 11}" text-anchor="middle" font-size="8" fill="${COL.textDim}" font-family="monospace">${mcDeg}°${mcSign}</text>`;
+  s += `<text x="${mcP.x}" y="${mcP.y}" text-anchor="middle" font-size="13" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">MC</text>`;
+  s += `<text x="${mcP.x}" y="${mcP.y + 13}" text-anchor="middle" font-size="9" fill="${COL.textDim}" font-family="monospace">${mcDeg}°${mcSign}</text>`;
 
   // IC — bottom
   const icLon = norm(houses.midheaven + 180);
@@ -379,8 +379,8 @@ function drawAxes(houses: { cusps: number[]; ascendant: number; midheaven: numbe
   const icP = pol(R_HOUSE_OUT + 15, icAngle);
   const icSign = signNames[getSignIndex(icLon)];
   const icDeg = Math.floor(getDegreeInSign(icLon));
-  s += `<text x="${icP.x}" y="${icP.y}" text-anchor="middle" font-size="11" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">IC</text>`;
-  s += `<text x="${icP.x}" y="${icP.y + 11}" text-anchor="middle" font-size="8" fill="${COL.textDim}" font-family="monospace">${icDeg}°${icSign}</text>`;
+  s += `<text x="${icP.x}" y="${icP.y}" text-anchor="middle" font-size="13" font-weight="bold" fill="${COL.axisLabel}" font-family="sans-serif">IC</text>`;
+  s += `<text x="${icP.x}" y="${icP.y + 13}" text-anchor="middle" font-size="9" fill="${COL.textDim}" font-family="monospace">${icDeg}°${icSign}</text>`;
 
   return s;
 }
@@ -464,13 +464,29 @@ function drawTransitPlanetsOuter(positions: Positions, asc: number): string {
     const symbol = PLANET_SYMBOLS[item.id];
     const p = pol(R_TRANSIT_ORBIT, item.angle);
 
-    // Hollow circle + symbol (transit style)
+    // Build tooltip
+    const PLANET_NAMES: Record<string, string> = {
+      sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
+      jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
+      northNode: 'Nodo Norte', chiron: 'Quíron',
+    };
+    const SIGN_NAMES_TR = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
+    const signIdx = getSignIndex(item.lon);
+    const degInSign = getDegreeInSign(item.lon);
+    const deg = Math.floor(degInSign);
+    const min = Math.floor((degInSign - deg) * 60);
+    const planetName = PLANET_NAMES[item.id] || item.id;
+    const tooltip = `Trânsito: ${planetName} em ${SIGN_NAMES_TR[signIdx]} ${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? ' ℞ (retrógrado)' : ''}`;
+
+    // Hollow circle + symbol (transit style) with tooltip
+    s += `<g style="cursor:pointer">`;
+    s += `<title>${tooltip}</title>`;
     s += `<circle cx="${p.x}" cy="${p.y}" r="9" fill="none" stroke="${color}" stroke-width="1.5"/>`;
     s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="${color}" font-family="serif">${symbol}</text>`;
-
     if (item.retro) {
       s += `<text x="${p.x + 10}" y="${p.y - 5}" font-size="6" fill="#cc4444" font-family="sans-serif">℞</text>`;
     }
+    s += `</g>`;
   }
 
   return s;

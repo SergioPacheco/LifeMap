@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LifeMap</title>
+  <script>
+    // GitHub Pages SPA redirect trick
+    // Redirects 404s to the base URL preserving the path
+    var base = '/LifeMap';
+    var path = window.location.pathname;
+    
+    // If path starts with base, try to load the correct page
+    if (path.startsWith(base)) {
+      // Already has base - redirect to home of detected locale
+      var segments = path.replace(base, '').split('/').filter(Boolean);
+      var locale = segments[0] || 'pt';
+      var validLocales = ['pt','en','es','fr','de','it','nl','ja','zh','ru','tr'];
+      if (!validLocales.includes(locale)) locale = 'pt';
+      window.location.replace(base + '/' + locale + '/');
+    } else {
+      // Missing base prefix
+      window.location.replace(base + '/pt/');
+    }
+  </script>
+</head>
+<body>
+  <p>Redirecionando...</p>
+</body>
+</html>

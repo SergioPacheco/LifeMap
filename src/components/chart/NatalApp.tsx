@@ -102,6 +102,22 @@ export default function NatalApp(props: Props) {
     handleCalculate(data);
   };
 
+  const handleNewProfile = () => {
+    setFormData({
+      name: '',
+      date: '',
+      time: '12:00',
+      lat: 0,
+      lng: 0,
+      timezone: -3,
+      city: '',
+      country: '',
+    });
+    setChart(null);
+    setShowTransits(false);
+    setTransitSvg('');
+  };
+
   const toggleTransits = (enabled: boolean) => {
     setShowTransits(enabled);
     if (enabled && chart()) {
@@ -118,7 +134,7 @@ export default function NatalApp(props: Props) {
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left: Form + Profiles */}
       <div class="lg:col-span-1 space-y-4">
-        <ProfileSelector onSelect={handleProfileSelect} locale={props.locale} />
+        <ProfileSelector onSelect={handleProfileSelect} onNew={handleNewProfile} locale={props.locale} />
         <BirthDataForm onCalculate={handleCalculate} locale={props.locale} initialData={formData()} />
 
         {/* Engine info badge */}

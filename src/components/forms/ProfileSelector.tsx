@@ -3,6 +3,7 @@ import { db, type Profile } from '../../store/db';
 
 interface Props {
   onSelect: (profile: Profile) => void;
+  onNew?: () => void;
   locale: string;
 }
 
@@ -67,6 +68,20 @@ export default function ProfileSelector(props: Props) {
 
       <Show when={open()}>
         <div class="absolute z-30 w-full mt-1 bg-base-100 border border-base-300 rounded-lg shadow-dark max-h-64 overflow-y-auto">
+          {/* New profile button */}
+          <Show when={props.onNew}>
+            <button
+              type="button"
+              onClick={() => { props.onNew?.(); setOpen(false); }}
+              class="w-full flex items-center gap-2 px-4 py-3 text-sm text-gold hover:bg-base-200 border-b border-base-300/50 transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Novo Perfil
+            </button>
+          </Show>
+
           <Show when={profiles().length === 0}>
             <div class="px-4 py-3 text-sm text-muted text-center">
               Nenhum perfil salvo ainda
@@ -120,9 +135,16 @@ export async function saveProfile(data: {
   country: string;
   timezone: number;
 }): Promise<number> {
+  // Only update if ALL key fields match (name + date + time + location)
+  // Otherwise, create a new profile — allows multiple profiles
   const existing = await db.profiles
     .where('name').equals(data.name || '')
-    .filter(p => p.date === data.date && p.time === data.time)
+    .filter(p =>
+      p.date === data.date &&
+      p.time === data.time &&
+      Math.abs(p.lat - data.lat) < 0.01 &&
+      Math.abs(p.lng - data.lng) < 0.01
+    )
     .first();
 
   if (existing) {

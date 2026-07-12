@@ -79,7 +79,7 @@ export default function NatalWheel(props: Props) {
 
         {/* Chart SVG */}
         <div
-          class={isFullscreen() ? 'w-full h-full max-w-[90vh] max-h-[90vh] mx-auto' : 'w-full max-w-[600px] mx-auto'}
+          class={isFullscreen() ? 'w-full h-full max-w-[90vh] max-h-[90vh] mx-auto' : 'w-full max-w-[700px] mx-auto'}
           innerHTML={svgHtml()}
         />
 

@@ -156,7 +156,7 @@ export default function CartPage(props: Props) {
             {t().cart.emptyDesc}
           </p>
           <a
-            href={`/${props.locale}/reports`}
+            href={localePath('/reports', props.locale)}
             class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-xl hover:shadow-gold transition-all"
           >
             {t().cart.viewReports}

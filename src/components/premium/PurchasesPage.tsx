@@ -1,7 +1,7 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { db, type Purchase } from '../../store/db';
 import { PRODUCTS, downloadPurchasedPdf } from '../../store/payment';
-import { getTranslations, type Locale } from '../../i18n';
+import { getTranslations, localePath, type Locale } from '../../i18n';
 
 interface Props {
   locale: Locale;
@@ -58,7 +58,7 @@ export default function PurchasesPage(props: Props) {
             {t().purchases.emptyDesc}
           </p>
           <a
-            href={`/${props.locale}/reports`}
+            href={localePath('/reports', props.locale)}
             class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-xl hover:shadow-gold transition-all"
           >
             {t().purchases.viewReports}

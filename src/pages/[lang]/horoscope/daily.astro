@@ -1,10 +1,19 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
-export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
+import AllSignsDailyHoroscope from '../../../components/chart/AllSignsDailyHoroscope.tsx';
+
+export function getStaticPaths() {
+  return supportedLocales.map(lang => ({ params: { lang } }));
+}
+
 const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
-import DailyHoroscopeApp from '../../../components/chart/DailyHoroscopeApp.tsx';
 ---
-<BaseLayout title={t.nav.dailyHoroscope} locale={locale}><div class="max-w-7xl mx-auto px-4 sm:px-6 py-8"><DailyHoroscopeApp client:load mode="general" /></div></BaseLayout>
+
+<BaseLayout title={t.nav.dailyHoroscope} locale={locale}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <AllSignsDailyHoroscope client:load locale={locale} />
+  </div>
+</BaseLayout>
