@@ -117,6 +117,7 @@ export interface ChartMeta {
   lat: number;
   lng: number;
   timezone: number;
+  timeZoneId?: string;
   houseSystem: HouseSystem;
   name?: string;
   city?: string;
@@ -133,6 +134,7 @@ export interface BirthData {
   lat: number;
   lng: number;
   timezone: number;       // UTC offset in hours
+  timeZoneId?: string;    // IANA timezone, e.g. America/Sao_Paulo
   city?: string;
   country?: string;
 }

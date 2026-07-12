@@ -12,16 +12,8 @@ import { calculateNatalChart, calculateTransits, initSweph, getActiveEngine } fr
 import { renderBiWheel } from '../../renderer/wheel';
 import type { BirthData, NatalChart, TransitChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
-
-/** Estimate UTC offset from longitude (corrected for major timezone regions) */
-function estimateTimezoneFromLng(longitude: number): number {
-  if (longitude >= -74 && longitude <= -34) return -3; // Brazil/Argentina
-  if (longitude >= -10 && longitude <= 25) return 1;   // Central Europe
-  if (longitude > 25 && longitude <= 45) return 2;     // Eastern Europe
-  if (longitude >= 68 && longitude <= 97) return 5;    // India
-  if (longitude >= 73 && longitude <= 135) return 8;   // China
-  return Math.round(longitude / 15);
-}
+import { birthDataFromProfile } from '../../utils/profile';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 interface Props {
   locale: string;
@@ -92,6 +84,7 @@ export default function NatalApp(props: Props) {
           city: data.city || '',
           country: data.country || '',
           timezone: data.timezone,
+          timeZoneId: data.timeZoneId,
         });
       }
     } catch (e) {
@@ -103,18 +96,7 @@ export default function NatalApp(props: Props) {
   };
 
   const handleProfileSelect = (profile: Profile) => {
-    // Recalculate timezone from longitude to fix legacy profiles saved with wrong offset
-    const correctedTz = estimateTimezoneFromLng(profile.lng);
-    const data: BirthData = {
-      name: profile.name,
-      date: profile.date,
-      time: profile.time,
-      lat: profile.lat,
-      lng: profile.lng,
-      timezone: correctedTz,
-      city: profile.city,
-      country: profile.country,
-    };
+    const data: BirthData = birthDataFromProfile(profile);
     setFormData(data);
     setShowTransits(false);
     setTransitSvg('');
@@ -129,6 +111,7 @@ export default function NatalApp(props: Props) {
       lat: 0,
       lng: 0,
       timezone: -3,
+      timeZoneId: Intl.DateTimeFormat().resolvedOptions().timeZone,
       city: '',
       country: '',
     });
@@ -193,7 +176,7 @@ export default function NatalApp(props: Props) {
         <Show when={showTransits() && transitSvg()}>
           <div class="glass rounded-2xl p-4">
             <div class="text-xs text-center text-muted mb-2">
-              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo) — {new Date().toLocaleDateString('pt-BR')}
+              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo) — {new Date().toLocaleDateString(localeToDateLocale(props.locale))}
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={transitSvg()} />
           </div>

@@ -7,6 +7,8 @@ import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart, ProgressedChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
+import { dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
@@ -18,7 +20,7 @@ export default function ProgressionsApp() {
   const [progressed, setProgressed] = createSignal<ProgressedChart | null>(null);
   const [birthData, setBirthData] = createSignal<BirthData | null>(null);
   const [wheelSvg, setWheelSvg] = createSignal('');
-  const [targetDate, setTargetDate] = createSignal(new Date().toISOString().split('T')[0]);
+  const [targetDate, setTargetDate] = createSignal(todayDateInput());
   const [profileName, setProfileName] = createSignal('');
   const [p2nAspects, setP2nAspects] = createSignal<any[]>([]);
   const [error, setError] = createSignal('');
@@ -37,16 +39,14 @@ export default function ProgressionsApp() {
   const handleProfileSelect = (profile: Profile) => {
     try {
       setError('');
-      const bd: BirthData = {
-        name: profile.name, date: profile.date, time: profile.time,
-        lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-        city: profile.city, country: profile.country,
-      };
+      const bd = birthDataFromProfile(profile);
       const chart = calculateNatalChart(bd);
+      const profileDate = todayDateInput(profile.timeZoneId);
       setNatal(chart);
       setBirthData(bd);
       setProfileName(profile.name);
-      calculate(chart, bd, targetDate());
+      setTargetDate(profileDate);
+      calculate(chart, bd, profileDate);
     } catch (e: any) {
       console.error('Progressions error:', e);
       setError(e?.message || 'Erro ao calcular progressões');
@@ -56,7 +56,7 @@ export default function ProgressionsApp() {
   const calculate = (chart: NatalChart, bd: BirthData, dateStr: string) => {
     try {
       setError('');
-      const date = new Date(dateStr + 'T12:00:00Z');
+      const date = dateInputToNoonDate(dateStr, chart.meta.timeZoneId, chart.meta.timezone);
       const prog = calculateProgressions(chart, bd, date);
       setProgressed(prog);
       setWheelSvg(renderWheel(prog as any));

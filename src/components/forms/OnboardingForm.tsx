@@ -1,6 +1,13 @@
 import { createSignal, Show, For } from 'solid-js';
 import { db } from '../../store/db';
 import { getTranslations, type Locale } from '../../i18n';
+import {
+  estimateOffsetFromLongitude,
+  formatUtcOffset,
+  getEffectiveTimezoneOffset,
+  inferTimeZoneId,
+  todayDateInput,
+} from '../../utils/dateTime';
 
 interface Props {
   locale: Locale;
@@ -13,6 +20,8 @@ interface GeoResult {
   country: string;
   state?: string;
   timezone: number;
+  timeZoneId?: string;
+  countryCode?: string;
 }
 
 export default function OnboardingForm(props: Props) {
@@ -48,14 +57,27 @@ export default function OnboardingForm(props: Props) {
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`
       );
       const data = await response.json();
-      const results: GeoResult[] = data.map((item: any) => ({
-        name: [item.address?.city || item.address?.town || item.address?.village || item.name, item.address?.state, item.address?.country].filter(Boolean).join(', '),
-        lat: parseFloat(item.lat),
-        lng: parseFloat(item.lon),
-        country: item.address?.country || '',
-        state: item.address?.state || '',
-        timezone: Math.round(parseFloat(item.lon) / 15),
-      }));
+      const results: GeoResult[] = data.map((item: any) => {
+        const lat = parseFloat(item.lat);
+        const lng = parseFloat(item.lon);
+        const country = item.address?.country || '';
+        const state = item.address?.state || '';
+        const countryCode = item.address?.country_code || '';
+        const timeZoneId = inferTimeZoneId({ lat, lng, country, state, countryCode });
+        const fallbackOffset = estimateOffsetFromLongitude(lng);
+        const offset = getEffectiveTimezoneOffset(date() || todayDateInput(timeZoneId), time() || '12:00', fallbackOffset, timeZoneId);
+
+        return {
+          name: [item.address?.city || item.address?.town || item.address?.village || item.name, state, country].filter(Boolean).join(', '),
+          lat,
+          lng,
+          country,
+          state,
+          countryCode,
+          timezone: offset,
+          timeZoneId,
+        };
+      });
       setSearchResults(results);
     } catch (e) {
       setSearchResults([]);
@@ -80,17 +102,20 @@ export default function OnboardingForm(props: Props) {
 
     setSaving(true);
     const cityData = selectedCity()!;
+    const birthTime = unknownTime() ? '12:00' : time();
+    const effectiveTimezone = getEffectiveTimezoneOffset(date(), birthTime, cityData.timezone, cityData.timeZoneId);
 
     try {
       await db.profiles.add({
         name: name() || cityData.name.split(',')[0],
         date: date(),
-        time: unknownTime() ? '12:00' : time(),
+        time: birthTime,
         lat: cityData.lat,
         lng: cityData.lng,
         city: cityData.name,
         country: cityData.country,
-        timezone: cityData.timezone,
+        timezone: effectiveTimezone,
+        timeZoneId: cityData.timeZoneId,
         gender: gender() as 'M' | 'F' | 'O' | undefined || undefined,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -191,7 +216,10 @@ export default function OnboardingForm(props: Props) {
                       class="w-full text-left px-4 py-3 text-sm hover:bg-base-200 text-cream-dark transition-colors"
                     >
                       <div class="font-medium">{result.name}</div>
-                      <div class="text-xs text-muted">{result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | UTC{result.timezone >= 0 ? '+' : ''}{result.timezone}</div>
+                      <div class="text-xs text-muted">
+                        {result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | {formatUtcOffset(result.timezone)}
+                        {result.timeZoneId ? ` · ${result.timeZoneId}` : ''}
+                      </div>
                     </button>
                   )}
                 </For>
@@ -204,7 +232,8 @@ export default function OnboardingForm(props: Props) {
 
             <Show when={selectedCity()}>
               <div class="mt-1.5 text-xs text-gold">
-                ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | UTC{selectedCity()!.timezone >= 0 ? '+' : ''}{selectedCity()!.timezone}
+                ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | {formatUtcOffset(selectedCity()!.timezone)}
+                {selectedCity()!.timeZoneId ? ` · ${selectedCity()!.timeZoneId}` : ''}
               </div>
             </Show>
           </div>

@@ -9,6 +9,7 @@ import { generateSpiritualPdf } from '../../reports/spiritual-report';
 import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
 import { localePath, getTranslations } from '../../i18n';
 import type { Locale } from '../../i18n';
+import { birthDataFromProfile } from '../../utils/profile';
 
 interface Props {
   locale: Locale;
@@ -82,16 +83,7 @@ export default function CartPage(props: Props) {
           profile = profiles[0];
         }
 
-        const chart = calculateNatalChart({
-          name: profile.name,
-          date: profile.date,
-          time: profile.time,
-          lat: profile.lat,
-          lng: profile.lng,
-          timezone: profile.timezone,
-          city: profile.city,
-          country: profile.country,
-        });
+        const chart = calculateNatalChart(birthDataFromProfile(profile));
 
         const opts = {
           locale: props.locale,

@@ -8,6 +8,7 @@ import { db } from '../../store/db';
 import { localePath } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { ReportOptions } from '../../reports/report-generators';
+import { birthDataFromProfile } from '../../utils/profile';
 
 interface Props {
   productId: string;
@@ -51,16 +52,7 @@ export default function BuyReportButton(props: Props) {
       const { calculateNatalChart, initSweph } = await import('../../engine/index');
       await initSweph();
 
-      const chart = calculateNatalChart({
-        name: profile.name,
-        date: profile.date,
-        time: profile.time,
-        lat: profile.lat,
-        lng: profile.lng,
-        timezone: profile.timezone,
-        city: profile.city,
-        country: profile.country,
-      });
+      const chart = calculateNatalChart(birthDataFromProfile(profile));
 
       const pdfBlob = props.generatePdf(chart, {
         locale: props.locale,

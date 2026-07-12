@@ -5,6 +5,8 @@ import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
+import { addDaysToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
@@ -29,33 +31,28 @@ export default function WeeklyHoroscopeApp() {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
     setNatal(chart);
     setProfileName(profile.name);
-    generateWeek(chart, new Date());
+    generateWeek(chart, todayDateInput(profile.timeZoneId));
   };
 
-  const generateWeek = (chart: NatalChart, startDate: Date) => {
+  const generateWeek = (chart: NatalChart, startDateStr: string) => {
     // Find Monday of this week
-    const day = startDate.getDay();
-    const monday = new Date(startDate);
-    monday.setDate(monday.getDate() - (day === 0 ? 6 : day - 1));
-    setWeekStart(monday.toISOString().split('T')[0]);
+    const [year, month, dayOfMonth] = startDateStr.split('-').map(Number);
+    const startDate = new Date(Date.UTC(year, month - 1, dayOfMonth, 12, 0, 0));
+    const day = startDate.getUTCDay();
+    const monday = addDaysToDateInput(startDateStr, -(day === 0 ? 6 : day - 1));
+    setWeekStart(monday);
 
     const results: DayData[] = [];
     for (let i = 0; i < 7; i++) {
-      const d = new Date(monday);
-      d.setDate(d.getDate() + i);
-      const dateStr = d.toISOString().split('T')[0];
-      const horoscope = generateDailyHoroscope(chart, d);
+      const dateStr = addDaysToDateInput(monday, i);
+      const d = dateInputToNoonDate(dateStr, chart.meta.timeZoneId, chart.meta.timezone);
       results.push({
         date: dateStr,
-        dayName: DAYS_PT[d.getDay()],
-        horoscope,
+        dayName: DAYS_PT[new Date(`${dateStr}T12:00:00Z`).getUTCDay()],
+        horoscope: generateDailyHoroscope(chart, d),
       });
     }
     setDays(results);
@@ -63,9 +60,7 @@ export default function WeeklyHoroscopeApp() {
 
   const navigateWeek = (direction: number) => {
     if (!natal()) return;
-    const current = new Date(weekStart());
-    current.setDate(current.getDate() + (direction * 7));
-    generateWeek(natal()!, current);
+    generateWeek(natal()!, addDaysToDateInput(weekStart(), direction * 7));
   };
 
   return (
@@ -80,7 +75,7 @@ export default function WeeklyHoroscopeApp() {
         <Show when={natal()}>
           <div class="flex items-center gap-2">
             <button onClick={() => navigateWeek(-1)} class="px-3 py-1 text-sm bg-base-200 rounded">← Semana</button>
-            <button onClick={() => generateWeek(natal()!, new Date())} class="px-3 py-1 text-sm bg-gold/10 text-gold rounded">Esta semana</button>
+            <button onClick={() => generateWeek(natal()!, todayDateInput(natal()?.meta.timeZoneId))} class="px-3 py-1 text-sm bg-gold/10 text-gold rounded">Esta semana</button>
             <button onClick={() => navigateWeek(1)} class="px-3 py-1 text-sm bg-base-200 rounded">Semana →</button>
           </div>
         </Show>
@@ -96,7 +91,7 @@ export default function WeeklyHoroscopeApp() {
         <div class="space-y-3">
           <For each={days()}>
             {(day) => {
-              const isToday = day.date === new Date().toISOString().split('T')[0];
+              const isToday = day.date === todayDateInput(natal()?.meta.timeZoneId);
               const highCount = day.horoscope.transits.filter(t => t.intensity === 'high').length;
 
               return (

@@ -1,6 +1,7 @@
 import { createSignal, onMount, For } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/index';
 import * as Astronomy from 'astronomy-engine';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 const PLANET_DATA: { id: string; name: string; symbol: string }[] = [
   { id: 'sun', name: 'Sol', symbol: '☉' },
@@ -26,7 +27,11 @@ interface PlanetRow {
   sign: number; deg: number; retro: boolean; longitude: number;
 }
 
-export default function CurrentPlanetsApp() {
+interface Props {
+  locale?: string;
+}
+
+export default function CurrentPlanetsApp(props: Props) {
   const [planets, setPlanets] = createSignal<PlanetRow[]>([]);
   const [now, setNow] = createSignal(new Date());
   const [moonPhase, setMoonPhase] = createSignal({ phase: '', illumination: 0, emoji: '🌑' });
@@ -76,7 +81,7 @@ export default function CurrentPlanetsApp() {
       {/* Header with time */}
       <div class="glass rounded-2xl p-4 text-center">
         <p class="text-sm text-muted">Posições em tempo real</p>
-        <p class="text-lg font-mono text-cream">{now().toLocaleString('pt-BR')}</p>
+        <p class="text-lg font-mono text-cream">{now().toLocaleString(localeToDateLocale(props.locale))}</p>
       </div>
 
       {/* Moon Phase */}

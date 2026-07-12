@@ -384,7 +384,7 @@ function renderCoverPage(doc: jsPDF, options: PdfOptions, isEN: boolean) {
   doc.setTextColor(...COLORS.textLight);
 
   const ascSi = getSignIndex(0); // Will be replaced with real data
-  doc.text(`${isEN ? 'Calculated with Swiss Ephemeris' : 'Calculado com Swiss Ephemeris'}`, w / 2, 220, { align: 'center' });
+  doc.text(`${isEN ? 'Calculated locally in your browser' : 'Calculado localmente no seu navegador'}`, w / 2, 220, { align: 'center' });
 
   // Try-out badge
   if (true) { // options.isTryout

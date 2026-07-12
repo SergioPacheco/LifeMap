@@ -7,6 +7,7 @@
 import * as Astronomy from 'astronomy-engine';
 import { calculatePositionsSweph, isSwephReady } from './sweph-provider';
 import type { CelestialPosition, Positions, CalculationOptions } from './types';
+import { zonedDateTimeToUtc } from '../utils/dateTime';
 
 // ============================================================
 // MAIN FUNCTION — DUAL ENGINE
@@ -225,13 +226,8 @@ export function dateToJD(date: Date): number {
  * We parse the components manually to avoid the browser interpreting the string
  * in the device's local timezone (which would be wrong if user is abroad).
  */
-export function buildUTCDate(dateStr: string, timeStr: string, tzOffset: number): Date {
-  const [year, month, day] = dateStr.split('-').map(Number);
-  const [hour, minute] = timeStr.split(':').map(Number);
-  // Build a UTC timestamp treating the input as local time at birth location,
-  // then subtract the birth-place offset to get true UTC.
-  const utcMs = Date.UTC(year, month - 1, day, hour, minute, 0) - tzOffset * 3600000;
-  return new Date(utcMs);
+export function buildUTCDate(dateStr: string, timeStr: string, tzOffset: number, timeZoneId?: string): Date {
+  return zonedDateTimeToUtc(dateStr, timeStr, timeZoneId, tzOffset);
 }
 
 /**

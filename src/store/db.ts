@@ -15,6 +15,7 @@ export interface Profile {
   state?: string;
   country: string;
   timezone: number;   // UTC offset in hours
+  timeZoneId?: string; // IANA timezone, e.g. America/Sao_Paulo
   gender?: 'M' | 'F' | 'O';
   notes?: string;
   createdAt: Date;

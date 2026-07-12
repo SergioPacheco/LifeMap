@@ -1,6 +1,7 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, getDegreeInSign, formatDegMin, angularDifference } from '../../engine/index';
 import type { Positions } from '../../engine/types';
+import { dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 
 const PLANET_DATA = [
   { id: 'sun', name: 'Sol', symbol: '☉' },
@@ -25,7 +26,7 @@ interface CelestialEvent {
 
 export default function CelestialEventsApp() {
   const [events, setEvents] = createSignal<CelestialEvent[]>([]);
-  const [date, setDate] = createSignal(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = createSignal(todayDateInput());
 
   onMount(async () => {
     await initSweph();
@@ -33,7 +34,7 @@ export default function CelestialEventsApp() {
   });
 
   const calculateEvents = (dateStr: string) => {
-    const today = new Date(dateStr + 'T12:00:00Z');
+    const today = dateInputToNoonDate(dateStr);
     const yesterday = new Date(today.getTime() - 86400000);
     const tomorrow = new Date(today.getTime() + 86400000);
 
@@ -132,7 +133,7 @@ export default function CelestialEventsApp() {
           onInput={(e) => handleDateChange(e.currentTarget.value)}
           class="px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm"
         />
-        <button onClick={() => handleDateChange(new Date().toISOString().split('T')[0])} class="px-3 py-1.5 text-sm bg-brand-600 text-white rounded-lg">Hoje</button>
+        <button onClick={() => handleDateChange(todayDateInput())} class="px-3 py-1.5 text-sm bg-brand-600 text-white rounded-lg">Hoje</button>
       </div>
 
       <Show when={events().length > 0} fallback={

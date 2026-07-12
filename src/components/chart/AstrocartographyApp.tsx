@@ -200,7 +200,7 @@ export default function AstrocartographyApp() {
   const calculateAllCities = (p: Profile) => {
     setLoading(true);
     try {
-      const utcDate = buildUTCDate(p.date, p.time, p.timezone);
+      const utcDate = buildUTCDate(p.date, p.time, p.timezone, p.timeZoneId);
       const positions = calculatePositions(utcDate);
 
       const results: CityResult[] = CITIES.map(city => {
@@ -239,7 +239,7 @@ export default function AstrocartographyApp() {
       }
 
       const p = profile()!;
-      const utcDate = buildUTCDate(p.date, p.time, p.timezone);
+      const utcDate = buildUTCDate(p.date, p.time, p.timezone, p.timeZoneId);
       const positions = calculatePositions(utcDate);
 
       const results: CityResult[] = data.slice(0, 3).map((place: any) => {

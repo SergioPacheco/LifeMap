@@ -6,6 +6,7 @@ import { renderWheel } from '../../renderer/wheel';
 import { getAspectColor, getAspectSymbol } from '../../engine/aspects';
 import type { NatalChart, SynastryChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -18,7 +19,11 @@ const PLANET_SYMBOLS: Record<string, string> = {
   northNode: '☊', chiron: '⚷',
 };
 
-export default function SynastryApp() {
+interface Props {
+  locale?: string;
+}
+
+export default function SynastryApp(props: Props) {
   const [chartA, setChartA] = createSignal<NatalChart | null>(null);
   const [chartB, setChartB] = createSignal<NatalChart | null>(null);
   const [synastry, setSynastry] = createSignal<SynastryChart | null>(null);
@@ -30,11 +35,7 @@ export default function SynastryApp() {
   onMount(async () => { await initSweph(); });
 
   const profileToChart = (profile: Profile): NatalChart => {
-    return calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    return calculateNatalChart(birthDataFromProfile(profile));
   };
 
   const handleSelectA = (profile: Profile) => {
@@ -64,14 +65,14 @@ export default function SynastryApp() {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-brand-600 mb-2">Pessoa A</h3>
-          <ProfileSelector onSelect={handleSelectA} locale="pt" />
+          <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={nameA()}>
             <p class="text-xs text-green-600 mt-2">✓ {nameA()}</p>
           </Show>
         </div>
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-purple-600 mb-2">Pessoa B</h3>
-          <ProfileSelector onSelect={handleSelectB} locale="pt" />
+          <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={nameB()}>
             <p class="text-xs text-green-600 mt-2">✓ {nameB()}</p>
           </Show>

@@ -6,6 +6,8 @@ import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
+import { addDaysToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
@@ -21,7 +23,7 @@ interface Props {
 export default function DailyHoroscopeApp(props: Props) {
   const [natal, setNatal] = createSignal<NatalChart | null>(null);
   const [horoscope, setHoroscope] = createSignal<DailyHoroscope | null>(null);
-  const [date, setDate] = createSignal(new Date().toISOString().split('T')[0]);
+  const [date, setDate] = createSignal(todayDateInput());
   const [profileName, setProfileName] = createSignal('');
 
   onMount(async () => {
@@ -31,18 +33,16 @@ export default function DailyHoroscopeApp(props: Props) {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
+    const profileDate = todayDateInput(profile.timeZoneId);
     setNatal(chart);
     setProfileName(profile.name);
-    generate(chart, date());
+    setDate(profileDate);
+    generate(chart, profileDate);
   };
 
   const generate = (chart: NatalChart, dateStr: string) => {
-    const d = new Date(dateStr + 'T12:00:00Z');
+    const d = dateInputToNoonDate(dateStr, chart.meta.timeZoneId, chart.meta.timezone);
     const result = generateDailyHoroscope(chart, d);
     setHoroscope(result);
   };
@@ -77,10 +77,9 @@ export default function DailyHoroscopeApp(props: Props) {
               class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60"
             />
             <div class="flex gap-2 mt-2">
-              <button onClick={() => handleDateChange(new Date().toISOString().split('T')[0])} class="px-3 py-1 text-xs bg-gold/10 text-gold border border-gold/20 rounded hover:bg-gold/20 transition-colors">Hoje</button>
+              <button onClick={() => handleDateChange(todayDateInput(natal()?.meta.timeZoneId))} class="px-3 py-1 text-xs bg-gold/10 text-gold border border-gold/20 rounded hover:bg-gold/20 transition-colors">Hoje</button>
               <button onClick={() => {
-                const d = new Date(date()); d.setDate(d.getDate() + 1);
-                handleDateChange(d.toISOString().split('T')[0]);
+                handleDateChange(addDaysToDateInput(date(), 1));
               }} class="px-3 py-1 text-xs bg-base-200 text-cream-dark border border-base-400 rounded hover:bg-base-100 transition-colors">Amanhã</button>
             </div>
           </div>

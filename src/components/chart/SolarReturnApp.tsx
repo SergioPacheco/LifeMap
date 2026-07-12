@@ -8,6 +8,7 @@ import { getSignIndex } from '../../engine/calculations';
 import type { NatalChart, SolarReturnChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 export default function SolarReturnApp() {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
@@ -28,11 +29,7 @@ export default function SolarReturnApp() {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
     setNatalChart(chart);
     setProfileName(profile.name);
     calculateSR(chart, year(), profile.lat, profile.lng, profile.timezone);

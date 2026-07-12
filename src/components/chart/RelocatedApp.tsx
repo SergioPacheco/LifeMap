@@ -5,6 +5,8 @@ import { calculateFullHouses, getHouseForLongitude } from '../../engine/houses';
 import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
+import { estimateOffsetFromLongitude, formatUtcOffset, getEffectiveTimezoneOffset, inferTimeZoneId, todayDateInput } from '../../utils/dateTime';
 
 // ============================================================
 // TYPES
@@ -16,6 +18,7 @@ interface GeoResult {
   lng: number;
   country: string;
   timezone: number;
+  timeZoneId?: string;
 }
 
 // ============================================================
@@ -70,16 +73,7 @@ export default function RelocatedApp() {
 
   // ─── Load natal profile ──────────────────────────────────
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name,
-      date: profile.date,
-      time: profile.time,
-      lat: profile.lat,
-      lng: profile.lng,
-      timezone: profile.timezone,
-      city: profile.city,
-      country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
     setNatalChart(chart);
     setProfileName(profile.name);
     setNatalCity(profile.city || '');
@@ -114,17 +108,28 @@ export default function RelocatedApp() {
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`
       );
       const data = await response.json();
-      const results: GeoResult[] = data.map((item: any) => ({
-        name: [
-          item.address?.city || item.address?.town || item.address?.village || item.name,
-          item.address?.state,
-          item.address?.country,
-        ].filter(Boolean).join(', '),
-        lat: parseFloat(item.lat),
-        lng: parseFloat(item.lon),
-        country: item.address?.country || '',
-        timezone: estimateTimezone(parseFloat(item.lon)),
-      }));
+      const results: GeoResult[] = data.map((item: any) => {
+        const lat = parseFloat(item.lat);
+        const lng = parseFloat(item.lon);
+        const country = item.address?.country || '';
+        const state = item.address?.state || '';
+        const countryCode = item.address?.country_code || '';
+        const timeZoneId = inferTimeZoneId({ lat, lng, country, state, countryCode });
+        const fallbackOffset = estimateOffsetFromLongitude(lng);
+
+        return {
+          name: [
+            item.address?.city || item.address?.town || item.address?.village || item.name,
+            state,
+            country,
+          ].filter(Boolean).join(', '),
+          lat,
+          lng,
+          country,
+          timezone: getEffectiveTimezoneOffset(todayDateInput(timeZoneId), '12:00', fallbackOffset, timeZoneId),
+          timeZoneId,
+        };
+      });
       setSearchResults(results);
     } catch (e) {
       console.error('Geocoding error:', e);
@@ -257,7 +262,7 @@ export default function RelocatedApp() {
                       >
                         <div class="font-medium">{result.name}</div>
                         <div class="text-xs text-muted">
-                          {result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | UTC{result.timezone >= 0 ? '+' : ''}{result.timezone}
+                          {result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | {formatUtcOffset(result.timezone)}
                         </div>
                       </button>
                     )}
@@ -268,7 +273,7 @@ export default function RelocatedApp() {
               {/* Selected city confirmation */}
               <Show when={selectedCity()}>
                 <div class="mt-1.5 text-xs text-gold">
-                  ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | UTC{selectedCity()!.timezone >= 0 ? '+' : ''}{selectedCity()!.timezone}
+                  ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | {formatUtcOffset(selectedCity()!.timezone)}
                 </div>
               </Show>
             </div>
@@ -453,12 +458,4 @@ function HouseComparison(props: ComparisonProps) {
       </Show>
     </div>
   );
-}
-
-// ============================================================
-// HELPER
-// ============================================================
-
-function estimateTimezone(longitude: number): number {
-  return Math.round(longitude / 15);
 }

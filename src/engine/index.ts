@@ -13,6 +13,7 @@ import { calculatePositions, buildUTCDate, getSignIndex, getDegreeInSign, norm, 
 import { calculateFullHouses, getHouseForLongitude } from './houses';
 import { initSweph, isSwephReady } from './sweph-provider';
 import { calculateAspects } from './aspects';
+import { getEffectiveTimezoneOffset } from '../utils/dateTime';
 import type {
   BirthData, NatalChart, TransitChart, SynastryChart,
   SolarReturnChart, CompositeChart, CalculationOptions,
@@ -27,7 +28,8 @@ const DEFAULT_HOUSE_SYSTEM: HouseSystem = 'placidus';
 
 export function calculateNatalChart(birth: BirthData, options?: CalculationOptions): NatalChart {
   const houseSystem = options?.houseSystem || DEFAULT_HOUSE_SYSTEM;
-  const utcDate = buildUTCDate(birth.date, birth.time, birth.timezone);
+  const timezone = getEffectiveTimezoneOffset(birth.date, birth.time, birth.timezone, birth.timeZoneId);
+  const utcDate = buildUTCDate(birth.date, birth.time, birth.timezone, birth.timeZoneId);
   const positions = calculatePositions(utcDate, options);
   const houses = calculateFullHouses(utcDate, birth.lat, birth.lng, houseSystem);
   const aspects = calculateAspects(positions, positions, true, options);
@@ -49,7 +51,7 @@ export function calculateNatalChart(birth: BirthData, options?: CalculationOptio
     aspects,
     planetHouses,
     dignities,
-    meta: { lat: birth.lat, lng: birth.lng, timezone: birth.timezone, houseSystem, name: birth.name, city: birth.city },
+    meta: { lat: birth.lat, lng: birth.lng, timezone, timeZoneId: birth.timeZoneId, houseSystem, name: birth.name, city: birth.city },
   };
 }
 

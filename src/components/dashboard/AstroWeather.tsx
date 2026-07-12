@@ -7,6 +7,7 @@
  */
 
 import { createSignal, onMount } from 'solid-js';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -279,8 +280,8 @@ function findDominantAspect(date: Date): Aspect {
 
 // ─── Helpers de UI ────────────────────────────────────────────────────────────
 
-function formatDate(date: Date): string {
-  return date.toLocaleDateString('pt-BR', {
+function formatDate(date: Date, locale?: string): string {
+  return date.toLocaleDateString(localeToDateLocale(locale), {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -301,13 +302,17 @@ const ENERGY_BADGE_CLASS: Record<string, string> = {
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 
-export default function AstroWeather() {
+interface Props {
+  locale?: string;
+}
+
+export default function AstroWeather(props: Props) {
   const [aspect, setAspect] = createSignal<Aspect | null>(null);
   const [today, setToday] = createSignal('');
 
   onMount(() => {
     const now = new Date();
-    setToday(formatDate(now));
+    setToday(formatDate(now, props.locale));
     setAspect(findDominantAspect(now));
   });
 

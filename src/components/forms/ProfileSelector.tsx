@@ -134,6 +134,7 @@ export async function saveProfile(data: {
   city: string;
   country: string;
   timezone: number;
+  timeZoneId?: string;
 }): Promise<number> {
   // Only update if ALL key fields match (name + date + time + location)
   // Otherwise, create a new profile — allows multiple profiles

@@ -1,5 +1,12 @@
 import { createSignal, createEffect, Show, For } from 'solid-js';
 import type { BirthData, CalculationOptions, HouseSystem, AspectType } from '../../engine/types';
+import {
+  estimateOffsetFromLongitude,
+  formatUtcOffset,
+  getEffectiveTimezoneOffset,
+  inferTimeZoneId,
+  todayDateInput,
+} from '../../utils/dateTime';
 
 export interface ChartOptions extends CalculationOptions {
   nodeType: 'true' | 'mean';
@@ -46,6 +53,8 @@ interface GeoResult {
   country: string;
   state?: string;
   timezone: number;
+  timeZoneId?: string;
+  countryCode?: string;
 }
 
 export default function BirthDataForm(props: Props) {
@@ -74,6 +83,7 @@ export default function BirthDataForm(props: Props) {
         lng: data.lng,
         country: data.country || '',
         timezone: data.timezone,
+        timeZoneId: data.timeZoneId,
       } : null);
       setSearchResults([]);
       setError('');
@@ -134,14 +144,27 @@ export default function BirthDataForm(props: Props) {
       );
       const data = await response.json();
 
-      const results: GeoResult[] = data.map((item: any) => ({
-        name: [item.address?.city || item.address?.town || item.address?.village || item.name, item.address?.state, item.address?.country].filter(Boolean).join(', '),
-        lat: parseFloat(item.lat),
-        lng: parseFloat(item.lon),
-        country: item.address?.country || '',
-        state: item.address?.state || '',
-        timezone: estimateTimezone(parseFloat(item.lon)),
-      }));
+      const results: GeoResult[] = data.map((item: any) => {
+        const lat = parseFloat(item.lat);
+        const lng = parseFloat(item.lon);
+        const country = item.address?.country || '';
+        const state = item.address?.state || '';
+        const countryCode = item.address?.country_code || '';
+        const timeZoneId = inferTimeZoneId({ lat, lng, country, state, countryCode });
+        const fallbackOffset = estimateOffsetFromLongitude(lng);
+        const offset = getEffectiveTimezoneOffset(date() || todayDateInput(timeZoneId), time() || '12:00', fallbackOffset, timeZoneId);
+
+        return {
+          name: [item.address?.city || item.address?.town || item.address?.village || item.name, state, country].filter(Boolean).join(', '),
+          lat,
+          lng,
+          country,
+          state,
+          countryCode,
+          timezone: offset,
+          timeZoneId,
+        };
+      });
 
       setSearchResults(results);
     } catch (e) {
@@ -167,13 +190,20 @@ export default function BirthDataForm(props: Props) {
     if (!selectedCity()) { setError('Selecione uma cidade da lista'); return; }
 
     const cityData = selectedCity()!;
+    const effectiveTimezone = getEffectiveTimezoneOffset(
+      date(),
+      unknownTime() ? '12:00' : time(),
+      cityData.timezone,
+      cityData.timeZoneId
+    );
     props.onCalculate({
       name: name(),
       date: date(),
       time: unknownTime() ? '12:00' : time(),
       lat: cityData.lat,
       lng: cityData.lng,
-      timezone: cityData.timezone,
+      timezone: effectiveTimezone,
+      timeZoneId: cityData.timeZoneId,
       city: cityData.name,
       country: cityData.country,
     }, getChartOptions());
@@ -255,7 +285,10 @@ export default function BirthDataForm(props: Props) {
                     class="w-full text-left px-4 py-2.5 text-sm hover:bg-base-200 text-cream-dark transition-colors"
                   >
                     <div class="font-medium">{result.name}</div>
-                    <div class="text-xs text-muted">{result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | UTC{result.timezone >= 0 ? '+' : ''}{result.timezone}</div>
+                    <div class="text-xs text-muted">
+                      {result.lat.toFixed(2)}°, {result.lng.toFixed(2)}° | {formatUtcOffset(result.timezone)}
+                      {result.timeZoneId ? ` · ${result.timeZoneId}` : ''}
+                    </div>
                   </button>
                 )}
               </For>
@@ -268,7 +301,8 @@ export default function BirthDataForm(props: Props) {
 
           <Show when={selectedCity()}>
             <div class="mt-1.5 text-xs text-gold">
-              ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | UTC{selectedCity()!.timezone >= 0 ? '+' : ''}{selectedCity()!.timezone}
+              ✓ {selectedCity()!.lat.toFixed(4)}°, {selectedCity()!.lng.toFixed(4)}° | {formatUtcOffset(selectedCity()!.timezone)}
+              {selectedCity()!.timeZoneId ? ` · ${selectedCity()!.timeZoneId}` : ''}
             </div>
           </Show>
         </div>
@@ -428,41 +462,4 @@ export default function BirthDataForm(props: Props) {
       </button>
     </form>
   );
-}
-
-// ============================================================
-// HELPERS
-// ============================================================
-
-function estimateTimezone(longitude: number): number {
-  // Standard UTC offsets that don't follow longitude/15 exactly.
-  // Most countries use a standard offset; this approximation covers major cases.
-  // Brazil (lon -35 to -73) is UTC-3 (mainland standard time).
-  // Argentina (lon -53 to -73) is UTC-3.
-  // India (+68 to +97) is UTC+5.5 but we round to +5 or +6.
-  // China (+73 to +135) is UTC+8.
-  
-  // For a better solution, use a timezone API. This is a reasonable fallback.
-  const raw = longitude / 15;
-  
-  // Brazil correction: longitude -34 to -74 → UTC-3 (not -4 or -5)
-  if (longitude >= -74 && longitude <= -34) return -3;
-  
-  // Argentina shares UTC-3
-  // already covered above
-  
-  // Central Europe +1
-  if (longitude >= -10 && longitude <= 25) return 1;
-  
-  // Eastern Europe +2
-  if (longitude > 25 && longitude <= 45) return 2;
-  
-  // India +5.5 → round to 5
-  if (longitude >= 68 && longitude <= 97) return 5;
-  
-  // China +8
-  if (longitude >= 73 && longitude <= 135) return 8;
-  
-  // Default: longitude-based approximation
-  return Math.round(raw);
 }

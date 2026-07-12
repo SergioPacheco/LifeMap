@@ -90,7 +90,7 @@ const learn = await getContent(locale, 'learn');
 
   <!-- Astro Weather Banner -->
   <section class="py-10">
-    <AstroWeather client:load />
+    <AstroWeather client:load locale={locale} />
   </section>
 
   <!-- Features grid -->
@@ -152,7 +152,7 @@ const learn = await getContent(locale, 'learn');
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div>
           <div class="text-2xl mb-2">🔬</div>
-          <h4 class="text-sm font-semibold text-cream-light">Swiss Ephemeris</h4>
+          <h4 class="text-sm font-semibold text-cream-light">Astronomy Engine</h4>
           <p class="text-xs text-muted mt-1">{t.home.trustSwissDesc}</p>
         </div>
         <div>

@@ -19,6 +19,8 @@ import type { CalendarConfig, MonthData, DayData, Theme } from '../../engine/cal
 import type { NatalChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
+import { todayDateInput } from '../../utils/dateTime';
 
 interface Props {
   locale: string;
@@ -69,16 +71,7 @@ export default function AstroCalendarApp(props: Props) {
 
   const loadProfile = (profile: Profile) => {
     setProfileName(profile.name);
-    const data: BirthData = {
-      name: profile.name,
-      date: profile.date,
-      time: profile.time,
-      lat: profile.lat,
-      lng: profile.lng,
-      timezone: profile.timezone,
-      city: profile.city,
-      country: profile.country,
-    };
+    const data: BirthData = birthDataFromProfile(profile);
 
     const chart = calculateNatalChart(data);
     setNatal(chart);
@@ -95,19 +88,19 @@ export default function AstroCalendarApp(props: Props) {
   };
 
   const goToday = () => {
-    const now = new Date();
-    const newYear = now.getFullYear();
-    const newMonth = now.getMonth();
+    const n = natal();
+    const today = todayDateInput(n?.meta.timeZoneId);
+    const [newYear, monthNumber, todayDay] = today.split('-').map(Number);
+    const newMonth = monthNumber - 1;
     setYear(newYear);
     setMonth(newMonth);
 
-    const n = natal();
     if (!n) return;
 
     const cacheKey = `${newYear}-${newMonth}-${profileName()}`;
 
     const selectToday = (data: MonthData) => {
-      const todayData = data.days.find(d => d.date.getDate() === now.getDate());
+      const todayData = data.days.find(d => d.date.getDate() === todayDay);
       setSelectedDay(todayData || null);
       // Scroll to selected day if grid is rendered
       setTimeout(() => {

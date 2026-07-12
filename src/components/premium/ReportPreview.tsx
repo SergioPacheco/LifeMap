@@ -10,6 +10,7 @@ import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
 import { localePath, getTranslations } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 interface Props {
   locale: string;
@@ -44,11 +45,7 @@ export default function ReportPreview(props: Props) {
   onMount(async () => { await initSweph(); });
 
   const handleProfileSelect = (p: Profile) => {
-    const chart = calculateNatalChart({
-      name: p.name, date: p.date, time: p.time,
-      lat: p.lat, lng: p.lng, timezone: p.timezone,
-      city: p.city, country: p.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(p));
     setNatal(chart);
     setProfile(p);
     setGenerated(false);

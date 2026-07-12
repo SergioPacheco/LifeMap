@@ -5,6 +5,7 @@ import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 // Planet click interpretations (will come from content files in production)
 const PLANET_CLICK_PT: Record<string, { title: string; meaning: string; question: string }> = {
@@ -45,11 +46,7 @@ export default function AstroClickApp() {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
     setNatal(chart);
     setWheelSvg(renderWheel(chart));
     setSelectedPlanet(null);

@@ -5,6 +5,8 @@ import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-
 import { renderWheel } from '../../renderer/wheel';
 import { localePath, getTranslations, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
+import { birthDataFromProfile } from '../../utils/profile';
+import { dateInputToNoonDate, isValidTimeZone, localeToDateLocale, todayDateInput } from '../../utils/dateTime';
 
 interface Props {
   locale: Locale;
@@ -46,24 +48,21 @@ export default function DashboardApp(props: Props) {
     setProfile(p);
     setShowProfileList(false);
 
-    const natalChart = calculateNatalChart({
-      name: p.name,
-      date: p.date,
-      time: p.time,
-      lat: p.lat,
-      lng: p.lng,
-      timezone: p.timezone,
-      city: p.city,
-      country: p.country,
-    });
+    const natalChart = calculateNatalChart(birthDataFromProfile(p));
 
     setChart(natalChart);
     setWheelSvg(renderWheel(natalChart));
 
     // Generate daily horoscope
-    const today = new Date();
-    const daily = generateDailyHoroscope(natalChart, today);
+    const day = todayDateInput(p.timeZoneId);
+    const dailyDate = dateInputToNoonDate(day, p.timeZoneId, natalChart.meta.timezone);
+    const daily = generateDailyHoroscope(natalChart, dailyDate);
     setHoroscope(daily);
+  };
+
+  const profileTimeZone = () => {
+    const timeZoneId = profile()?.timeZoneId;
+    return isValidTimeZone(timeZoneId) ? timeZoneId : undefined;
   };
 
   const quickLinks = () => [
@@ -91,7 +90,13 @@ export default function DashboardApp(props: Props) {
               {txt().greeting}, <span class="text-gold">{profile()!.name}</span>
             </h1>
             <p class="text-sm text-muted mt-1">
-              {new Date().toLocaleDateString(props.locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+              {new Date().toLocaleDateString(localeToDateLocale(props.locale), {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: profileTimeZone(),
+              })}
             </p>
           </div>
 

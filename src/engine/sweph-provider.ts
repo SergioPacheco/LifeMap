@@ -22,9 +22,16 @@ export async function initSweph(): Promise<boolean> {
   if (swephReady) return true;
   if (swephLoadPromise) return swephLoadPromise;
 
+  // The npm `sweph` package is a native Node addon, not a browser/WASM module.
+  // GitHub Pages runs this app entirely in the browser, so use the JS fallback there.
+  if (typeof window !== 'undefined') {
+    swephReady = false;
+    return false;
+  }
+
   swephLoadPromise = (async () => {
     try {
-      sweph = await import('sweph');
+      sweph = await import(/* @vite-ignore */ 'sweph');
       swephReady = true;
       console.log('[SwissEph] Initialized v' + sweph.version());
       return true;

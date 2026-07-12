@@ -8,6 +8,7 @@ import { renderWheel } from '../../renderer/wheel';
 import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart, CompositeChart, Aspect } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 // ─── Planet names & symbols ────────────────────────────────
 const PLANET_NAMES: Record<string, string> = {
@@ -138,7 +139,11 @@ function getVenusText(sign: number): string {
   return texts[sign] || 'de forma única e significativa';
 }
 
-export default function CompositeApp() {
+interface Props {
+  locale?: string;
+}
+
+export default function CompositeApp(props: Props) {
   const [chartA, setChartA] = createSignal<NatalChart | null>(null);
   const [chartB, setChartB] = createSignal<NatalChart | null>(null);
   const [composite, setComposite] = createSignal<CompositeChart | null>(null);
@@ -150,11 +155,7 @@ export default function CompositeApp() {
   onMount(async () => { await initSweph(); });
 
   const profileToChart = (profile: Profile): NatalChart => {
-    return calculateNatalChart({
-      name: profile.name, date: profile.date, time: profile.time,
-      lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-      city: profile.city, country: profile.country,
-    });
+    return calculateNatalChart(birthDataFromProfile(profile));
   };
 
   const handleSelectA = (profile: Profile) => {
@@ -184,12 +185,12 @@ export default function CompositeApp() {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-gold mb-2">Pessoa A</h3>
-          <ProfileSelector onSelect={handleSelectA} locale="pt" />
+          <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={nameA()}><p class="text-xs text-green-400 mt-2">✓ {nameA()}</p></Show>
         </div>
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-purple-400 mb-2">Pessoa B</h3>
-          <ProfileSelector onSelect={handleSelectB} locale="pt" />
+          <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={nameB()}><p class="text-xs text-green-400 mt-2">✓ {nameB()}</p></Show>
         </div>
       </div>

@@ -11,6 +11,8 @@ import { getHouseForLongitude } from '../../engine/houses';
 import { getTransitTextWithFallback } from '../../engine/calendar/calendar-texts';
 import { THEME_INFO, mapEventThemes } from '../../engine/calendar/theme-mapper';
 import type { Theme } from '../../engine/calendar/types';
+import { birthDataFromProfile } from '../../utils/profile';
+import { addDaysToDateInput, addMonthsToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -27,7 +29,7 @@ const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑
 export default function TransitsApp() {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [transits, setTransits] = createSignal<TransitChart | null>(null);
-  const [transitDate, setTransitDate] = createSignal(new Date().toISOString().split('T')[0]);
+  const [transitDate, setTransitDate] = createSignal(todayDateInput());
   const [wheelSvg, setWheelSvg] = createSignal('');
 
   onMount(async () => {
@@ -48,22 +50,15 @@ export default function TransitsApp() {
   });
 
   const handleProfileSelect = (profile: Profile) => {
-    const chart = calculateNatalChart({
-      name: profile.name,
-      date: profile.date,
-      time: profile.time,
-      lat: profile.lat,
-      lng: profile.lng,
-      timezone: profile.timezone,
-      city: profile.city,
-      country: profile.country,
-    });
+    const chart = calculateNatalChart(birthDataFromProfile(profile));
+    const dateForProfile = todayDateInput(profile.timeZoneId);
     setNatalChart(chart);
-    calculateTransitsForDate(chart, transitDate());
+    setTransitDate(dateForProfile);
+    calculateTransitsForDate(chart, dateForProfile);
   };
 
   const calculateTransitsForDate = (natal: NatalChart, dateStr: string) => {
-    const tDate = new Date(dateStr + 'T12:00:00Z');
+    const tDate = dateInputToNoonDate(dateStr, natal.meta.timeZoneId, natal.meta.timezone);
     const transit = calculateTransits(tDate, natal);
     setTransits(transit);
 
@@ -102,16 +97,14 @@ export default function TransitsApp() {
             />
             <div class="flex gap-2 mt-2">
               <button
-                onClick={() => handleDateChange(new Date().toISOString().split('T')[0])}
+                onClick={() => handleDateChange(todayDateInput(natalChart()?.meta.timeZoneId))}
                 class="px-3 py-1 text-xs bg-gold/10 text-gold rounded"
               >
                 Hoje
               </button>
               <button
                 onClick={() => {
-                  const d = new Date(transitDate());
-                  d.setDate(d.getDate() + 1);
-                  handleDateChange(d.toISOString().split('T')[0]);
+                  handleDateChange(addDaysToDateInput(transitDate(), 1));
                 }}
                 class="px-3 py-1 text-xs bg-base-200 text-cream-dark rounded"
               >
@@ -119,9 +112,7 @@ export default function TransitsApp() {
               </button>
               <button
                 onClick={() => {
-                  const d = new Date(transitDate());
-                  d.setMonth(d.getMonth() + 1);
-                  handleDateChange(d.toISOString().split('T')[0]);
+                  handleDateChange(addMonthsToDateInput(transitDate(), 1));
                 }}
                 class="px-3 py-1 text-xs bg-base-200 text-cream-dark rounded"
               >

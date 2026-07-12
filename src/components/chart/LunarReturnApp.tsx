@@ -5,6 +5,7 @@ import { calculateAspects } from '../../engine/aspects';
 import { renderWheel } from '../../renderer/wheel';
 import PlanetTable from './PlanetTable';
 import { db, type Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 // ============================================================
 // TYPES
@@ -319,11 +320,7 @@ export default function LunarReturnApp() {
   const handleProfileSelect = (profile: Profile) => {
     try {
       setError('');
-      const chart = calculateNatalChart({
-        name: profile.name, date: profile.date, time: profile.time,
-        lat: profile.lat, lng: profile.lng, timezone: profile.timezone,
-        city: profile.city, country: profile.country,
-      });
+      const chart = calculateNatalChart(birthDataFromProfile(profile));
       setNatalChart(chart);
       setProfileName(profile.name);
       setProfileMeta({ lat: profile.lat, lng: profile.lng, timezone: profile.timezone });

@@ -1,7 +1,7 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import PlanetTable from '../chart/PlanetTable';
-import { calculateNatalChart, initSweph, getSignIndex } from '../../engine/index';
+import { buildUTCDate, calculateNatalChart, initSweph, getSignIndex } from '../../engine/index';
 import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
@@ -128,7 +128,11 @@ function interpretDavison(chart: NatalChart, nameA: string, nameB: string) {
 }
 
 // ─── Component ─────────────────────────────────────────────
-export default function DavisonApp() {
+interface Props {
+  locale?: string;
+}
+
+export default function DavisonApp(props: Props) {
   const [profileA, setProfileA] = createSignal<Profile | null>(null);
   const [profileB, setProfileB] = createSignal<Profile | null>(null);
   const [davisonChart, setDavisonChart] = createSignal<NatalChart | null>(null);
@@ -148,26 +152,20 @@ export default function DavisonApp() {
   };
 
   const compute = (a: Profile, b: Profile) => {
-    // Parse birth timestamps from profile data
-    const dateTimeA = new Date(`${a.date}T${a.time || '12:00'}:00`);
-    const dateTimeB = new Date(`${b.date}T${b.time || '12:00'}:00`);
-
-    // Adjust for timezone offsets to get UTC equivalent milliseconds
-    const utcMsA = dateTimeA.getTime() - (a.timezone * 60 * 60 * 1000);
-    const utcMsB = dateTimeB.getTime() - (b.timezone * 60 * 60 * 1000);
+    const utcMsA = buildUTCDate(a.date, a.time || '12:00', a.timezone, a.timeZoneId).getTime();
+    const utcMsB = buildUTCDate(b.date, b.time || '12:00', b.timezone, b.timeZoneId).getTime();
 
     // Midpoint in time
     const midUtcMs = (utcMsA + utcMsB) / 2;
-    const midDate = new Date(midUtcMs);
-
     // Midpoint in space
     const midLat = (a.lat + b.lat) / 2;
     const midLng = (a.lng + b.lng) / 2;
     const midTimezone = Math.round(midLng / 15);
+    const midLocalDate = new Date(midUtcMs + midTimezone * 60 * 60 * 1000);
 
     const chart = calculateNatalChart({
-      date: formatDate(midDate),
-      time: formatTime(midDate),
+      date: formatDate(midLocalDate),
+      time: formatTime(midLocalDate),
       lat: midLat,
       lng: midLng,
       timezone: midTimezone,
@@ -186,14 +184,14 @@ export default function DavisonApp() {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-gold mb-2">Pessoa A</h3>
-          <ProfileSelector onSelect={handleSelectA} locale="pt" />
+          <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={profileA()}>
             <p class="text-xs text-green-400 mt-2">✓ {profileA()!.name}</p>
           </Show>
         </div>
         <div class="glass rounded-2xl p-4">
           <h3 class="text-sm font-semibold text-purple-400 mb-2">Pessoa B</h3>
-          <ProfileSelector onSelect={handleSelectB} locale="pt" />
+          <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={profileB()}>
             <p class="text-xs text-green-400 mt-2">✓ {profileB()!.name}</p>
           </Show>

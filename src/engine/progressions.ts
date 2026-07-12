@@ -30,7 +30,7 @@ export function calculateProgressions(
   const houseSystem = options?.houseSystem || 'placidus';
 
   // Calculate age in years (fractional)
-  const birthUTC = buildUTCDate(birth.date, birth.time, birth.timezone);
+  const birthUTC = buildUTCDate(birth.date, birth.time, birth.timezone, birth.timeZoneId);
   const ageMs = targetDate.getTime() - birthUTC.getTime();
   const ageYears = ageMs / (365.25 * 24 * 3600 * 1000);
 
@@ -85,7 +85,7 @@ export function calculateSolarArc(
   const houseSystem = options?.houseSystem || 'placidus';
 
   // Calculate progressed Sun position
-  const birthUTC = buildUTCDate(birth.date, birth.time, birth.timezone);
+  const birthUTC = buildUTCDate(birth.date, birth.time, birth.timezone, birth.timeZoneId);
   const ageMs = targetDate.getTime() - birthUTC.getTime();
   const ageYears = ageMs / (365.25 * 24 * 3600 * 1000);
   const progressedDate = new Date(birthUTC.getTime() + ageYears * 86400000);

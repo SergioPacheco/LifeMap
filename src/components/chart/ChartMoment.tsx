@@ -7,6 +7,8 @@
  */
 
 import { createSignal, onMount, For } from 'solid-js';
+import { localePath } from '../../i18n';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 
@@ -130,13 +132,12 @@ export default function ChartMoment(props: ChartMomentProps) {
   const [timestamp, setTimestamp] = createSignal('');
 
   const locale = () => props.locale || 'pt';
-  const basePath = () => `/${locale()}/tools/current-planets`;
 
   onMount(() => {
     const now = new Date();
     setPositions(calculateApproxPositions(now));
     setTimestamp(
-      now.toLocaleString(locale() === 'pt' ? 'pt-BR' : locale(), {
+      now.toLocaleString(localeToDateLocale(locale()), {
         day: '2-digit', month: '2-digit', year: 'numeric',
         hour: '2-digit', minute: '2-digit',
       })
@@ -243,7 +244,7 @@ export default function ChartMoment(props: ChartMomentProps) {
             ~posições aproximadas
           </span>
           <a
-            href={basePath()}
+            href={localePath('/tools/current-planets', locale() as any)}
             class="text-xs font-medium transition-opacity hover:opacity-80"
             style={{ color: '#f0b840' }}
           >

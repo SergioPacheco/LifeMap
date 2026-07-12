@@ -7,6 +7,7 @@ import { calculateNatalChart, initSweph, getSignIndex } from '../../engine/index
 import { renderWheel } from '../../renderer/wheel';
 import type { BirthData, NatalChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
+import { birthDataFromProfile } from '../../utils/profile';
 
 interface Props {
   locale: string;
@@ -244,6 +245,7 @@ export default function ChildChartApp(props: Props) {
           city: data.city || '',
           country: data.country || '',
           timezone: data.timezone,
+          timeZoneId: data.timeZoneId,
         });
       }
     } catch (e) {
@@ -255,16 +257,7 @@ export default function ChildChartApp(props: Props) {
   };
 
   const handleProfileSelect = (profile: Profile) => {
-    const data: BirthData = {
-      name: profile.name,
-      date: profile.date,
-      time: profile.time,
-      lat: profile.lat,
-      lng: profile.lng,
-      timezone: profile.timezone,
-      city: profile.city,
-      country: profile.country,
-    };
+    const data: BirthData = birthDataFromProfile(profile);
     setFormData(data);
     handleCalculate(data);
   };
