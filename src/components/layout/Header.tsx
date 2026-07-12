@@ -67,52 +67,52 @@ export default function Header(props: Props) {
     {
       id: 'charts',
       label: t().nav.charts,
-      icon: '◎',
+      icon: '🗺️',
       items: [
-        { icon: '☉', label: t().nav.natal, href: localePath('/chart/natal', props.locale), desc: t().home.natalDesc },
-        { icon: '↻', label: t().nav.transits, href: localePath('/chart/transits', props.locale), desc: t().home.transitsDesc },
-        { icon: '♡', label: t().nav.synastry, href: localePath('/chart/synastry', props.locale), desc: t().home.synastryDesc },
-        { icon: '☼', label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale) },
-        { icon: '⊕', label: t().nav.progressions, href: localePath('/chart/progressions', props.locale) },
-        { icon: '∞', label: t().nav.composite, href: localePath('/chart/composite', props.locale) },
+        { icon: '☀️', label: t().nav.natal, href: localePath('/chart/natal', props.locale), desc: 'Mapa completo com interpretação' },
+        { icon: '🔄', label: t().nav.transits, href: localePath('/chart/transits', props.locale), desc: 'Planetas de hoje sobre seu mapa' },
+        { icon: '💕', label: t().nav.synastry, href: localePath('/chart/synastry', props.locale), desc: 'Compatibilidade entre dois mapas' },
+        { icon: '🌅', label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale), desc: 'Temas do próximo ano solar' },
+        { icon: '⏩', label: t().nav.progressions, href: localePath('/chart/progressions', props.locale), desc: 'Evolução interna ao longo da vida' },
+        { icon: '♾️', label: t().nav.composite, href: localePath('/chart/composite', props.locale), desc: 'O mapa da relação como entidade' },
       ],
     },
     {
       id: 'horoscope',
       label: t().nav.horoscope,
-      icon: '✦',
+      icon: '✨',
       items: [
-        { icon: '✦', label: t().nav.dailyHoroscope, href: localePath('/horoscope/daily', props.locale) },
-        { icon: '♡', label: t().nav.loveHoroscope, href: localePath('/horoscope/love', props.locale) },
-        { icon: '🔮', label: t().nav.weeklyHoroscope, href: localePath('/horoscope/weekly', props.locale) },
-        { icon: '🌟', label: t().nav.celestialEvents, href: localePath('/horoscope/events', props.locale) },
-        { icon: '💕', label: t().nav.lovers || 'Compatibilidade', href: localePath('/horoscope/lovers', props.locale) },
+        { icon: '⭐', label: t().nav.dailyHoroscope, href: localePath('/horoscope/daily', props.locale), desc: 'Previsão personalizada para hoje' },
+        { icon: '❤️', label: t().nav.loveHoroscope, href: localePath('/horoscope/love', props.locale), desc: 'Energia afetiva do dia' },
+        { icon: '🔮', label: t().nav.weeklyHoroscope, href: localePath('/horoscope/weekly', props.locale), desc: 'Visão geral da semana' },
+        { icon: '🌟', label: t().nav.celestialEvents, href: localePath('/horoscope/events', props.locale), desc: 'Ingressos, eclipses, lunações' },
+        { icon: '💑', label: t().nav.lovers || 'Compatibilidade', href: localePath('/horoscope/lovers', props.locale), desc: 'Afinidade entre dois signos' },
       ],
     },
     {
       id: 'tools',
       label: t().nav.tools,
-      icon: '⚙',
+      icon: '🛠️',
       items: [
-        { icon: '📅', label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale) },
-        { icon: '🌗', label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale) },
-        { icon: '℞', label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale) },
-        { icon: '🌐', label: t().nav.currentPlanets, href: localePath('/tools/current-planets', props.locale) },
-        { icon: '🎨', label: t().nav.colorOracle || 'Color Oracle', href: localePath('/tools/color-oracle', props.locale) },
-        { icon: '⏰', label: t().nav.bestTime || 'Melhor Momento', href: localePath('/tools/best-time', props.locale) },
+        { icon: '📅', label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale), desc: 'Posições planetárias dia a dia' },
+        { icon: '🌗', label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale), desc: 'Calendário lunar do mês' },
+        { icon: '🔙', label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale), desc: 'Períodos retrógrados do ano' },
+        { icon: '🌐', label: t().nav.currentPlanets, href: localePath('/tools/current-planets', props.locale), desc: 'Onde cada planeta está agora' },
+        { icon: '🎨', label: t().nav.colorOracle || 'Color Oracle', href: localePath('/tools/color-oracle', props.locale), desc: 'Sua cor pessoal para hoje' },
+        { icon: '⏱️', label: t().nav.bestTime || 'Melhor Momento', href: localePath('/tools/best-time', props.locale), desc: 'O que favorece este dia' },
       ],
     },
     {
       id: 'learn',
       label: t().nav.learn,
-      icon: '📖',
+      icon: '📚',
       items: [
-        { icon: '🪐', label: t().nav.learnPlanets || 'Planetas', href: localePath('/learn/planets', props.locale) },
-        { icon: '♈', label: t().nav.learnSigns || 'Signos', href: localePath('/learn/signs', props.locale) },
-        { icon: '🏠', label: t().nav.learnHouses || 'Casas', href: localePath('/learn/houses', props.locale) },
-        { icon: '🔗', label: t().nav.learnAspects || 'Aspectos', href: localePath('/learn/aspects', props.locale) },
-        { icon: '🔄', label: t().nav.learnCycles || 'Ciclos Planetários', href: localePath('/learn/planetary-cycles', props.locale) },
-        { icon: '⚷', label: t().nav.learnChiron || 'Quíron', href: localePath('/learn/chiron', props.locale) },
+        { icon: '🪐', label: t().nav.learnPlanets || 'Planetas', href: localePath('/learn/planets', props.locale), desc: 'Funções psicológicas dos planetas' },
+        { icon: '♈', label: t().nav.learnSigns || 'Signos', href: localePath('/learn/signs', props.locale), desc: 'Os 12 arquétipos do zodíaco' },
+        { icon: '🏠', label: t().nav.learnHouses || 'Casas', href: localePath('/learn/houses', props.locale), desc: 'As 12 áreas da vida' },
+        { icon: '🔗', label: t().nav.learnAspects || 'Aspectos', href: localePath('/learn/aspects', props.locale), desc: 'Conexões entre planetas' },
+        { icon: '🔄', label: t().nav.learnCycles || 'Ciclos Planetários', href: localePath('/learn/planetary-cycles', props.locale), desc: 'Fases de crescimento por idade' },
+        { icon: '💫', label: t().nav.learnChiron || 'Quíron', href: localePath('/learn/chiron', props.locale), desc: 'A ferida sagrada e a cura' },
       ],
     },
   ];
@@ -149,7 +149,7 @@ export default function Header(props: Props) {
                         : 'text-cream-dark hover:text-cream hover:bg-base-100'
                     }`}
                   >
-                    <span class="text-xs opacity-70">{group.icon}</span>
+                    <span class="text-sm">{group.icon}</span>
                     <span>{group.label}</span>
                     <svg class={`w-3 h-3 opacity-50 transition-transform ${activeDropdown() === group.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -166,7 +166,7 @@ export default function Header(props: Props) {
                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-cream-dark hover:bg-base-200 hover:text-gold transition-colors group"
                               onClick={() => setActiveDropdown(null)}
                             >
-                              <span class="text-base opacity-70 group-hover:opacity-100 transition-opacity">{item.icon}</span>
+                              <span class="text-base group-hover:scale-110 transition-transform">{item.icon}</span>
                               <div>
                                 <div class="font-medium">{item.label}</div>
                                 <Show when={item.desc}>
@@ -328,7 +328,7 @@ export default function Header(props: Props) {
                     class="w-full flex items-center justify-between py-3 text-sm font-medium text-cream"
                   >
                     <span class="flex items-center gap-2">
-                      <span class="opacity-70">{group.icon}</span>
+                      <span>{group.icon}</span>
                       <span>{group.label}</span>
                     </span>
                     <svg class={`w-4 h-4 text-muted transition-transform ${mobileSection() === group.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -344,7 +344,7 @@ export default function Header(props: Props) {
                             class="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-cream-dark hover:bg-base-200 hover:text-gold transition-colors"
                             onClick={() => setMenuOpen(false)}
                           >
-                            <span class="opacity-70">{item.icon}</span>
+                            <span>{item.icon}</span>
                             <span>{item.label}</span>
                           </a>
                         )}
