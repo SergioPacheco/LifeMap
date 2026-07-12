@@ -75,7 +75,7 @@ export default function ProgressionsApp() {
 
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-1 space-y-4">
+      <div class="lg:col-span-1 flex flex-col gap-4">
         <Show when={natal()}>
           <div class="glass rounded-2xl p-4">
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Progredir até</h3>
@@ -92,11 +92,11 @@ export default function ProgressionsApp() {
 
           {/* Progressed to Natal aspects */}
           <Show when={p2nAspects().length > 0}>
-            <div class="glass rounded-2xl p-4">
+            <div class="glass rounded-2xl p-4 flex-1 flex flex-col">
               <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
                 Aspectos Prog → Natal ({p2nAspects().length})
               </h3>
-              <div class="space-y-1 max-h-48 overflow-y-auto text-xs">
+              <div class="space-y-1 flex-1 overflow-y-auto text-xs">
                 {p2nAspects().map((asp: any) => (
                   <div class="flex items-center gap-1 py-0.5">
                     <span>{PLANET_SYMBOLS[asp.planet1] || asp.planet1}</span>

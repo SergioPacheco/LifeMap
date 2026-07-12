@@ -82,7 +82,7 @@ export default function TransitsApp() {
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left: Date + Aspects */}
-      <div class="lg:col-span-1 space-y-4">
+      <div class="lg:col-span-1 flex flex-col gap-4">
         <Show when={!natalChart()}>
           <div class="glass rounded-2xl p-4 text-center">
             <p class="text-xs text-muted">Selecione um perfil no menu superior (👤) para ver os trânsitos.</p>
@@ -132,11 +132,11 @@ export default function TransitsApp() {
 
           {/* Transit aspects list */}
           <Show when={transits()}>
-            <div class="glass rounded-2xl p-4">
+            <div class="glass rounded-2xl p-4 flex-1 flex flex-col">
               <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
                 Aspectos Ativos ({transits()!.aspects.length})
               </h3>
-              <div class="space-y-1 max-h-80 overflow-y-auto">
+              <div class="space-y-1 flex-1 overflow-y-auto">
                 <For each={transits()!.aspects.slice(0, 20)}>
                   {(asp) => (
                     <div class="flex items-center justify-between text-xs py-1 border-b border-base-300/50/50">
