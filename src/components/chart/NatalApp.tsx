@@ -2,6 +2,9 @@ import { createSignal, Show, onMount } from 'solid-js';
 import NatalWheel from '../chart/NatalWheel';
 import PlanetTable from '../chart/PlanetTable';
 import InterpretationPanel from '../chart/InterpretationPanel';
+import ChartHeader from '../chart/ChartHeader';
+import AspectGrid from '../chart/AspectGrid';
+import ElementTable from '../chart/ElementTable';
 import BirthDataForm from '../forms/BirthDataForm';
 import { type ChartOptions, DEFAULT_OPTIONS } from '../forms/BirthDataForm';
 import { saveProfile } from '../forms/ProfileSelector';
@@ -166,6 +169,10 @@ export default function NatalApp(props: Props) {
         </Show>
 
         {/* Show natal-only wheel when transits OFF, bi-wheel when ON */}
+        <Show when={chart()}>
+          <ChartHeader chart={chart()} />
+        </Show>
+
         <Show when={!showTransits()}>
           <NatalWheel chart={chart()} />
         </Show>
@@ -183,6 +190,10 @@ export default function NatalApp(props: Props) {
         <Show when={chart()}>
           <PlanetTable chart={chart()} />
           <InterpretationPanel chart={chart()} />
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <AspectGrid chart={chart()} />
+            <ElementTable chart={chart()} />
+          </div>
         </Show>
       </div>
     </div>
