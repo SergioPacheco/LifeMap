@@ -71,12 +71,32 @@ export default function Header(props: Props) {
           </a>
 
           {/* Desktop Nav */}
-          <nav class="hidden lg:flex items-center gap-6">
+          <nav class="hidden lg:flex items-center gap-5">
             <For each={navItems()}>
               {(item) => (
-                <a href={item.href} class="text-sm font-medium text-cream-dark hover:text-gold transition-colors">
-                  {item.label}
-                </a>
+                <Show when={item.children} fallback={
+                  <a href={item.href} class="text-sm font-medium text-cream-dark hover:text-gold transition-colors whitespace-nowrap">
+                    {item.label}
+                  </a>
+                }>
+                  <div class="relative group">
+                    <a href={item.href} class="text-sm font-medium text-cream-dark hover:text-gold transition-colors whitespace-nowrap flex items-center gap-1">
+                      {item.label}
+                      <svg class="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </a>
+                    <div class="absolute left-0 top-full pt-2 hidden group-hover:block z-50">
+                      <div class="bg-base-50 border border-base-300 rounded-lg shadow-dark py-1 min-w-[180px]">
+                        <For each={item.children}>
+                          {(child) => (
+                            <a href={child.href} class="block px-4 py-2 text-sm text-cream-dark hover:bg-base-200 hover:text-gold transition-colors">
+                              {child.label}
+                            </a>
+                          )}
+                        </For>
+                      </div>
+                    </div>
+                  </div>
+                </Show>
               )}
             </For>
           </nav>
