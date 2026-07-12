@@ -43,9 +43,9 @@ export function classifyDayEnergy(events: CalendarEvent[], cfg: CalendarConfig):
       else eventScore = 0.5;
     }
 
-    // Weight by planet importance (average of transit + natal)
-    const planetFactor = (transitWeight + natalWeight) / 4;
-    eventScore *= planetFactor;
+    // Weight by planet importance (scale ~0.75x to ~1.5x, never crushes the score)
+    const planetFactor = (transitWeight + natalWeight) / 3;
+    eventScore *= Math.max(0.75, planetFactor);
 
     // Decay by orb (tighter = stronger)
     if (cfg.dayClassification.orbDecay && event.orb !== undefined) {
