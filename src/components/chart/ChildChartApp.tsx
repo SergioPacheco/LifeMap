@@ -376,43 +376,42 @@ export default function ChildChartApp(props: Props) {
 
             {/* Active Planet Interpretation Card */}
             <Show when={chart()?.positions[activeTab()]}>
-              {(_pos) => {
-                const planet = currentPlanetInfo();
-                const pos = chart()!.positions[planet.key]!;
-                const text = getChildText(planet.key, pos.longitude);
-                const signName = activePlanetSignName();
-                const signEmoji = activePlanetSignEmoji();
+              {(() => {
+                const planet = () => currentPlanetInfo();
+                const text = () => getChildText(planet().key, chart()!.positions[planet().key]!.longitude);
+                const signName = () => activePlanetSignName();
+                const signEmoji = () => activePlanetSignEmoji();
 
                 return (
                   <div
                     class="rounded-2xl p-5 border transition-all"
-                    style={{ 'border-color': planet.color + '40', 'background': planet.color + '0a' }}
+                    style={{ 'border-color': planet().color + '40', 'background': planet().color + '0a' }}
                   >
                     {/* Planet + Sign header */}
                     <div class="flex items-center gap-3 mb-4">
                       <div
                         class="w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-sm"
-                        style={{ background: planet.color + '20', border: `2px solid ${planet.color}50` }}
+                        style={{ background: planet().color + '20', border: `2px solid ${planet().color}50` }}
                       >
-                        {planet.emoji}
+                        {planet().emoji}
                       </div>
                       <div>
                         <div class="font-serif font-bold text-cream text-base">
-                          {planet.label} em {signName} {signEmoji}
+                          {planet().label} em {signName()} {signEmoji()}
                         </div>
-                        <div class="text-xs mt-0.5" style={{ color: planet.color }}>
-                          {planet.symbol} {planet.theme}
+                        <div class="text-xs mt-0.5" style={{ color: planet().color }}>
+                          {planet().symbol} {planet().theme}
                         </div>
                       </div>
                     </div>
 
                     {/* Interpretation text */}
                     <p class="text-sm text-cream-dark leading-relaxed">
-                      {text}
+                      {text()}
                     </p>
                   </div>
                 );
-              }}
+              })()}
             </Show>
           </div>
 
