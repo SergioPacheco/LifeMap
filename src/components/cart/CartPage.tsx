@@ -4,6 +4,9 @@ import { processPayment, savePurchase } from '../../store/payment';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateNatalPdf, downloadPdf } from '../../reports/pdf-generator';
 import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, generateCareerPdf, generateSevenSinsPdf } from '../../reports/report-generators';
+import { generateFinancialPdf } from '../../reports/financial-report';
+import { generateSpiritualPdf } from '../../reports/spiritual-report';
+import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
 import { localePath, getTranslations } from '../../i18n';
 import type { Locale } from '../../i18n';
 
@@ -115,6 +118,15 @@ export default function CartPage(props: Props) {
             blob = generateCareerPdf(chart, opts); break;
           case 'seven-sins':
             blob = generateSevenSinsPdf(chart, opts); break;
+          case 'financeiro':
+          case 'financial':
+            blob = generateFinancialPdf(chart, opts); break;
+          case 'espiritual':
+          case 'spiritual':
+            blob = generateSpiritualPdf(chart, opts); break;
+          case 'retorno-saturno':
+          case 'saturn-return':
+            blob = generateSaturnReturnPdf(chart, opts); break;
           default:
             blob = generateNatalPdf(chart, opts);
         }
