@@ -82,7 +82,8 @@ export default function AstroCalendarApp(props: Props) {
 
     const chart = calculateNatalChart(data);
     setNatal(chart);
-    recalculate(chart);
+    // Calculate current month and auto-select today
+    goToday();
   };
 
   const recalculate = (chart?: NatalChart) => {
