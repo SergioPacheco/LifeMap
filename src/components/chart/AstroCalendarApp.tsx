@@ -9,6 +9,7 @@ import { CalendarGrid } from './calendar/CalendarGrid';
 import { CalendarList } from './calendar/CalendarList';
 import { DayDetail } from './calendar/DayDetail';
 import { FilterBar } from './calendar/FilterBar';
+import { CalendarSettings } from './calendar/CalendarSettings';
 import { calculateMonth } from '../../engine/calendar';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { DEFAULT_CALENDAR_CONFIG } from '../../engine/calendar/types';
@@ -31,6 +32,7 @@ export default function AstroCalendarApp(props: Props) {
   const [view, setView] = createSignal<'month' | 'list'>('month');
   const [loading, setLoading] = createSignal(false);
   const [config, setConfig] = createSignal<CalendarConfig>(DEFAULT_CALENDAR_CONFIG);
+  const [showSettings, setShowSettings] = createSignal(false);
 
   // Filters
   const [activeTypes, setActiveTypes] = createSignal<Set<string>>(new Set([
@@ -162,10 +164,13 @@ export default function AstroCalendarApp(props: Props) {
             </button>
           </div>
 
-          {/* View toggle + Today */}
+          {/* View toggle + Today + Settings */}
           <div class="flex items-center gap-2">
             <button onClick={goToday} class="px-3 py-1.5 text-xs rounded-lg border border-base-400 text-muted hover:text-cream hover:border-gold/40 transition-colors">
               Hoje
+            </button>
+            <button onClick={() => setShowSettings(true)} class="p-1.5 rounded-lg border border-base-400 text-muted hover:text-cream hover:border-gold/40 transition-colors" title="Configurações">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </button>
             <div class="flex rounded-lg border border-base-400 overflow-hidden">
               <button
@@ -281,6 +286,14 @@ export default function AstroCalendarApp(props: Props) {
             </Show>
           </div>
         </div>
+      </Show>
+      {/* Settings Modal */}
+      <Show when={showSettings()}>
+        <CalendarSettings
+          config={config()}
+          onSave={(newConfig) => { setConfig(newConfig); recalculate(); }}
+          onClose={() => setShowSettings(false)}
+        />
       </Show>
     </div>
   );
