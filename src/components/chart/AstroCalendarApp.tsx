@@ -345,7 +345,7 @@ export default function AstroCalendarApp(props: Props) {
       <Show when={view() !== 'year' && monthData() && !loading()}>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main view: 2/3 */}
-          <div class="lg:col-span-2">
+          <div class="lg:col-span-2 space-y-6">
             <Show when={view() === 'month'}>
               <CalendarGrid
                 days={filteredDays()}
@@ -362,6 +362,9 @@ export default function AstroCalendarApp(props: Props) {
                 onSelectDay={(day) => setSelectedDay(day)}
               />
             </Show>
+
+            {/* Month Insights — inside the 2/3 column, below the grid */}
+            <MonthInsights monthData={monthData()!} profection={monthData()?.profection} />
           </div>
 
           {/* Day detail: 1/3 */}
@@ -377,11 +380,6 @@ export default function AstroCalendarApp(props: Props) {
           </div>
         </div>
       </Show>
-      {/* Month Insights (below calendar — only for month/list views) */}
-      <Show when={view() !== 'year' && monthData() && !loading()}>
-        <MonthInsights monthData={monthData()!} profection={monthData()?.profection} />
-      </Show>
-
       {/* Settings Modal */}
       <Show when={showSettings()}>
         <CalendarSettings
