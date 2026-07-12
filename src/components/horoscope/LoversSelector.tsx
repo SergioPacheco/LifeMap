@@ -148,18 +148,18 @@ export default function LoversSelector(_props: Props) {
       </div>
 
       {/* Result card */}
-      <Show when={compat()}>
-        {(c) => {
-          const info = c();
-          const color = LEVEL_COLORS[info.level];
-          const label = LEVEL_LABELS[info.level];
-          const a = mySign()!;
-          const b = theirSign()!;
+      <Show when={compat() !== null}>
+        {(() => {
+          const info = () => compat()!;
+          const color = () => LEVEL_COLORS[info().level];
+          const label = () => LEVEL_LABELS[info().level];
+          const a = () => mySign()!;
+          const b = () => theirSign()!;
           return (
             <div style={{
               background: 'rgba(255,255,255,0.04)',
               'backdrop-filter': 'blur(12px)',
-              border: `1.5px solid ${color}44`,
+              border: `1.5px solid ${color()}44`,
               'border-radius': '20px',
               padding: '28px 24px',
               animation: 'fadeIn 0.4s ease',
@@ -174,28 +174,28 @@ export default function LoversSelector(_props: Props) {
                 {/* Signs display */}
                 <div style={{ display: 'flex', 'align-items': 'center', gap: '12px', flex: '1' }}>
                   <div style={{ 'text-align': 'center' }}>
-                    <div style={{ 'font-size': '36px' }}>{SIGNS[a].symbol}</div>
-                    <div style={{ 'font-size': '11px', color: '#8888aa', 'margin-top': '2px' }}>{SIGNS[a].name}</div>
+                    <div style={{ 'font-size': '36px' }}>{SIGNS[a()].symbol}</div>
+                    <div style={{ 'font-size': '11px', color: '#8888aa', 'margin-top': '2px' }}>{SIGNS[a()].name}</div>
                   </div>
                   <div style={{ color: '#d4af37', 'font-size': '24px' }}>♡</div>
                   <div style={{ 'text-align': 'center' }}>
-                    <div style={{ 'font-size': '36px' }}>{SIGNS[b].symbol}</div>
-                    <div style={{ 'font-size': '11px', color: '#8888aa', 'margin-top': '2px' }}>{SIGNS[b].name}</div>
+                    <div style={{ 'font-size': '36px' }}>{SIGNS[b()].symbol}</div>
+                    <div style={{ 'font-size': '11px', color: '#8888aa', 'margin-top': '2px' }}>{SIGNS[b()].name}</div>
                   </div>
                 </div>
                 {/* Level badge */}
                 <div style={{
                   padding: '6px 14px',
                   'border-radius': '20px',
-                  background: `${color}22`,
-                  border: `1px solid ${color}55`,
-                  color: color,
+                  background: `${color()}22`,
+                  border: `1px solid ${color()}55`,
+                  color: color(),
                   'font-size': '12px',
                   'font-weight': '600',
                   'letter-spacing': '0.04em',
                   'white-space': 'nowrap',
                 }}>
-                  {label}
+                  {label()}
                 </div>
               </div>
               <p style={{
@@ -204,11 +204,11 @@ export default function LoversSelector(_props: Props) {
                 'line-height': '1.7',
                 margin: '0',
               }}>
-                {info.text}
+                {info().text}
               </p>
             </div>
           );
-        }}
+        })()}
       </Show>
 
       {/* Placeholder when nothing selected */}
