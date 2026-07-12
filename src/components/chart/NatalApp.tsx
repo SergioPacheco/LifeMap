@@ -188,12 +188,12 @@ export default function NatalApp(props: Props) {
         </Show>
 
         <Show when={chart()}>
-          <PlanetTable chart={chart()} />
-          <InterpretationPanel chart={chart()} />
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <AspectGrid chart={chart()} />
             <ElementTable chart={chart()} />
           </div>
+          <PlanetTable chart={chart()} />
+          <InterpretationPanel chart={chart()} />
         </Show>
       </div>
     </div>
