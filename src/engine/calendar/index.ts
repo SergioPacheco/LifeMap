@@ -9,6 +9,8 @@ export { getMoonPhaseForDate, getMoonIngresses, getMoonPhaseName } from './moon-
 export { getVoidOfCoursePeriods } from './void-moon';
 export { getRetrogradeEvents } from './retrogrades';
 export { getProfectionForDate, PROFECTION_HOUSE_THEMES } from './profection';
+export { findBestDates, ELECTIVE_RULES } from './elective';
+export { getTransitText, getTransitTextWithFallback, CALENDAR_TRANSIT_TEXTS } from './calendar-texts';
 export { DEFAULT_CALENDAR_CONFIG } from './types';
 export type {
   CalendarConfig,
@@ -22,3 +24,4 @@ export type {
   ProfectionData,
   MonthSummary,
 } from './types';
+export type { ElectiveAction, ElectiveResult, ElectiveRules } from './elective';

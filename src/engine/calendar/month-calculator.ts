@@ -16,6 +16,7 @@ import { getMoonPhaseForDate, getMoonIngresses } from './moon-phases';
 import { getVoidOfCoursePeriods } from './void-moon';
 import { getRetrogradeEvents } from './retrogrades';
 import { getProfectionForDate } from './profection';
+import { getTransitTextWithFallback } from './calendar-texts';
 
 // ============================================================
 // MAIN: Calculate all events for a month
@@ -228,6 +229,7 @@ function findTransitToNatalAspects(
         if (diff <= orb) {
           const natalHouse = getHouseForLongitude(transitPos.longitude, natal.houses.cusps);
           const importance = calculateImportance(transitId, natalId, aspectName, diff, orb, cfg);
+          const text = getTransitTextWithFallback(transitId, natalId, aspectName);
 
           events.push({
             type: 'transit-aspect',
@@ -243,7 +245,8 @@ function findTransitToNatalAspects(
             importance,
             energy: ASPECT_NATURES[aspectName] || 'neutral',
             title: formatTransitTitle(transitId, natalId, aspectName),
-            summary: '', // Preenchido pelo texto engine
+            summary: text.summary,
+            advice: text.advice,
             detail: undefined,
           });
         }
