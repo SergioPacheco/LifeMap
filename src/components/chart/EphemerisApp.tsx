@@ -19,6 +19,8 @@ const PLANET_NAMES_SHORT: Record<string, string> = {
   northNode: 'NN', chiron: 'Qui',
 };
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+// Cores por ELEMENTO do signo — alto contraste em fundo escuro
+const SIGN_ELEMENT_COLORS = ['#ff6b6b','#66d96e','#6ba3ff','#ffaa55','#ff6b6b','#66d96e','#6ba3ff','#ffaa55','#ff6b6b','#66d96e','#6ba3ff','#ffaa55'];
 const SIGN_KEYS = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'] as const;
 
 interface EphRow {
@@ -191,7 +193,7 @@ export default function EphemerisApp(props: Props) {
                         return (
                           <td class="px-1 py-2 text-center">
                             <div class="flex flex-col items-center gap-0">
-                              <span class="text-base leading-none" style={{ color: PLANET_COLORS[pid] }}>{SIGN_SYMBOLS[data.sign]}</span>
+                              <span class="text-base leading-none" style={{ color: SIGN_ELEMENT_COLORS[data.sign] }}>{SIGN_SYMBOLS[data.sign]}</span>
                               <span class={`text-[11px] font-mono ${data.retro ? 'text-red-400' : 'text-cream-dark'}`}>
                                 {Math.floor(data.deg)}°{data.retro ? <span class="text-red-400 font-bold">℞</span> : ''}
                               </span>

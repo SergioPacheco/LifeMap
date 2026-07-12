@@ -30,10 +30,10 @@ const COL = {
   axisLabel: '#ccc',
   text: '#bbb',
   textDim: '#666',
-  signFire: '#e05555',
-  signEarth: '#55aa55',
-  signAir: '#5588dd',
-  signWater: '#dd8844',
+  signFire: '#ff6b6b',
+  signEarth: '#66d96e',
+  signAir: '#6ba3ff',
+  signWater: '#ffaa55',
 };
 
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];

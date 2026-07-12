@@ -22,7 +22,7 @@ const PLANET_SYMBOLS: Record<string, string> = {
   ceres: '⚳', vesta: '⚶', pallas: '⚴', juno: '⚵',
   vertex: 'Vx', partOfFortune: '⊕',
 };
-const SIGN_ELEMENT_COLOR = ['#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844','#ff4444','#44cc44','#6688ff','#ff8844'];
+const SIGN_ELEMENT_COLOR = ['#ff6b6b','#66d96e','#6ba3ff','#ffaa55','#ff6b6b','#66d96e','#6ba3ff','#ffaa55','#ff6b6b','#66d96e','#6ba3ff','#ffaa55'];
 
 export default function PlanetTable(props: Props) {
   return (

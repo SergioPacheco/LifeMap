@@ -94,6 +94,7 @@ export default function Header(props: Props) {
       label: t().nav.tools,
       icon: '🛠️',
       items: [
+        { icon: '📆', label: 'Calendário Astrológico', href: localePath('/tools/calendar', props.locale), desc: 'Seus trânsitos dia a dia personalizado' },
         { icon: '📅', label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale), desc: 'Posições planetárias dia a dia' },
         { icon: '🌗', label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale), desc: 'Calendário lunar do mês' },
         { icon: '🔙', label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale), desc: 'Períodos retrógrados do ano' },
