@@ -61,6 +61,14 @@ export default function NatalApp(props: Props) {
       setChart(result);
       setEngineInfo(`✦ ${getActiveEngine() === 'swisseph' ? 'Swiss Ephemeris' : 'Astronomy Engine'}`);
 
+      // Handle transits toggle from extended options
+      if (opts.showTransitsToday) {
+        toggleTransits(true);
+      } else {
+        setShowTransits(false);
+        setTransitSvg('');
+      }
+
       if (data.name || data.city) {
         await saveProfile({
           name: data.name || data.city || 'Sem nome',
@@ -162,29 +170,11 @@ export default function NatalApp(props: Props) {
           <NatalWheel chart={chart()} />
         </Show>
 
-        {/* Transit toggle */}
-        <Show when={chart()}>
-          <div class="flex items-center gap-3 px-4">
-            <label class="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={showTransits()}
-                onChange={(e) => toggleTransits(e.currentTarget.checked)}
-                class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
-              />
-              <span class="text-sm text-cream-dark">Mostrar trânsitos de hoje</span>
-            </label>
-            <Show when={showTransits()}>
-              <span class="text-xs text-muted">({new Date().toLocaleDateString('pt-BR')})</span>
-            </Show>
-          </div>
-        </Show>
-
         {/* Bi-wheel when transits enabled */}
         <Show when={showTransits() && transitSvg()}>
           <div class="glass rounded-2xl p-4">
             <div class="text-xs text-center text-muted mb-2">
-              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo)
+              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo) — {new Date().toLocaleDateString('pt-BR')}
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={transitSvg()} />
           </div>

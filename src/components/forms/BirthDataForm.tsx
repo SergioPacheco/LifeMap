@@ -5,6 +5,7 @@ export interface ChartOptions extends CalculationOptions {
   nodeType: 'true' | 'mean';
   showVertex: boolean;
   showPartOfFortune: boolean;
+  showTransitsToday: boolean;
   orbsPreset: 'default' | 'tight' | 'wide';
 }
 
@@ -15,6 +16,7 @@ export const DEFAULT_OPTIONS: ChartOptions = {
   nodeType: 'true',
   showVertex: false,
   showPartOfFortune: false,
+  showTransitsToday: false,
   orbsPreset: 'default',
   aspectOrbs: {
     conjunction: 8,
@@ -84,6 +86,7 @@ export default function BirthDataForm(props: Props) {
   const [nodeType, setNodeType] = createSignal<'true' | 'mean'>(DEFAULT_OPTIONS.nodeType);
   const [showVertex, setShowVertex] = createSignal(DEFAULT_OPTIONS.showVertex);
   const [showPartOfFortune, setShowPartOfFortune] = createSignal(DEFAULT_OPTIONS.showPartOfFortune);
+  const [showTransitsToday, setShowTransitsToday] = createSignal(DEFAULT_OPTIONS.showTransitsToday);
   const [orbsPreset, setOrbsPreset] = createSignal(DEFAULT_OPTIONS.orbsPreset);
 
   const resetOptions = () => {
@@ -92,6 +95,7 @@ export default function BirthDataForm(props: Props) {
     setNodeType(DEFAULT_OPTIONS.nodeType);
     setShowVertex(DEFAULT_OPTIONS.showVertex);
     setShowPartOfFortune(DEFAULT_OPTIONS.showPartOfFortune);
+    setShowTransitsToday(DEFAULT_OPTIONS.showTransitsToday);
     setOrbsPreset(DEFAULT_OPTIONS.orbsPreset);
   };
 
@@ -102,6 +106,7 @@ export default function BirthDataForm(props: Props) {
     nodeType: nodeType(),
     showVertex: showVertex(),
     showPartOfFortune: showPartOfFortune(),
+    showTransitsToday: showTransitsToday(),
     orbsPreset: orbsPreset(),
     aspectOrbs: ORBS_PRESETS[orbsPreset()],
   });
@@ -338,6 +343,23 @@ export default function BirthDataForm(props: Props) {
                   />
                   <span class="text-sm text-cream-dark">Parte da Fortuna</span>
                 </label>
+              </div>
+            </div>
+
+            {/* Show Transits */}
+            <div>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">Visualização</label>
+              <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showTransitsToday()}
+                    onChange={(e) => setShowTransitsToday(e.currentTarget.checked)}
+                    class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
+                  />
+                  <span class="text-sm text-cream-dark">↻ Mostrar trânsitos de hoje</span>
+                </label>
+                <p class="text-[10px] text-muted pl-6">Sobrepõe as posições planetárias de hoje ao seu mapa natal</p>
               </div>
             </div>
 
