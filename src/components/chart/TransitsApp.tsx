@@ -4,6 +4,7 @@ import { calculateNatalChart, calculateTransits, initSweph } from '../../engine/
 import { renderWheel, renderBiWheel } from '../../renderer/wheel';
 import type { NatalChart, TransitChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { db } from '../../store/db';
 import { getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/calculations';
 import { getAspectColor, getAspectSymbol } from '../../engine/aspects';
 import { getHouseForLongitude } from '../../engine/houses';
@@ -31,6 +32,19 @@ export default function TransitsApp() {
 
   onMount(async () => {
     await initSweph();
+
+    // Auto-load last profile
+    try {
+      const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
+      if (profiles.length > 0) {
+        handleProfileSelect(profiles[0]);
+      }
+    } catch { /* ignore */ }
+
+    // Listen for profile changes from Header
+    window.addEventListener('lifemap:profile-change', (e: any) => {
+      if (e.detail) handleProfileSelect(e.detail);
+    });
   });
 
   const handleProfileSelect = (profile: Profile) => {
@@ -67,15 +81,13 @@ export default function TransitsApp() {
 
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Left: Profile + Date + Aspects */}
+      {/* Left: Date + Aspects */}
       <div class="lg:col-span-1 space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-            Selecione um perfil
-          </h3>
-          <ProfileSelector onSelect={handleProfileSelect} locale="pt" />
-          <p class="text-xs text-muted mt-2">Primeiro calcule um mapa natal, depois volte aqui.</p>
-        </div>
+        <Show when={!natalChart()}>
+          <div class="glass rounded-2xl p-4 text-center">
+            <p class="text-xs text-muted">Selecione um perfil no menu superior (👤) para ver os trânsitos.</p>
+          </div>
+        </Show>
 
         <Show when={natalChart()}>
           <div class="glass rounded-2xl p-4">
@@ -157,8 +169,8 @@ export default function TransitsApp() {
         <Show when={natalChart()} fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <div class="text-5xl mb-3">↻</div>
-            <p>Selecione um perfil salvo para ver os trânsitos</p>
-            <p class="text-xs mt-2">Calcule primeiro um mapa natal na página "Mapa Natal"</p>
+            <p>Carregando perfil...</p>
+            <p class="text-xs mt-2">Selecione um perfil no ícone 👤 acima para ver os trânsitos</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
