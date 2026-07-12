@@ -177,13 +177,23 @@ export default function AstroCalendarApp(props: Props) {
     const data = monthData();
     if (!data) return [];
 
+    const themes = activeThemes();
+    const types = activeTypes();
+    const hasAnyTheme = themes.size > 0;
+
     return data.days.map(day => ({
       ...day,
       events: day.events.filter(event => {
         // Filter by event type
-        if (!activeTypes().has(event.type)) return false;
-        // Filter by theme (if event has themes, at least one must match)
-        if (event.themes.length > 0 && !event.themes.some(t => activeThemes().has(t))) return false;
+        if (!types.has(event.type)) return false;
+
+        // Filter by theme:
+        // - If no themes selected → hide everything
+        // - If event has themes → at least one must match
+        // - If event has NO themes (moon phase, ingress) → show only if themes filter is not restrictive
+        if (!hasAnyTheme) return false;
+        if (event.themes.length > 0 && !event.themes.some(t => themes.has(t))) return false;
+
         return true;
       }),
     })).filter(day => energyFilter().has(day.energy));
