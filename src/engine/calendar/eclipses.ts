@@ -15,6 +15,7 @@ import type { NatalChart } from '../types';
 import type { CalendarConfig, CalendarEvent } from './types';
 import { getSignIndex, norm } from '../calculations';
 import { getHouseForLongitude } from '../houses';
+import { calendarDateAtLocalTime, type CalendarTimeContext } from './calendar-date';
 
 // ============================================================
 // ECLIPSE DATA 2024-2028 (pré-calculado — graus zodiacais)
@@ -40,7 +41,7 @@ const ECLIPSE_DATABASE: EclipseData[] = [
   // 2025
   { date: '2025-03-14', type: 'lunar-total', degree: 173.0, sign: 5, degreeInSign: 23 },      // 23° Virgem
   { date: '2025-03-29', type: 'solar-partial', degree: 8.5, sign: 0, degreeInSign: 8 },       // 8° Áries
-  { date: '2025-09-07', type: 'lunar-total', degree: 165.0, sign: 5, degreeInSign: 15 },      // 15° Peixes (Virgem opp)
+  { date: '2025-09-07', type: 'lunar-total', degree: 345.0, sign: 11, degreeInSign: 15 },     // 15° Peixes
   { date: '2025-09-21', type: 'solar-partial', degree: 178.5, sign: 5, degreeInSign: 28 },    // 28° Virgem
 
   // 2026
@@ -51,17 +52,17 @@ const ECLIPSE_DATABASE: EclipseData[] = [
 
   // 2027
   { date: '2027-02-06', type: 'solar-annular', degree: 317.6, sign: 10, degreeInSign: 17 },   // 17° Aquário
-  { date: '2027-02-20', type: 'lunar-penumbral', degree: 152.3, sign: 4, degreeInSign: 2 },   // 2° Leão
+  { date: '2027-02-20', type: 'lunar-penumbral', degree: 152.3, sign: 5, degreeInSign: 2 },   // 2° Virgem
   { date: '2027-07-18', type: 'lunar-penumbral', degree: 295.8, sign: 9, degreeInSign: 25 },  // 25° Capricórnio
   { date: '2027-08-02', type: 'solar-total', degree: 129.5, sign: 4, degreeInSign: 9 },       // 9° Leão
   { date: '2027-08-17', type: 'lunar-penumbral', degree: 324.2, sign: 10, degreeInSign: 24 }, // 24° Aquário
 
   // 2028
-  { date: '2028-01-12', type: 'lunar-partial', degree: 291.8, sign: 9, degreeInSign: 21 },    // 21° Câncer
+  { date: '2028-01-12', type: 'lunar-partial', degree: 111.8, sign: 3, degreeInSign: 21 },    // 21° Câncer
   { date: '2028-01-26', type: 'solar-annular', degree: 306.3, sign: 10, degreeInSign: 6 },    // 6° Aquário
-  { date: '2028-07-06', type: 'lunar-partial', degree: 104.5, sign: 3, degreeInSign: 14 },    // 14° Câncer
+  { date: '2028-07-06', type: 'lunar-partial', degree: 284.5, sign: 9, degreeInSign: 14 },    // 14° Capricórnio
   { date: '2028-07-22', type: 'solar-total', degree: 119.7, sign: 3, degreeInSign: 29 },      // 29° Câncer
-  { date: '2028-12-31', type: 'lunar-total', degree: 280.5, sign: 3, degreeInSign: 10 },      // 10° Câncer
+  { date: '2028-12-31', type: 'lunar-total', degree: 100.5, sign: 3, degreeInSign: 10 },      // 10° Câncer
 ];
 
 const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
@@ -74,7 +75,8 @@ export function getEclipseEvents(
   natal: NatalChart,
   year: number,
   month: number,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  ctx?: CalendarTimeContext
 ): CalendarEvent[] {
   if (!cfg.eclipses.show) return [];
 
@@ -84,11 +86,13 @@ export function getEclipseEvents(
   // Find eclipses in this month (or within pre-effect range)
   for (const eclipse of ECLIPSE_DATABASE) {
     const [eYear, eMonth, eDay] = eclipse.date.split('-').map(Number);
-    const eclipseDate = new Date(eYear, eMonth - 1, eDay);
+    const eclipseDate = ctx
+      ? calendarDateAtLocalTime(eYear, eMonth - 1, eDay, 12, 0, ctx)
+      : new Date(eYear, eMonth - 1, eDay, 12);
 
     // Check if eclipse falls within month (or pre-effect window)
-    const monthStart = new Date(year, month, 1);
-    const monthEnd = new Date(year, month + 1, 0);
+    const monthStart = ctx ? calendarDateAtLocalTime(year, month, 1, 0, 0, ctx) : new Date(year, month, 1);
+    const monthEnd = ctx ? calendarDateAtLocalTime(year, month + 1, 0, 23, 59, ctx) : new Date(year, month + 1, 0, 23, 59);
     const preEffectStart = new Date(eclipseDate.getTime() - cfg.eclipses.preEffectDays * 86400000);
 
     const isInMonth = eclipseDate >= monthStart && eclipseDate <= monthEnd;

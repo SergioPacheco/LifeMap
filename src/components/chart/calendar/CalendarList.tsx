@@ -43,7 +43,7 @@ export function CalendarList(props: Props) {
               <div class="flex items-center gap-2">
                 <span class={`w-2 h-2 rounded-full ${ENERGY_STYLES[day.energy].dot}`} />
                 <span class="text-sm font-medium text-cream">
-                  {day.date.getDate()} — {DAY_NAMES[day.dayOfWeek]}
+                  {day.dayNumber} — {DAY_NAMES[day.dayOfWeek]}
                 </span>
               </div>
               <div class="flex gap-1">

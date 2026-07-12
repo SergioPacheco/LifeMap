@@ -17,6 +17,14 @@
 import type { NatalChart } from '../types';
 import type { CalendarConfig, ProfectionData } from './types';
 import { getSignIndex } from '../calculations';
+import { getHouseForLongitude } from '../houses';
+import {
+  calendarDateAtLocalTime,
+  calendarDateKey,
+  calendarDateKeyForInstant,
+  calendarDatePartsForInstant,
+  getCalendarTimeContext,
+} from './calendar-date';
 
 // ============================================================
 // REGENTES TRADICIONAIS (Hellenísticos — usados em profecção)
@@ -52,11 +60,13 @@ export function getProfectionForDate(
   currentDate: Date,
   cfg: CalendarConfig
 ): ProfectionData | null {
-  const birthDate = parseBirthDate(natal);
-  if (!birthDate) return null;
+  if (!natal.date) return null;
+  const ctx = getCalendarTimeContext(natal);
+  const birthDate = calendarDatePartsForInstant(natal.date, ctx);
+  const current = calendarDatePartsForInstant(currentDate, ctx);
 
   // Calculate age
-  const age = getAge(birthDate, currentDate);
+  const age = getAge(birthDate, current);
 
   // Annual profection house (0-indexed: 0 = Casa 1)
   const profectedHouseIndex = age % 12;
@@ -77,15 +87,18 @@ export function getProfectionForDate(
   const lordNatalHouse = lordNatalPos ? getHouseNumber(lordNatalPos.longitude, natal) : 1;
 
   // Birthday range
-  const thisYearBirthday = new Date(currentDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-  const nextYearBirthday = new Date(currentDate.getFullYear() + 1, birthDate.getMonth(), birthDate.getDate());
-  const startDate = thisYearBirthday <= currentDate ? thisYearBirthday : new Date(currentDate.getFullYear() - 1, birthDate.getMonth(), birthDate.getDate());
-  const endDate = thisYearBirthday <= currentDate ? nextYearBirthday : thisYearBirthday;
+  const thisYearBirthdayKey = calendarDateKey(current.year, birthDate.month - 1, birthDate.day);
+  const currentKey = calendarDateKeyForInstant(currentDate, ctx);
+  const hasHadBirthday = thisYearBirthdayKey <= currentKey;
+  const startYear = hasHadBirthday ? current.year : current.year - 1;
+  const endYear = startYear + 1;
+  const startDate = calendarDateAtLocalTime(startYear, birthDate.month - 1, birthDate.day, 12, 0, ctx);
+  const endDate = calendarDateAtLocalTime(endYear, birthDate.month - 1, birthDate.day, 12, 0, ctx);
 
   // Monthly profection (optional)
   let monthlyHouse: number | undefined;
   if (cfg.profection.level === 'monthly' || cfg.profection.level === 'both') {
-    const monthsSinceBirthday = getMonthsSince(startDate, currentDate);
+    const monthsSinceBirthday = getMonthsSince(startDate, currentDate, ctx);
     const monthlyHouseIndex = (profectedHouseIndex + monthsSinceBirthday) % 12;
     monthlyHouse = monthlyHouseIndex + 1;
   }
@@ -126,28 +139,22 @@ export const PROFECTION_HOUSE_THEMES: Record<number, { theme: string; focus: str
 // HELPERS
 // ============================================================
 
-function parseBirthDate(natal: NatalChart): Date | null {
-  // NatalChart.date is the UTC birth date (always available)
-  if (natal.date) return natal.date;
-  return null;
-}
-
-function getAge(birthDate: Date, currentDate: Date): number {
-  let age = currentDate.getFullYear() - birthDate.getFullYear();
-  const monthDiff = currentDate.getMonth() - birthDate.getMonth();
-  if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
+function getAge(birthDate: { year: number; month: number; day: number }, currentDate: { year: number; month: number; day: number }): number {
+  let age = currentDate.year - birthDate.year;
+  const monthDiff = currentDate.month - birthDate.month;
+  if (monthDiff < 0 || (monthDiff === 0 && currentDate.day < birthDate.day)) {
     age--;
   }
   return age;
 }
 
-function getMonthsSince(startDate: Date, currentDate: Date): number {
-  const months = (currentDate.getFullYear() - startDate.getFullYear()) * 12
-    + currentDate.getMonth() - startDate.getMonth();
+function getMonthsSince(startDate: Date, currentDate: Date, ctx: { timeZoneId?: string; timezone: number }): number {
+  const start = calendarDatePartsForInstant(startDate, ctx);
+  const current = calendarDatePartsForInstant(currentDate, ctx);
+  const months = (current.year - start.year) * 12 + current.month - start.month;
   return Math.max(0, months);
 }
 
 function getHouseNumber(longitude: number, natal: NatalChart): number {
-  const { getHouseForLongitude } = require('../houses');
   return getHouseForLongitude(longitude, natal.houses.cusps);
 }

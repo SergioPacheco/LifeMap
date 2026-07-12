@@ -35,7 +35,7 @@ export function CalendarSettings(props: Props) {
   };
 
   const reset = () => {
-    setConfig({ ...DEFAULT_CALENDAR_CONFIG });
+    setConfig(structuredClone(DEFAULT_CALENDAR_CONFIG));
   };
 
   const TABS = [

@@ -19,6 +19,7 @@ import type { NatalChart } from '../types';
 import type { CalendarConfig, CalendarEvent } from './types';
 import { calculatePositions } from '../calculations';
 import { getSignIndex, norm } from '../calculations';
+import { calendarDateAtLocalTime, daysInCalendarMonth, type CalendarTimeContext } from './calendar-date';
 
 // ============================================================
 // TYPES
@@ -97,10 +98,11 @@ export function getPlanetaryReturnEvents(
   natal: NatalChart,
   year: number,
   month: number,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  ctx?: CalendarTimeContext
 ): CalendarEvent[] {
   const events: CalendarEvent[] = [];
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = daysInCalendarMonth(year, month);
   const approachOrb = cfg.returns.approachOrb;
 
   const planetsToCheck: string[] = [];
@@ -117,7 +119,7 @@ export function getPlanetaryReturnEvents(
     let closestDay: { date: Date; dist: number } | null = null;
 
     for (let d = 1; d <= daysInMonth; d++) {
-      const date = new Date(year, month, d, 12);
+      const date = ctx ? calendarDateAtLocalTime(year, month, d, 12, 0, ctx) : new Date(year, month, d, 12);
       const positions = calculatePositions(date);
       const transitPos = positions[planet];
       if (!transitPos) continue;
@@ -144,7 +146,7 @@ export function getPlanetaryReturnEvents(
 
     // Check for major phases (opposition, squares)
     for (let d = 1; d <= daysInMonth; d++) {
-      const date = new Date(year, month, d, 12);
+      const date = ctx ? calendarDateAtLocalTime(year, month, d, 12, 0, ctx) : new Date(year, month, d, 12);
       const positions = calculatePositions(date);
       const transitPos = positions[planet];
       if (!transitPos) continue;

@@ -8,6 +8,7 @@ import type { NatalChart } from '../../../engine/types';
 import type { CalendarConfig, DayEnergy, ProfectionData } from '../../../engine/calendar/types';
 import { THEME_INFO } from '../../../engine/calendar/theme-mapper';
 import { PROFECTION_HOUSE_THEMES, getProfectionForDate } from '../../../engine/calendar/profection';
+import { calendarDateAtLocalTime, getCalendarTimeContext } from '../../../engine/calendar/calendar-date';
 
 interface MonthSummary {
   month: number;
@@ -51,9 +52,16 @@ const ECLIPSES_BY_YEAR: Record<number, { month: number; type: string; sign: stri
   ],
   2027: [
     { month: 1, type: 'Solar Anular', sign: 'Aquário', degree: 17 },
-    { month: 1, type: 'Lunar Penumbral', sign: 'Leão', degree: 2 },
+    { month: 1, type: 'Lunar Penumbral', sign: 'Virgem', degree: 2 },
     { month: 7, type: 'Solar Total', sign: 'Leão', degree: 9 },
     { month: 7, type: 'Lunar Penumbral', sign: 'Aquário', degree: 24 },
+  ],
+  2028: [
+    { month: 0, type: 'Lunar Parcial', sign: 'Câncer', degree: 21 },
+    { month: 0, type: 'Solar Anular', sign: 'Aquário', degree: 6 },
+    { month: 6, type: 'Lunar Parcial', sign: 'Capricórnio', degree: 14 },
+    { month: 6, type: 'Solar Total', sign: 'Câncer', degree: 29 },
+    { month: 11, type: 'Lunar Total', sign: 'Câncer', degree: 10 },
   ],
 };
 
@@ -92,7 +100,7 @@ export function YearInsights(props: Props) {
 
   // Profection
   const profection = createMemo(() =>
-    getProfectionForDate(props.natal, new Date(props.year, 6, 1), props.config)
+    getProfectionForDate(props.natal, calendarDateAtLocalTime(props.year, 6, 1, 12, 0, getCalendarTimeContext(props.natal)), props.config)
   );
 
   // Eclipses for this year

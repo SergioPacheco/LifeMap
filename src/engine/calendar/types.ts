@@ -183,7 +183,7 @@ export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
     retroPenalty: -0.3,
   },
   themes: {
-    enabled: ['love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication'],
+    enabled: ['love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication', 'transformation', 'freedom', 'travel', 'sexuality'],
     useHouseRulers: true,
   },
   elective: {
@@ -288,6 +288,8 @@ export interface CalendarEvent {
 
 export interface DayData {
   date: Date;
+  dateKey: string;            // YYYY-MM-DD in the profile calendar timezone
+  dayNumber: number;          // 1-31 in the profile calendar timezone
   dayOfWeek: number;          // 0=Dom, 6=Sáb
   events: CalendarEvent[];
   energy: DayEnergy;
@@ -307,6 +309,8 @@ export interface DayData {
 export interface MonthData {
   year: number;
   month: number;              // 0-11
+  timeZoneId?: string;
+  timezone: number;
   days: DayData[];
   retroPeriods: RetroPeriod[];
   eclipses: CalendarEvent[];

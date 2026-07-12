@@ -13,6 +13,7 @@ import type { CalendarConfig } from './types';
 import type { RetroPeriod } from './types';
 import { calculatePositions } from '../calculations';
 import { getSignIndex } from '../calculations';
+import { calendarDateAtLocalTime, type CalendarTimeContext } from './calendar-date';
 
 // ============================================================
 // MAIN: Get retrograde periods visible in a month
@@ -21,7 +22,8 @@ import { getSignIndex } from '../calculations';
 export function getRetrogradeEvents(
   year: number,
   month: number,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  ctx?: CalendarTimeContext
 ): RetroPeriod[] {
   if (!cfg.retrogrades.show) return [];
 
@@ -29,15 +31,15 @@ export function getRetrogradeEvents(
   const planets = cfg.planets.transiting.filter(p => p !== 'sun' && p !== 'moon' && p !== 'northNode' && p !== 'southNode');
 
   // Scan the month + padding (to catch retrogrades that start before/end after)
-  const scanStart = new Date(year, month - 1, 1); // 1 month before
-  const scanEnd = new Date(year, month + 2, 0);   // 1 month after
+  const scanStart = ctx ? calendarDateAtLocalTime(year, month - 1, 1, 12, 0, ctx) : new Date(year, month - 1, 1, 12);
+  const scanEnd = ctx ? calendarDateAtLocalTime(year, month + 2, 0, 12, 0, ctx) : new Date(year, month + 2, 0, 12);
 
   for (const planet of planets) {
     const retro = findRetrogradePeriod(planet, scanStart, scanEnd);
     if (retro) {
       // Only include if the period overlaps with the target month
-      const monthStart = new Date(year, month, 1);
-      const monthEnd = new Date(year, month + 1, 0);
+      const monthStart = ctx ? calendarDateAtLocalTime(year, month, 1, 0, 0, ctx) : new Date(year, month, 1);
+      const monthEnd = ctx ? calendarDateAtLocalTime(year, month + 1, 0, 23, 59, ctx) : new Date(year, month + 1, 0, 23, 59);
 
       if (retro.startDate <= monthEnd && retro.endDate >= monthStart) {
         periods.push(retro);

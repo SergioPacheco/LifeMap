@@ -7,10 +7,11 @@
 // com config simplificada (sem VoC, sem eclipses)
 // ============================================================
 
-import { For, Show, createSignal, onMount } from 'solid-js';
+import { For, Show, createSignal, createEffect, onCleanup } from 'solid-js';
 import type { NatalChart } from '../../../engine/types';
 import type { CalendarConfig, DayEnergy } from '../../../engine/calendar/types';
 import { calculateMonth } from '../../../engine/calendar';
+import { calendarDateKeyForInstant, getCalendarTimeContext } from '../../../engine/calendar/calendar-date';
 
 interface Props {
   year: number;
@@ -41,31 +42,35 @@ export function CalendarYear(props: Props) {
     Array.from({ length: 12 }, (_, i) => ({ month: i, days: [], loaded: false }))
   );
   const [progress, setProgress] = createSignal(0);
-
-  // Lightweight config for year view (skip expensive calculations)
-  const lightConfig: Partial<CalendarConfig> = {
-    ...props.config,
-    moon: { ...props.config.moon, showVoidOfCourse: false, showIngresses: false },
-    eclipses: { ...props.config.eclipses, show: false },
-    retrogrades: { ...props.config.retrogrades, showStations: false },
-    returns: { saturn: false, jupiter: false, mars: false, venus: false, approachOrb: 3 },
-    profection: { ...props.config.profection, show: false },
-  };
+  const todayParts = () => calendarDateKeyForInstant(new Date(), getCalendarTimeContext(props.natal)).split('-').map(Number);
 
   // Calculate progressively: 1 month per animation frame
-  onMount(() => {
+  createEffect(() => {
+    const targetYear = props.year;
+    const targetNatal = props.natal;
+    const targetConfig = props.config;
+    let cancelled = false;
     let currentMonth = 0;
+    setProgress(0);
+    setMonths(Array.from({ length: 12 }, (_, i) => ({ month: i, days: [], loaded: false })));
 
     const calcNext = () => {
-      if (currentMonth >= 12) return;
+      if (cancelled || currentMonth >= 12) return;
 
       try {
-        const data = calculateMonth(props.natal, props.year, currentMonth, lightConfig);
+        const data = calculateMonth(targetNatal, targetYear, currentMonth, {
+          ...targetConfig,
+          moon: { ...targetConfig.moon, showVoidOfCourse: false, showIngresses: false },
+          eclipses: { ...targetConfig.eclipses, show: false },
+          retrogrades: { ...targetConfig.retrogrades, showStations: false },
+          returns: { saturn: false, jupiter: false, mars: false, venus: false, approachOrb: 3 },
+          profection: { ...targetConfig.profection, show: false },
+        });
         setMonths(prev => {
           const next = [...prev];
           next[currentMonth] = {
             month: currentMonth,
-            days: data.days.map(d => ({ energy: d.energy, date: d.date.getDate() })),
+            days: data.days.map(d => ({ energy: d.energy, date: d.dayNumber })),
             loaded: true,
           };
           return next;
@@ -89,6 +94,7 @@ export function CalendarYear(props: Props) {
       }
     };
 
+    onCleanup(() => { cancelled = true; });
     requestAnimationFrame(calcNext);
   });
 
@@ -112,6 +118,9 @@ export function CalendarYear(props: Props) {
               month={monthData.month}
               days={monthData.days}
               loaded={monthData.loaded}
+              todayYear={todayParts()[0]}
+              todayMonth={todayParts()[1] - 1}
+              todayDay={todayParts()[2]}
               onClick={() => props.onSelectMonth(monthData.month)}
             />
           )}
@@ -138,13 +147,15 @@ function MiniMonth(props: {
   month: number;
   days: { energy: DayEnergy; date: number }[];
   loaded: boolean;
+  todayYear: number;
+  todayMonth: number;
+  todayDay: number;
   onClick: () => void;
 }) {
-  const firstDayOfWeek = new Date(props.year, props.month, 1).getDay();
+  const firstDayOfWeek = new Date(Date.UTC(props.year, props.month, 1, 12)).getUTCDay();
   const offset = (firstDayOfWeek - 1 + 7) % 7;
 
-  const today = new Date();
-  const isCurrentMonth = today.getFullYear() === props.year && today.getMonth() === props.month;
+  const isCurrentMonth = props.todayYear === props.year && props.todayMonth === props.month;
 
   const energyCounts = () => {
     const counts = { favorable: 0, tense: 0 };
@@ -197,7 +208,7 @@ function MiniMonth(props: {
           </For>
           <For each={props.days}>
             {(day) => {
-              const isToday = isCurrentMonth && day.date === today.getDate();
+              const isToday = isCurrentMonth && day.date === props.todayDay;
               return (
                 <div
                   class={`w-2.5 h-2.5 rounded-full ${isToday ? 'ring-1 ring-gold' : ''}`}

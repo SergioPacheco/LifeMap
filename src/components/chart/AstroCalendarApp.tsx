@@ -12,15 +12,16 @@ import { DayDetail } from './calendar/DayDetail';
 import { FilterBar } from './calendar/FilterBar';
 import { CalendarSettings } from './calendar/CalendarSettings';
 import { MonthInsights } from './calendar/MonthInsights';
-import { calculateMonth } from '../../engine/calendar';
+import { calculateMonth, classifyDayEnergy } from '../../engine/calendar';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { DEFAULT_CALENDAR_CONFIG } from '../../engine/calendar/types';
-import type { CalendarConfig, MonthData, DayData, Theme } from '../../engine/calendar/types';
+import type { CalendarConfig, MonthData, DayData, Theme, CalendarEvent } from '../../engine/calendar/types';
 import type { NatalChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { todayDateInput } from '../../utils/dateTime';
+import { calendarDateKeyForInstant, getCalendarTimeContext } from '../../engine/calendar/calendar-date';
 
 interface Props {
   locale: string;
@@ -37,6 +38,7 @@ export default function AstroCalendarApp(props: Props) {
   const [loading, setLoading] = createSignal(false);
   const [config, setConfig] = createSignal<CalendarConfig>(DEFAULT_CALENDAR_CONFIG);
   const [showSettings, setShowSettings] = createSignal(false);
+  const [todayKey, setTodayKey] = createSignal(todayDateInput());
 
   // Performance: cache calculated months
   const monthCache = new Map<string, MonthData>();
@@ -44,10 +46,12 @@ export default function AstroCalendarApp(props: Props) {
 
   // Filters
   const [activeTypes, setActiveTypes] = createSignal<Set<string>>(new Set([
-    'transit-aspect', 'moon-phase', 'moon-ingress', 'planet-ingress', 'retrograde-start', 'retrograde-end', 'void-of-course'
+    'transit-aspect', 'moon-phase', 'moon-ingress', 'planet-ingress', 'retrograde-start', 'retrograde-end', 'void-of-course',
+    'eclipse-solar', 'eclipse-lunar', 'planetary-return'
   ]));
   const [activeThemes, setActiveThemes] = createSignal<Set<Theme>>(new Set([
-    'love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication'
+    'love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication',
+    'transformation', 'freedom', 'travel', 'sexuality'
   ]));
   const [energyFilter, setEnergyFilter] = createSignal<Set<string>>(new Set(['favorable', 'neutral', 'tense', 'special']));
 
@@ -74,6 +78,8 @@ export default function AstroCalendarApp(props: Props) {
     const data: BirthData = birthDataFromProfile(profile);
 
     const chart = calculateNatalChart(data);
+    monthCache.clear();
+    setYearMonths([]);
     setNatal(chart);
     // Calculate current month and auto-select today
     goToday();
@@ -89,8 +95,9 @@ export default function AstroCalendarApp(props: Props) {
 
   const goToday = () => {
     const n = natal();
-    const today = todayDateInput(n?.meta.timeZoneId);
-    const [newYear, monthNumber, todayDay] = today.split('-').map(Number);
+    const today = n ? calendarDateKeyForInstant(new Date(), getCalendarTimeContext(n)) : todayDateInput();
+    setTodayKey(today);
+    const [newYear, monthNumber] = today.split('-').map(Number);
     const newMonth = monthNumber - 1;
     setYear(newYear);
     setMonth(newMonth);
@@ -100,7 +107,7 @@ export default function AstroCalendarApp(props: Props) {
     const cacheKey = `${newYear}-${newMonth}-${profileName()}`;
 
     const selectToday = (data: MonthData) => {
-      const todayData = data.days.find(d => d.date.getDate() === todayDay);
+      const todayData = data.days.find(d => d.dateKey === today);
       setSelectedDay(todayData || null);
       // Scroll to selected day if grid is rendered
       setTimeout(() => {
@@ -201,7 +208,25 @@ export default function AstroCalendarApp(props: Props) {
 
         return true;
       }),
-    })).filter(day => energyFilter().has(day.energy));
+    })).map(day => {
+      const classification = classifyDayEnergy(day.events, config());
+      const voidEvents = day.events.filter(event => event.type === 'void-of-course' && event.startTime && event.endTime);
+      return {
+        ...day,
+        energy: classification.energy,
+        energyScore: classification.score,
+        tip: classification.tip,
+        themes: aggregateThemes(day.events),
+        isVoidOfCourse: voidEvents.length > 0,
+        voidPeriods: voidEvents.map(event => ({ start: event.startTime!, end: event.endTime! })),
+      };
+    }).filter(day => energyFilter().has(day.energy));
+  });
+
+  const selectedVisibleDay = createMemo(() => {
+    const selected = selectedDay();
+    if (!selected) return null;
+    return filteredDays().find(day => day.dateKey === selected.dateKey) || null;
   });
 
   return (
@@ -351,9 +376,10 @@ export default function AstroCalendarApp(props: Props) {
                 days={filteredDays()}
                 year={year()}
                 month={month()}
-                selectedDay={selectedDay()}
+                selectedDay={selectedVisibleDay()}
                 onSelectDay={(day) => setSelectedDay(day)}
                 firstDayOfWeek={config().ui.firstDayOfWeek}
+                todayDateKey={todayKey()}
               />
             </Show>
             <Show when={view() === 'list'}>
@@ -369,13 +395,18 @@ export default function AstroCalendarApp(props: Props) {
 
           {/* Day detail: 1/3 */}
           <div class="lg:col-span-1">
-            <Show when={selectedDay()} fallback={
+            <Show when={selectedVisibleDay()} fallback={
               <div class="glass rounded-2xl p-6 text-center">
                 <div class="text-3xl mb-3">👆</div>
                 <p class="text-sm text-muted">Clique em um dia para ver os detalhes</p>
               </div>
             }>
-              <DayDetail day={selectedDay()!} profection={monthData()?.profection} />
+              <DayDetail
+                day={selectedVisibleDay()!}
+                profection={monthData()?.profection}
+                timeZoneId={monthData()?.timeZoneId}
+                timezone={monthData()?.timezone ?? 0}
+              />
             </Show>
           </div>
         </div>
@@ -390,4 +421,17 @@ export default function AstroCalendarApp(props: Props) {
       </Show>
     </div>
   );
+}
+
+function aggregateThemes(events: CalendarEvent[]): Theme[] {
+  const themeCount: Record<string, number> = {};
+  for (const event of events) {
+    for (const theme of event.themes) {
+      themeCount[theme] = (themeCount[theme] || 0) + event.importance;
+    }
+  }
+  return Object.entries(themeCount)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 4)
+    .map(([theme]) => theme as Theme);
 }

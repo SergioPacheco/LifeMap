@@ -17,14 +17,13 @@
 import type { CalendarConfig, CalendarEvent } from './types';
 import { calculatePositions } from '../calculations';
 import { getSignIndex, norm } from '../calculations';
+import { calendarDateAtLocalTime, daysInCalendarMonth, type CalendarTimeContext } from './calendar-date';
 
 const TRADITIONAL_PLANETS = ['sun', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
 const MODERN_PLANETS = [...TRADITIONAL_PLANETS, 'uranus', 'neptune', 'pluto'];
 
 const MAJOR_ASPECTS = [0, 60, 90, 120, 180]; // Ptolemaic aspects
 const ALL_ASPECTS = [0, 30, 45, 60, 90, 120, 135, 150, 180]; // Including minor
-
-const ASPECT_ORB_VOC = 8; // Orbe generoso para VoC (aspecto "feito" = dentro de 8°)
 
 // ============================================================
 // MAIN: Get Void of Course periods for a month
@@ -33,24 +32,28 @@ const ASPECT_ORB_VOC = 8; // Orbe generoso para VoC (aspecto "feito" = dentro de
 export function getVoidOfCoursePeriods(
   year: number,
   month: number,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  ctx?: CalendarTimeContext
 ): CalendarEvent[] {
   const events: CalendarEvent[] = [];
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = daysInCalendarMonth(year, month);
 
   const planets = cfg.moon.vocPlanets === 'traditional' ? TRADITIONAL_PLANETS : MODERN_PLANETS;
   const aspects = cfg.moon.vocAspects === 'traditional' ? MAJOR_ASPECTS : ALL_ASPECTS;
 
-  // Scan every 2 hours for Moon sign changes and aspect completions
-  const STEP_HOURS = 2;
+  // Scan every 30 minutes for Moon sign changes and approximate VoC periods.
+  const STEP_MINUTES = 30;
   let inVoid = false;
   let voidStart: Date | null = null;
-  let lastSignChange: Date | null = null;
 
   for (let d = 0; d <= daysInMonth; d++) {
-    for (let h = 0; h < 24; h += STEP_HOURS) {
-      const date = new Date(year, month, d + 1, h);
-      if (d === daysInMonth && h > 0) break; // Stop at end of month
+    for (let minuteOfDay = 0; minuteOfDay < 1440; minuteOfDay += STEP_MINUTES) {
+      if (d === daysInMonth && minuteOfDay > 0) break; // Stop at end of month
+      const hour = Math.floor(minuteOfDay / 60);
+      const minute = minuteOfDay % 60;
+      const date = ctx
+        ? calendarDateAtLocalTime(year, month, d + 1, hour, minute, ctx)
+        : new Date(year, month, d + 1, hour, minute);
 
       const positions = calculatePositions(date);
       if (!positions.moon) continue;
@@ -59,20 +62,21 @@ export function getVoidOfCoursePeriods(
       const moonSign = getSignIndex(moonLon);
 
       // Check next step for sign change
-      const nextDate = new Date(date.getTime() + STEP_HOURS * 3600000);
+      const nextDate = new Date(date.getTime() + STEP_MINUTES * 60000);
       const nextPositions = calculatePositions(nextDate);
       const nextMoonSign = nextPositions.moon ? getSignIndex(nextPositions.moon.longitude) : moonSign;
 
       // If Moon changes sign, void ends
       if (nextMoonSign !== moonSign && inVoid && voidStart) {
-        const duration = (date.getTime() - voidStart.getTime()) / 60000; // minutes
+        const ingressDate = refineMoonSignChange(date, nextDate, nextMoonSign);
+        const duration = (ingressDate.getTime() - voidStart.getTime()) / 60000; // minutes
 
         if (duration >= cfg.moon.vocMinDuration) {
           events.push({
             type: 'void-of-course',
             date: voidStart,
             startTime: voidStart,
-            endTime: date,
+            endTime: ingressDate,
             themes: [],
             importance: duration > 240 ? 5 : 3, // >4h = more important
             energy: 'neutral',
@@ -164,4 +168,21 @@ function formatDuration(minutes: number): string {
   if (hours === 0) return `${mins}min`;
   if (mins === 0) return `${hours}h`;
   return `${hours}h${mins}min`;
+}
+
+function refineMoonSignChange(start: Date, end: Date, targetSign: number): Date {
+  let lo = start.getTime();
+  let hi = end.getTime();
+
+  for (let i = 0; i < 12; i++) {
+    const mid = new Date((lo + hi) / 2);
+    const sign = getSignIndex(calculatePositions(mid).moon?.longitude || 0);
+    if (sign === targetSign) {
+      hi = mid.getTime();
+    } else {
+      lo = mid.getTime();
+    }
+  }
+
+  return new Date(hi);
 }

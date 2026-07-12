@@ -11,36 +11,44 @@
 
 import type { NatalChart, Positions, AspectType } from '../types';
 import { calculatePositions } from '../calculations';
-import { calculateAspects } from '../aspects';
 import { getHouseForLongitude } from '../houses';
-import { getSignIndex, getDegreeInSign, norm } from '../calculations';
+import { getSignIndex, norm } from '../calculations';
 import type { CalendarConfig, CalendarEvent, DayData, MonthData, Theme } from './types';
 import { DEFAULT_CALENDAR_CONFIG } from './types';
 import { classifyDayEnergy } from './day-classifier';
 import { mapEventThemes } from './theme-mapper';
-import { getMoonPhaseForDate, getMoonIngresses } from './moon-phases';
+import { getMoonIngresses, getMoonPhaseEvents } from './moon-phases';
 import { getVoidOfCoursePeriods } from './void-moon';
 import { getRetrogradeEvents } from './retrogrades';
 import { getProfectionForDate } from './profection';
 import { getTransitTextWithFallback } from './calendar-texts';
 import { getEclipseEvents } from './eclipses';
 import { getPlanetaryReturnEvents } from './planetary-returns';
+import {
+  calendarDateAtLocalTime,
+  calendarDateKey,
+  calendarDateKeyForInstant,
+  calendarDayOfWeek,
+  daysInCalendarMonth,
+  getCalendarTimeContext,
+  type CalendarTimeContext,
+} from './calendar-date';
 
 // ============================================================
 // POSITION CACHE — calcular uma vez, reusar
 // ============================================================
 
 interface PositionCache {
-  positions: Map<number, Positions>; // key = day (1-31)
+  positions: Map<number, Positions>; // key = day number, 0 is previous month's last day
 }
 
-function buildPositionCache(year: number, month: number): PositionCache {
+function buildPositionCache(year: number, month: number, ctx: CalendarTimeContext): PositionCache {
   const cache: PositionCache = { positions: new Map() };
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = daysInCalendarMonth(year, month);
 
   // Calculate positions for day 0 (last day of prev month) through day daysInMonth
   for (let d = 0; d <= daysInMonth; d++) {
-    const date = new Date(year, month, d + 1, 12, 0, 0);
+    const date = calendarDateAtLocalTime(year, month, d, 12, 0, ctx);
     cache.positions.set(d, calculatePositions(date));
   }
 
@@ -58,67 +66,87 @@ export function calculateMonth(
   config: Partial<CalendarConfig> = {}
 ): MonthData {
   const cfg = { ...DEFAULT_CALENDAR_CONFIG, ...config } as CalendarConfig;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const ctx = getCalendarTimeContext(natal);
+  const daysInMonth = daysInCalendarMonth(year, month);
 
   // 1. Pre-calculate ALL positions (main performance optimization)
-  const cache = buildPositionCache(year, month);
+  const cache = buildPositionCache(year, month, ctx);
 
   // 2. Pre-calculate: retrograde periods
-  const retroPeriods = getRetrogradeEvents(year, month, cfg);
+  const retroPeriods = getRetrogradeEvents(year, month, cfg, ctx);
 
   // 3. Pre-calculate: profection
   const profection = cfg.profection.show
-    ? getProfectionForDate(natal, new Date(year, month, 15), cfg) ?? undefined
+    ? getProfectionForDate(natal, calendarDateAtLocalTime(year, month, 15, 12, 0, ctx), cfg) ?? undefined
     : undefined;
 
   // 4. Eclipses
-  const eclipseEvents = getEclipseEvents(natal, year, month, cfg);
+  const eclipseEvents = getEclipseEvents(natal, year, month, cfg, ctx);
 
   // 5. Planetary returns
-  const returnEvents = getPlanetaryReturnEvents(natal, year, month, cfg);
+  const returnEvents = getPlanetaryReturnEvents(natal, year, month, cfg, ctx);
 
-  // 6. Calculate each day using cached positions
+  // 6. Lunar phase events refined by exact crossing
+  const moonPhaseEvents = cfg.moon.showPhases
+    ? getMoonPhaseEvents(year, month, natal, ctx)
+    : [];
+
+  const planetIngressEvents = getPlanetIngressEvents(year, month, cfg, ctx);
+
+  // 7. Calculate each day using cached positions
   const days: DayData[] = [];
-  for (let d = 0; d < daysInMonth; d++) {
-    const date = new Date(year, month, d + 1, 12, 0, 0);
-    const todayPositions = cache.positions.get(d)!;
-    const yesterdayPositions = cache.positions.get(d - 1) || cache.positions.get(0)!;
+  for (let dayNumber = 1; dayNumber <= daysInMonth; dayNumber++) {
+    const date = calendarDateAtLocalTime(year, month, dayNumber, 12, 0, ctx);
+    const todayPositions = cache.positions.get(dayNumber)!;
+    const yesterdayPositions = cache.positions.get(dayNumber - 1)!;
 
-    const dayData = calculateDay(date, todayPositions, yesterdayPositions, natal, cfg);
+    const dayData = calculateDay(date, todayPositions, yesterdayPositions, natal, cfg, year, month, dayNumber);
 
     // Add eclipse events for this day
     for (const ecl of eclipseEvents) {
-      if (ecl.date.getDate() === d + 1) {
+      if (calendarDateKeyForInstant(ecl.date, ctx) === dayData.dateKey) {
         dayData.events.push(ecl);
       }
     }
 
     // Add return events for this day
     for (const ret of returnEvents) {
-      if (ret.date.getDate() === d + 1) {
+      if (calendarDateKeyForInstant(ret.date, ctx) === dayData.dateKey) {
         dayData.events.push(ret);
+      }
+    }
+
+    for (const phase of moonPhaseEvents) {
+      if (calendarDateKeyForInstant(phase.date, ctx) === dayData.dateKey) {
+        dayData.events.push(phase);
+      }
+    }
+
+    for (const ingress of planetIngressEvents) {
+      if (calendarDateKeyForInstant(ingress.date, ctx) === dayData.dateKey) {
+        dayData.events.push(ingress);
       }
     }
 
     days.push(dayData);
   }
 
-  // 7. Moon ingresses (using cache)
+  // 8. Moon ingresses
   if (cfg.moon.showIngresses) {
-    const ingresses = getMoonIngresses(year, month);
+    const ingresses = getMoonIngresses(year, month, ctx);
     for (const ingress of ingresses) {
-      const dayIndex = ingress.date.getDate() - 1;
+      const dayIndex = dateKeyToDayIndex(calendarDateKeyForInstant(ingress.date, ctx), year, month);
       if (dayIndex >= 0 && dayIndex < days.length) {
         days[dayIndex].events.push(ingress);
       }
     }
   }
 
-  // 8. Void of Course
+  // 9. Void of Course
   if (cfg.moon.showVoidOfCourse) {
-    const voidPeriods = getVoidOfCoursePeriods(year, month, cfg);
+    const voidPeriods = getVoidOfCoursePeriods(year, month, cfg, ctx);
     for (const vp of voidPeriods) {
-      const dayIndex = vp.startTime!.getDate() - 1;
+      const dayIndex = dateKeyToDayIndex(calendarDateKeyForInstant(vp.startTime!, ctx), year, month);
       if (dayIndex >= 0 && dayIndex < days.length) {
         days[dayIndex].events.push(vp);
         days[dayIndex].isVoidOfCourse = true;
@@ -129,6 +157,11 @@ export function calculateMonth(
 
   // 9. Classify days + aggregate themes
   for (const day of days) {
+    for (const event of day.events) {
+      if (event.themes.length === 0) {
+        event.themes = mapEventThemes(event, natal, cfg);
+      }
+    }
     day.events.sort((a, b) => b.importance - a.importance);
     const classification = classifyDayEnergy(day.events, cfg);
     day.energy = classification.energy;
@@ -141,7 +174,7 @@ export function calculateMonth(
   const summary = generateMonthSummary(days);
 
   return {
-    year, month, days, retroPeriods,
+    year, month, timeZoneId: ctx.timeZoneId, timezone: ctx.timezone, days, retroPeriods,
     eclipses: eclipseEvents,
     profection,
     summary,
@@ -157,7 +190,10 @@ function calculateDay(
   todayPositions: Positions,
   yesterdayPositions: Positions,
   natal: NatalChart,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  year: number,
+  month: number,
+  dayNumber: number
 ): DayData {
   const events: CalendarEvent[] = [];
 
@@ -165,23 +201,13 @@ function calculateDay(
   const transitAspects = findTransitToNatalAspects(todayPositions, yesterdayPositions, natal, date, cfg);
   events.push(...transitAspects);
 
-  // 2. Moon phase
-  if (cfg.moon.showPhases) {
-    const moonPhase = getMoonPhaseForDate(date, natal);
-    if (moonPhase) events.push(moonPhase);
-  }
-
-  // 3. Planet ingresses (using cached yesterday)
-  const ingresses = detectIngresses(todayPositions, yesterdayPositions, date, cfg);
-  events.push(...ingresses);
-
-  // 4. Retrograde stations (using cached yesterday)
+  // 2. Retrograde stations (using cached yesterday)
   if (cfg.retrogrades.showStations) {
     const stations = detectStations(todayPositions, yesterdayPositions, date);
     events.push(...stations);
   }
 
-  // 5. Map themes to all events
+  // 3. Map themes to all events
   for (const event of events) {
     if (event.themes.length === 0) {
       event.themes = mapEventThemes(event, natal, cfg);
@@ -190,7 +216,9 @@ function calculateDay(
 
   return {
     date,
-    dayOfWeek: date.getDay(),
+    dateKey: calendarDateKey(year, month, dayNumber),
+    dayNumber,
+    dayOfWeek: calendarDayOfWeek(year, month, dayNumber),
     events,
     energy: 'neutral',
     energyScore: 0,
@@ -263,7 +291,7 @@ function findTransitToNatalAspects(
           }
 
           const natalHouse = getHouseForLongitude(transitPos.longitude, natal.houses.cusps);
-          const importance = calculateImportance(transitId, natalId, aspectName, diff, orb, transitPos, cfg);
+          const importance = calculateImportance(transitId, natalId, aspectName, diff, orb, transitPos, cfg, isApplying);
           const text = getTransitTextWithFallback(transitId, natalId, aspectName);
 
           events.push({
@@ -293,37 +321,51 @@ function findTransitToNatalAspects(
 }
 
 // ============================================================
-// INGRESSES (uses pre-cached yesterday — NO extra calc)
+// INGRESSES
 // ============================================================
 
-function detectIngresses(todayPositions: Positions, yesterdayPositions: Positions, date: Date, cfg: CalendarConfig): CalendarEvent[] {
+function getPlanetIngressEvents(year: number, month: number, cfg: CalendarConfig, ctx: CalendarTimeContext): CalendarEvent[] {
   const events: CalendarEvent[] = [];
+  const daysInMonth = daysInCalendarMonth(year, month);
+  const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
 
   for (const planetId of cfg.planets.transiting) {
     if (planetId === 'moon') continue;
-    const curr = todayPositions[planetId];
-    const prev = yesterdayPositions[planetId];
-    if (!curr || !prev) continue;
+    let previousDate = calendarDateAtLocalTime(year, month, 0, 0, 0, ctx);
+    let previousSign = getSignIndex(calculatePositions(previousDate)[planetId]?.longitude || 0);
 
-    const currSign = getSignIndex(curr.longitude);
-    const prevSign = getSignIndex(prev.longitude);
+    for (let day = 1; day <= daysInMonth + 1; day++) {
+      for (let hour = 0; hour < 24; hour += 6) {
+        const date = calendarDateAtLocalTime(year, month, day, hour, 0, ctx);
+        const currentSign = getSignIndex(calculatePositions(date)[planetId]?.longitude || 0);
+        if (currentSign === previousSign) {
+          previousDate = date;
+          continue;
+        }
 
-    if (currSign !== prevSign) {
-      events.push({
-        type: 'planet-ingress',
-        date,
-        transitPlanet: planetId,
-        transitSign: currSign,
-        themes: [],
-        importance: getIngressImportance(planetId),
-        energy: 'neutral',
-        title: formatIngressTitle(planetId, currSign),
-        summary: '',
-      });
+        const ingressDate = refinePlanetSignIngressTime(previousDate, date, planetId, currentSign);
+        const dateKey = calendarDateKeyForInstant(ingressDate, ctx);
+        if (dateKey.startsWith(monthPrefix)) {
+          events.push({
+            type: 'planet-ingress',
+            date: ingressDate,
+            transitPlanet: planetId,
+            transitSign: currentSign,
+            themes: [],
+            importance: getIngressImportance(planetId),
+            energy: 'neutral',
+            title: formatIngressTitle(planetId, currentSign),
+            summary: '',
+          });
+        }
+
+        previousSign = currentSign;
+        previousDate = date;
+      }
     }
   }
 
-  return events;
+  return events.sort((a, b) => a.date.getTime() - b.date.getTime());
 }
 
 // ============================================================
@@ -381,7 +423,8 @@ function calculateImportance(
   orb: number,
   maxOrb: number,
   transitPos: any,
-  cfg: CalendarConfig
+  cfg: CalendarConfig,
+  isApplying?: boolean
 ): number {
   let score = 4; // base
 
@@ -401,7 +444,7 @@ function calculateImportance(
   if (['sun', 'moon'].includes(natalPlanet)) score += 1;
 
   // Applying bonus
-  if (cfg.aspects.applicationBonus) score += 0.5;
+  if (cfg.aspects.applicationBonus && isApplying) score += 0.5;
 
   return Math.min(10, Math.max(1, Math.round(score)));
 }
@@ -417,6 +460,23 @@ function getRetroImportance(planet: string): number {
     mercury: 8, venus: 7, mars: 6, jupiter: 5, saturn: 6, uranus: 4, neptune: 3, pluto: 3, chiron: 4,
   };
   return weights[planet] || 4;
+}
+
+function refinePlanetSignIngressTime(start: Date, end: Date, planet: string, targetSign: number): Date {
+  let lo = start.getTime();
+  let hi = end.getTime();
+
+  for (let i = 0; i < 16; i++) {
+    const mid = new Date((lo + hi) / 2);
+    const sign = getSignIndex(calculatePositions(mid)[planet]?.longitude || 0);
+    if (sign === targetSign) {
+      hi = mid.getTime();
+    } else {
+      lo = mid.getTime();
+    }
+  }
+
+  return new Date(hi);
 }
 
 // ============================================================
@@ -468,12 +528,18 @@ function aggregateThemes(events: CalendarEvent[]): Theme[] {
 }
 
 function generateMonthSummary(days: DayData[]): any {
-  const bestDays = days.filter(d => d.energy === 'favorable').map(d => d.date.getDate()).slice(0, 5);
-  const challengingDays = days.filter(d => d.energy === 'tense').map(d => d.date.getDate()).slice(0, 5);
-  const specialDays = days.filter(d => d.energy === 'special').map(d => d.date.getDate());
+  const bestDays = days.filter(d => d.energy === 'favorable').map(d => d.dayNumber).slice(0, 5);
+  const challengingDays = days.filter(d => d.energy === 'tense').map(d => d.dayNumber).slice(0, 5);
+  const specialDays = days.filter(d => d.energy === 'special').map(d => d.dayNumber);
   const themeCount: Record<string, number> = {};
   for (const day of days) { for (const theme of day.themes) { themeCount[theme] = (themeCount[theme] || 0) + 1; } }
   const dominantThemes = Object.entries(themeCount).sort(([, a], [, b]) => b - a).slice(0, 3).map(([t]) => t as Theme);
 
   return { bestDays, challengingDays, specialDays, dominantThemes, overview: '' };
+}
+
+function dateKeyToDayIndex(key: string, year: number, month: number): number {
+  const [keyYear, keyMonth, keyDay] = key.split('-').map(Number);
+  if (keyYear !== year || keyMonth !== month + 1) return -1;
+  return keyDay - 1;
 }

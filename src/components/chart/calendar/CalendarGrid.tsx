@@ -13,6 +13,7 @@ interface Props {
   selectedDay: DayData | null;
   onSelectDay: (day: DayData) => void;
   firstDayOfWeek: 0 | 1;
+  todayDateKey: string;
 }
 
 const DAY_NAMES_SHORT = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -37,15 +38,11 @@ const MOON_PHASE_ICONS: Record<string, string> = {
 };
 
 export function CalendarGrid(props: Props) {
-  const today = new Date();
-  const isToday = (day: DayData) =>
-    day.date.getDate() === today.getDate() &&
-    day.date.getMonth() === today.getMonth() &&
-    day.date.getFullYear() === today.getFullYear();
+  const isToday = (day: DayData) => day.dateKey === props.todayDateKey;
 
   // Calculate padding days for the first week (REACTIVE)
   const offset = createMemo(() => {
-    const firstDay = new Date(props.year, props.month, 1).getDay();
+    const firstDay = new Date(Date.UTC(props.year, props.month, 1, 12)).getUTCDay();
     return (firstDay - props.firstDayOfWeek + 7) % 7;
   });
 
@@ -87,14 +84,14 @@ export function CalendarGrid(props: Props) {
                 hover:border-gold/50 hover:shadow-sm
                 ${ENERGY_COLORS[day.energy]}
                 ${isToday(day) ? 'ring-2 ring-gold/50' : ''}
-                ${props.selectedDay?.date.getDate() === day.date.getDate() ? 'ring-2 ring-gold border-gold/60' : ''}
+                ${props.selectedDay?.dateKey === day.dateKey ? 'ring-2 ring-gold border-gold/60' : ''}
               `}
             >
               <div class="h-full flex flex-col justify-between">
                 {/* Top: day number + energy dot */}
                 <div class="flex items-center justify-between">
                   <span class={`text-xs font-medium ${isToday(day) ? 'text-gold' : 'text-cream'}`}>
-                    {day.date.getDate()}
+                    {day.dayNumber}
                   </span>
                   <div class={`w-1.5 h-1.5 rounded-full ${ENERGY_DOT[day.energy]}`} />
                 </div>

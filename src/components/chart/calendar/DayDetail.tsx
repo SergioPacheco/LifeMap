@@ -5,10 +5,13 @@
 import { For, Show } from 'solid-js';
 import type { DayData, CalendarEvent, ProfectionData, DayEnergy } from '../../../engine/calendar/types';
 import { THEME_INFO } from '../../../engine/calendar/theme-mapper';
+import { formatCalendarTime } from '../../../engine/calendar/calendar-date';
 
 interface Props {
   day: DayData;
   profection?: ProfectionData | null;
+  timeZoneId?: string;
+  timezone: number;
 }
 
 const ENERGY_LABELS: Record<DayEnergy, { label: string; color: string; icon: string }> = {
@@ -41,8 +44,8 @@ export function DayDetail(props: Props) {
   const energyInfo = () => ENERGY_LABELS[props.day.energy];
 
   const formatDate = () => {
-    const d = props.day.date;
-    return `${DAY_NAMES[d.getDay()]}, ${d.getDate()} de ${MONTH_NAMES[d.getMonth()]}`;
+    const [, month, day] = props.day.dateKey.split('-').map(Number);
+    return `${DAY_NAMES[props.day.dayOfWeek]}, ${day} de ${MONTH_NAMES[month - 1]}`;
   };
 
   // Group events by type for better display
@@ -119,9 +122,9 @@ export function DayDetail(props: Props) {
           <For each={props.day.voidPeriods}>
             {(vp) => (
               <p class="text-xs text-muted">
-                {vp.start.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                {formatCalendarTime(vp.start, { timeZoneId: props.timeZoneId, timezone: props.timezone })}
                 {' → '}
-                {vp.end.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                {formatCalendarTime(vp.end, { timeZoneId: props.timeZoneId, timezone: props.timezone })}
               </p>
             )}
           </For>

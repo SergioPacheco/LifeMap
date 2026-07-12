@@ -34,7 +34,7 @@ export function MonthInsights(props: Props) {
       for (const theme of day.themes) {
         if (!themes[theme]) themes[theme] = [];
         if (themes[theme].length < 3) {
-          themes[theme].push(day.date.getDate());
+          themes[theme].push(day.dayNumber);
         }
       }
     }

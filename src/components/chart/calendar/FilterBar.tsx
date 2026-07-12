@@ -23,6 +23,9 @@ const EVENT_TYPES = [
   { id: 'void-of-course', label: 'Lua Vazia', icon: '⏸️', desc: 'Período sem aspectos lunares — evitar iniciar atividades importantes' },
   { id: 'retrograde-start', label: 'Retrógrados', icon: '℞', desc: 'Planeta inverte direção aparente — revisão, atrasos e introspecção' },
   { id: 'retrograde-end', label: 'Diretos', icon: 'D', desc: 'Planeta retoma movimento direto — projetos desbloqueia, avanço retomado' },
+  { id: 'eclipse-solar', label: 'Eclipse Solar', icon: '🌑', desc: 'Eclipse solar — virada coletiva com impacto pessoal se tocar seu mapa' },
+  { id: 'eclipse-lunar', label: 'Eclipse Lunar', icon: '🌕', desc: 'Eclipse lunar — culminações e revelações no eixo ativado do mapa' },
+  { id: 'planetary-return', label: 'Retornos', icon: '↺', desc: 'Retornos e fases de ciclos planetários importantes' },
 ];
 
 const ENERGY_OPTIONS = [
@@ -32,7 +35,7 @@ const ENERGY_OPTIONS = [
   { id: 'special', label: 'Especiais', color: 'bg-gold', desc: 'Eclipses, retornos planetários — momentos de virada' },
 ];
 
-const THEMES: Theme[] = ['love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication'];
+const THEMES: Theme[] = ['love', 'career', 'finances', 'health', 'spirituality', 'family', 'creativity', 'communication', 'transformation', 'freedom', 'travel', 'sexuality'];
 
 const THEME_DESCRIPTIONS: Record<string, string> = {
   love: 'Relacionamentos, romance, parcerias — ativado por Vênus, Casa 5, Casa 7',
@@ -43,6 +46,10 @@ const THEME_DESCRIPTIONS: Record<string, string> = {
   family: 'Lar, raízes, pais, segurança emocional — ativado por Lua, Casa 4',
   creativity: 'Arte, prazer, autoexpressão, filhos — ativado por Vênus, Sol, Casa 5',
   communication: 'Estudos, escrita, viagens, contratos — ativado por Mercúrio, Casa 3/9',
+  transformation: 'Transformação profunda, crises e renascimento — ativado por Plutão e Casa 8',
+  freedom: 'Mudanças, independência e redes — ativado por Urano, Aquário e Casa 11',
+  travel: 'Viagens, estudos superiores e expansão — ativado por Júpiter, Sagitário e Casa 9',
+  sexuality: 'Desejo, intimidade e energia vital — ativado por Marte, Plutão e Casa 8',
 };
 
 export function FilterBar(props: Props) {
