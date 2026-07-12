@@ -74,8 +74,8 @@ export default function ProgressionsApp() {
   };
 
   return (
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-1 flex flex-col gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <Show when={natal()}>
           <div class="glass rounded-2xl p-4">
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Progredir até</h3>

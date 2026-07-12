@@ -127,9 +127,9 @@ export default function NatalApp(props: Props) {
   };
 
   return (
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       {/* Left: Form + Profiles */}
-      <div class="lg:col-span-1 flex flex-col gap-4">
+      <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <BirthDataForm onCalculate={handleCalculate} locale={props.locale} initialData={formData()} />
 
         {/* Engine info badge */}

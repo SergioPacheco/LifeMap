@@ -80,9 +80,9 @@ export default function TransitsApp() {
   };
 
   return (
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       {/* Left: Date + Aspects */}
-      <div class="lg:col-span-1 flex flex-col gap-4">
+      <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <Show when={!natalChart()}>
           <div class="glass rounded-2xl p-4 text-center">
             <p class="text-xs text-muted">Selecione um perfil no menu superior (👤) para ver os trânsitos.</p>
