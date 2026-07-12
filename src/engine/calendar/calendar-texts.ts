@@ -18,6 +18,87 @@ type TransitPlanetTexts = Record<string, NatalPlanetTexts>;
 
 export const CALENDAR_TRANSIT_TEXTS: TransitPlanetTexts = {
   // ============================================================
+  // LUA em trânsito (mais frequente — ~2.5 dias por signo)
+  // ============================================================
+  moon: {
+    sun: {
+      conjunction: { summary: 'Lua Nova pessoal — emoções e vontade se alinham. Novo começo emocional.', advice: 'Defina intenções que honrem razão e emoção.' },
+      trine: { summary: 'Fluxo harmonioso entre sentir e querer. Dia emocionalmente fácil.', advice: 'Confie na intuição para decisões hoje.' },
+      square: { summary: 'Tensão entre necessidades emocionais e objetivos. Irritação possível.', advice: 'Reconheça o que sente sem reagir por impulso.' },
+      opposition: { summary: 'Lua Cheia pessoal — culminação emocional. Clareza sobre sentimentos.', advice: 'O que vem à tona precisa ser visto e processado.' },
+      sextile: { summary: 'Equilíbrio emocional sutil. Bem-estar disponível.', advice: 'Cuide de si com gestos simples.' },
+    },
+    venus: {
+      conjunction: { summary: 'Emoções doces. Necessidade de afeto e beleza satisfeita.', advice: 'Permita-se prazer sem culpa.' },
+      trine: { summary: 'Dia emocionalmente agradável. Relações fluem com ternura.', advice: 'Bom para encontros e autocuidado.' },
+      square: { summary: 'Carência afetiva ou ciúmes. Emocional quer mais do que o real oferece.', advice: 'Não busque no outro o que só você pode se dar.' },
+      opposition: { summary: 'Sentimentos intensos em relação a alguém. Saudade ou desejo.', advice: 'Observe sem agir impulsivamente.' },
+      sextile: { summary: 'Ternura e gentileza naturais.', advice: 'Expresse carinho a quem está perto.' },
+    },
+    mars: {
+      conjunction: { summary: 'Emoções inflamadas. Reatividade alta. Energia emocional intensa.', advice: 'Mova o corpo antes de reagir verbalmente.' },
+      trine: { summary: 'Coragem emocional. Defesa saudável do que sente.', advice: 'Aja com o coração — está alinhado.' },
+      square: { summary: 'Raiva emocional. Discussões domésticas prováveis.', advice: 'Saia para caminhar. Não desconte em quem ama.' },
+      opposition: { summary: 'Alguém provoca emocionalmente. Reação desproporcional possível.', advice: 'Conte até 10. Literalmente.' },
+      sextile: { summary: 'Motivação emocional produtiva.', advice: 'Use a energia para limpar, organizar, resolver.' },
+    },
+    saturn: {
+      conjunction: { summary: 'Peso emocional. Melancolia ou senso de dever. Solidão temporária.', advice: 'Permita-se sentir sem julgamento. Passa em poucas horas.' },
+      trine: { summary: 'Maturidade emocional. Serenidade e equilíbrio.', advice: 'Bom para conversas sérias e planejamento.' },
+      square: { summary: 'Frieza ou bloqueio emocional. Dificuldade de se abrir.', advice: 'Não se cobre tanto. Vulnerabilidade é força.' },
+      opposition: { summary: 'Obrigações pesam emocionalmente. Cansaço.', advice: 'Descanse sem culpa.' },
+      sextile: { summary: 'Estabilidade emocional conquistada.', advice: 'Bom para estabelecer rotinas saudáveis.' },
+    },
+    jupiter: {
+      conjunction: { summary: 'Otimismo emocional. Generosidade e alegria.', advice: 'Compartilhe o que sente com leveza.' },
+      trine: { summary: 'Bem-estar emocional pleno. Gratidão natural.', advice: 'Bom dia para gratidão e celebração.' },
+      square: { summary: 'Exagero emocional. Comer ou gastar por carência.', advice: 'Satisfação real vem de dentro.' },
+      opposition: { summary: 'Generosidade excessiva pode esgotar.', advice: 'Cuide de si antes de dar ao outro.' },
+      sextile: { summary: 'Intuição otimista confiável.', advice: 'Confie no que sente sobre oportunidades.' },
+    },
+  },
+
+  // ============================================================
+  // MERCÚRIO em trânsito
+  // ============================================================
+  mercury: {
+    sun: {
+      conjunction: { summary: 'Mente alinhada com identidade. Comunicação carismática e precisa.', advice: 'Ótimo para apresentações, entrevistas, e-mails importantes.' },
+      trine: { summary: 'Pensamento fluido e criativo. Articulação fácil.', advice: 'Escreva, negocie, proponha.' },
+      square: { summary: 'Pensamento ansioso ou obsessivo. Dificuldade de concentração.', advice: 'Faça listas — tire da cabeça e ponha no papel.' },
+      opposition: { summary: 'Outros desafiam suas ideias. Debate necessário.', advice: 'Ouvir antes de argumentar produz melhores resultados.' },
+      sextile: { summary: 'Mente ágil e receptiva.', advice: 'Bom para aprender algo novo.' },
+    },
+    mercury: {
+      conjunction: { summary: 'Retorno de Mercúrio — mente renovada. Ciclo intelectual recomeça.', advice: 'Reavalie como pensa e comunica.' },
+      trine: { summary: 'Pensamento alinhado com suas capacidades naturais.', advice: 'Confie na sua forma de raciocinar.' },
+      square: { summary: 'Nervosismo mental. Excesso de informação ou decisões.', advice: 'Priorize. Nem tudo precisa ser resolvido hoje.' },
+      opposition: { summary: 'Reflexão sobre como você se comunica e é percebido.', advice: 'Peça feedback — você pode estar com ponto cego.' },
+      sextile: { summary: 'Processos mentais em bom ritmo.', advice: 'Estude, leia, organize informações.' },
+    },
+    venus: {
+      conjunction: { summary: 'Pensamentos sobre amor, beleza e valores. Comunicação afetiva.', advice: 'Diga o que sente com elegância.' },
+      trine: { summary: 'Palavras doces. Diplomacia natural.', advice: 'Bom para pedir, propor, reconciliar.' },
+      square: { summary: 'Dificuldade em expressar afeto ou valores claramente.', advice: 'Escreva em vez de falar — ganha clareza.' },
+      opposition: { summary: 'Comunicação sobre relação traz revelações.', advice: 'Ouça o não-dito nas entrelinhas.' },
+      sextile: { summary: 'Conversa leve e agradável.', advice: 'Bom para socializar e flertar.' },
+    },
+    saturn: {
+      conjunction: { summary: 'Pensamento sério e concentrado. Mente disciplinada.', advice: 'Excelente para planejamento de longo prazo.' },
+      trine: { summary: 'Raciocínio estruturado e produtivo.', advice: 'Organize, planeje, documente.' },
+      square: { summary: 'Pensamentos pessimistas ou limitantes. Autocrítica excessiva.', advice: 'Questione o crítico interno — nem tudo é tão grave.' },
+      opposition: { summary: 'Comunicação travada. Medo de falar ou ser julgado.', advice: 'Diga o necessário mesmo com desconforto.' },
+      sextile: { summary: 'Praticidade mental. Foco no que funciona.', advice: 'Hora de resolver pendências burocráticas.' },
+    },
+    jupiter: {
+      conjunction: { summary: 'Mente expansiva. Ideias grandiosas e otimistas.', advice: 'Planeje grande — mas anote para não esquecer.' },
+      trine: { summary: 'Pensamento abrangente e filosófico.', advice: 'Excelente para cursos, viagens e publicações.' },
+      square: { summary: 'Excesso de planos ou promessas. Mente dispersa.', advice: 'Foque em uma ideia por vez.' },
+      opposition: { summary: 'Outros trazem perspectivas expansivas — avalie.', advice: 'Abra a mente sem perder o senso crítico.' },
+      sextile: { summary: 'Aprendizado fluido. Curiosidade produtiva.', advice: 'Bom para pesquisar e estudar.' },
+    },
+  },
+  // ============================================================
   // SOL em trânsito
   // ============================================================
   sun: {

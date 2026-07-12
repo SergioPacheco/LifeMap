@@ -161,11 +161,22 @@ function EventCard(props: { event: CalendarEvent }) {
     return 'border-l-gray-500';
   };
 
+  const applyingIcon = () => {
+    if (e.isApplying === true) return '↗'; // Getting stronger
+    if (e.isApplying === false) return '↘'; // Dissipating
+    return '';
+  };
+
   return (
     <div class={`p-2.5 rounded-lg bg-base-200/50 border-l-2 ${energyBorder()}`}>
       <div class="flex items-start justify-between gap-2">
         <div class="flex-1">
-          <p class="text-xs font-medium text-cream">{e.title}</p>
+          <p class="text-xs font-medium text-cream">
+            {e.title}
+            <Show when={e.natalHouse}>
+              <span class="text-muted ml-1">(Casa {e.natalHouse})</span>
+            </Show>
+          </p>
           <Show when={e.summary}>
             <p class="text-[11px] text-muted mt-0.5 leading-relaxed">{e.summary}</p>
           </Show>
@@ -173,9 +184,18 @@ function EventCard(props: { event: CalendarEvent }) {
             <p class="text-[10px] text-gold mt-1 italic">💡 {e.advice}</p>
           </Show>
         </div>
-        <Show when={e.orb !== undefined}>
-          <span class="text-[9px] text-muted whitespace-nowrap">orbe {e.orb!.toFixed(1)}°</span>
-        </Show>
+        <div class="flex flex-col items-end gap-0.5">
+          <Show when={e.orb !== undefined}>
+            <span class="text-[9px] text-muted whitespace-nowrap">
+              {applyingIcon()} {e.orb!.toFixed(1)}°
+            </span>
+          </Show>
+          <Show when={e.isApplying !== undefined}>
+            <span class={`text-[8px] ${e.isApplying ? 'text-green-400' : 'text-gray-500'}`}>
+              {e.isApplying ? 'aplicando' : 'separando'}
+            </span>
+          </Show>
+        </div>
       </div>
 
       {/* Theme badges */}

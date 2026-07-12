@@ -23,6 +23,7 @@ const CONJUNCTION_NATURE: Record<string, 'positive' | 'negative' | 'neutral'> = 
 
 export function classifyDayEnergy(events: CalendarEvent[], cfg: CalendarConfig): DayClassification {
   let score = 0;
+  let totalWeight = 0;
   const reasons: string[] = [];
 
   for (const event of events) {
@@ -42,30 +43,38 @@ export function classifyDayEnergy(events: CalendarEvent[], cfg: CalendarConfig):
       else eventScore = 0.5;
     }
 
-    // Multiplicar pelo peso dos planetas (média)
-    const planetFactor = (transitWeight + natalWeight) / 4; // normalizado
+    // Weight by planet importance (average of transit + natal)
+    const planetFactor = (transitWeight + natalWeight) / 4;
     eventScore *= planetFactor;
 
-    // Decaimento por orbe (mais exato = mais forte)
+    // Decay by orb (tighter = stronger)
     if (cfg.dayClassification.orbDecay && event.orb !== undefined) {
       const maxOrb = cfg.aspects.orbs[event.aspectType || 'conjunction'] || 2;
-      const orbFactor = 1 - (event.orb / maxOrb) * 0.5; // 100% a 50%
+      const orbFactor = 1 - (event.orb / maxOrb) * 0.5;
       eventScore *= orbFactor;
     }
 
-    // Aplicativo é mais forte que separativo
+    // Applying bonus
     if (cfg.aspects.applicationBonus && event.isApplying) {
       eventScore *= 1.3;
     }
 
     score += eventScore;
+    totalWeight += Math.abs(eventScore);
 
     if (Math.abs(eventScore) > 2) {
       reasons.push(`${event.title} (${eventScore > 0 ? '+' : ''}${eventScore.toFixed(1)})`);
     }
   }
 
-  // Penalidades extras
+  // NORMALIZE: weighted average instead of raw sum
+  // This prevents days with many weak aspects from outscoring days with 1 strong aspect
+  const significantEvents = events.filter(e => e.type === 'transit-aspect').length;
+  if (significantEvents > 3) {
+    score = score / Math.sqrt(significantEvents / 3); // Diminishing returns after 3 events
+  }
+
+  // Penalties
   const hasVoC = events.some(e => e.type === 'void-of-course');
   if (hasVoC) {
     score += cfg.dayClassification.voidMoonPenalty;

@@ -127,12 +127,8 @@ export const PROFECTION_HOUSE_THEMES: Record<number, { theme: string; focus: str
 // ============================================================
 
 function parseBirthDate(natal: NatalChart): Date | null {
-  // Try to get birth date from metadata
-  const meta = (natal as any).meta || (natal as any).birthData;
-  if (meta?.date) {
-    const [y, m, d] = meta.date.split('-').map(Number);
-    return new Date(y, m - 1, d);
-  }
+  // NatalChart.date is the UTC birth date (always available)
+  if (natal.date) return natal.date;
   return null;
 }
 

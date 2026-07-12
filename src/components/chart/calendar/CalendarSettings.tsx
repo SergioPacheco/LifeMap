@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function CalendarSettings(props: Props) {
-  const [config, setConfig] = createSignal<CalendarConfig>({ ...props.config });
+  const [config, setConfig] = createSignal<CalendarConfig>(structuredClone(props.config));
   const [activeTab, setActiveTab] = createSignal<'aspects' | 'planets' | 'moon' | 'themes' | 'display'>('aspects');
 
   const update = (path: string, value: any) => {

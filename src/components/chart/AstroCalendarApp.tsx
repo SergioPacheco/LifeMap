@@ -34,6 +34,9 @@ export default function AstroCalendarApp(props: Props) {
   const [config, setConfig] = createSignal<CalendarConfig>(DEFAULT_CALENDAR_CONFIG);
   const [showSettings, setShowSettings] = createSignal(false);
 
+  // Performance: cache calculated months
+  const monthCache = new Map<string, MonthData>();
+
   // Filters
   const [activeTypes, setActiveTypes] = createSignal<Set<string>>(new Set([
     'transit-aspect', 'moon-phase', 'moon-ingress', 'planet-ingress', 'retrograde-start', 'retrograde-end', 'void-of-course'
@@ -78,16 +81,29 @@ export default function AstroCalendarApp(props: Props) {
     const n = chart || natal();
     if (!n) return;
 
-    setLoading(true);
-    try {
-      const data = calculateMonth(n, year(), month(), config());
-      setMonthData(data);
+    const cacheKey = `${year()}-${month()}-${profileName()}`;
+
+    // Check cache first
+    if (monthCache.has(cacheKey)) {
+      setMonthData(monthCache.get(cacheKey)!);
       setSelectedDay(null);
-    } catch (e) {
-      console.error('Calendar calculation error:', e);
-    } finally {
-      setLoading(false);
+      return;
     }
+
+    setLoading(true);
+    // Use setTimeout to allow UI to show loading state
+    setTimeout(() => {
+      try {
+        const data = calculateMonth(n, year(), month(), config());
+        monthCache.set(cacheKey, data);
+        setMonthData(data);
+        setSelectedDay(null);
+      } catch (e) {
+        console.error('Calendar calculation error:', e);
+      } finally {
+        setLoading(false);
+      }
+    }, 10);
   };
 
   const goToday = () => {
