@@ -80,10 +80,70 @@ export default function AstroCalendarApp(props: Props) {
   const recalculate = (chart?: NatalChart) => {
     const n = chart || natal();
     if (!n) return;
+    // Clear cache when config changes or profile changes
+    monthCache.clear();
+    recalculateWithValues(year(), month());
+  };
 
-    const cacheKey = `${year()}-${month()}-${profileName()}`;
+  const goToday = () => {
+    const now = new Date();
+    const newYear = now.getFullYear();
+    const newMonth = now.getMonth();
+    setYear(newYear);
+    setMonth(newMonth);
 
-    // Check cache first
+    const n = natal();
+    if (!n) return;
+
+    const cacheKey = `${newYear}-${newMonth}-${profileName()}`;
+
+    if (monthCache.has(cacheKey)) {
+      const data = monthCache.get(cacheKey)!;
+      setMonthData(data);
+      // Auto-select today
+      const todayData = data.days.find(d => d.date.getDate() === now.getDate());
+      setSelectedDay(todayData || null);
+    } else {
+      setLoading(true);
+      setTimeout(() => {
+        try {
+          const data = calculateMonth(n, newYear, newMonth, config());
+          monthCache.set(cacheKey, data);
+          setMonthData(data);
+          const todayData = data.days.find(d => d.date.getDate() === now.getDate());
+          setSelectedDay(todayData || null);
+        } catch (e) {
+          console.error('Calendar calculation error:', e);
+        } finally {
+          setLoading(false);
+        }
+      }, 10);
+    }
+  };
+
+  const prevMonth = () => {
+    let newMonth = month() - 1;
+    let newYear = year();
+    if (newMonth < 0) { newMonth = 11; newYear--; }
+    setMonth(newMonth);
+    setYear(newYear);
+    recalculateWithValues(newYear, newMonth);
+  };
+
+  const nextMonth = () => {
+    let newMonth = month() + 1;
+    let newYear = year();
+    if (newMonth > 11) { newMonth = 0; newYear++; }
+    setMonth(newMonth);
+    setYear(newYear);
+    recalculateWithValues(newYear, newMonth);
+  };
+
+  const recalculateWithValues = (y: number, m: number) => {
+    const n = natal();
+    if (!n) return;
+
+    const cacheKey = `${y}-${m}-${profileName()}`;
     if (monthCache.has(cacheKey)) {
       setMonthData(monthCache.get(cacheKey)!);
       setSelectedDay(null);
@@ -91,10 +151,9 @@ export default function AstroCalendarApp(props: Props) {
     }
 
     setLoading(true);
-    // Use setTimeout to allow UI to show loading state
     setTimeout(() => {
       try {
-        const data = calculateMonth(n, year(), month(), config());
+        const data = calculateMonth(n, y, m, config());
         monthCache.set(cacheKey, data);
         setMonthData(data);
         setSelectedDay(null);
@@ -104,32 +163,6 @@ export default function AstroCalendarApp(props: Props) {
         setLoading(false);
       }
     }, 10);
-  };
-
-  const goToday = () => {
-    setYear(new Date().getFullYear());
-    setMonth(new Date().getMonth());
-    recalculate();
-  };
-
-  const prevMonth = () => {
-    if (month() === 0) {
-      setMonth(11);
-      setYear(year() - 1);
-    } else {
-      setMonth(month() - 1);
-    }
-    recalculate();
-  };
-
-  const nextMonth = () => {
-    if (month() === 11) {
-      setMonth(0);
-      setYear(year() + 1);
-    } else {
-      setMonth(month() + 1);
-    }
-    recalculate();
   };
 
   const MONTH_NAMES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
