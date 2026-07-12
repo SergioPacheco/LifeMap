@@ -5,11 +5,17 @@ import { buildUTCDate, calculateNatalChart, initSweph, getSignIndex } from '../.
 import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { getOffsetHoursForInstant, inferTimeZoneId } from '../../utils/dateTime';
 
 // ─── Helpers ───────────────────────────────────────────────
 function formatDate(d: Date): string { return d.toISOString().split('T')[0]; }
 function formatTime(d: Date): string {
   return `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`;
+}
+
+function formatLocalDateTimeForOffset(utcMs: number, offset: number): { date: string; time: string } {
+  const local = new Date(utcMs + offset * 3600000);
+  return { date: formatDate(local), time: formatTime(local) };
 }
 
 // ─── Constants ─────────────────────────────────────────────
@@ -160,15 +166,21 @@ export default function DavisonApp(props: Props) {
     // Midpoint in space
     const midLat = (a.lat + b.lat) / 2;
     const midLng = (a.lng + b.lng) / 2;
-    const midTimezone = Math.round(midLng / 15);
-    const midLocalDate = new Date(midUtcMs + midTimezone * 60 * 60 * 1000);
+    const midpointCountry = a.country && a.country === b.country ? a.country : undefined;
+    const midpointTimeZoneId = inferTimeZoneId({ lat: midLat, lng: midLng, country: midpointCountry });
+    const midUtcDate = new Date(midUtcMs);
+    const midTimezone = midpointTimeZoneId
+      ? getOffsetHoursForInstant(midUtcDate, midpointTimeZoneId)
+      : Math.round(midLng / 15);
+    const localMidpoint = formatLocalDateTimeForOffset(midUtcMs, midTimezone);
 
     const chart = calculateNatalChart({
-      date: formatDate(midLocalDate),
-      time: formatTime(midLocalDate),
+      date: localMidpoint.date,
+      time: localMidpoint.time,
       lat: midLat,
       lng: midLng,
       timezone: midTimezone,
+      timeZoneId: midpointTimeZoneId,
       name: 'Davison',
       city: 'Midpoint',
     });

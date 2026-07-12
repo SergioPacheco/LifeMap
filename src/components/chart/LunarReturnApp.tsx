@@ -6,6 +6,7 @@ import { renderWheel } from '../../renderer/wheel';
 import PlanetTable from './PlanetTable';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import { isValidTimeZone, localeToDateLocale, pad2, zonedDateTimeToUtc } from '../../utils/dateTime';
 
 // ============================================================
 // TYPES
@@ -108,12 +109,19 @@ const SATURN_HOUSE: string[] = [
 // ============================================================
 
 function calculateLunarReturn(
-  natalMoonLon: number, year: number, month: number, lat: number, lng: number
+  natalMoonLon: number,
+  year: number,
+  month: number,
+  lat: number,
+  lng: number,
+  timezone: number,
+  timeZoneId?: string
 ): LunarReturnResult | null {
   // Moon orbital period ~27.32 days, speed ~13.17°/day
   // Start search from first day of requested month
-  const searchStart = new Date(Date.UTC(year, month, 1));
-  const searchEnd = new Date(Date.UTC(year, month + 1, 5)); // +5 days into next month as buffer
+  const monthStart = `${year}-${pad2(month + 1)}-01`;
+  const searchStart = zonedDateTimeToUtc(monthStart, '00:00', timeZoneId, timezone);
+  const searchEnd = new Date(searchStart.getTime() + 36 * 86400000);
 
   let bestDate: Date = searchStart;
   let bestDiff = 999;
@@ -300,7 +308,7 @@ export default function LunarReturnApp() {
   const [lrChart, setLrChart] = createSignal<LunarReturnResult | null>(null);
   const [wheelSvg, setWheelSvg] = createSignal('');
   const [profileName, setProfileName] = createSignal('');
-  const [profileMeta, setProfileMeta] = createSignal<{ lat: number; lng: number; timezone: number } | null>(null);
+  const [profileMeta, setProfileMeta] = createSignal<{ lat: number; lng: number; timezone: number; timeZoneId?: string } | null>(null);
   const [targetMonth, setTargetMonth] = createSignal(now.getMonth());
   const [targetYear, setTargetYear] = createSignal(now.getFullYear());
   const [loading, setLoading] = createSignal(false);
@@ -323,7 +331,7 @@ export default function LunarReturnApp() {
       const chart = calculateNatalChart(birthDataFromProfile(profile));
       setNatalChart(chart);
       setProfileName(profile.name);
-      setProfileMeta({ lat: profile.lat, lng: profile.lng, timezone: profile.timezone });
+      setProfileMeta({ lat: profile.lat, lng: profile.lng, timezone: profile.timezone, timeZoneId: profile.timeZoneId });
       calculateLR(chart, profile.lat, profile.lng, targetYear(), targetMonth());
     } catch (e: any) {
       setError(e?.message || 'Erro ao calcular');
@@ -337,7 +345,8 @@ export default function LunarReturnApp() {
     setTimeout(() => {
       try {
         const natalMoonLon = natal.positions.moon.longitude;
-        const result = calculateLunarReturn(natalMoonLon, year, month, lat, lng);
+        const meta = profileMeta();
+        const result = calculateLunarReturn(natalMoonLon, year, month, lat, lng, meta?.timezone ?? 0, meta?.timeZoneId);
         if (result) {
           setLrChart(result);
           setWheelSvg(renderWheel(result as any));
@@ -376,11 +385,19 @@ export default function LunarReturnApp() {
   const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
   const formatDate = (d: Date) => {
-    return d.toLocaleDateString('pt-BR', {
+    const meta = profileMeta();
+    const locale = localeToDateLocale('pt');
+    const options: Intl.DateTimeFormatOptions = {
       weekday: 'long', day: '2-digit', month: 'long',
       year: 'numeric', hour: '2-digit', minute: '2-digit',
-      timeZone: 'UTC',
-    });
+    };
+
+    if (isValidTimeZone(meta?.timeZoneId)) {
+      return d.toLocaleString(locale, { ...options, timeZone: meta?.timeZoneId });
+    }
+
+    const localDate = new Date(d.getTime() + (meta?.timezone ?? 0) * 3600000);
+    return localDate.toLocaleString(locale, { ...options, timeZone: 'UTC' });
   };
 
   return (

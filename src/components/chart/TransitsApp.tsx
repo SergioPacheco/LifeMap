@@ -1,7 +1,7 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import { calculateNatalChart, calculateTransits, initSweph } from '../../engine/index';
-import { renderWheel, renderBiWheel } from '../../renderer/wheel';
+import { renderBiWheel } from '../../renderer/wheel';
 import type { NatalChart, TransitChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';

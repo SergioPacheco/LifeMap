@@ -103,7 +103,12 @@ export function calculateComposite(chartA: NatalChart, chartB: NatalChart, optio
   const asc = midpoint(chartA.houses.ascendant, chartB.houses.ascendant);
   const mc = midpoint(chartA.houses.midheaven, chartB.houses.midheaven);
   const houseSystem = options?.houseSystem || DEFAULT_HOUSE_SYSTEM;
-  const houses = calculateFullHouses(chartA.date, chartA.meta.lat, chartA.meta.lng, houseSystem);
+  const houses = {
+    cusps: chartA.houses.cusps.map((cusp, idx) => midpoint(cusp, chartB.houses.cusps[idx])),
+    ascendant: asc,
+    midheaven: mc,
+    system: houseSystem,
+  };
   const aspects = calculateAspects(positions, positions, true, options);
 
   const planetHouses: Record<string, number> = {};
@@ -119,7 +124,7 @@ export function calculateComposite(chartA: NatalChart, chartB: NatalChart, optio
 // ============================================================
 
 export function calculateSolarReturn(
-  natalChart: NatalChart, year: number, lat: number, lng: number, tz: number, options?: CalculationOptions
+  natalChart: NatalChart, year: number, lat: number, lng: number, tz: number, timeZoneId?: string, options?: CalculationOptions
 ): SolarReturnChart {
   const natalSunLon = natalChart.positions.sun.longitude;
   const houseSystem = options?.houseSystem || DEFAULT_HOUSE_SYSTEM;
@@ -150,6 +155,17 @@ export function calculateSolarReturn(
     if (actualDiff < bestDiff) { bestDiff = actualDiff; bestDate = testDate; }
   }
 
+  // Very fine search (minute by minute)
+  const minuteStart = new Date(bestDate.getTime() - 3600000);
+  bestDiff = 999;
+  for (let m = 0; m <= 120; m++) {
+    const testDate = new Date(minuteStart.getTime() + m * 60000);
+    const pos = calculatePositions(testDate, options);
+    const diff = Math.abs(pos.sun.longitude - natalSunLon);
+    const actualDiff = diff > 180 ? 360 - diff : diff;
+    if (actualDiff < bestDiff) { bestDiff = actualDiff; bestDate = testDate; }
+  }
+
   const positions = calculatePositions(bestDate, options);
   const houses = calculateFullHouses(bestDate, lat, lng, houseSystem);
   const aspects = calculateAspects(positions, positions, true, options);
@@ -167,7 +183,7 @@ export function calculateSolarReturn(
     houses,
     aspects,
     planetHouses,
-    meta: { lat, lng, timezone: tz, houseSystem },
+    meta: { lat, lng, timezone: tz, timeZoneId, houseSystem },
   };
 }
 

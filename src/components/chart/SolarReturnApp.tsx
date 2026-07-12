@@ -9,6 +9,7 @@ import type { NatalChart, SolarReturnChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import { isValidTimeZone, localeToDateLocale } from '../../utils/dateTime';
 
 export default function SolarReturnApp() {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
@@ -32,11 +33,11 @@ export default function SolarReturnApp() {
     const chart = calculateNatalChart(birthDataFromProfile(profile));
     setNatalChart(chart);
     setProfileName(profile.name);
-    calculateSR(chart, year(), profile.lat, profile.lng, profile.timezone);
+    calculateSR(chart, year(), profile.lat, profile.lng, profile.timezone, profile.timeZoneId);
   };
 
-  const calculateSR = (natal: NatalChart, yr: number, lat: number, lng: number, tz: number) => {
-    const sr = calculateSolarReturn(natal, yr, lat, lng, tz);
+  const calculateSR = (natal: NatalChart, yr: number, lat: number, lng: number, tz: number, timeZoneId?: string) => {
+    const sr = calculateSolarReturn(natal, yr, lat, lng, tz, timeZoneId);
     setSrChart(sr);
     setWheelSvg(renderWheel(sr as any));
   };
@@ -45,8 +46,26 @@ export default function SolarReturnApp() {
     setYear(yr);
     if (natalChart()) {
       const meta = natalChart()!.meta;
-      calculateSR(natalChart()!, yr, meta.lat, meta.lng, meta.timezone);
+      calculateSR(natalChart()!, yr, meta.lat, meta.lng, meta.timezone, meta.timeZoneId);
     }
+  };
+
+  const formatReturnDate = (chart: SolarReturnChart): string => {
+    const locale = localeToDateLocale('pt');
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+
+    if (isValidTimeZone(chart.meta.timeZoneId)) {
+      return chart.date.toLocaleString(locale, { ...options, timeZone: chart.meta.timeZoneId });
+    }
+
+    const localDate = new Date(chart.date.getTime() + chart.meta.timezone * 3600000);
+    return localDate.toLocaleString(locale, { ...options, timeZone: 'UTC' });
   };
 
   return (
@@ -66,7 +85,7 @@ export default function SolarReturnApp() {
             </div>
             <Show when={srChart()}>
               <p class="text-xs text-muted mt-2">
-                Retorno Solar: {srChart().date.toISOString().split('T')[0]}
+                Retorno Solar: {formatReturnDate(srChart())}
               </p>
             </Show>
           </div>

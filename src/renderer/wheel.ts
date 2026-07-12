@@ -511,10 +511,10 @@ function drawTransitPlanetsOuter(positions: Positions, asc: number): string {
     // Hollow circle + symbol (transit style) with tooltip
     s += `<g style="cursor:pointer">`;
     s += `<title>${tooltip}</title>`;
-    s += `<circle cx="${p.x}" cy="${p.y}" r="9" fill="none" stroke="${color}" stroke-width="1.5"/>`;
-    s += `<text x="${p.x}" y="${p.y + 4}" text-anchor="middle" font-size="11" fill="${color}" font-family="serif">${symbol}</text>`;
+    s += `<circle cx="${p.x}" cy="${p.y}" r="13" fill="${COL.bg}" stroke="${color}" stroke-width="1.8"/>`;
+    s += `<text x="${p.x}" y="${p.y + 6}" text-anchor="middle" font-size="17" font-weight="700" fill="${color}" stroke="${COL.bg}" stroke-width="2" paint-order="stroke" font-family="serif">${symbol}</text>`;
     if (item.retro) {
-      s += `<text x="${p.x + 10}" y="${p.y - 5}" font-size="6" fill="#cc4444" font-family="sans-serif">℞</text>`;
+      s += `<text x="${p.x + 12}" y="${p.y - 8}" font-size="9" font-weight="700" fill="${COL.retroRed}" font-family="Arial, Helvetica, sans-serif">℞</text>`;
     }
     s += `</g>`;
   }

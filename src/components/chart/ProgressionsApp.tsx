@@ -86,7 +86,7 @@ export default function ProgressionsApp() {
             />
             <Show when={progressed()}>
               <p class="text-xs text-muted mt-2">Idade: {progressed()!.age} anos</p>
-              <p class="text-xs text-muted">Data progredida: {progressed()!.date.toISOString().split('T')[0]}</p>
+              <p class="text-xs text-muted">Data-alvo: {targetDate()}</p>
             </Show>
           </div>
 
