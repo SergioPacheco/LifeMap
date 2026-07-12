@@ -2,7 +2,7 @@
 // CalendarGrid.tsx — Grid mensal com células por dia
 // ============================================================
 
-import { For, Show } from 'solid-js';
+import { For, Show, createMemo } from 'solid-js';
 import type { DayData, DayEnergy } from '../../../engine/calendar/types';
 import { THEME_INFO } from '../../../engine/calendar/theme-mapper';
 
@@ -43,18 +43,20 @@ export function CalendarGrid(props: Props) {
     day.date.getMonth() === today.getMonth() &&
     day.date.getFullYear() === today.getFullYear();
 
-  // Calculate padding days for the first week
-  const firstDay = new Date(props.year, props.month, 1).getDay();
-  const offset = (firstDay - props.firstDayOfWeek + 7) % 7;
+  // Calculate padding days for the first week (REACTIVE)
+  const offset = createMemo(() => {
+    const firstDay = new Date(props.year, props.month, 1).getDay();
+    return (firstDay - props.firstDayOfWeek + 7) % 7;
+  });
 
-  // Ordered day names based on firstDayOfWeek
-  const orderedDays = () => {
+  // Ordered day names based on firstDayOfWeek (REACTIVE)
+  const orderedDays = createMemo(() => {
     const days = [...DAY_NAMES_SHORT];
     if (props.firstDayOfWeek === 1) {
       days.push(days.shift()!); // Move Dom to end
     }
     return days;
-  };
+  });
 
   return (
     <div class="glass rounded-2xl p-4">
@@ -70,7 +72,7 @@ export function CalendarGrid(props: Props) {
       {/* Grid of days */}
       <div class="grid grid-cols-7 gap-1">
         {/* Empty cells for offset */}
-        <For each={Array(offset).fill(null)}>
+        <For each={Array(offset()).fill(null)}>
           {() => <div class="aspect-square" />}
         </For>
 
