@@ -220,11 +220,18 @@ export function dateToJD(date: Date): number {
 }
 
 /**
- * Convert local date+time to UTC Date
+ * Convert local date+time to UTC Date.
+ * dateStr: "YYYY-MM-DD", timeStr: "HH:MM", tzOffset: hours from UTC (e.g. -3 for Brazil)
+ * We parse the components manually to avoid the browser interpreting the string
+ * in the device's local timezone (which would be wrong if user is abroad).
  */
 export function buildUTCDate(dateStr: string, timeStr: string, tzOffset: number): Date {
-  const local = new Date(`${dateStr}T${timeStr}:00`);
-  return new Date(local.getTime() - tzOffset * 3600000);
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const [hour, minute] = timeStr.split(':').map(Number);
+  // Build a UTC timestamp treating the input as local time at birth location,
+  // then subtract the birth-place offset to get true UTC.
+  const utcMs = Date.UTC(year, month - 1, day, hour, minute, 0) - tzOffset * 3600000;
+  return new Date(utcMs);
 }
 
 /**

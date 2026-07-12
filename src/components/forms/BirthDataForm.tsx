@@ -435,5 +435,34 @@ export default function BirthDataForm(props: Props) {
 // ============================================================
 
 function estimateTimezone(longitude: number): number {
-  return Math.round(longitude / 15);
+  // Standard UTC offsets that don't follow longitude/15 exactly.
+  // Most countries use a standard offset; this approximation covers major cases.
+  // Brazil (lon -35 to -73) is UTC-3 (mainland standard time).
+  // Argentina (lon -53 to -73) is UTC-3.
+  // India (+68 to +97) is UTC+5.5 but we round to +5 or +6.
+  // China (+73 to +135) is UTC+8.
+  
+  // For a better solution, use a timezone API. This is a reasonable fallback.
+  const raw = longitude / 15;
+  
+  // Brazil correction: longitude -34 to -74 → UTC-3 (not -4 or -5)
+  if (longitude >= -74 && longitude <= -34) return -3;
+  
+  // Argentina shares UTC-3
+  // already covered above
+  
+  // Central Europe +1
+  if (longitude >= -10 && longitude <= 25) return 1;
+  
+  // Eastern Europe +2
+  if (longitude > 25 && longitude <= 45) return 2;
+  
+  // India +5.5 → round to 5
+  if (longitude >= 68 && longitude <= 97) return 5;
+  
+  // China +8
+  if (longitude >= 73 && longitude <= 135) return 8;
+  
+  // Default: longitude-based approximation
+  return Math.round(raw);
 }

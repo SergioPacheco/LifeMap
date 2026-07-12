@@ -33,12 +33,15 @@ function formatCoord(value: number, posDir: string, negDir: string): string {
   return `${deg}${dir}${min < 10 ? '0' : ''}${min}`;
 }
 
-/** Format a Date to "DD.MM.YYYY HH:mm" */
-function formatDate(date: Date): string {
+/** Format chart date as "DD.MM.YYYY HH:mm" in the birth-place timezone (not device tz) */
+function formatDate(date: Date, tzOffset?: number): string {
   const pad = (n: number) => String(n).padStart(2, '0');
+  // If we have the birth-place offset, convert from UTC to birth-local
+  const localMs = tzOffset != null ? date.getTime() + tzOffset * 3600000 : date.getTime();
+  const local = new Date(localMs);
   return (
-    `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
-    `${pad(date.getHours())}:${pad(date.getMinutes())}`
+    `${pad(local.getUTCDate())}.${pad(local.getUTCMonth() + 1)}.${local.getUTCFullYear()} ` +
+    `${pad(local.getUTCHours())}:${pad(local.getUTCMinutes())}`
   );
 }
 
@@ -69,7 +72,7 @@ export default function ChartHeader(props: Props) {
         const sunLon = () => c().positions.sun?.longitude ?? 0;
         const moonLon = () => c().positions.moon?.longitude ?? 0;
         const houseLabel = () => HOUSE_SYSTEM_LABELS[c().meta.houseSystem] ?? c().meta.houseSystem;
-        const dateStr = () => formatDate(c().date);
+        const dateStr = () => formatDate(c().date, c().meta.timezone);
         const dignityEntries = () => Object.entries(c().dignities ?? {}) as [string, DignityType][];
 
         return (

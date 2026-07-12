@@ -13,6 +13,16 @@ import { renderBiWheel } from '../../renderer/wheel';
 import type { BirthData, NatalChart, TransitChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
 
+/** Estimate UTC offset from longitude (corrected for major timezone regions) */
+function estimateTimezoneFromLng(longitude: number): number {
+  if (longitude >= -74 && longitude <= -34) return -3; // Brazil/Argentina
+  if (longitude >= -10 && longitude <= 25) return 1;   // Central Europe
+  if (longitude > 25 && longitude <= 45) return 2;     // Eastern Europe
+  if (longitude >= 68 && longitude <= 97) return 5;    // India
+  if (longitude >= 73 && longitude <= 135) return 8;   // China
+  return Math.round(longitude / 15);
+}
+
 interface Props {
   locale: string;
 }
@@ -93,13 +103,15 @@ export default function NatalApp(props: Props) {
   };
 
   const handleProfileSelect = (profile: Profile) => {
+    // Recalculate timezone from longitude to fix legacy profiles saved with wrong offset
+    const correctedTz = estimateTimezoneFromLng(profile.lng);
     const data: BirthData = {
       name: profile.name,
       date: profile.date,
       time: profile.time,
       lat: profile.lat,
       lng: profile.lng,
-      timezone: profile.timezone,
+      timezone: correctedTz,
       city: profile.city,
       country: profile.country,
     };
