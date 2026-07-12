@@ -31,6 +31,21 @@ export default function Header(props: Props) {
     window.dispatchEvent(new CustomEvent('lifemap:profile-change', { detail: profile }));
   };
 
+  const deleteProfile = async (e: Event, profile: Profile) => {
+    e.stopPropagation();
+    if (!confirm(`Excluir perfil "${profile.name}"?`)) return;
+    await db.profiles.delete(profile.id!);
+    const all = await db.profiles.toArray();
+    all.sort((a, b) => (b.updatedAt?.getTime?.() || 0) - (a.updatedAt?.getTime?.() || 0));
+    setProfiles(all);
+    if (profile.name === activeProfile()) {
+      setActiveProfile(all.length > 0 ? all[0].name : '');
+      if (all.length > 0) {
+        window.dispatchEvent(new CustomEvent('lifemap:profile-change', { detail: all[0] }));
+      }
+    }
+  };
+
   const navItems = () => [
     { label: t().nav.charts, href: localePath('/chart/natal', props.locale), children: [
       { label: t().nav.natal, href: localePath('/chart/natal', props.locale) },
@@ -122,18 +137,29 @@ export default function Header(props: Props) {
                     </div>
                     <For each={profiles()}>
                       {(profile) => (
-                        <button
-                          onClick={() => selectProfile(profile)}
-                          class={`w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-base-200 transition-colors ${
-                            profile.name === activeProfile() ? 'text-gold font-medium' : 'text-cream-dark'
-                          }`}
-                        >
-                          <span class="text-xs">{profile.name === activeProfile() ? '●' : '○'}</span>
-                          <div class="flex-1 min-w-0">
-                            <div class="text-xs font-medium truncate">{profile.name || 'Sem nome'}</div>
-                            <div class="text-[10px] text-muted">{profile.date} • {profile.city}</div>
-                          </div>
-                        </button>
+                        <div class={`flex items-center hover:bg-base-200 transition-colors ${
+                          profile.name === activeProfile() ? 'text-gold font-medium' : 'text-cream-dark'
+                        }`}>
+                          <button
+                            onClick={() => selectProfile(profile)}
+                            class="flex-1 text-left flex items-center gap-2 px-3 py-2 text-sm"
+                          >
+                            <span class="text-xs">{profile.name === activeProfile() ? '●' : '○'}</span>
+                            <div class="flex-1 min-w-0">
+                              <div class="text-xs font-medium truncate">{profile.name || 'Sem nome'}</div>
+                              <div class="text-[10px] text-muted">{profile.date} • {profile.city}</div>
+                            </div>
+                          </button>
+                          <button
+                            onClick={(e) => deleteProfile(e, profile)}
+                            class="p-1.5 mr-2 text-muted hover:text-red-400 transition-colors rounded hover:bg-base-300/30"
+                            title="Excluir perfil"
+                          >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
                       )}
                     </For>
                   </div>
