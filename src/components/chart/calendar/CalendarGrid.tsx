@@ -120,7 +120,7 @@ export function CalendarGrid(props: Props) {
 
                 {/* Bottom: theme badges (max 2) */}
                 <div class="flex gap-0.5 justify-center">
-                  <For each={day.themes.slice(0, 2)}>
+                  <For each={day.themes.slice(0, 4)}>
                     {(theme) => (
                       <span
                         class="text-[8px]"
@@ -130,8 +130,8 @@ export function CalendarGrid(props: Props) {
                       </span>
                     )}
                   </For>
-                  <Show when={day.events.length > 3}>
-                    <span class="text-[8px] text-muted">+{day.events.length - 3}</span>
+                  <Show when={day.events.length > 4}>
+                    <span class="text-[8px] text-muted">+{day.events.length - 4}</span>
                   </Show>
                 </div>
               </div>
