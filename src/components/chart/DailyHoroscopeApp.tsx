@@ -1,10 +1,11 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
-import ProfileSelector from '../forms/ProfileSelector';
+
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateDailyHoroscope, type DailyHoroscope, type DailyTransit } from '../../engine/daily-horoscope';
 import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { db } from '../../store/db';
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
@@ -23,7 +24,11 @@ export default function DailyHoroscopeApp(props: Props) {
   const [date, setDate] = createSignal(new Date().toISOString().split('T')[0]);
   const [profileName, setProfileName] = createSignal('');
 
-  onMount(async () => { await initSweph(); });
+  onMount(async () => {
+    await initSweph();
+    try { const p = await db.profiles.orderBy('id').reverse().limit(1).toArray(); if (p.length > 0) handleProfileSelect(p[0]); } catch {}
+    window.addEventListener('lifemap:profile-change', (e: any) => { if (e.detail) handleProfileSelect(e.detail); });
+  });
 
   const handleProfileSelect = (profile: Profile) => {
     const chart = calculateNatalChart({
@@ -62,13 +67,6 @@ export default function DailyHoroscopeApp(props: Props) {
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left sidebar */}
       <div class="lg:col-span-1 space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-            Seu Perfil
-          </h3>
-          <ProfileSelector onSelect={handleProfileSelect} locale="pt" />
-          <p class="text-xs text-muted mt-2">Calcule primeiro seu mapa natal.</p>
-        </div>
 
         <Show when={natal()}>
           <div class="glass rounded-2xl p-4">

@@ -4,7 +4,7 @@ import PlanetTable from '../chart/PlanetTable';
 import InterpretationPanel from '../chart/InterpretationPanel';
 import BirthDataForm from '../forms/BirthDataForm';
 import { type ChartOptions, DEFAULT_OPTIONS } from '../forms/BirthDataForm';
-import ProfileSelector, { saveProfile } from '../forms/ProfileSelector';
+import { saveProfile } from '../forms/ProfileSelector';
 import { calculateNatalChart, calculateTransits, initSweph, getActiveEngine } from '../../engine/index';
 import { renderBiWheel } from '../../renderer/wheel';
 import type { BirthData, NatalChart, TransitChart } from '../../engine/types';
@@ -33,20 +33,16 @@ export default function NatalApp(props: Props) {
       const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
       if (profiles.length > 0) {
         const p = profiles[0];
-        handleCalculate({
-          name: p.name,
-          date: p.date,
-          time: p.time,
-          lat: p.lat,
-          lng: p.lng,
-          timezone: p.timezone,
-          city: p.city,
-          country: p.country,
-        });
+        handleProfileSelect(p);
       }
     } catch (e) {
       console.warn('Could not auto-load profile:', e);
     }
+
+    // Listen for profile changes from Header
+    window.addEventListener('lifemap:profile-change', (e: any) => {
+      if (e.detail) handleProfileSelect(e.detail);
+    });
   });
 
   const handleCalculate = async (data: BirthData, options?: ChartOptions) => {
@@ -134,7 +130,6 @@ export default function NatalApp(props: Props) {
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Left: Form + Profiles */}
       <div class="lg:col-span-1 space-y-4">
-        <ProfileSelector onSelect={handleProfileSelect} onNew={handleNewProfile} locale={props.locale} />
         <BirthDataForm onCalculate={handleCalculate} locale={props.locale} initialData={formData()} />
 
         {/* Engine info badge */}

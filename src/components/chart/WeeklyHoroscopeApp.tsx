@@ -1,9 +1,10 @@
 import { createSignal, onMount, Show, For } from 'solid-js';
-import ProfileSelector from '../forms/ProfileSelector';
+
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { generateDailyHoroscope, type DailyHoroscope } from '../../engine/daily-horoscope';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { db } from '../../store/db';
 
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
@@ -21,7 +22,11 @@ export default function WeeklyHoroscopeApp() {
   const [profileName, setProfileName] = createSignal('');
   const [weekStart, setWeekStart] = createSignal('');
 
-  onMount(async () => { await initSweph(); });
+  onMount(async () => {
+    await initSweph();
+    try { const p = await db.profiles.orderBy('id').reverse().limit(1).toArray(); if (p.length > 0) handleProfileSelect(p[0]); } catch {}
+    window.addEventListener('lifemap:profile-change', (e: any) => { if (e.detail) handleProfileSelect(e.detail); });
+  });
 
   const handleProfileSelect = (profile: Profile) => {
     const chart = calculateNatalChart({
@@ -68,7 +73,9 @@ export default function WeeklyHoroscopeApp() {
       {/* Profile + Navigation */}
       <div class="glass rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         <div class="flex-1 min-w-0">
-          <ProfileSelector onSelect={handleProfileSelect} locale="pt" />
+          <Show when={natal()}>
+            <span class="text-sm text-cream font-medium">{(natal() as any)?.meta?.name || 'Perfil'}</span>
+          </Show>
         </div>
         <Show when={natal()}>
           <div class="flex items-center gap-2">

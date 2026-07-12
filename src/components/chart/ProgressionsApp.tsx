@@ -1,5 +1,4 @@
 import { createSignal, onMount, Show } from 'solid-js';
-import ProfileSelector from '../forms/ProfileSelector';
 import PlanetTable from '../chart/PlanetTable';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { calculateProgressions, calculateProgressedToNatalAspects } from '../../engine/progressions';
@@ -7,6 +6,7 @@ import { renderWheel } from '../../renderer/wheel';
 import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart, ProgressedChart, BirthData } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { db } from '../../store/db';
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
@@ -22,7 +22,16 @@ export default function ProgressionsApp() {
   const [profileName, setProfileName] = createSignal('');
   const [p2nAspects, setP2nAspects] = createSignal<any[]>([]);
 
-  onMount(async () => { await initSweph(); });
+  onMount(async () => {
+    await initSweph();
+    try {
+      const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
+      if (profiles.length > 0) handleProfileSelect(profiles[0]);
+    } catch {}
+    window.addEventListener('lifemap:profile-change', (e: any) => {
+      if (e.detail) handleProfileSelect(e.detail);
+    });
+  });
 
   const handleProfileSelect = (profile: Profile) => {
     const bd: BirthData = {
@@ -54,11 +63,6 @@ export default function ProgressionsApp() {
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-1 space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Perfil</h3>
-          <ProfileSelector onSelect={handleProfileSelect} locale="pt" />
-        </div>
-
         <Show when={natal()}>
           <div class="glass rounded-2xl p-4">
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Progredir até</h3>

@@ -1,9 +1,10 @@
 import { createSignal, onMount, Show } from 'solid-js';
-import ProfileSelector from '../forms/ProfileSelector';
+
 import { calculateNatalChart, initSweph, getSignIndex, getDegreeInSign } from '../../engine/index';
 import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
+import { db } from '../../store/db';
 
 // Planet click interpretations (will come from content files in production)
 const PLANET_CLICK_PT: Record<string, { title: string; meaning: string; question: string }> = {
@@ -33,6 +34,14 @@ export default function AstroClickApp() {
     await initSweph();
     // Add click listener for planets
     document.addEventListener('click', handlePlanetClick);
+    // Auto-load profile
+    try {
+      const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
+      if (profiles.length > 0) handleProfileSelect(profiles[0]);
+    } catch {}
+    window.addEventListener('lifemap:profile-change', (e: any) => {
+      if (e.detail) handleProfileSelect(e.detail);
+    });
   });
 
   const handleProfileSelect = (profile: Profile) => {
@@ -75,13 +84,8 @@ export default function AstroClickApp() {
 
   return (
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Left: Profile + Interpretation */}
+      {/* Left: Interpretation */}
       <div class="lg:col-span-1 space-y-4">
-        <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Perfil</h3>
-          <ProfileSelector onSelect={handleProfileSelect} locale="pt" />
-        </div>
-
         <Show when={natal() && !interpretation()}>
           <div class="bg-gold/5 rounded-xl border border-gold/20 p-6 text-center">
             <div class="text-3xl mb-2">👆</div>
