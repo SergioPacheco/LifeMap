@@ -7,9 +7,11 @@ import { createSignal, createMemo, onMount, Show, For } from 'solid-js';
 import ProfileSelector from '../forms/ProfileSelector';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { CalendarList } from './calendar/CalendarList';
+import { CalendarYear } from './calendar/CalendarYear';
 import { DayDetail } from './calendar/DayDetail';
 import { FilterBar } from './calendar/FilterBar';
 import { CalendarSettings } from './calendar/CalendarSettings';
+import { MonthInsights } from './calendar/MonthInsights';
 import { calculateMonth } from '../../engine/calendar';
 import { calculateNatalChart, initSweph } from '../../engine/index';
 import { DEFAULT_CALENDAR_CONFIG } from '../../engine/calendar/types';
@@ -29,7 +31,7 @@ export default function AstroCalendarApp(props: Props) {
   const [month, setMonth] = createSignal(new Date().getMonth());
   const [monthData, setMonthData] = createSignal<MonthData | null>(null);
   const [selectedDay, setSelectedDay] = createSignal<DayData | null>(null);
-  const [view, setView] = createSignal<'month' | 'list'>('month');
+  const [view, setView] = createSignal<'month' | 'year' | 'list'>('month');
   const [loading, setLoading] = createSignal(false);
   const [config, setConfig] = createSignal<CalendarConfig>(DEFAULT_CALENDAR_CONFIG);
   const [showSettings, setShowSettings] = createSignal(false);
@@ -229,6 +231,12 @@ export default function AstroCalendarApp(props: Props) {
                 Mês
               </button>
               <button
+                onClick={() => setView('year')}
+                class={`px-3 py-1.5 text-xs transition-colors ${view() === 'year' ? 'bg-gold/20 text-gold' : 'text-muted hover:text-cream'}`}
+              >
+                Ano
+              </button>
+              <button
                 onClick={() => setView('list')}
                 class={`px-3 py-1.5 text-xs transition-colors ${view() === 'list' ? 'bg-gold/20 text-gold' : 'text-muted hover:text-cream'}`}
               >
@@ -300,8 +308,18 @@ export default function AstroCalendarApp(props: Props) {
         </div>
       </Show>
 
-      {/* Calendar grid or list */}
-      <Show when={monthData() && !loading()}>
+      {/* Year view (full width) */}
+      <Show when={view() === 'year' && natal() && !loading()}>
+        <CalendarYear
+          year={year()}
+          natal={natal()!}
+          config={config()}
+          onSelectMonth={(m) => { setMonth(m); setView('month'); recalculateWithValues(year(), m); }}
+        />
+      </Show>
+
+      {/* Calendar grid or list (month/list views) */}
+      <Show when={view() !== 'year' && monthData() && !loading()}>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main view: 2/3 */}
           <div class="lg:col-span-2">
@@ -336,6 +354,11 @@ export default function AstroCalendarApp(props: Props) {
           </div>
         </div>
       </Show>
+      {/* Month Insights (below calendar — only for month/list views) */}
+      <Show when={view() !== 'year' && monthData() && !loading()}>
+        <MonthInsights monthData={monthData()!} profection={monthData()?.profection} />
+      </Show>
+
       {/* Settings Modal */}
       <Show when={showSettings()}>
         <CalendarSettings
