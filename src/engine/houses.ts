@@ -57,7 +57,9 @@ export function calculateAscendant(utcDate: Date, lat: number, lng: number): num
 
   const y = -Math.cos(lstRad);
   const x = Math.sin(eps) * Math.tan(latRad) + Math.cos(eps) * Math.sin(lstRad);
-  return norm(Math.atan2(y, x) * 180 / Math.PI);
+  // This formula yields the western horizon intersection; the astrological
+  // Ascendant is the eastern horizon, exactly opposite.
+  return norm(Math.atan2(y, x) * 180 / Math.PI + 180);
 }
 
 /**
@@ -72,7 +74,9 @@ export function calculateMC(utcDate: Date, lng: number): number {
 
   let mc = Math.atan2(Math.sin(lstRad), Math.cos(lstRad) * Math.cos(eps)) * 180 / Math.PI;
   if (Math.cos(lstRad) < 0) mc += 180;
-  return norm(mc);
+  // The raw angle above points to the anti-culminating meridian in this
+  // coordinate convention, so rotate to the true Midheaven.
+  return norm(mc + 180);
 }
 
 // ============================================================
