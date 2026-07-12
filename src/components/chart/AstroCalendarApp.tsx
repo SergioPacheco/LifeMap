@@ -4,7 +4,6 @@
 // ============================================================
 
 import { createSignal, createMemo, onMount, Show, For } from 'solid-js';
-import ProfileSelector from '../forms/ProfileSelector';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { CalendarList } from './calendar/CalendarList';
 import { CalendarYear } from './calendar/CalendarYear';
@@ -61,6 +60,11 @@ export default function AstroCalendarApp(props: Props) {
     } catch (e) {
       console.warn('Could not auto-load profile:', e);
     }
+
+    // Listen for profile changes from Header
+    window.addEventListener('lifemap:profile-change', (e: any) => {
+      if (e.detail) loadProfile(e.detail);
+    });
   });
 
   const loadProfile = (profile: Profile) => {
@@ -204,11 +208,6 @@ export default function AstroCalendarApp(props: Props) {
       {/* Header: Profile + Navigation */}
       <div class="glass rounded-2xl p-4 sm:p-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          {/* Profile selector */}
-          <div class="w-full sm:w-64">
-            <ProfileSelector onSelect={loadProfile} locale={props.locale} />
-          </div>
-
           {/* Month navigation */}
           <div class="flex items-center gap-3">
             <button onClick={prevMonth} class="p-2 rounded-lg hover:bg-base-200 text-muted hover:text-cream transition-colors" title="Mês anterior">
