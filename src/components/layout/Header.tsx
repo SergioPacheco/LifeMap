@@ -1,5 +1,6 @@
-import { createSignal, For, Show } from 'solid-js';
+import { createSignal, onMount, For, Show } from 'solid-js';
 import { getTranslations, languages, localePath, switchLocalePath, type Locale } from '../../i18n';
+import { db, type Profile } from '../../store/db';
 
 interface Props {
   locale: Locale;
@@ -9,7 +10,26 @@ export default function Header(props: Props) {
   const t = () => getTranslations(props.locale);
   const [menuOpen, setMenuOpen] = createSignal(false);
   const [langOpen, setLangOpen] = createSignal(false);
+  const [profileOpen, setProfileOpen] = createSignal(false);
+  const [profiles, setProfiles] = createSignal<Profile[]>([]);
+  const [activeProfile, setActiveProfile] = createSignal<string>('');
   const [cartCount, setCartCount] = createSignal(0);
+
+  onMount(async () => {
+    try {
+      const all = await db.profiles.toArray();
+      all.sort((a, b) => (b.updatedAt?.getTime?.() || 0) - (a.updatedAt?.getTime?.() || 0));
+      setProfiles(all);
+      if (all.length > 0) setActiveProfile(all[0].name);
+    } catch { /* ignore */ }
+  });
+
+  const selectProfile = (profile: Profile) => {
+    setActiveProfile(profile.name);
+    setProfileOpen(false);
+    // Dispatch custom event so pages can react
+    window.dispatchEvent(new CustomEvent('lifemap:profile-change', { detail: profile }));
+  };
 
   const navItems = () => [
     { label: '📅 Calendário', href: localePath('/tools/calendar', props.locale) },
@@ -61,8 +81,51 @@ export default function Header(props: Props) {
             </For>
           </nav>
 
-          {/* Right side: Language + Cart + Mobile toggle */}
+          {/* Right side: Profile + Language + Cart + Mobile toggle */}
           <div class="flex items-center gap-3">
+            {/* Profile Switcher */}
+            <Show when={profiles().length > 0}>
+              <div class="relative">
+                <button
+                  onClick={() => { setProfileOpen(!profileOpen()); setLangOpen(false); }}
+                  class="flex items-center gap-1 px-2 py-1 text-sm text-muted hover:text-cream rounded transition-colors"
+                  title="Trocar perfil"
+                >
+                  <svg class="w-4 h-4 text-gold-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span class="hidden sm:inline text-xs font-medium text-cream-dark max-w-[80px] truncate">{activeProfile() || 'Perfil'}</span>
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <Show when={profileOpen()}>
+                  <div class="absolute right-0 mt-2 w-56 bg-base-50 rounded-lg shadow-dark border border-base-300 py-1 z-50 max-h-64 overflow-y-auto">
+                    <div class="px-3 py-1.5 text-[10px] text-muted uppercase font-semibold border-b border-base-300/50">
+                      Perfis Salvos
+                    </div>
+                    <For each={profiles()}>
+                      {(profile) => (
+                        <button
+                          onClick={() => selectProfile(profile)}
+                          class={`w-full text-left flex items-center gap-2 px-3 py-2 text-sm hover:bg-base-200 transition-colors ${
+                            profile.name === activeProfile() ? 'text-gold font-medium' : 'text-cream-dark'
+                          }`}
+                        >
+                          <span class="text-xs">{profile.name === activeProfile() ? '●' : '○'}</span>
+                          <div class="flex-1 min-w-0">
+                            <div class="text-xs font-medium truncate">{profile.name || 'Sem nome'}</div>
+                            <div class="text-[10px] text-muted">{profile.date} • {profile.city}</div>
+                          </div>
+                        </button>
+                      )}
+                    </For>
+                  </div>
+                </Show>
+              </div>
+            </Show>
+
             {/* Language Switcher */}
             <div class="relative">
               <button
