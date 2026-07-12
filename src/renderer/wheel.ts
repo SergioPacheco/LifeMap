@@ -333,10 +333,9 @@ function drawPlanets(positions: Positions, asc: number): string {
     s += `<text x="${p.x}" y="${p.y + symbolSize * 0.34}" text-anchor="middle" font-size="${symbolSize}" font-weight="700" fill="${color}" stroke="${COL.houseBg}" stroke-width="3" paint-order="stroke" font-family="serif">${symbol}</text>`;
     s += `</g>`;
 
-    // Degree label, always dark/blue on the light chart background.
-    const degP = pol(Math.max(R_HOUSE_IN + 18, orbit - 31), item.angle);
-    const label = `${deg}°${min < 10 ? '0' : ''}${min}'${item.retro ? '℞' : ''}`;
-    s += `<text x="${degP.x}" y="${degP.y + 4}" text-anchor="middle" font-size="11" font-weight="700" fill="${item.retro ? COL.retroRed : COL.labelBlue}" stroke="${COL.houseBg}" stroke-width="2.5" paint-order="stroke" font-family="Arial, Helvetica, sans-serif">${label}</text>`;
+    if (item.retro) {
+      s += `<text x="${p.x + symbolSize * 0.38}" y="${p.y - symbolSize * 0.34}" text-anchor="middle" font-size="10" font-weight="700" fill="${COL.retroRed}" stroke="${COL.houseBg}" stroke-width="2" paint-order="stroke" font-family="Arial, Helvetica, sans-serif">℞</text>`;
+    }
   }
 
   return s;
