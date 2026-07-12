@@ -62,48 +62,41 @@ const HOUSE_SYSTEM_LABELS: Record<string, string> = {
 export default function ChartHeader(props: Props) {
   return (
     <Show when={props.chart !== null}>
-      {(_) => {
-        const c = props.chart!;
-
-        const lat = c.meta.lat;
-        const lng = c.meta.lng;
-        const coordStr = `${formatCoord(lat, 'n', 's')}, ${formatCoord(lng, 'e', 'w')}`;
-
-        const ascLon   = c.houses.ascendant;   // dedicated field on HouseData
-        const sunLon   = c.positions.sun?.longitude  ?? 0;
-        const moonLon  = c.positions.moon?.longitude ?? 0;
-
-        const houseLabel = HOUSE_SYSTEM_LABELS[c.meta.houseSystem] ?? c.meta.houseSystem;
-        const dateStr    = formatDate(c.date);
-
-        // Only show planets with an active dignity (domicile | exaltation | detriment | fall)
-        const dignityEntries = Object.entries(c.dignities ?? {}) as [string, DignityType][];
+      {(() => {
+        const c = () => props.chart!;
+        const coordStr = () => `${formatCoord(c().meta.lat, 'n', 's')}, ${formatCoord(c().meta.lng, 'e', 'w')}`;
+        const ascLon = () => c().houses.ascendant;
+        const sunLon = () => c().positions.sun?.longitude ?? 0;
+        const moonLon = () => c().positions.moon?.longitude ?? 0;
+        const houseLabel = () => HOUSE_SYSTEM_LABELS[c().meta.houseSystem] ?? c().meta.houseSystem;
+        const dateStr = () => formatDate(c().date);
+        const dignityEntries = () => Object.entries(c().dignities ?? {}) as [string, DignityType][];
 
         return (
           <div class="glass rounded-xl px-4 py-2 text-xs text-cream-dark flex flex-wrap items-center gap-x-4 gap-y-1 leading-snug">
 
             {/* Name */}
-            <Show when={c.meta.name}>
-              <span class="font-semibold text-cream">{c.meta.name}</span>
+            <Show when={c().meta.name}>
+              <span class="font-semibold text-cream">{c().meta.name}</span>
               <span class="text-base-300 select-none">·</span>
             </Show>
 
             {/* Date */}
-            <span class="text-muted">{dateStr}</span>
+            <span class="text-muted">{dateStr()}</span>
 
             {/* City */}
-            <Show when={c.meta.city}>
+            <Show when={c().meta.city}>
               <span class="text-base-300 select-none">·</span>
-              <span class="text-muted">{c.meta.city}</span>
+              <span class="text-muted">{c().meta.city}</span>
             </Show>
 
             {/* Coordinates */}
             <span class="text-base-300 select-none">·</span>
-            <span class="font-mono text-muted">{coordStr}</span>
+            <span class="font-mono text-muted">{coordStr()}</span>
 
             {/* House system */}
             <span class="text-base-300 select-none">·</span>
-            <span class="text-muted">{houseLabel}</span>
+            <span class="text-muted">{houseLabel()}</span>
 
             {/* Separator */}
             <span class="text-base-300 select-none hidden sm:inline">|</span>
@@ -111,25 +104,25 @@ export default function ChartHeader(props: Props) {
             {/* ASC */}
             <span>
               <span class="text-muted mr-0.5">ASC</span>
-              <span class="text-cream font-medium">{signDeg(ascLon)}</span>
+              <span class="text-cream font-medium">{signDeg(ascLon())}</span>
             </span>
 
             {/* Sun */}
             <span>
               <span class="mr-0.5">{PLANET_SYMBOLS.sun}</span>
-              <span class="text-cream font-medium">{signDeg(sunLon)}</span>
+              <span class="text-cream font-medium">{signDeg(sunLon())}</span>
             </span>
 
             {/* Moon */}
             <span>
               <span class="mr-0.5">{PLANET_SYMBOLS.moon}</span>
-              <span class="text-cream font-medium">{signDeg(moonLon)}</span>
+              <span class="text-cream font-medium">{signDeg(moonLon())}</span>
             </span>
 
             {/* Dignity badges — only when present */}
-            <Show when={dignityEntries.length > 0}>
+            <Show when={dignityEntries().length > 0}>
               <span class="text-base-300 select-none hidden sm:inline">|</span>
-              <For each={dignityEntries}>
+              <For each={dignityEntries()}>
                 {([planet, dtype]) => {
                   const isPositive = dtype === 'domicile' || dtype === 'exaltation';
                   return (
@@ -150,7 +143,7 @@ export default function ChartHeader(props: Props) {
 
           </div>
         );
-      }}
+      })()}
     </Show>
   );
 }

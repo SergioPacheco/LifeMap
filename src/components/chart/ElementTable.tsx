@@ -157,8 +157,8 @@ export default function ElementTable(props: Props) {
 
   return (
     <Show when={props.chart && distribution()}>
-      {(_) => {
-        const d = distribution()!;
+      {(() => {
+        const d = () => distribution()!;
 
         return (
           <div
@@ -205,7 +205,7 @@ export default function ElementTable(props: Props) {
                         {/* Cells */}
                         <For each={MODALITIES}>
                           {(mod) => {
-                            const symbols = d.grid[el][mod];
+                            const symbols = d().grid[el][mod];
                             return (
                               <td
                                 class="py-2 px-2 text-center align-middle"
@@ -247,7 +247,7 @@ export default function ElementTable(props: Props) {
                             'border-left': '1px solid rgba(255,255,255,0.1)',
                           }}
                         >
-                          {d.rowTotals[el]}
+                          {d().rowTotals[el]}
                         </td>
                       </tr>
                     )}
@@ -262,7 +262,7 @@ export default function ElementTable(props: Props) {
                           class="py-1.5 px-2 text-center font-bold text-cream-dark"
                           style={{ 'border-left': '1px solid rgba(255,255,255,0.06)' }}
                         >
-                          {d.colTotals[mod]}
+                          {d().colTotals[mod]}
                         </td>
                       )}
                     </For>
@@ -270,7 +270,7 @@ export default function ElementTable(props: Props) {
                       class="py-1.5 px-2 text-center font-bold text-cream"
                       style={{ 'border-left': '1px solid rgba(255,255,255,0.1)' }}
                     >
-                      {d.grandTotal}
+                      {d().grandTotal}
                     </td>
                   </tr>
                 </tbody>
@@ -281,9 +281,9 @@ export default function ElementTable(props: Props) {
             <div class="mt-4 space-y-1.5">
               {/* Stacked bar */}
               <div class="flex rounded overflow-hidden h-2.5">
-                <For each={d.sortedElements}>
+                <For each={d().sortedElements}>
                   {(el) => {
-                    const pct = d.grandTotal > 0 ? (d.rowTotals[el] / d.grandTotal) * 100 : 0;
+                    const pct = d().grandTotal > 0 ? (d().rowTotals[el] / d().grandTotal) * 100 : 0;
                     return (
                       <Show when={pct > 0}>
                         <div
@@ -302,13 +302,13 @@ export default function ElementTable(props: Props) {
 
               {/* Legend */}
               <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                <For each={d.sortedElements}>
+                <For each={d().sortedElements}>
                   {(el) => {
-                    const pct = d.grandTotal > 0
-                      ? Math.round((d.rowTotals[el] / d.grandTotal) * 100)
+                    const pct = d().grandTotal > 0
+                      ? Math.round((d().rowTotals[el] / d().grandTotal) * 100)
                       : 0;
                     return (
-                      <Show when={d.rowTotals[el] > 0}>
+                      <Show when={d().rowTotals[el] > 0}>
                         <span class="flex items-center gap-1">
                           <span
                             class="inline-block w-2 h-2 rounded-sm flex-shrink-0"
@@ -326,7 +326,7 @@ export default function ElementTable(props: Props) {
             </div>
           </div>
         );
-      }}
+      })()}
     </Show>
   );
 }
