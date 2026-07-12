@@ -23,6 +23,7 @@ export default function Header(props: Props) {
       { label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale) },
       { label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale) },
       { label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale) },
+      { label: 'Calendário', href: localePath('/tools/calendar', props.locale) },
     ]},
     { label: t().nav.reports, href: localePath('/reports', props.locale) },
     { label: t().nav.learn, href: localePath('/learn', props.locale) },

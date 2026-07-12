@@ -11,6 +11,26 @@ const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
 const content = await getContent(locale, 'planetaryCycles');
+
+// Planet visual configs for CSS orbital visualization
+const planetVisuals: Record<string, { color: string; glowColor: string; orbitSize: number; speed: number; rings?: boolean }> = {
+  'Júpiter ♃': { color: '#e8a838', glowColor: 'rgba(232, 168, 56, 0.4)', orbitSize: 60, speed: 12 },
+  'Jupiter ♃': { color: '#e8a838', glowColor: 'rgba(232, 168, 56, 0.4)', orbitSize: 60, speed: 12 },
+  'Saturno ♄': { color: '#c4a654', glowColor: 'rgba(196, 166, 84, 0.4)', orbitSize: 72, speed: 29, rings: true },
+  'Saturn ♄': { color: '#c4a654', glowColor: 'rgba(196, 166, 84, 0.4)', orbitSize: 72, speed: 29, rings: true },
+  'Urano ♅': { color: '#7dd3fc', glowColor: 'rgba(125, 211, 252, 0.4)', orbitSize: 84, speed: 84 },
+  'Uranus ♅': { color: '#7dd3fc', glowColor: 'rgba(125, 211, 252, 0.4)', orbitSize: 84, speed: 84 },
+  'Quíron ⚷': { color: '#a78bfa', glowColor: 'rgba(167, 139, 250, 0.4)', orbitSize: 56, speed: 50 },
+  'Chiron ⚷': { color: '#a78bfa', glowColor: 'rgba(167, 139, 250, 0.4)', orbitSize: 56, speed: 50 },
+  'Netuno ♆': { color: '#60a5fa', glowColor: 'rgba(96, 165, 250, 0.4)', orbitSize: 90, speed: 165 },
+  'Neptune ♆': { color: '#60a5fa', glowColor: 'rgba(96, 165, 250, 0.4)', orbitSize: 90, speed: 165 },
+  'Plutão ♇': { color: '#f87171', glowColor: 'rgba(248, 113, 113, 0.4)', orbitSize: 96, speed: 248 },
+  'Pluto ♇': { color: '#f87171', glowColor: 'rgba(248, 113, 113, 0.4)', orbitSize: 96, speed: 248 },
+};
+
+function getVisual(planet: string) {
+  return planetVisuals[planet] || { color: '#f0b840', glowColor: 'rgba(240, 184, 64, 0.4)', orbitSize: 60, speed: 12 };
+}
 ---
 
 <BaseLayout title={content.title} locale={locale}>
@@ -42,40 +62,52 @@ const content = await getContent(locale, 'planetaryCycles');
 
     <!-- Ciclos -->
     <div class="space-y-10">
-      {content.cycles.map((cycle: any) => (
-        <section>
-          <div class="bg-base-50 border border-base-300 rounded-xl overflow-hidden">
-            <!-- Header do ciclo -->
-            <div class="p-6 border-b border-base-300">
-              <div class="flex items-start gap-4">
-                <div class="text-3xl flex-shrink-0">{cycle.icon}</div>
-                <div class="flex-1">
-                  <div class="flex flex-wrap items-center gap-3 mb-1">
-                    <h2 class="text-xl font-serif font-bold text-cream">{cycle.title}</h2>
-                    <span class="text-gold font-bold text-lg">{cycle.planet}</span>
+      {content.cycles.map((cycle: any) => {
+        const visual = getVisual(cycle.planet);
+        return (
+          <section>
+            <div class="bg-base-50 border border-base-300 rounded-xl overflow-hidden">
+              <!-- Header do ciclo com visualização orbital -->
+              <div class="p-6 border-b border-base-300">
+                <div class="flex items-start gap-4">
+                  <!-- Orbital visualization -->
+                  <div class="planet-orbit-container flex-shrink-0" style={`--planet-color: ${visual.color}; --planet-glow: ${visual.glowColor}; --orbit-size: ${visual.orbitSize}px; --orbit-speed: ${Math.min(visual.speed, 30)}s;`}>
+                    <div class="planet-orbit">
+                      <div class="orbit-ring orbit-ring-1"></div>
+                      <div class="orbit-ring orbit-ring-2"></div>
+                      {visual.rings && <div class="planet-rings"></div>}
+                      <div class="planet-body"></div>
+                      <div class="orbit-dot"></div>
+                    </div>
                   </div>
-                  <p class="text-xs text-muted mb-2">🕐 {cycle.cycle} · Idades: {cycle.ages}</p>
-                  <p class="text-sm text-cream-dark leading-relaxed">{cycle.description}</p>
+                  <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-3 mb-1">
+                      <h2 class="text-xl font-serif font-bold text-cream">{cycle.title}</h2>
+                      <span class="font-bold text-lg" style={`color: ${visual.color}`}>{cycle.planet}</span>
+                    </div>
+                    <p class="text-xs text-muted mb-2">🕐 {cycle.cycle} · Idades: {cycle.ages}</p>
+                    <p class="text-sm text-cream-dark leading-relaxed">{cycle.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- Fases do ciclo -->
-            <div class="divide-y divide-base-300">
-              {cycle.phases.map((phase: any) => (
-                <div class="p-4 flex gap-4">
-                  <div class="flex-shrink-0">
-                    <span class="inline-block bg-gold/10 text-gold text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap">{phase.age}</span>
+              <!-- Fases do ciclo -->
+              <div class="divide-y divide-base-300">
+                {cycle.phases.map((phase: any) => (
+                  <div class="p-4 flex gap-4">
+                    <div class="flex-shrink-0">
+                      <span class="inline-block text-xs font-bold px-2 py-1 rounded-full whitespace-nowrap" style={`background: ${visual.color}15; color: ${visual.color}`}>{phase.age}</span>
+                    </div>
+                    <div>
+                      <p class="font-semibold text-cream text-sm mb-1">{phase.title}</p>
+                      <p class="text-sm text-cream-dark leading-relaxed">{phase.text}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p class="font-semibold text-cream text-sm mb-1">{phase.title}</p>
-                    <p class="text-sm text-cream-dark leading-relaxed">{phase.text}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      ))}
+          </section>
+        );
+      })}
     </div>
 
     <!-- Integração -->
@@ -101,3 +133,130 @@ const content = await getContent(locale, 'planetaryCycles');
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  /* === Orbital Planet Visualization === */
+  .planet-orbit-container {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .planet-orbit {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Orbit rings */
+  .orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    border-color: var(--planet-color);
+    opacity: 0.2;
+  }
+
+  .orbit-ring-1 {
+    width: 90%;
+    height: 90%;
+    animation: pulse-ring 4s ease-in-out infinite;
+  }
+
+  .orbit-ring-2 {
+    width: 65%;
+    height: 65%;
+    opacity: 0.35;
+    animation: pulse-ring 4s ease-in-out infinite 1s;
+  }
+
+  /* Planet body */
+  .planet-body {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--planet-color), color-mix(in srgb, var(--planet-color) 40%, black));
+    box-shadow: 
+      0 0 12px var(--planet-glow),
+      0 0 24px color-mix(in srgb, var(--planet-glow) 50%, transparent),
+      inset -3px -3px 6px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Saturn rings */
+  .planet-rings {
+    position: absolute;
+    width: 38px;
+    height: 10px;
+    border: 2px solid var(--planet-color);
+    border-radius: 50%;
+    opacity: 0.6;
+    transform: rotateX(65deg);
+    z-index: 3;
+  }
+
+  /* Orbiting dot */
+  .orbit-dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: var(--planet-color);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--planet-glow);
+    animation: orbit-around var(--orbit-speed) linear infinite;
+    offset-path: circle(35px);
+    z-index: 1;
+  }
+
+  /* Animations */
+  @keyframes pulse-ring {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(1.04); }
+  }
+
+  @keyframes orbit-around {
+    from { offset-distance: 0%; }
+    to { offset-distance: 100%; }
+  }
+
+  /* Fallback for browsers without offset-path */
+  @supports not (offset-path: circle(35px)) {
+    .orbit-dot {
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: orbit-fallback var(--orbit-speed) linear infinite;
+    }
+
+    @keyframes orbit-fallback {
+      0% { transform: rotate(0deg) translateY(-35px); }
+      100% { transform: rotate(360deg) translateY(-35px); }
+    }
+  }
+
+  /* Responsive: smaller on mobile */
+  @media (max-width: 640px) {
+    .planet-orbit-container {
+      width: 64px;
+      height: 64px;
+    }
+    .planet-body {
+      width: 18px;
+      height: 18px;
+    }
+    .planet-rings {
+      width: 32px;
+      height: 8px;
+    }
+    .orbit-dot {
+      offset-path: circle(28px);
+    }
+  }
+</style>
