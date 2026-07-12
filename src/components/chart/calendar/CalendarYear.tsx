@@ -17,6 +17,7 @@ interface Props {
   natal: NatalChart;
   config: CalendarConfig;
   onSelectMonth: (month: number) => void;
+  onYearDataReady?: (months: { month: number; days: { energy: DayEnergy; date: number }[] }[]) => void;
 }
 
 const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
@@ -82,6 +83,9 @@ export function CalendarYear(props: Props) {
 
       if (currentMonth < 12) {
         requestAnimationFrame(calcNext);
+      } else {
+        // All months calculated — notify parent
+        props.onYearDataReady?.(months().filter(m => m.loaded).map(m => ({ month: m.month, days: m.days })));
       }
     };
 

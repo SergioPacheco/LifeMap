@@ -8,6 +8,7 @@ import ProfileSelector from '../forms/ProfileSelector';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { CalendarList } from './calendar/CalendarList';
 import { CalendarYear } from './calendar/CalendarYear';
+import { YearInsights } from './calendar/YearInsights';
 import { DayDetail } from './calendar/DayDetail';
 import { FilterBar } from './calendar/FilterBar';
 import { CalendarSettings } from './calendar/CalendarSettings';
@@ -38,6 +39,7 @@ export default function AstroCalendarApp(props: Props) {
 
   // Performance: cache calculated months
   const monthCache = new Map<string, MonthData>();
+  const [yearMonths, setYearMonths] = createSignal<{ month: number; days: { energy: any; date: number }[] }[]>([]);
 
   // Filters
   const [activeTypes, setActiveTypes] = createSignal<Set<string>>(new Set([
@@ -315,7 +317,18 @@ export default function AstroCalendarApp(props: Props) {
           natal={natal()!}
           config={config()}
           onSelectMonth={(m) => { setMonth(m); setView('month'); recalculateWithValues(year(), m); }}
+          onYearDataReady={(data) => setYearMonths(data)}
         />
+
+        {/* Year Insights (below year calendar) */}
+        <Show when={yearMonths().length === 12}>
+          <YearInsights
+            year={year()}
+            months={yearMonths()}
+            natal={natal()!}
+            config={config()}
+          />
+        </Show>
       </Show>
 
       {/* Calendar grid or list (month/list views) */}
