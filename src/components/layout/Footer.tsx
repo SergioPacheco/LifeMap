@@ -62,7 +62,9 @@ export default function Footer(props: Props) {
 
         <div class="mt-8 pt-6 border-t border-white/[0.04] text-center text-xs text-muted">
           <p>© {new Date().getFullYear()} LifeMap Pro. {t().site.subtitle}.</p>
-          <p class="mt-1">100% client-side • No data stored on servers • Your data stays in your browser</p>
+          <p class="mt-1">
+            {t().home.socialPrivate} • {t().home.socialSwiss} • {t().home.socialOffline}
+          </p>
         </div>
       </div>
     </footer>

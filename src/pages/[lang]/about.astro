@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getTranslations, supportedLocales, type Locale } from '../../i18n';
+import { getTranslations, languages, supportedLocales, type Locale } from '../../i18n';
 export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
 const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
+const languageList = Object.values(languages).map((lang) => lang.label).join(', ');
 ---
 <BaseLayout title={t.nav.about} locale={locale}>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -38,7 +39,7 @@ const t = getTranslations(locale);
       <section class="bg-base-50 rounded-xl border border-base-300 p-6">
         <h2 class="text-xl font-semibold text-cream mt-0 mb-3">{t.about.languagesTitle}</h2>
         <p class="text-muted">
-          {t.about.languagesDesc} Português, English, Español, Français, Deutsch, Italiano, Nederlands, Türkçe, Русский, 中文, 日本語
+          {t.about.languagesDesc} {languageList}
         </p>
       </section>
     </div>

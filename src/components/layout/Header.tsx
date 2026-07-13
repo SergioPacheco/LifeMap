@@ -1,5 +1,5 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
-import { getTranslations, languages, localePath, switchLocalePath, type Locale } from '../../i18n';
+import { getTranslations, languages, localePath, setPreferredLocale, switchLocalePath, type Locale } from '../../i18n';
 import { db, type Profile } from '../../store/db';
 import BrandLogo from './BrandLogo';
 
@@ -275,6 +275,7 @@ export default function Header(props: Props) {
                     {([code, lang]) => (
                       <a
                         href={switchLocalePath(code as Locale)}
+                        onClick={() => setPreferredLocale(code as Locale)}
                         class={`flex items-center gap-2 px-3 py-2 text-sm hover:bg-base-200 transition-colors ${
                           code === props.locale ? 'text-gold font-medium' : 'text-cream-dark'
                         }`}

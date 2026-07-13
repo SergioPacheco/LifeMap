@@ -7,7 +7,7 @@ import { generateFinancialPdf } from '../../reports/financial-report';
 import { generateSpiritualPdf } from '../../reports/spiritual-report';
 import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
 import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
-import { localePath, getTranslations } from '../../i18n';
+import { getTranslations, languages, localePath } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
@@ -193,17 +193,9 @@ export default function ReportPreview(props: Props) {
               onChange={(e) => setReportLocale(e.currentTarget.value)}
               class="flex-1 px-3 py-1.5 text-sm bg-base-200 border border-base-400 rounded-lg text-cream focus:border-gold/50 focus:outline-none"
             >
-              <option value="pt">🇧🇷 Português</option>
-              <option value="en">🇺🇸 English</option>
-              <option value="es">🇪🇸 Español</option>
-              <option value="fr">🇫🇷 Français</option>
-              <option value="de">🇩🇪 Deutsch</option>
-              <option value="it">🇮🇹 Italiano</option>
-              <option value="nl">🇳🇱 Nederlands</option>
-              <option value="tr">🇹🇷 Türkçe</option>
-              <option value="ru">🇷🇺 Русский</option>
-              <option value="zh">🇨🇳 中文</option>
-              <option value="ja">🇯🇵 日本語</option>
+              {Object.entries(languages).map(([code, lang]) => (
+                <option value={code}>{lang.flag} {lang.label}</option>
+              ))}
             </select>
           </div>
 

@@ -50,5 +50,11 @@ const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_UR
       navigator.serviceWorker.register(serviceWorkerUrl).catch(() => {});
     }
   </script>
+  <script is:inline define:vars={{ locale }}>
+    try {
+      localStorage.setItem('lifemap-locale', locale);
+      document.cookie = `lifemap-locale=${locale}; path=/; max-age=31536000; samesite=lax`;
+    } catch {}
+  </script>
 </body>
 </html>
