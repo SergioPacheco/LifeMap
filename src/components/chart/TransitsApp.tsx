@@ -14,12 +14,9 @@ import type { Theme } from '../../engine/calendar/types';
 import { birthDataFromProfile } from '../../utils/profile';
 import { addDaysToDateInput, addMonthsToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
 import type { Locale } from '../../i18n';
-
-const PLANET_NAMES: Record<string, string> = {
-  sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
-  jupiter: 'Júpiter', saturn: 'Saturno', uranus: 'Urano', neptune: 'Netuno', pluto: 'Plutão',
-  northNode: 'Nodo N.', chiron: 'Quíron',
-};
+import { getInterpretations } from '../../engine/interpretations';
+import { getChartUi } from '../../i18n/chart-ui';
+import { getTransitUi } from '../../i18n/transit-ui';
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
@@ -30,6 +27,8 @@ const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑
 interface Props { locale?: Locale }
 
 export default function TransitsApp(props: Props) {
+  const ui = () => getTransitUi(props.locale);
+  const planetNames = () => getInterpretations(props.locale).PLANET_NAMES;
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [transits, setTransits] = createSignal<TransitChart | null>(null);
   const [transitDate, setTransitDate] = createSignal(todayDateInput());
@@ -83,14 +82,14 @@ export default function TransitsApp(props: Props) {
       <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <Show when={!natalChart()}>
           <div class="glass rounded-2xl p-4 text-center">
-            <p class="text-xs text-muted">Selecione um perfil no menu superior (👤) para ver os trânsitos.</p>
+            <p class="text-xs text-muted">{ui().selectProfile}</p>
           </div>
         </Show>
 
         <Show when={natalChart()}>
           <div class="glass rounded-2xl p-4">
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-              Data dos Trânsitos
+              {ui().dateTitle}
             </h3>
             <input
               type="date"
@@ -103,7 +102,7 @@ export default function TransitsApp(props: Props) {
                 onClick={() => handleDateChange(todayDateInput(natalChart()?.meta.timeZoneId))}
                 class="px-3 py-1 text-xs bg-gold/10 text-gold rounded"
               >
-                Hoje
+                {ui().today}
               </button>
               <button
                 onClick={() => {
@@ -111,7 +110,7 @@ export default function TransitsApp(props: Props) {
                 }}
                 class="px-3 py-1 text-xs bg-base-200 text-cream-dark rounded"
               >
-                +1 dia
+                {ui().nextDay}
               </button>
               <button
                 onClick={() => {
@@ -119,7 +118,7 @@ export default function TransitsApp(props: Props) {
                 }}
                 class="px-3 py-1 text-xs bg-base-200 text-cream-dark rounded"
               >
-                +1 mês
+                {ui().nextMonth}
               </button>
             </div>
           </div>
@@ -128,7 +127,7 @@ export default function TransitsApp(props: Props) {
           <Show when={transits()}>
             <div class="glass rounded-2xl p-4 flex-1 flex flex-col">
               <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-                Aspectos Ativos ({transits()!.aspects.length})
+                {ui().activeAspects} ({transits()!.aspects.length})
               </h3>
               <div class="space-y-1 flex-1 overflow-y-auto">
                 <For each={transits()!.aspects.slice(0, 20)}>
@@ -145,7 +144,7 @@ export default function TransitsApp(props: Props) {
                         {' '}
                         <span>{PLANET_SYMBOLS[asp.planet2] || asp.planet2}</span>
                         <span class="text-muted ml-1">
-                          {PLANET_NAMES[asp.planet1]} {getAspectSymbol(asp.type)} {PLANET_NAMES[asp.planet2]}
+                          {planetNames()[asp.planet1]} {getAspectSymbol(asp.type)} {planetNames()[asp.planet2]}
                         </span>
                       </span>
                       <span class="text-muted font-mono">{asp.orb}°</span>
@@ -163,20 +162,20 @@ export default function TransitsApp(props: Props) {
         <Show when={natalChart()} fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <div class="text-5xl mb-3">↻</div>
-            <p>Carregando perfil...</p>
-            <p class="text-xs mt-2">Selecione um perfil no ícone 👤 acima para ver os trânsitos</p>
+            <p>{ui().loadingProfile}</p>
+            <p class="text-xs mt-2">{ui().selectProfileAbove}</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
             <div class="text-center text-sm text-muted mb-2">
-              Trânsitos de <strong>{transitDate()}</strong> para <strong>{natalChart()!.meta.name || 'Natal'}</strong>
+              {ui().transitsOf} <strong>{transitDate()}</strong> {ui().for} <strong>{natalChart()!.meta.name || ui().natal}</strong>
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
           </div>
 
           {/* Interpretação dos Trânsitos */}
           <Show when={transits()}>
-            <TransitInterpretation transits={transits()!} natal={natalChart()!} date={transitDate()} />
+            <TransitInterpretation transits={transits()!} natal={natalChart()!} date={transitDate()} locale={props.locale} />
           </Show>
         </Show>
       </div>
@@ -188,19 +187,15 @@ export default function TransitsApp(props: Props) {
 // TransitInterpretation — Painel de interpretação abaixo do bi-wheel
 // ============================================================
 
-const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
-
 const ASPECT_NATURE: Record<string, 'positive' | 'negative' | 'neutral'> = {
   conjunction: 'neutral', sextile: 'positive', square: 'negative',
   trine: 'positive', opposition: 'negative',
 };
 
-const ASPECT_NAMES: Record<string, string> = {
-  conjunction: 'Conjunção', sextile: 'Sextil', square: 'Quadratura',
-  trine: 'Trígono', opposition: 'Oposição',
-};
-
-function TransitInterpretation(props: { transits: TransitChart; natal: NatalChart; date: string }) {
+function TransitInterpretation(props: { transits: TransitChart; natal: NatalChart; date: string; locale?: Locale }) {
+  const ui = () => getTransitUi(props.locale);
+  const chartUi = () => getChartUi(props.locale);
+  const interp = () => getInterpretations(props.locale);
   // Get top aspects sorted by exactness (tightest orb = most active)
   const topAspects = () => {
     return [...props.transits.aspects]
@@ -216,9 +211,9 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
       if (nature === 'positive') score += (1 / Math.max(0.5, asp.orb));
       else if (nature === 'negative') score -= (1 / Math.max(0.5, asp.orb));
     }
-    if (score > 1.5) return { label: 'Dia Favorável', color: 'text-green-400', icon: '🟢', desc: 'Trânsitos harmoniosos predominam. Energia fluida para ações e decisões.' };
-    if (score < -1.5) return { label: 'Dia Tenso', color: 'text-red-400', icon: '🔴', desc: 'Tensões ativas. Cautela em decisões e relações. Canalize a energia.' };
-    return { label: 'Dia Neutro', color: 'text-yellow-400', icon: '🟡', desc: 'Energia mista. Observe e escolha bem onde investir atenção.' };
+    if (score > 1.5) return { label: ui().dayEnergy.favorable[0], color: 'text-green-400', icon: '🟢', desc: ui().dayEnergy.favorable[1] };
+    if (score < -1.5) return { label: ui().dayEnergy.tense[0], color: 'text-red-400', icon: '🔴', desc: ui().dayEnergy.tense[1] };
+    return { label: ui().dayEnergy.neutral[0], color: 'text-yellow-400', icon: '🟡', desc: ui().dayEnergy.neutral[1] };
   };
 
   // Active themes
@@ -258,14 +253,14 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
         {/* Active themes */}
         <Show when={activeThemes().length > 0}>
           <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t border-base-300/50">
-            <span class="text-[10px] text-muted uppercase self-center">Áreas ativadas:</span>
+            <span class="text-[10px] text-muted uppercase self-center">{ui().activeAreas}</span>
             <For each={activeThemes()}>
               {(theme) => (
                 <span
                   class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] border"
                   style={`color: ${THEME_INFO[theme]?.color}; border-color: ${THEME_INFO[theme]?.color}40; background: ${THEME_INFO[theme]?.color}10;`}
                 >
-                  {THEME_INFO[theme]?.icon} {THEME_INFO[theme]?.label}
+                  {THEME_INFO[theme]?.icon} {ui().themes[theme]}
                 </span>
               )}
             </For>
@@ -275,12 +270,12 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
 
       {/* Interpretação dos aspectos principais */}
       <div class="glass rounded-2xl p-5">
-        <h3 class="font-serif font-bold text-cream mb-4">✦ Interpretação dos Trânsitos</h3>
+        <h3 class="font-serif font-bold text-cream mb-4">✦ {ui().interpretationTitle}</h3>
 
         <div class="space-y-4">
           <For each={topAspects()}>
             {(asp) => {
-              const text = getTransitTextWithFallback(asp.planet1, asp.planet2, asp.type);
+              const transitCopy = getTransitTextWithFallback(asp.planet1, asp.planet2, asp.type);
               const nature = ASPECT_NATURE[asp.type] || 'neutral';
               const borderColor = nature === 'positive' ? 'border-l-green-500' : nature === 'negative' ? 'border-l-red-500' : 'border-l-gray-500';
               const house = props.transits.transitHouses[asp.planet1] || 0;
@@ -296,29 +291,29 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
                         {PLANET_SYMBOLS[asp.planet1]}
                       </span>
                       <span class="text-sm font-medium text-cream">
-                        {PLANET_NAMES[asp.planet1]} {ASPECT_NAMES[asp.type] || asp.type} {PLANET_NAMES[asp.planet2]} natal
+                        {interp().PLANET_NAMES[asp.planet1]} {chartUi().aspects[asp.type]} {interp().PLANET_NAMES[asp.planet2]} {ui().natalSuffix}
                       </span>
                       {isRetro && <span class="text-[10px] text-red-400">℞</span>}
                     </div>
                     <div class="text-right">
-                      <span class="text-xs text-muted font-mono">orbe {asp.orb.toFixed(1)}°</span>
+                      <span class="text-xs text-muted font-mono">{ui().orb} {asp.orb.toFixed(1)}°</span>
                       <Show when={house > 0}>
-                        <span class="text-[10px] text-muted block">Casa {house}</span>
+                        <span class="text-[10px] text-muted block">{ui().house} {house}</span>
                       </Show>
                     </div>
                   </div>
 
                   {/* Position info */}
                   <p class="text-[10px] text-muted mb-2">
-                    {PLANET_NAMES[asp.planet1]} em {SIGN_NAMES[transitSign]} • Casa {house} do mapa natal
+                    {interp().PLANET_NAMES[asp.planet1]} {ui().in} {interp().SIGN_NAMES[transitSign]} • {ui().house} {house} {ui().natalChartHouse}
                   </p>
 
                   {/* Interpretation */}
-                  <p class="text-sm text-cream-dark leading-relaxed">{text.summary}</p>
+                  <p class="text-sm text-cream-dark leading-relaxed">{transitCopy.summary}</p>
 
                   {/* Advice */}
-                  <Show when={text.advice}>
-                    <p class="text-xs text-gold mt-2 italic">💡 {text.advice}</p>
+                  <Show when={transitCopy.advice}>
+                    <p class="text-xs text-gold mt-2 italic">💡 {transitCopy.advice}</p>
                   </Show>
                 </div>
               );
@@ -330,10 +325,8 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
       {/* Dica geral */}
       <div class="glass rounded-2xl p-4 border-gold/20">
         <p class="text-xs text-cream-dark leading-relaxed">
-          <span class="text-gold font-medium">✦ Como usar:</span>{' '}
-          Os trânsitos mostram a "meteorologia cósmica" do dia em relação ao seu mapa natal.
-          Aspectos harmoniosos (trígono △, sextil ✶) indicam facilidade; tensos (quadratura □, oposição ☍) pedem ajuste.
-          Planetas lentos (Saturno, Urano, Netuno, Plutão) marcam ciclos de meses; rápidos (Sol, Lua, Mercúrio) duram horas a dias.
+          <span class="text-gold font-medium">✦ {ui().howToUse}</span>{' '}
+          {ui().howToUseText}
         </p>
       </div>
     </div>
