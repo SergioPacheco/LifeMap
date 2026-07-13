@@ -7,7 +7,6 @@ import { getAspectColor, getAspectSymbol } from '../../engine/aspects';
 import type { NatalChart, SynastryChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
-import type { Locale } from '../../i18n';
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -21,30 +20,10 @@ const PLANET_SYMBOLS: Record<string, string> = {
 };
 
 interface Props {
-  locale?: Locale;
+  locale?: string;
 }
 
-const TEXT = {
-  pt: {
-    personA: 'Pessoa A',
-    personB: 'Pessoa B',
-    aspectsBetween: 'Aspectos entre',
-    found: 'encontrados',
-    selectProfiles: 'Selecione dois perfis para comparar a sinastria',
-    calculateNatalFirst: 'Calcule os mapas natais primeiro na página "Mapa Natal"',
-  },
-  en: {
-    personA: 'Person A',
-    personB: 'Person B',
-    aspectsBetween: 'Aspects between',
-    found: 'found',
-    selectProfiles: 'Select two profiles to compare synastry',
-    calculateNatalFirst: 'Calculate natal charts first on the "Natal Chart" page',
-  },
-} as const;
-
 export default function SynastryApp(props: Props) {
-  const text = TEXT[props.locale ?? 'en'] ?? TEXT.en;
   const [chartA, setChartA] = createSignal<NatalChart | null>(null);
   const [chartB, setChartB] = createSignal<NatalChart | null>(null);
   const [synastry, setSynastry] = createSignal<SynastryChart | null>(null);
@@ -85,14 +64,14 @@ export default function SynastryApp(props: Props) {
       {/* Profile selectors */}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-brand-600 mb-2">{text.personA}</h3>
+          <h3 class="text-sm font-semibold text-brand-600 mb-2">Pessoa A</h3>
           <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={nameA()}>
             <p class="text-xs text-green-600 mt-2">✓ {nameA()}</p>
           </Show>
         </div>
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-purple-600 mb-2">{text.personB}</h3>
+          <h3 class="text-sm font-semibold text-purple-600 mb-2">Pessoa B</h3>
           <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={nameB()}>
             <p class="text-xs text-green-600 mt-2">✓ {nameB()}</p>
@@ -122,7 +101,7 @@ export default function SynastryApp(props: Props) {
       <Show when={synastry()}>
         <div class="glass rounded-2xl p-6">
           <h3 class="text-lg font-semibold text-cream mb-4">
-            {text.aspectsBetween} {nameA()} e {nameB()} ({synastry()!.aspects.length} {text.found})
+            Aspectos entre {nameA()} e {nameB()} ({synastry()!.aspects.length} encontrados)
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <For each={synastry()!.aspects.slice(0, 30)}>
@@ -149,11 +128,15 @@ export default function SynastryApp(props: Props) {
       </Show>
 
       {/* Interpretation */}
+      <Show when={synastry()}>
+        <SynastryInterpretation synastry={synastry()} nameA={nameA()} nameB={nameB()} />
+      </Show>
+
       <Show when={!chartA() && !chartB()}>
         <div class="glass rounded-2xl p-8 text-center text-muted">
           <div class="text-5xl mb-3">♡</div>
-          <p>{text.selectProfiles}</p>
-          <p class="text-xs mt-2">{text.calculateNatalFirst}</p>
+          <p>Selecione dois perfis para comparar a sinastria</p>
+          <p class="text-xs mt-2">Calcule os mapas natais primeiro na página "Mapa Natal"</p>
         </div>
       </Show>
     </div>

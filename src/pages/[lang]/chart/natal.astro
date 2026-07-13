@@ -14,12 +14,94 @@ const t = getTranslations(locale);
 
 <BaseLayout title={t.nav.natal} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/', locale)} class="hover:text-brand-600">{t.nav.home}</a> → <span class="text-cream">{t.nav.natal}</span>
       </nav>
-      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">{t.nav.natal}</h1>
+
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Mapa Natal</h1>
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        O mapa natal é uma <strong class="text-cream">fotografia do céu no momento exato do seu nascimento</strong>.
+        Ele mostra onde cada planeta estava posicionado e como essas energias se combinam para formar sua personalidade única.
+      </p>
     </div>
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
+        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        Como funciona? O que estou vendo?
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">◎</span> O Mapa (Roda)
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            O círculo externo mostra os <strong class="text-cream">12 signos do zodíaco</strong>. O círculo interno está dividido em <strong class="text-cream">12 casas</strong> (áreas da vida). Os símbolos dentro são os <strong class="text-cream">planetas</strong> na posição que ocupavam no céu quando você nasceu.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            As linhas coloridas entre planetas são <strong class="text-cream">aspectos</strong> — ângulos que indicam como essas energias interagem (harmonia, tensão, fusão).
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">☉</span> Planetas = Funções Psicológicas
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">☉ Sol</strong> — identidade, vontade, propósito</li>
+            <li><strong class="text-cream">☽ Lua</strong> — emoções, instinto, memória</li>
+            <li><strong class="text-cream">☿ Mercúrio</strong> — mente, comunicação, aprendizado</li>
+            <li><strong class="text-cream">♀ Vênus</strong> — amor, valores, prazer</li>
+            <li><strong class="text-cream">♂ Marte</strong> — ação, desejo, coragem</li>
+            <li><strong class="text-cream">♃♄♅♆♇</strong> — padrões geracionais e transformações profundas</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🏠</span> Casas = Áreas da Vida
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">Casa 1</strong> — aparência, eu no mundo</li>
+            <li><strong class="text-cream">Casa 4</strong> — família, raízes, lar</li>
+            <li><strong class="text-cream">Casa 7</strong> — parcerias, relacionamentos</li>
+            <li><strong class="text-cream">Casa 10</strong> — carreira, reputação, vocação</li>
+            <li class="text-muted italic">O signo na ponta da Casa 1 é seu Ascendente</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🔗</span> Aspectos = Conexões
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><span class="text-blue-400">△ Trígono (120°)</span> — fluxo natural, talento</li>
+            <li><span class="text-green-400">⚹ Sextil (60°)</span> — oportunidade, cooperação</li>
+            <li><span class="text-red-400">□ Quadratura (90°)</span> — tensão criativa, desafio</li>
+            <li><span class="text-orange-400">☍ Oposição (180°)</span> — polarização, equilíbrio</li>
+            <li><span class="text-gold">☌ Conjunção (0°)</span> — fusão, intensificação</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- App -->
     <NatalApp client:load locale={locale} />
+
+    <!-- Legenda -->
+    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
+      <p class="text-xs text-cream-dark leading-relaxed">
+        Comece pelo <strong class="text-cream">Sol</strong> (seu signo solar — identidade), depois veja a <strong class="text-cream">Lua</strong> (emoções) e o <strong class="text-cream">Ascendente</strong> (como o mundo te vê).
+        Esses três juntos formam o "tripé" da sua personalidade. Os aspectos entre eles revelam se essas partes de você cooperam ou entram em conflito.
+      </p>
+    </div>
   </div>
 </BaseLayout>

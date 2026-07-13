@@ -9,14 +9,117 @@ import DavisonApp from '../../../components/chart/DavisonApp.tsx';
 ---
 <BaseLayout title="Mapa Davison" locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.charts}</a>
         → <span class="text-cream">Davison</span>
       </nav>
-      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Davison</h1>
+
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Mapa Davison</h1>
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        O Mapa Davison calcula uma <strong class="text-cream">data/hora/local médio</strong> entre duas pessoas e
+        gera um mapa real desse momento — representando o
+        <strong class="text-cream">ponto de encontro temporal e espacial da relação</strong>.
+      </p>
     </div>
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
+        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        Como funciona? O que estou vendo?
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🔀</span> O que é o Mapa Davison?
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Criado por Ronald Davison nos anos 1970, este mapa usa uma abordagem única:
+            em vez de calcular midpoints de longitudes (como no Composto), o Davison
+            encontra o <strong class="text-cream">instante exato no meio</strong> entre os dois nascimentos.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            Se A nasceu em 1980 e B em 2000, o ponto médio no tempo é por volta de 1990.
+            O mapa é calculado para esse momento, com a localização geográfica também no ponto médio.
+            É um <strong class="text-cream">mapa astronômico real</strong> — o céu realmente estava assim naquele instante.
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">⚖️</span> Davison vs Composto
+          </h3>
+          <div class="text-xs text-cream-dark space-y-2">
+            <div class="flex items-start gap-2">
+              <span class="text-purple-400 flex-shrink-0">∞</span>
+              <span>
+                <strong class="text-cream">Composto</strong> = ponto médio das <em>longitudes</em> de cada planeta.
+                Matematicamente elegante, mas o céu nunca esteve literalmente assim.
+              </span>
+            </div>
+            <div class="flex items-start gap-2">
+              <span class="text-gold flex-shrink-0">🔀</span>
+              <span>
+                <strong class="text-cream">Davison</strong> = ponto médio no <em>tempo</em> e no <em>espaço</em>.
+                O céu realmente estava assim em um instante real — representando o "nascimento" da relação.
+              </span>
+            </div>
+            <p class="text-muted italic mt-2">
+              Muitos astrólogos usam ambos: o Composto para a psicologia da relação, o Davison para o timing e a "realidade" astrológica do vínculo.
+            </p>
+          </div>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🕐</span> A Fórmula do Ponto Médio
+          </h3>
+          <div class="text-xs text-cream-dark space-y-2">
+            <div class="bg-base-200 rounded-lg p-3 font-mono text-[11px]">
+              <div class="text-gold mb-1">// Tempo</div>
+              <div>midDate = (tsA + tsB) / 2</div>
+              <div class="text-gold mt-2 mb-1">// Espaço</div>
+              <div>midLat = (latA + latB) / 2</div>
+              <div>midLng = (lngA + lngB) / 2</div>
+            </div>
+            <p>O resultado é um mapa calculado para <strong class="text-cream">esse momento e local exatos</strong>, com todas as casas astrológicas reais.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🔍</span> O que observar
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">Sol Davison</strong> — o propósito central da relação e sua missão</li>
+            <li><strong class="text-cream">Lua Davison</strong> — o clima emocional e as necessidades nutricionais do casal</li>
+            <li><strong class="text-cream">Vênus Davison</strong> — como o amor e a atração se expressam</li>
+            <li><strong class="text-cream">Ascendente Davison</strong> — como o mundo vê vocês como casal</li>
+            <li><strong class="text-cream">Casa do Sol</strong> — a área da vida que o relacionamento ativa</li>
+            <li><strong class="text-cream">Planetas angulares</strong> — Casa 1, 4, 7, 10 têm peso extra</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- App -->
     <DavisonApp client:load locale={locale} />
+
+    <!-- Dica de leitura -->
+    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
+      <p class="text-xs text-cream-dark leading-relaxed">
+        O Mapa Davison é especialmente útil para entender o <strong class="text-cream">destino e o timing da relação</strong>.
+        Observe planetas nas casas angulares (1, 4, 7, 10) — esses são os pilares visíveis do casal.
+        O Sol mostra o propósito, a Lua mostra as necessidades emocionais, e Saturno indica onde há trabalho real a fazer.
+      </p>
+    </div>
 
   </div>
 </BaseLayout>

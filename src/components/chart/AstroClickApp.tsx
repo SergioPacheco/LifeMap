@@ -6,95 +6,33 @@ import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
-import { getContent } from '../../content';
-import type { Locale } from '../../i18n';
 
-const TEXT = {
-  pt: {
-    selectProfile: 'Selecione um perfil no menu superior para ver o mapa.',
-    loadingProfile: 'Carregando perfil...',
-    tapPlanet: 'Toque em qualquer planeta para ver os detalhes.',
-    choosePlanet: 'Clique nos planetas para explorar',
-    selected: 'Planeta selecionado',
-    house: 'Casa',
-    sign: 'Signo',
-    question: 'Pergunta',
-    none: 'nenhum',
-  },
-  en: {
-    selectProfile: 'Select a profile from the top menu to view the chart.',
-    loadingProfile: 'Loading profile...',
-    tapPlanet: 'Click any planet to view details.',
-    choosePlanet: 'Click the planets to explore',
-    selected: 'Selected planet',
-    house: 'House',
-    sign: 'Sign',
-    question: 'Prompt',
-    none: 'none',
-  },
-  es: {
-    selectProfile: 'Selecciona un perfil en el menú superior para ver la carta.',
-    loadingProfile: 'Cargando perfil...',
-    tapPlanet: 'Haz clic en cualquier planeta para ver los detalles.',
-    choosePlanet: 'Haz clic en los planetas para explorar',
-    selected: 'Planeta seleccionado',
-    house: 'Casa',
-    sign: 'Signo',
-    question: 'Pregunta',
-    none: 'ninguno',
-  },
-  fr: { selectProfile: 'Sélectionnez un profil dans le menu supérieur pour voir la carte.', loadingProfile: 'Chargement du profil...', tapPlanet: 'Cliquez sur une planète pour voir les détails.', choosePlanet: 'Cliquez sur les planètes pour explorer', selected: 'Planète sélectionnée', house: 'Maison', sign: 'Signe', question: 'Question', none: 'aucun' },
-  de: { selectProfile: 'Wählen Sie oben ein Profil, um die Karte anzuzeigen.', loadingProfile: 'Profil wird geladen...', tapPlanet: 'Klicken Sie auf einen Planeten, um Details zu sehen.', choosePlanet: 'Klicken Sie auf die Planeten zum Erkunden', selected: 'Ausgewählter Planet', house: 'Haus', sign: 'Zeichen', question: 'Frage', none: 'keiner' },
-  it: { selectProfile: 'Seleziona un profilo dal menu in alto per vedere la carta.', loadingProfile: 'Caricamento profilo...', tapPlanet: 'Fai clic su un pianeta per vedere i dettagli.', choosePlanet: 'Fai clic sui pianeti per esplorare', selected: 'Pianeta selezionato', house: 'Casa', sign: 'Segno', question: 'Domanda', none: 'nessuno' },
-  ja: { selectProfile: '上部メニューからプロフィールを選択してチャートを表示します。', loadingProfile: 'プロフィールを読み込み中...', tapPlanet: '惑星をクリックして詳細を表示します。', choosePlanet: '惑星をクリックして探索', selected: '選択した惑星', house: 'ハウス', sign: 'サイン', question: '質問', none: 'なし' },
-  zh: { selectProfile: '请从顶部菜单选择一个档案以查看星盘。', loadingProfile: '正在加载档案...', tapPlanet: '点击任意行星查看详情。', choosePlanet: '点击行星进行探索', selected: '已选行星', house: '宫位', sign: '星座', question: '提示', none: '无' },
-  ru: { selectProfile: 'Выберите профиль в верхнем меню, чтобы увидеть карту.', loadingProfile: 'Загрузка профиля...', tapPlanet: 'Нажмите на любую планету, чтобы увидеть детали.', choosePlanet: 'Нажмите на планеты для просмотра', selected: 'Выбранная планета', house: 'Дом', sign: 'Знак', question: 'Вопрос', none: 'нет' },
-  tr: { selectProfile: 'Haritayı görmek için üst menüden bir profil seçin.', loadingProfile: 'Profil yükleniyor...', tapPlanet: 'Ayrıntıları görmek için bir gezegene tıklayın.', choosePlanet: 'İncelemek için gezegenlere tıklayın', selected: 'Seçilen gezegen', house: 'Ev', sign: 'Burç', question: 'Soru', none: 'yok' },
-  nl: { selectProfile: 'Selecteer een profiel in het bovenmenu om de kaart te zien.', loadingProfile: 'Profiel wordt geladen...', tapPlanet: 'Klik op een planeet om details te zien.', choosePlanet: 'Klik op de planeten om te verkennen', selected: 'Geselecteerde planeet', house: 'Huis', sign: 'Teken', question: 'Vraag', none: 'geen' },
-} as const;
+// Planet click interpretations (will come from content files in production)
+const PLANET_CLICK_PT: Record<string, { title: string; meaning: string; question: string }> = {
+  sun: { title: 'Sol — Sua Essência', meaning: 'O Sol no seu mapa representa quem você é no centro — sua identidade, vontade e propósito de vida. É a energia que você irradia quando está sendo autêntico.', question: 'Pergunte-se: "Onde preciso brilhar e ser reconhecido?"' },
+  moon: { title: 'Lua — Suas Emoções', meaning: 'A Lua revela seu mundo emocional inconsciente — como reage automaticamente, o que precisa para se sentir seguro e nutrido. É a criança interior.', question: 'Pergunte-se: "O que me faz sentir em casa?"' },
+  mercury: { title: 'Mercúrio — Sua Mente', meaning: 'Mercúrio mostra como você pensa, comunica e processa informações. É o estilo da sua mente — rápida ou profunda, prática ou abstrata.', question: 'Pergunte-se: "Como funciona meu raciocínio?"' },
+  venus: { title: 'Vênus — Seu Amor', meaning: 'Vênus indica o que você valoriza, como ama e o que considera belo. É seu magnetismo, seu charme e sua capacidade de atrair.', question: 'Pergunte-se: "O que eu realmente valorizo?"' },
+  mars: { title: 'Marte — Sua Ação', meaning: 'Marte é sua energia vital em movimento — como luta, toma iniciativa, expressa raiva e canaliza desejo. É a coragem e a assertividade.', question: 'Pergunte-se: "O que me motiva a agir?"' },
+  jupiter: { title: 'Júpiter — Sua Expansão', meaning: 'Júpiter mostra onde encontra sentido, crescimento e abundância. É o Grande Benéfico — fé, generosidade e visão ampla.', question: 'Pergunte-se: "Onde posso crescer e expandir?"' },
+  saturn: { title: 'Saturno — Sua Disciplina', meaning: 'Saturno representa seus maiores desafios e deveres — onde amadurece com paciência. Restrição que se torna estrutura.', question: 'Pergunte-se: "O que preciso construir com disciplina?"' },
+  uranus: { title: 'Urano — Sua Liberdade', meaning: 'Urano indica onde precisa de independência radical, rompe padrões e inova. É o gênio rebelde e o despertar súbito.', question: 'Pergunte-se: "Onde preciso ser original?"' },
+  neptune: { title: 'Netuno — Sua Espiritualidade', meaning: 'Netuno é a porta para o transcendente — compaixão, arte, intuição, mas também ilusão e fuga. O véu entre mundos.', question: 'Pergunte-se: "O que transcende o material em mim?"' },
+  pluto: { title: 'Plutão — Sua Transformação', meaning: 'Plutão é poder de transformação absoluta — morte simbólica e renascimento. Intensidade, regeneração e profundidade.', question: 'Pergunte-se: "O que preciso transformar radicalmente?"' },
+  northNode: { title: 'Nodo Norte — Seu Destino', meaning: 'O Nodo Norte aponta a direção da sua evolução nesta vida — o território desconhecido que traz crescimento. É o futuro.', question: 'Pergunte-se: "Para onde devo caminhar?"' },
+  chiron: { title: 'Quíron — Sua Cura', meaning: 'Quíron é a ferida que não cicatriza completamente, mas se torna sua maior fonte de sabedoria e capacidade de curar outros.', question: 'Pergunte-se: "Qual dor me tornou curador?"' },
+};
 
-const PLANET_ORDER = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto'] as const;
-const SPECIAL_LABELS = {
-  pt: { northNode: 'Nodo Norte', chiron: 'Quíron' },
-  en: { northNode: 'North Node', chiron: 'Chiron' },
-  es: { northNode: 'Nodo Norte', chiron: 'Quirón' },
-  fr: { northNode: 'Nœud Nord', chiron: 'Chiron' },
-  de: { northNode: 'Nördlicher Mondknoten', chiron: 'Chiron' },
-  it: { northNode: 'Nodo Nord', chiron: 'Chirone' },
-  ja: { northNode: 'ドラゴンヘッド', chiron: 'キロン' },
-  zh: { northNode: '北交点', chiron: '凯龙星' },
-  ru: { northNode: 'Северный узел', chiron: 'Хирон' },
-  tr: { northNode: 'Kuzey Ay Düğümü', chiron: 'Şiron' },
-  nl: { northNode: 'Noordknoop', chiron: 'Chiron' },
-} as const;
+const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 
-interface Props {
-  locale: Locale;
-}
-
-export default function AstroClickApp(props: Props) {
-  const text = TEXT[props.locale] ?? TEXT.en;
+export default function AstroClickApp() {
   const [natal, setNatal] = createSignal<NatalChart | null>(null);
   const [wheelSvg, setWheelSvg] = createSignal('');
   const [selectedPlanet, setSelectedPlanet] = createSignal<string | null>(null);
-  const [interpretation, setInterpretation] = createSignal<{
-    title: string;
-    description: string;
-    question: string;
-    sign: string;
-    house: string;
-  } | null>(null);
-  const [content, setContent] = createSignal<{ planets?: any; signs?: any; houses?: any; chiron?: any } | null>(null);
+  const [interpretation, setInterpretation] = createSignal<{ title: string; meaning: string; question: string; sign: string; house: number } | null>(null);
 
   onMount(async () => {
     await initSweph();
-    const [planets, signs, houses, chiron] = await Promise.all([
-      getContent(props.locale, 'planets'),
-      getContent(props.locale, 'signs'),
-      getContent(props.locale, 'houses'),
-      getContent(props.locale, 'chiron'),
-    ]);
-    setContent({ planets, signs, houses, chiron });
     // Add click listener for planets
     document.addEventListener('click', handlePlanetClick);
     // Auto-load profile
@@ -130,24 +68,13 @@ export default function AstroClickApp(props: Props) {
 
     const signIdx = getSignIndex(pos.longitude);
     const house = natal()!.planetHouses[planetId] || 1;
-    const labels = content();
-    const standardIndex = PLANET_ORDER.indexOf(planetId as any);
-    const special = (SPECIAL_LABELS[props.locale] ?? SPECIAL_LABELS.en) as Record<string, string>;
-    const standardPlanet = standardIndex >= 0 ? labels?.planets?.list?.[standardIndex] : null;
-    const specialTitle =
-      planetId === 'northNode' ? special.northNode :
-      planetId === 'chiron' ? special.chiron :
-      planetId;
+    const clickData = PLANET_CLICK_PT[planetId];
 
-    if (standardPlanet || specialTitle) {
-      const signName = labels?.signs?.list?.[signIdx]?.name ?? signIdx.toString();
-      const houseName = labels?.houses?.list?.[house - 1]?.name ?? `${text.house} ${house}`;
+    if (clickData) {
       setInterpretation({
-        title: standardPlanet ? standardPlanet.name : specialTitle,
-        description: standardPlanet?.description || labels?.chiron?.intro || '',
-        question: text.question,
-        sign: signName,
-        house: houseName,
+        ...clickData,
+        sign: SIGN_NAMES[signIdx],
+        house,
       });
     }
   };
@@ -159,7 +86,9 @@ export default function AstroClickApp(props: Props) {
         <Show when={natal() && !interpretation()}>
           <div class="bg-gold/5 rounded-xl border border-gold/20 p-6 text-center">
             <div class="text-3xl mb-2">👆</div>
-            <p class="text-sm text-gold font-medium">{text.tapPlanet}</p>
+            <p class="text-sm text-gold font-medium">
+              Clique em qualquer planeta no mapa para ver sua interpretação
+            </p>
           </div>
         </Show>
 
@@ -169,10 +98,10 @@ export default function AstroClickApp(props: Props) {
               {interpretation()!.title}
             </h3>
             <p class="text-xs text-muted mt-1">
-              {text.sign} {interpretation()!.sign} — {text.house} {interpretation()!.house}
+              Em {interpretation()!.sign} — Casa {interpretation()!.house}
             </p>
             <p class="mt-4 text-sm text-cream-dark leading-relaxed">
-              {interpretation()!.description}
+              {interpretation()!.meaning}
             </p>
             <p class="mt-3 text-sm text-gold italic">
               {interpretation()!.question}
@@ -186,13 +115,13 @@ export default function AstroClickApp(props: Props) {
         <Show when={natal()} fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <div class="text-5xl mb-3">🎯</div>
-            <p>{text.selectProfile}</p>
-            <p class="text-xs mt-2">{text.choosePlanet}</p>
+            <p>Selecione um perfil para explorar o mapa interativo</p>
+            <p class="text-xs mt-2">Clique nos planetas para ver interpretações</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
             <div class="text-center text-xs text-muted mb-2">
-              {text.choosePlanet} • {text.selected}: <strong class="text-brand-600">{selectedPlanet() || text.none}</strong>
+              Clique nos planetas para explorar • Planeta selecionado: <strong class="text-brand-600">{selectedPlanet() || 'nenhum'}</strong>
             </div>
             <div class="w-full max-w-[600px] mx-auto cursor-pointer" innerHTML={wheelSvg()} />
           </div>

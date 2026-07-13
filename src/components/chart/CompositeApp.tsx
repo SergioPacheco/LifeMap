@@ -9,7 +9,6 @@ import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart, CompositeChart, Aspect } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
-import type { Locale } from '../../i18n';
 
 // ─── Planet names & symbols ────────────────────────────────
 const PLANET_NAMES: Record<string, string> = {
@@ -141,32 +140,10 @@ function getVenusText(sign: number): string {
 }
 
 interface Props {
-  locale?: Locale;
+  locale?: string;
 }
 
-const TEXT = {
-  pt: {
-    personA: 'Pessoa A',
-    personB: 'Pessoa B',
-    selectProfiles: 'Selecione dois perfis para gerar o Mapa Composto',
-    title: 'Mapa Composto',
-    interpretation: 'Interpretação do Composto',
-    whatItShows: 'O que este mapa revela sobre a relação entre',
-    keyAspects: 'Aspectos-chave do Composto',
-  },
-  en: {
-    personA: 'Person A',
-    personB: 'Person B',
-    selectProfiles: 'Select two profiles to generate the Composite chart',
-    title: 'Composite Chart',
-    interpretation: 'Composite Interpretation',
-    whatItShows: 'What this chart reveals about the relationship between',
-    keyAspects: 'Composite key aspects',
-  },
-} as const;
-
 export default function CompositeApp(props: Props) {
-  const text = TEXT[props.locale ?? 'en'] ?? TEXT.en;
   const [chartA, setChartA] = createSignal<NatalChart | null>(null);
   const [chartB, setChartB] = createSignal<NatalChart | null>(null);
   const [composite, setComposite] = createSignal<CompositeChart | null>(null);
@@ -207,12 +184,12 @@ export default function CompositeApp(props: Props) {
       {/* Profile selectors */}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-gold mb-2">{text.personA}</h3>
+          <h3 class="text-sm font-semibold text-gold mb-2">Pessoa A</h3>
           <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={nameA()}><p class="text-xs text-green-400 mt-2">✓ {nameA()}</p></Show>
         </div>
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-purple-400 mb-2">{text.personB}</h3>
+          <h3 class="text-sm font-semibold text-purple-400 mb-2">Pessoa B</h3>
           <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={nameB()}><p class="text-xs text-green-400 mt-2">✓ {nameB()}</p></Show>
         </div>
@@ -222,23 +199,48 @@ export default function CompositeApp(props: Props) {
       <Show when={composite()} fallback={
         <div class="glass rounded-2xl p-8 text-center text-muted">
           <div class="text-5xl mb-3">∞</div>
-          <p>{text.selectProfiles}</p>
+          <p>Selecione dois perfis para gerar o Mapa Composto</p>
+          <p class="text-xs mt-2 max-w-md mx-auto">O composto calcula o ponto médio entre cada planeta dos dois mapas — revelando o "DNA" do relacionamento como entidade própria.</p>
         </div>
       }>
         {/* Chart wheel */}
         <div class="glass rounded-2xl p-4">
           <div class="text-center text-sm text-muted mb-2">
-            {text.title}: <strong class="text-cream">{nameA()}</strong> <span class="text-gold">∞</span> <strong class="text-cream">{nameB()}</strong>
+            Mapa Composto: <strong class="text-cream">{nameA()}</strong> <span class="text-gold">∞</span> <strong class="text-cream">{nameB()}</strong>
           </div>
           <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
+        </div>
+
+        {/* Interpretation */}
+        <div class="space-y-4">
+          <h2 class="text-xl font-serif font-bold text-cream flex items-center gap-2">
+            <span class="text-gold">✦</span> Interpretação do Composto
+          </h2>
+          <p class="text-sm text-muted">O que este mapa revela sobre a relação entre <strong class="text-cream">{nameA()}</strong> e <strong class="text-cream">{nameB()}</strong>:</p>
+
+          <For each={interpretation()}>
+            {(section) => (
+              <div class="glass rounded-xl p-5 border border-base-300 hover:border-gold/20 transition-colors">
+                <div class="flex items-start gap-3">
+                  <span class="text-2xl flex-shrink-0" style={{ color: section.color }}>{section.icon}</span>
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-cream text-sm mb-0.5">{section.title}</h3>
+                    <p class="text-xs text-gold-muted mb-2">{section.subtitle}</p>
+                    <p class="text-sm text-cream-dark leading-relaxed">{section.text}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </For>
         </div>
 
         {/* Key Aspects */}
         <Show when={composite()!.aspects.length > 0}>
           <div class="glass rounded-xl p-5 border border-base-300">
             <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-              <span class="text-gold">🔗</span> {text.keyAspects}
+              <span class="text-gold">🔗</span> Aspectos-chave do Composto
             </h3>
+            <p class="text-xs text-muted mb-3">Conexões internas da relação — mostram onde há fluxo e onde há tensão na dinâmica do casal.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <For each={composite()!.aspects.slice(0, 10)}>
                 {(asp: Aspect) => (

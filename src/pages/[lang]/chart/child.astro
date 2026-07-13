@@ -32,6 +32,8 @@ const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
 ---
 <BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/', locale)} class="hover:text-brand-600">{t.nav.home}</a>
@@ -45,8 +47,86 @@ const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
         <span class="text-4xl">👶</span>
         <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream">{page.title}</h1>
       </div>
+
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        {page.intro}
+      </p>
     </div>
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
+        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        {page.summary}
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">⭐</span> Para quem é?
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Este mapa é pensado para <strong class="text-cream">pais, mães, educadores e cuidadores</strong> que desejam compreender melhor a criança.
+            Ideal para crianças de <strong class="text-cream">2 a 12 anos</strong>, mas pode ser usado em qualquer faixa etária.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            Use os insights para <strong class="text-cream">apoiar o desenvolvimento</strong>, nunca para rotular ou limitar.
+            Cada criança é única e os potenciais se desenvolvem no próprio ritmo.
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🌟</span> O que você vai encontrar
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">☉ Sol</strong> — Como a criança brilha e expressa sua identidade</li>
+            <li><strong class="text-cream">☽ Lua</strong> — O que ela precisa para se sentir segura e amada</li>
+            <li><strong class="text-cream">☿ Mercúrio</strong> — Como ela aprende e processa o mundo</li>
+            <li><strong class="text-cream">♀ Vênus</strong> — O que ela ama, valoriza e aprecia</li>
+            <li><strong class="text-cream">♂ Marte</strong> — Como ela age, se movimenta e expressa vontade</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🌺</span> Linguagem positiva
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            Todos os textos foram escritos focando em <strong class="text-cream">potenciais e talentos</strong>.
+            Não existem posições "ruins" no mapa de uma criança — existem energias que pedem formas específicas de apoio e expressão.
+            Leia com abertura e carinho.
+          </p>
+        </div>
+
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">💡</span> Como usar na prática
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li>• Leia a <strong class="text-cream">Lua</strong> primeiro — é a chave para o conforto emocional</li>
+            <li>• O <strong class="text-cream">Sol</strong> revela como ela quer brilhar — apoie esse estilo</li>
+            <li>• <strong class="text-cream">Mercúrio</strong> indica como ela aprende — adapte a educação</li>
+            <li>• <strong class="text-cream">Marte</strong> mostra como ela age — canalize de forma positiva</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- App -->
     <ChildChartApp client:load locale={locale} />
+
+    <!-- Nota de rodapé -->
+    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">{page.note}</h3>
+      <p class="text-xs text-cream-dark leading-relaxed">
+        A astrologia é uma ferramenta de autoconhecimento e <strong class="text-cream">nunca uma sentença</strong>.
+        Use este mapa como um convite para conhecer melhor a criança, observar seus talentos e apoiar suas necessidades únicas.
+        Cada ser humano é muito mais do que qualquer mapa pode capturar. ✨
+      </p>
+    </div>
 
   </div>
 </BaseLayout>

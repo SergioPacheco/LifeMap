@@ -10,9 +10,27 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
 const PAGE_LABELS = {
   pt: {
     title: 'Mapa Relocado',
+    breadcrumb: 'Mapa Relocado',
+    intro: 'O Mapa Relocado mostra como sua energia natal se expressa em diferentes locais.',
+    summary: 'Como funciona? O que estou vendo?',
+    section1: 'O que é o Mapa Relocado?',
+    section2: 'Planetas fixos, casas fluidas',
+    section3: 'O que observar',
+    section4: 'Mapa Relocado vs. Astrocartografia',
+    note: 'Dica de leitura',
+    compare: 'Astrocartografia',
   },
   en: {
     title: 'Relocated Chart',
+    breadcrumb: 'Relocated Chart',
+    intro: 'The relocated chart shows how your natal energy expresses itself in different places.',
+    summary: 'How does it work? What am I seeing?',
+    section1: 'What is the relocated chart?',
+    section2: 'Fixed planets, fluid houses',
+    section3: 'What to observe',
+    section4: 'Relocated Chart vs. Astrocartography',
+    note: 'Reading tip',
+    compare: 'Astrocartography',
   },
 } as const;
 
@@ -20,17 +38,119 @@ const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
 ---
 <BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+
+    <!-- Breadcrumb + Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-cream transition-colors">{t.nav.charts}</a>
         <span class="mx-2 opacity-40">→</span>
-        <span class="text-cream">{page.title}</span>
+        <span class="text-cream">{page.breadcrumb}</span>
       </nav>
 
       <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">
         📍 {page.title}
       </h1>
+      <p class="text-muted text-base max-w-3xl leading-relaxed">
+        {page.intro}
+        As <strong class="text-cream">posições dos planetas são as mesmas do natal</strong>,
+        mas as <strong class="text-gold">CASAS (áreas de vida) mudam</strong> conforme a latitude/longitude.
+      </p>
     </div>
-    <RelocatedApp client:load locale={locale} />
+
+    <!-- Explicação colapsável -->
+    <details class="mb-8 group">
+      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors select-none">
+        <svg
+          class="w-4 h-4 transition-transform group-open:rotate-90"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        {page.summary}
+      </summary>
+
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <!-- O que é -->
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🌍</span> {page.section1}
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            Imagine que você tivesse nascido na mesma data e hora, mas em outra cidade.
+            Sua configuração planetária seria idêntica — os mesmos planetas nos mesmos signos e graus.
+            O que muda são as <strong class="text-cream">cúspides das casas</strong>, determinadas pela geografia local.
+          </p>
+          <p class="text-xs text-cream-dark leading-relaxed">
+            O resultado é um mapa onde a mesma energia se distribui de forma diferente pelas áreas da vida.
+          </p>
+        </div>
+
+        <!-- Casas vs Planetas -->
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🏠</span> {page.section2}
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li>
+              <strong class="text-cream">Planetas</strong> — posição no zodíaco não muda.
+              Sol em Câncer continua em Câncer em qualquer cidade do mundo.
+            </li>
+            <li>
+              <strong class="text-cream">Casas</strong> — dependem do Ascendente, que varia com a latitude/longitude.
+              Um Sol em Câncer pode estar na Casa 1 (identidade) em uma cidade e na Casa 10 (carreira) em outra.
+            </li>
+            <li>
+              <strong class="text-cream">Ascendente relocado</strong> — é o ponto mais sensível: muda a "embalagem" com que você se apresenta naquele local.
+            </li>
+          </ul>
+        </div>
+
+        <!-- Como usar -->
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">🔍</span> {page.section3}
+          </h3>
+          <ul class="space-y-1.5 text-xs text-cream-dark">
+            <li><strong class="text-cream">Sol e Lua nas casas angulares</strong> (1, 4, 7, 10) — local de grande expressão</li>
+            <li><strong class="text-cream">Júpiter relocado</strong> — onde há expansão e abundância</li>
+            <li><strong class="text-cream">Saturno relocado</strong> — onde há aprendizado difícil mas sólido</li>
+            <li><strong class="text-cream">Vênus na Casa 7</strong> — local favorável para relacionamentos</li>
+            <li><strong class="text-cream">Saturno na Casa 10</strong> — local de construção profissional árdua mas duradoura</li>
+          </ul>
+        </div>
+
+        <!-- Diferença para Astrocartografia -->
+        <div class="glass rounded-xl p-5 border border-base-300">
+          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
+            <span class="text-gold">📡</span> {page.section4}
+          </h3>
+          <p class="text-xs text-cream-dark leading-relaxed mb-2">
+            A <strong class="text-cream">{page.compare}</strong> traça linhas no mapa-mundi onde cada planeta
+            seria angular. O <strong class="text-cream">{page.title}</strong> é mais detalhado: mostra exatamente
+            em qual casa cada planeta cai numa cidade específica.
+          </p>
+          <p class="text-xs text-muted italic">
+            Use os dois em conjunto para uma leitura geográfica completa.
+          </p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- App SolidJS -->
+    <RelocatedApp client:load />
+
+    <!-- Dica de leitura -->
+    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">{page.note}</h3>
+      <p class="text-xs text-cream-dark leading-relaxed">
+        Procure cidades onde seus planetas <strong class="text-cream">benéficos</strong> (Sol, Júpiter, Vênus)
+        ficam nas <strong class="text-cream">casas angulares</strong> (1, 4, 7, 10) — elas amplificam a energia do planeta.
+        Evite locais onde Saturno, Netuno ou Plutão ficam na Casa 1 ou 7, a menos que você esteja buscando
+        transformação profunda. Não há lugar "perfeito" — cada cidade favorece um aspecto diferente da vida.
+      </p>
+    </div>
+
   </div>
 </BaseLayout>

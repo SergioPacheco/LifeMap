@@ -13,11 +13,6 @@ import { THEME_INFO, mapEventThemes } from '../../engine/calendar/theme-mapper';
 import type { Theme } from '../../engine/calendar/types';
 import { birthDataFromProfile } from '../../utils/profile';
 import { addDaysToDateInput, addMonthsToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
-import type { Locale } from '../../i18n';
-
-interface Props {
-  locale: Locale;
-}
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -31,41 +26,7 @@ const PLANET_SYMBOLS: Record<string, string> = {
 };
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 
-const TEXT = {
-  pt: {
-    selectProfile: 'Selecione um perfil no menu superior (👤) para ver os trânsitos.',
-    loading: 'Carregando perfil...',
-    title: 'Data dos Trânsitos',
-    today: 'Hoje',
-    activeAspects: 'Aspectos Ativos',
-    dayLabel: 'Trânsitos de',
-    dayFor: 'para',
-    summaryTitle: 'Resumo do dia',
-    activeThemes: 'Áreas ativadas:',
-    favorable: 'Dia Favorável',
-    challenging: 'Dia Tenso',
-    neutral: 'Dia Neutro',
-    calculating: 'Calculando...',
-  },
-  en: {
-    selectProfile: 'Select a profile from the top menu (👤) to see transits.',
-    loading: 'Loading profile...',
-    title: 'Transit Date',
-    today: 'Today',
-    activeAspects: 'Active Aspects',
-    dayLabel: 'Transits for',
-    dayFor: 'for',
-    summaryTitle: 'Day summary',
-    activeThemes: 'Activated areas:',
-    favorable: 'Favorable Day',
-    challenging: 'Tense Day',
-    neutral: 'Neutral Day',
-    calculating: 'Calculating...',
-  },
-} as const;
-
-export default function TransitsApp(props: Props) {
-  const text = TEXT[props.locale as keyof typeof TEXT] ?? TEXT.en;
+export default function TransitsApp() {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [transits, setTransits] = createSignal<TransitChart | null>(null);
   const [transitDate, setTransitDate] = createSignal(todayDateInput());
@@ -119,14 +80,14 @@ export default function TransitsApp(props: Props) {
       <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <Show when={!natalChart()}>
           <div class="glass rounded-2xl p-4 text-center">
-            <p class="text-xs text-muted">{text.selectProfile}</p>
+            <p class="text-xs text-muted">Selecione um perfil no menu superior (👤) para ver os trânsitos.</p>
           </div>
         </Show>
 
         <Show when={natalChart()}>
           <div class="glass rounded-2xl p-4">
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-              {text.title}
+              Data dos Trânsitos
             </h3>
             <input
               type="date"
@@ -139,7 +100,7 @@ export default function TransitsApp(props: Props) {
                 onClick={() => handleDateChange(todayDateInput(natalChart()?.meta.timeZoneId))}
                 class="px-3 py-1 text-xs bg-gold/10 text-gold rounded"
               >
-                {text.today}
+                Hoje
               </button>
               <button
                 onClick={() => {
@@ -164,7 +125,7 @@ export default function TransitsApp(props: Props) {
           <Show when={transits()}>
             <div class="glass rounded-2xl p-4 flex-1 flex flex-col">
               <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-                {text.activeAspects} ({transits()!.aspects.length})
+                Aspectos Ativos ({transits()!.aspects.length})
               </h3>
               <div class="space-y-1 flex-1 overflow-y-auto">
                 <For each={transits()!.aspects.slice(0, 20)}>
@@ -199,20 +160,20 @@ export default function TransitsApp(props: Props) {
         <Show when={natalChart()} fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <div class="text-5xl mb-3">↻</div>
-            <p>{text.loading}</p>
-            <p class="text-xs mt-2">{text.selectProfile}</p>
+            <p>Carregando perfil...</p>
+            <p class="text-xs mt-2">Selecione um perfil no ícone 👤 acima para ver os trânsitos</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
             <div class="text-center text-sm text-muted mb-2">
-              {text.dayLabel} <strong>{transitDate()}</strong> {text.dayFor} <strong>{natalChart()!.meta.name || 'Natal'}</strong>
+              Trânsitos de <strong>{transitDate()}</strong> para <strong>{natalChart()!.meta.name || 'Natal'}</strong>
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
           </div>
 
           {/* Interpretação dos Trânsitos */}
           <Show when={transits()}>
-            <TransitInterpretation transits={transits()!} natal={natalChart()!} date={transitDate()} labels={text} />
+            <TransitInterpretation transits={transits()!} natal={natalChart()!} date={transitDate()} />
           </Show>
         </Show>
       </div>
@@ -236,7 +197,7 @@ const ASPECT_NAMES: Record<string, string> = {
   trine: 'Trígono', opposition: 'Oposição',
 };
 
-function TransitInterpretation(props: { transits: TransitChart; natal: NatalChart; date: string; labels: { favorable: string; challenging: string; neutral: string; summaryTitle: string } }) {
+function TransitInterpretation(props: { transits: TransitChart; natal: NatalChart; date: string }) {
   // Get top aspects sorted by exactness (tightest orb = most active)
   const topAspects = () => {
     return [...props.transits.aspects]
@@ -252,9 +213,9 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
       if (nature === 'positive') score += (1 / Math.max(0.5, asp.orb));
       else if (nature === 'negative') score -= (1 / Math.max(0.5, asp.orb));
     }
-    if (score > 1.5) return { label: props.labels.favorable, color: 'text-green-400', icon: '🟢', desc: 'Harmonious transits dominate. Energy flows more easily.' };
-    if (score < -1.5) return { label: props.labels.challenging, color: 'text-red-400', icon: '🔴', desc: 'Active tension. Move carefully and channel the energy.' };
-    return { label: props.labels.neutral, color: 'text-yellow-400', icon: '🟡', desc: 'Mixed energy. Observe before acting.' };
+    if (score > 1.5) return { label: 'Dia Favorável', color: 'text-green-400', icon: '🟢', desc: 'Trânsitos harmoniosos predominam. Energia fluida para ações e decisões.' };
+    if (score < -1.5) return { label: 'Dia Tenso', color: 'text-red-400', icon: '🔴', desc: 'Tensões ativas. Cautela em decisões e relações. Canalize a energia.' };
+    return { label: 'Dia Neutro', color: 'text-yellow-400', icon: '🟡', desc: 'Energia mista. Observe e escolha bem onde investir atenção.' };
   };
 
   // Active themes
@@ -294,7 +255,7 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
         {/* Active themes */}
         <Show when={activeThemes().length > 0}>
           <div class="flex flex-wrap gap-2 mt-3 pt-3 border-t border-base-300/50">
-            <span class="text-[10px] text-muted uppercase self-center">Activated areas:</span>
+            <span class="text-[10px] text-muted uppercase self-center">Áreas ativadas:</span>
             <For each={activeThemes()}>
               {(theme) => (
                 <span
@@ -311,7 +272,7 @@ function TransitInterpretation(props: { transits: TransitChart; natal: NatalChar
 
       {/* Interpretação dos aspectos principais */}
       <div class="glass rounded-2xl p-5">
-        <h3 class="font-serif font-bold text-cream mb-4">✦ {props.labels.summaryTitle}</h3>
+        <h3 class="font-serif font-bold text-cream mb-4">✦ Interpretação dos Trânsitos</h3>
 
         <div class="space-y-4">
           <For each={topAspects()}>

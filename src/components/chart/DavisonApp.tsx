@@ -195,14 +195,14 @@ export default function DavisonApp(props: Props) {
       {/* Profile selectors */}
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-gold mb-2">{props.locale === 'pt' ? 'Pessoa A' : 'Person A'}</h3>
+          <h3 class="text-sm font-semibold text-gold mb-2">Pessoa A</h3>
           <ProfileSelector onSelect={handleSelectA} locale={props.locale || 'pt'} />
           <Show when={profileA()}>
             <p class="text-xs text-green-400 mt-2">✓ {profileA()!.name}</p>
           </Show>
         </div>
         <div class="glass rounded-2xl p-4">
-          <h3 class="text-sm font-semibold text-purple-400 mb-2">{props.locale === 'pt' ? 'Pessoa B' : 'Person B'}</h3>
+          <h3 class="text-sm font-semibold text-purple-400 mb-2">Pessoa B</h3>
           <ProfileSelector onSelect={handleSelectB} locale={props.locale || 'pt'} />
           <Show when={profileB()}>
             <p class="text-xs text-green-400 mt-2">✓ {profileB()!.name}</p>
@@ -216,19 +216,51 @@ export default function DavisonApp(props: Props) {
         fallback={
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <div class="text-5xl mb-3">🔀</div>
-            <p>{props.locale === 'pt' ? 'Selecione dois perfis para gerar o Mapa Davison' : 'Select two profiles to generate the Davison chart'}</p>
+            <p>Selecione dois perfis para gerar o Mapa Davison</p>
+            <p class="text-xs mt-2 max-w-md mx-auto">
+              O Davison calcula o ponto médio no <strong class="text-cream">tempo</strong> e no <strong class="text-cream">espaço</strong> entre os dois nascimentos — gerando um mapa astronômico real desse instante.
+            </p>
           </div>
         }
       >
         {/* Chart title */}
         <div class="glass rounded-2xl p-4">
           <div class="text-center text-sm text-muted mb-2">
-            {props.locale === 'pt' ? 'Mapa Davison' : 'Davison chart'}:{' '}
+            Mapa Davison:{' '}
             <strong class="text-cream">{profileA()?.name}</strong>{' '}
             <span class="text-gold">🔀</span>{' '}
             <strong class="text-cream">{profileB()?.name}</strong>
           </div>
           <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
+        </div>
+
+        {/* Interpretation */}
+        <div class="space-y-4">
+          <h2 class="text-xl font-serif font-bold text-cream flex items-center gap-2">
+            <span class="text-gold">✦</span> Interpretação do Mapa Davison
+          </h2>
+          <p class="text-sm text-muted">
+            O que este mapa real revela sobre a relação entre{' '}
+            <strong class="text-cream">{profileA()?.name}</strong> e{' '}
+            <strong class="text-cream">{profileB()?.name}</strong>:
+          </p>
+
+          <For each={interpretation()}>
+            {(section) => (
+              <div class="glass rounded-xl p-5 border border-base-300 hover:border-gold/20 transition-colors">
+                <div class="flex items-start gap-3">
+                  <span class="text-2xl flex-shrink-0" style={{ color: section.color }}>
+                    {section.icon}
+                  </span>
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-cream text-sm mb-0.5">{section.title}</h3>
+                    <p class="text-xs text-gold-muted mb-2">{section.subtitle}</p>
+                    <p class="text-sm text-cream-dark leading-relaxed">{section.text}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </For>
         </div>
 
         {/* Planet positions table */}
