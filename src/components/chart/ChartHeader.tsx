@@ -1,15 +1,13 @@
 import { Show, For } from 'solid-js';
 import type { NatalChart, DignityType } from '../../engine/types';
 import { getSignIndex, getDegreeInSign } from '../../engine/calculations';
+import { getTranslations, type Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
 
 interface Props {
   chart: NatalChart | null;
+  locale?: Locale;
 }
-
-const SIGN_NAMES = [
-  'Áries','Touro','Gêmeos','Câncer','Leão','Virgem',
-  'Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes',
-];
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
@@ -46,23 +44,25 @@ function formatDate(date: Date, tzOffset?: number): string {
 }
 
 /** Get sign name + integer degree for a given longitude */
-function signDeg(longitude: number): string {
+function signDeg(longitude: number, signNames: string[]): string {
   const si  = getSignIndex(longitude);
   const deg = Math.floor(getDegreeInSign(longitude));
-  return `${SIGN_NAMES[si]} ${deg}°`;
+  return `${signNames[si]} ${deg}°`;
 }
 
-/** House system display labels */
-const HOUSE_SYSTEM_LABELS: Record<string, string> = {
-  placidus:      'Placidus',
-  koch:          'Koch',
-  equal:         'Igual',
-  'whole-sign':  'Signo Inteiro',
-  campanus:      'Campanus',
-  regiomontanus: 'Regiomontano',
-};
-
 export default function ChartHeader(props: Props) {
+  const locale = () => props.locale || 'pt';
+  const t = () => getTranslations(locale());
+  const signNames = () => getInterpretations(locale()).SIGN_NAMES;
+  const houseSystemLabels = () => ({
+    placidus: t().chart.placidus,
+    koch: t().chart.koch,
+    equal: t().chart.equal,
+    'whole-sign': t().chart.wholeSign,
+    campanus: 'Campanus',
+    regiomontanus: 'Regiomontanus',
+  } as Record<string, string>);
+
   return (
     <Show when={props.chart !== null}>
       {(() => {
@@ -71,7 +71,7 @@ export default function ChartHeader(props: Props) {
         const ascLon = () => c().houses.ascendant;
         const sunLon = () => c().positions.sun?.longitude ?? 0;
         const moonLon = () => c().positions.moon?.longitude ?? 0;
-        const houseLabel = () => HOUSE_SYSTEM_LABELS[c().meta.houseSystem] ?? c().meta.houseSystem;
+        const houseLabel = () => houseSystemLabels()[c().meta.houseSystem] ?? c().meta.houseSystem;
         const dateStr = () => formatDate(c().date, c().meta.timezone);
         const dignityEntries = () => Object.entries(c().dignities ?? {}) as [string, DignityType][];
 
@@ -107,19 +107,19 @@ export default function ChartHeader(props: Props) {
             {/* ASC */}
             <span>
               <span class="text-muted mr-0.5">ASC</span>
-              <span class="text-cream font-medium">{signDeg(ascLon())}</span>
+              <span class="text-cream font-medium">{signDeg(ascLon(), signNames())}</span>
             </span>
 
             {/* Sun */}
             <span>
               <span class="mr-0.5">{PLANET_SYMBOLS.sun}</span>
-              <span class="text-cream font-medium">{signDeg(sunLon())}</span>
+              <span class="text-cream font-medium">{signDeg(sunLon(), signNames())}</span>
             </span>
 
             {/* Moon */}
             <span>
               <span class="mr-0.5">{PLANET_SYMBOLS.moon}</span>
-              <span class="text-cream font-medium">{signDeg(moonLon())}</span>
+              <span class="text-cream font-medium">{signDeg(moonLon(), signNames())}</span>
             </span>
 
             {/* Dignity badges — only when present */}

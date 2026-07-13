@@ -7,13 +7,13 @@ import { generateFinancialPdf } from '../../reports/financial-report';
 import { generateSpiritualPdf } from '../../reports/spiritual-report';
 import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
 import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
-import { getTranslations, languages, localePath } from '../../i18n';
+import { getTranslations, languages, localePath, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 
 interface Props {
-  locale: string;
+  locale: Locale;
   reportType: 'natal' | 'relationship' | 'career' | 'annual' | 'psychological' | 'seven-sins' | 'financial' | 'spiritual' | 'saturn-return';
 }
 
@@ -190,7 +190,7 @@ export default function ReportPreview(props: Props) {
             <label class="text-sm text-muted whitespace-nowrap">{labels().reportLanguage || '🌐 Report language:'}</label>
             <select
               value={reportLocale()}
-              onChange={(e) => setReportLocale(e.currentTarget.value)}
+              onChange={(e) => setReportLocale(e.currentTarget.value as Locale)}
               class="flex-1 px-3 py-1.5 text-sm bg-base-200 border border-base-400 rounded-lg text-cream focus:border-gold/50 focus:outline-none"
             >
               {Object.entries(languages).map(([code, lang]) => (

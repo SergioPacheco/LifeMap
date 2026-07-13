@@ -1,6 +1,8 @@
 import { Show, For, createMemo } from 'solid-js';
 import type { NatalChart } from '../../engine/types';
 import { getSignIndex } from '../../engine/calculations';
+import { getTranslations, type Locale } from '../../i18n';
+import { getChartUi } from '../../i18n/chart-ui';
 
 // ============================================================
 // Props
@@ -8,6 +10,7 @@ import { getSignIndex } from '../../engine/calculations';
 
 interface Props {
   chart: NatalChart | null;
+  locale?: Locale;
 }
 
 // ============================================================
@@ -57,13 +60,6 @@ type ModalityId = 'cardinal' | 'fixed' | 'mutable';
 const ELEMENTS: ElementId[] = ['fire', 'earth', 'air', 'water'];
 const MODALITIES: ModalityId[] = ['cardinal', 'fixed', 'mutable'];
 
-const ELEMENT_LABELS: Record<ElementId, string> = {
-  fire: 'Fogo', earth: 'Terra', air: 'Ar', water: 'Água',
-};
-const MODALITY_LABELS: Record<ModalityId, string> = {
-  cardinal: 'Cardinal', fixed: 'Fixo', mutable: 'Mutável',
-};
-
 const ELEMENT_COLORS: Record<ElementId, string> = {
   fire: '#e05555',
   earth: '#55aa55',
@@ -88,6 +84,8 @@ const PLANET_KEYS = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'satu
 // ============================================================
 
 export default function ElementTable(props: Props) {
+  const text = () => getChartUi(props.locale);
+  const elementLabels = () => getTranslations(props.locale || 'pt').common.elements;
   // Build the distribution grid: grid[element][modality] = string[]
   const distribution = createMemo(() => {
     const chart = props.chart;
@@ -166,7 +164,7 @@ export default function ElementTable(props: Props) {
             style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
           >
             <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-              Elementos &amp; Modalidades
+              {text().elementsModalities}
             </h3>
 
             {/* ── Grid ── */}
@@ -178,7 +176,7 @@ export default function ElementTable(props: Props) {
                     <For each={MODALITIES}>
                       {(mod) => (
                         <th class="py-1 px-2 text-center text-muted font-medium uppercase tracking-wide">
-                          {MODALITY_LABELS[mod]}
+                          {text().modalities[mod]}
                         </th>
                       )}
                     </For>
@@ -199,7 +197,7 @@ export default function ElementTable(props: Props) {
                           class="py-2 pl-2 pr-3 font-semibold whitespace-nowrap"
                           style={{ color: ELEMENT_COLORS[el] }}
                         >
-                          {ELEMENT_LABELS[el]}
+                          {elementLabels()[el]}
                         </td>
 
                         {/* Cells */}
@@ -287,7 +285,7 @@ export default function ElementTable(props: Props) {
                     return (
                       <Show when={pct > 0}>
                         <div
-                          title={`${ELEMENT_LABELS[el]}: ${Math.round(pct)}%`}
+                          title={`${elementLabels()[el]}: ${Math.round(pct)}%`}
                           style={{
                             width: `${pct}%`,
                             background: ELEMENT_COLORS[el],
@@ -315,7 +313,7 @@ export default function ElementTable(props: Props) {
                             style={{ background: ELEMENT_COLORS[el] }}
                           />
                           <span style={{ color: ELEMENT_COLORS[el] }} class="font-medium">
-                            {pct}% {ELEMENT_LABELS[el]}
+                            {pct}% {elementLabels()[el]}
                           </span>
                         </span>
                       </Show>

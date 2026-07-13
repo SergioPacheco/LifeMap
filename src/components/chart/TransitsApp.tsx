@@ -13,6 +13,7 @@ import { THEME_INFO, mapEventThemes } from '../../engine/calendar/theme-mapper';
 import type { Theme } from '../../engine/calendar/types';
 import { birthDataFromProfile } from '../../utils/profile';
 import { addDaysToDateInput, addMonthsToDateInput, dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -26,7 +27,9 @@ const PLANET_SYMBOLS: Record<string, string> = {
 };
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 
-export default function TransitsApp() {
+interface Props { locale?: Locale }
+
+export default function TransitsApp(props: Props) {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [transits, setTransits] = createSignal<TransitChart | null>(null);
   const [transitDate, setTransitDate] = createSignal(todayDateInput());

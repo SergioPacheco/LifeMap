@@ -60,7 +60,7 @@ const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra
 // ============================================================
 
 export default function RelocatedApp(props: Props) {
-  const text = TEXT[props.locale] ?? TEXT.en;
+  const text = TEXT[props.locale as keyof typeof TEXT] ?? TEXT.en;
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [relocatedChart, setRelocatedChart] = createSignal<NatalChart | null>(null);
   const [wheelSvg, setWheelSvg] = createSignal('');
@@ -318,7 +318,7 @@ export default function RelocatedApp(props: Props) {
 
           {/* Planet table for relocated */}
           <Show when={relocatedChart()}>
-            <PlanetTable chart={relocatedChart()} />
+            <PlanetTable chart={relocatedChart()} locale={props.locale} />
           </Show>
         </Show>
       </div>

@@ -9,13 +9,16 @@ import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
 };
 
-export default function ProgressionsApp() {
+interface Props { locale?: Locale }
+
+export default function ProgressionsApp(props: Props) {
   const [natal, setNatal] = createSignal<NatalChart | null>(null);
   const [progressed, setProgressed] = createSignal<ProgressedChart | null>(null);
   const [birthData, setBirthData] = createSignal<BirthData | null>(null);
@@ -130,7 +133,7 @@ export default function ProgressionsApp() {
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
           </div>
-          <PlanetTable chart={progressed() as any} />
+          <PlanetTable chart={progressed() as any} locale={props.locale} />
         </Show>
       </div>
     </div>

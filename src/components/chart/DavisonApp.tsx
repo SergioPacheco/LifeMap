@@ -6,6 +6,7 @@ import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { getOffsetHoursForInstant, inferTimeZoneId } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
 
 // ─── Helpers ───────────────────────────────────────────────
 function formatDate(d: Date): string { return d.toISOString().split('T')[0]; }
@@ -135,7 +136,7 @@ function interpretDavison(chart: NatalChart, nameA: string, nameB: string) {
 
 // ─── Component ─────────────────────────────────────────────
 interface Props {
-  locale?: string;
+  locale?: Locale;
 }
 
 export default function DavisonApp(props: Props) {
@@ -264,7 +265,7 @@ export default function DavisonApp(props: Props) {
         </div>
 
         {/* Planet positions table */}
-        <PlanetTable chart={davisonChart() as any} />
+        <PlanetTable chart={davisonChart() as any} locale={props.locale as any} />
       </Show>
     </div>
   );

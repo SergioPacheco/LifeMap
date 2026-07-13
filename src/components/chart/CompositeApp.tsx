@@ -9,6 +9,7 @@ import { getAspectSymbol, getAspectColor } from '../../engine/aspects';
 import type { NatalChart, CompositeChart, Aspect } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import type { Locale } from '../../i18n';
 
 // ─── Planet names & symbols ────────────────────────────────
 const PLANET_NAMES: Record<string, string> = {
@@ -140,7 +141,7 @@ function getVenusText(sign: number): string {
 }
 
 interface Props {
-  locale?: string;
+  locale?: Locale;
 }
 
 export default function CompositeApp(props: Props) {
@@ -259,12 +260,12 @@ export default function CompositeApp(props: Props) {
         </Show>
 
         {/* Planet positions table */}
-        <PlanetTable chart={composite() as any} />
+        <PlanetTable chart={composite() as any} locale={props.locale as any} />
 
         {/* Aspect Grid + Element Table */}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <AspectGrid chart={composite() as any} />
-          <ElementTable chart={composite() as any} />
+          <AspectGrid chart={composite() as any} locale={props.locale as any} />
+          <ElementTable chart={composite() as any} locale={props.locale as any} />
         </div>
       </Show>
     </div>

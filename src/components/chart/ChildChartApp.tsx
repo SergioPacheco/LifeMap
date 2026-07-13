@@ -8,9 +8,10 @@ import { renderWheel } from '../../renderer/wheel';
 import type { BirthData, NatalChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import type { Locale } from '../../i18n';
 
 interface Props {
-  locale: string;
+  locale: Locale;
 }
 
 // ============================================================
@@ -447,7 +448,7 @@ export default function ChildChartApp(props: Props) {
           </div>
 
           {/* Planet Table */}
-          <PlanetTable chart={chart()} />
+          <PlanetTable chart={chart()} locale={props.locale as any} />
         </Show>
 
         {/* Empty state */}

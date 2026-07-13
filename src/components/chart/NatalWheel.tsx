@@ -1,12 +1,16 @@
 import { createMemo, createSignal, Show } from 'solid-js';
 import type { NatalChart } from '../../engine/types';
 import { renderWheel } from '../../renderer/wheel';
+import type { Locale } from '../../i18n';
+import { getChartUi } from '../../i18n/chart-ui';
 
 interface Props {
   chart: NatalChart | null;
+  locale?: Locale;
 }
 
 export default function NatalWheel(props: Props) {
+  const text = () => getChartUi(props.locale).natal;
   const [isFullscreen, setIsFullscreen] = createSignal(false);
   let containerRef: HTMLDivElement | undefined;
 
@@ -56,7 +60,7 @@ export default function NatalWheel(props: Props) {
         <div class="flex items-center justify-center h-96 text-muted">
           <div class="text-center">
             <div class="text-5xl mb-3">✦</div>
-            <p class="text-sm">Preencha os dados de nascimento para gerar seu mapa</p>
+            <p class="text-sm">{text().fillBirthData}</p>
           </div>
         </div>
       }>
@@ -64,7 +68,7 @@ export default function NatalWheel(props: Props) {
         <button
           onClick={toggleFullscreen}
           class="absolute top-3 right-3 z-10 p-2 rounded-lg bg-base-200/80 hover:bg-base-300 border border-base-400 text-muted hover:text-cream transition-colors"
-          title={isFullscreen() ? 'Sair da tela cheia (Esc)' : 'Expandir para tela cheia'}
+          title={isFullscreen() ? text().exitFullscreen : text().expandFullscreen}
         >
           <Show when={!isFullscreen()} fallback={
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
@@ -86,7 +90,7 @@ export default function NatalWheel(props: Props) {
         {/* Fullscreen hint */}
         <Show when={isFullscreen()}>
           <div class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted opacity-50">
-            Pressione Esc ou clique no botão para sair
+            {text().fullscreenHint}
           </div>
         </Show>
       </Show>

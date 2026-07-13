@@ -7,6 +7,8 @@ import {
   inferTimeZoneId,
   todayDateInput,
 } from '../../utils/dateTime';
+import { getTranslations, type Locale } from '../../i18n';
+import { getBirthFormText } from '../../i18n/birth-form';
 
 export interface ChartOptions extends CalculationOptions {
   nodeType: 'true' | 'mean';
@@ -42,7 +44,7 @@ const ORBS_PRESETS: Record<string, Record<AspectType, number>> = {
 
 interface Props {
   onCalculate: (data: BirthData, options?: ChartOptions) => void;
-  locale: string;
+  locale: Locale;
   initialData?: BirthData | null;
 }
 
@@ -58,6 +60,8 @@ interface GeoResult {
 }
 
 export default function BirthDataForm(props: Props) {
+  const t = () => getTranslations(props.locale);
+  const text = () => getBirthFormText(props.locale);
   const [name, setName] = createSignal('');
   const [date, setDate] = createSignal('');
   const [time, setTime] = createSignal('12:00');
@@ -185,9 +189,9 @@ export default function BirthDataForm(props: Props) {
     e.preventDefault();
     setError('');
 
-    if (!date()) { setError('Informe a data de nascimento'); return; }
-    if (!unknownTime() && !time()) { setError('Informe a hora de nascimento'); return; }
-    if (!selectedCity()) { setError('Selecione uma cidade da lista'); return; }
+    if (!date()) { setError(t().onboarding.errorDate); return; }
+    if (!unknownTime() && !time()) { setError(t().onboarding.errorTime); return; }
+    if (!selectedCity()) { setError(t().onboarding.errorCity); return; }
 
     const cityData = selectedCity()!;
     const effectiveTimezone = getEffectiveTimezoneOffset(
@@ -212,25 +216,25 @@ export default function BirthDataForm(props: Props) {
   return (
     <form onSubmit={handleSubmit} class="glass rounded-2xl p-6 sm:p-8 shadow-card">
       <h3 class="text-lg font-serif font-bold text-cream mb-6">
-        Dados de Nascimento
+        {t().chart.birthData}
       </h3>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* Nome */}
         <div class="sm:col-span-2">
-          <label class="block text-sm font-medium text-cream-dark mb-1.5">Nome (opcional)</label>
+          <label class="block text-sm font-medium text-cream-dark mb-1.5">{t().chart.name} ({text().optional})</label>
           <input
             type="text"
             value={name()}
             onInput={(e) => setName(e.currentTarget.value)}
-            placeholder="Seu nome"
+            placeholder={t().onboarding.namePlaceholder}
             class="w-full px-4 py-2.5 rounded-lg border border-base-400 bg-base-200 text-cream placeholder-muted text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60 transition-colors"
           />
         </div>
 
         {/* Data */}
         <div>
-          <label class="block text-sm font-medium text-cream-dark mb-1.5">Data *</label>
+          <label class="block text-sm font-medium text-cream-dark mb-1.5">{t().chart.date} *</label>
           <input
             type="date"
             value={date()}
@@ -242,7 +246,7 @@ export default function BirthDataForm(props: Props) {
 
         {/* Hora */}
         <div>
-          <label class="block text-sm font-medium text-cream-dark mb-1.5">Hora *</label>
+          <label class="block text-sm font-medium text-cream-dark mb-1.5">{t().chart.time} *</label>
           <input
             type="time"
             value={time()}
@@ -258,18 +262,18 @@ export default function BirthDataForm(props: Props) {
               onChange={(e) => setUnknownTime(e.currentTarget.checked)}
               class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
             />
-            <span class="text-xs text-muted">Não sei a hora exata</span>
+            <span class="text-xs text-muted">{t().onboarding.unknownTime}</span>
           </label>
         </div>
 
         {/* Cidade */}
         <div class="sm:col-span-2 relative">
-          <label class="block text-sm font-medium text-cream-dark mb-1.5">Cidade *</label>
+          <label class="block text-sm font-medium text-cream-dark mb-1.5">{t().chart.city} *</label>
           <input
             type="text"
             value={city()}
             onInput={(e) => handleCityInput(e.currentTarget.value)}
-            placeholder="Digite a cidade de nascimento..."
+            placeholder={t().onboarding.cityPlaceholder}
             autocomplete="off"
             class="w-full px-4 py-2.5 rounded-lg border border-base-400 bg-base-200 text-cream placeholder-muted text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60 transition-colors"
           />
@@ -296,7 +300,7 @@ export default function BirthDataForm(props: Props) {
           </Show>
 
           <Show when={searching()}>
-            <div class="absolute right-4 top-9 text-xs text-muted">Buscando...</div>
+            <div class="absolute right-4 top-9 text-xs text-muted">{t().onboarding.searching}</div>
           </Show>
 
           <Show when={selectedCity()}>
@@ -321,9 +325,9 @@ export default function BirthDataForm(props: Props) {
           class="flex items-center gap-2 text-sm text-muted hover:text-gold transition-colors w-full"
         >
           <span class={`transition-transform ${showAdvanced() ? 'rotate-90' : ''}`}>▶</span>
-          <span class="font-medium">Seleção Estendida</span>
+          <span class="font-medium">{text().advanced}</span>
           <span class="text-xs ml-auto opacity-60">
-            {houseSystem() !== 'placidus' || includeAsteroids() || orbsPreset() !== 'default' ? '● Customizado' : ''}
+            {houseSystem() !== 'placidus' || includeAsteroids() || orbsPreset() !== 'default' ? `● ${text().customized}` : ''}
           </span>
         </button>
 
@@ -331,16 +335,16 @@ export default function BirthDataForm(props: Props) {
           <div class="mt-4 space-y-4 animate-fadeIn">
             {/* House System */}
             <div>
-              <label class="block text-xs font-medium text-cream-dark mb-1.5">Sistema de Casas</label>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">{t().chart.houseSystem}</label>
               <select
                 value={houseSystem()}
                 onChange={(e) => setHouseSystem(e.currentTarget.value as HouseSystem)}
                 class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60"
               >
-                <option value="placidus">Plácido</option>
-                <option value="koch">Koch</option>
-                <option value="whole-sign">Signos Inteiros</option>
-                <option value="equal">Casas Iguais (Asc)</option>
+                <option value="placidus">{t().chart.placidus}</option>
+                <option value="koch">{t().chart.koch}</option>
+                <option value="whole-sign">{t().chart.wholeSign}</option>
+                <option value="equal">{t().chart.equal} (Asc)</option>
                 <option value="campanus">Campanus</option>
                 <option value="regiomontanus">Regiomontanus</option>
               </select>
@@ -348,7 +352,7 @@ export default function BirthDataForm(props: Props) {
 
             {/* Asteroids */}
             <div>
-              <label class="block text-xs font-medium text-cream-dark mb-1.5">Corpos Extras</label>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">{text().extraBodies}</label>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
@@ -357,7 +361,7 @@ export default function BirthDataForm(props: Props) {
                     onChange={(e) => setIncludeAsteroids(e.currentTarget.checked)}
                     class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
                   />
-                  <span class="text-sm text-cream-dark">Asteroides (Ceres, Vesta, Pallas, Juno)</span>
+                  <span class="text-sm text-cream-dark">{text().asteroids}</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
@@ -375,14 +379,14 @@ export default function BirthDataForm(props: Props) {
                     onChange={(e) => setShowPartOfFortune(e.currentTarget.checked)}
                     class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
                   />
-                  <span class="text-sm text-cream-dark">Parte da Fortuna</span>
+                  <span class="text-sm text-cream-dark">{text().partOfFortune}</span>
                 </label>
               </div>
             </div>
 
             {/* Show Transits */}
             <div>
-              <label class="block text-xs font-medium text-cream-dark mb-1.5">Visualização</label>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">{text().visualization}</label>
               <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
@@ -391,15 +395,15 @@ export default function BirthDataForm(props: Props) {
                     onChange={(e) => setShowTransitsToday(e.currentTarget.checked)}
                     class="w-4 h-4 rounded border-base-400 bg-base-200 text-gold focus:ring-gold/40"
                   />
-                  <span class="text-sm text-cream-dark">↻ Mostrar trânsitos de hoje</span>
+                  <span class="text-sm text-cream-dark">↻ {text().showTodayTransits}</span>
                 </label>
-                <p class="text-[10px] text-muted pl-6">Sobrepõe as posições planetárias de hoje ao seu mapa natal</p>
+                <p class="text-[10px] text-muted pl-6">{text().transitsNote}</p>
               </div>
             </div>
 
             {/* Node Type */}
             <div>
-              <label class="block text-xs font-medium text-cream-dark mb-1.5">Nodo Lunar</label>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">{text().lunarNode}</label>
               <div class="flex gap-4">
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
@@ -410,7 +414,7 @@ export default function BirthDataForm(props: Props) {
                     onChange={() => setNodeType('true')}
                     class="w-4 h-4 border-base-400 bg-base-200 text-gold focus:ring-gold/40"
                   />
-                  <span class="text-sm text-cream-dark">Nodo Verdadeiro</span>
+                  <span class="text-sm text-cream-dark">{text().trueNode}</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
                   <input
@@ -421,24 +425,24 @@ export default function BirthDataForm(props: Props) {
                     onChange={() => setNodeType('mean')}
                     class="w-4 h-4 border-base-400 bg-base-200 text-gold focus:ring-gold/40"
                   />
-                  <span class="text-sm text-cream-dark">Nodo Médio</span>
+                  <span class="text-sm text-cream-dark">{text().meanNode}</span>
                 </label>
               </div>
             </div>
 
             {/* Orbs */}
             <div>
-              <label class="block text-xs font-medium text-cream-dark mb-1.5">Orbes de Aspecto</label>
+              <label class="block text-xs font-medium text-cream-dark mb-1.5">{text().aspectOrbs}</label>
               <select
                 value={orbsPreset()}
                 onChange={(e) => setOrbsPreset(e.currentTarget.value as 'default' | 'tight' | 'wide')}
                 class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm focus:ring-2 focus:ring-gold/40 focus:border-gold/60"
               >
-                <option value="default">Padrão (8° conj / 7° □△ / 5° ✶)</option>
-                <option value="tight">Apertado (6° conj / 5° □△ / 3° ✶)</option>
-                <option value="wide">Largo (10° conj / 9° □△ / 7° ✶)</option>
+                <option value="default">{text().presetDefault} (8° ☌ / 7° □△ / 5° ✶)</option>
+                <option value="tight">{text().presetTight} (6° ☌ / 5° □△ / 3° ✶)</option>
+                <option value="wide">{text().presetWide} (10° ☌ / 9° □△ / 7° ✶)</option>
               </select>
-              <p class="mt-1 text-[10px] text-muted">Orbes maiores = mais aspectos detectados</p>
+              <p class="mt-1 text-[10px] text-muted">{text().largerOrbs}</p>
             </div>
 
             {/* Reset Button */}
@@ -447,7 +451,7 @@ export default function BirthDataForm(props: Props) {
               onClick={resetOptions}
               class="w-full mt-2 px-3 py-2 text-xs text-muted hover:text-cream border border-base-400 hover:border-gold/40 rounded-lg transition-colors flex items-center justify-center gap-1.5"
             >
-              <span>↺</span> Resetar para configuração padrão
+              <span>↺</span> {text().reset}
             </button>
           </div>
         </Show>
@@ -458,7 +462,7 @@ export default function BirthDataForm(props: Props) {
         type="submit"
         class="mt-6 w-full px-4 py-3.5 bg-gradient-to-r from-gold-dark via-gold to-gold-light text-black font-semibold rounded-lg transition-all hover:shadow-gold hover:scale-[1.01] active:scale-[0.99]"
       >
-        Calcular Mapa Natal
+        {t().chart.calculate}
       </button>
     </form>
   );

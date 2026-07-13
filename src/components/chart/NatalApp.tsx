@@ -14,12 +14,15 @@ import type { BirthData, NatalChart, TransitChart } from '../../engine/types';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { localeToDateLocale } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
+import { getChartUi } from '../../i18n/chart-ui';
 
 interface Props {
-  locale: string;
+  locale: Locale;
 }
 
 export default function NatalApp(props: Props) {
+  const text = () => getChartUi(props.locale).natal;
   const [chart, setChart] = createSignal<NatalChart | null>(null);
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal('');
@@ -76,7 +79,7 @@ export default function NatalApp(props: Props) {
 
       if (data.name || data.city) {
         await saveProfile({
-          name: data.name || data.city || 'Sem nome',
+          name: data.name || data.city || text().unnamed,
           date: data.date,
           time: data.time,
           lat: data.lat,
@@ -89,7 +92,7 @@ export default function NatalApp(props: Props) {
       }
     } catch (e) {
       console.error('Calculation error:', e);
-      setError('Erro ao calcular o mapa. Verifique os dados.');
+      setError(text().calculateError);
     } finally {
       setLoading(false);
     }
@@ -159,24 +162,24 @@ export default function NatalApp(props: Props) {
         <Show when={loading()}>
           <div class="text-center py-8 text-muted">
             <div class="animate-spin text-3xl mb-2 text-gold">✦</div>
-            <p class="text-sm">Calculando posições astronômicas...</p>
+            <p class="text-sm">{text().calculatingPositions}</p>
           </div>
         </Show>
 
         {/* Show natal-only wheel when transits OFF, bi-wheel when ON */}
         <Show when={chart()}>
-          <ChartHeader chart={chart()} />
+          <ChartHeader chart={chart()} locale={props.locale} />
         </Show>
 
         <Show when={!showTransits()}>
-          <NatalWheel chart={chart()} />
+          <NatalWheel chart={chart()} locale={props.locale} />
         </Show>
 
         {/* Bi-wheel when transits enabled */}
         <Show when={showTransits() && transitSvg()}>
           <div class="glass rounded-2xl p-4">
             <div class="text-xs text-center text-muted mb-2">
-              ● Natal (interno) &nbsp; ○ Trânsitos de hoje (externo) — {new Date().toLocaleDateString(localeToDateLocale(props.locale))}
+              ● {text().natalInner} &nbsp; ○ {text().todayTransitsOuter} — {new Date().toLocaleDateString(localeToDateLocale(props.locale))}
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={transitSvg()} />
           </div>
@@ -184,11 +187,11 @@ export default function NatalApp(props: Props) {
 
         <Show when={chart()}>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <AspectGrid chart={chart()} />
-            <ElementTable chart={chart()} />
+            <AspectGrid chart={chart()} locale={props.locale} />
+            <ElementTable chart={chart()} locale={props.locale} />
           </div>
-          <PlanetTable chart={chart()} />
-          <InterpretationPanel chart={chart()} />
+          <PlanetTable chart={chart()} locale={props.locale} />
+          <InterpretationPanel chart={chart()} locale={props.locale} />
         </Show>
       </div>
     </div>

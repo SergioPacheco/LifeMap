@@ -7,6 +7,7 @@ import PlanetTable from './PlanetTable';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { isValidTimeZone, localeToDateLocale, pad2, zonedDateTimeToUtc } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
 
 // ============================================================
 // TYPES
@@ -302,7 +303,9 @@ function LRInterpretation(props: { lr: LunarReturnResult; natalMoonLon: number }
 // MAIN COMPONENT
 // ============================================================
 
-export default function LunarReturnApp() {
+interface Props { locale?: Locale }
+
+export default function LunarReturnApp(props: Props) {
   const now = new Date();
   const [natalChart, setNatalChart] = createSignal<any>(null);
   const [lrChart, setLrChart] = createSignal<LunarReturnResult | null>(null);
@@ -449,7 +452,7 @@ export default function LunarReturnApp() {
 
         {/* Planet Table */}
         <Show when={lrChart() && !loading()}>
-          <PlanetTable chart={lrChart() as any} />
+          <PlanetTable chart={lrChart() as any} locale={props.locale} />
         </Show>
       </div>
 

@@ -1,8 +1,12 @@
 import { Show, For, createMemo } from 'solid-js';
 import type { NatalChart, Aspect, AspectType } from '../../engine/types';
+import type { Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
+import { getChartUi } from '../../i18n/chart-ui';
 
 interface Props {
   chart: NatalChart | null;
+  locale?: Locale;
 }
 
 // Planets to display (in order)
@@ -27,21 +31,6 @@ const PLANET_SYMBOLS: Record<string, string> = {
   northNode: '☊',
 };
 
-const PLANET_NAMES: Record<string, string> = {
-  sun: 'Sol',
-  moon: 'Lua',
-  mercury: 'Mercúrio',
-  venus: 'Vênus',
-  mars: 'Marte',
-  jupiter: 'Júpiter',
-  saturn: 'Saturno',
-  uranus: 'Urano',
-  neptune: 'Netuno',
-  pluto: 'Plutão',
-  chiron: 'Quíron',
-  northNode: 'Nodo Norte',
-};
-
 const ASPECT_SYMBOLS: Record<AspectType, string> = {
   conjunction: '☌',
   sextile: '✶',
@@ -59,6 +48,8 @@ const ASPECT_COLORS: Record<AspectType, string> = {
 };
 
 export default function AspectGrid(props: Props) {
+  const text = () => getChartUi(props.locale);
+  const planetNames = () => getInterpretations(props.locale).PLANET_NAMES;
   // Build a lookup map: "planet1|planet2" -> Aspect (normalized so planet1 < planet2 by index)
   const aspectMap = createMemo(() => {
     if (!props.chart) return new Map<string, Aspect>();
@@ -106,7 +97,7 @@ export default function AspectGrid(props: Props) {
         }}
       >
         <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-          Grade de Aspectos
+          {text().aspectGrid}
         </h3>
 
         <div class="overflow-x-auto">
@@ -125,7 +116,7 @@ export default function AspectGrid(props: Props) {
                 <For each={visiblePlanets().slice(0, -1)}>
                   {(colId) => (
                     <th
-                      title={PLANET_NAMES[colId]}
+                      title={planetNames()[colId]}
                       style={{
                         width: '26px',
                         height: '26px',
@@ -155,7 +146,7 @@ export default function AspectGrid(props: Props) {
                     <tr>
                       {/* Row header: planet symbol */}
                       <td
-                        title={PLANET_NAMES[rowId]}
+                        title={planetNames()[rowId]}
                         style={{
                           'font-size': '14px',
                           'text-align': 'right',
@@ -175,8 +166,8 @@ export default function AspectGrid(props: Props) {
                           const aspect = getAspect(rowId, colId);
                           const orb = aspect ? aspect.orb.toFixed(1) : '';
                           const title = aspect
-                            ? `${PLANET_NAMES[colId]} ${ASPECT_SYMBOLS[aspect.type]} ${PLANET_NAMES[rowId]} ${orb}°`
-                            : `${PLANET_NAMES[colId]} — ${PLANET_NAMES[rowId]}`;
+                            ? `${planetNames()[colId]} ${ASPECT_SYMBOLS[aspect.type]} ${planetNames()[rowId]} ${orb}°`
+                            : `${planetNames()[colId]} — ${planetNames()[rowId]}`;
 
                           return (
                             <td
@@ -221,7 +212,7 @@ export default function AspectGrid(props: Props) {
                 <span style={{ color: ASPECT_COLORS[type], 'font-size': '13px', 'font-weight': 'bold' }}>
                   {symbol}
                 </span>
-                <span style={{ 'text-transform': 'capitalize' }}>{type}</span>
+                <span>{text().aspects[type]}</span>
               </span>
             )}
           </For>

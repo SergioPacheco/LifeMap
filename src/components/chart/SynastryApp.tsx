@@ -7,6 +7,7 @@ import { getAspectColor, getAspectSymbol } from '../../engine/aspects';
 import type { NatalChart, SynastryChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import type { Locale } from '../../i18n';
 
 const PLANET_NAMES: Record<string, string> = {
   sun: 'Sol', moon: 'Lua', mercury: 'Mercúrio', venus: 'Vênus', mars: 'Marte',
@@ -20,7 +21,7 @@ const PLANET_SYMBOLS: Record<string, string> = {
 };
 
 interface Props {
-  locale?: string;
+  locale?: Locale;
 }
 
 export default function SynastryApp(props: Props) {

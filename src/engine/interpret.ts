@@ -296,7 +296,7 @@ export function generateNatalInterpretation(chart: NatalChart, locale: InterpLoc
       title: titles.venus(venusHouse, SIGN_NAMES[venusSign]),
       planet: 'venus',
       symbol: '♀',
-      text: `${VENUS_IN_HOUSE[venusHouse - 1] || ''} ${venusFlavorText}`,
+      text: `${interp.VENUS_IN_HOUSE[venusHouse - 1] || ''} ${venusFlavorText}`,
       sign: SIGN_NAMES[venusSign],
       house: venusHouse,
       category: 'love',
@@ -313,7 +313,7 @@ export function generateNatalInterpretation(chart: NatalChart, locale: InterpLoc
       title: titles.mars(marsHouse, SIGN_NAMES[marsSign]),
       planet: 'mars',
       symbol: '♂',
-      text: `${MARS_IN_HOUSE[marsHouse - 1] || ''} ${marsFlavorText}`,
+      text: `${interp.MARS_IN_HOUSE[marsHouse - 1] || ''} ${marsFlavorText}`,
       sign: SIGN_NAMES[marsSign],
       house: marsHouse,
       category: 'action',
@@ -325,8 +325,8 @@ export function generateNatalInterpretation(chart: NatalChart, locale: InterpLoc
   if (nnPos) {
     const nnSign = getSignIndex(nnPos.longitude);
     const nnHouse = chart.planetHouses.northNode || 1;
-    const houseText = NORTH_NODE_HOUSE[nnHouse - 1] || '';
-    const signText = NORTH_NODE_IN_SIGN[nnSign] || '';
+    const houseText = interp.NORTH_NODE_HOUSE[nnHouse - 1] || '';
+    const signText = interp.NORTH_NODE_IN_SIGN[nnSign] || '';
     sections.push({
       title: titles.northNode(nnHouse, SIGN_NAMES[nnSign]),
       planet: 'northNode',
@@ -343,8 +343,8 @@ export function generateNatalInterpretation(chart: NatalChart, locale: InterpLoc
   if (chironPos) {
     const chironSign = getSignIndex(chironPos.longitude);
     const chironHouse = chart.planetHouses.chiron || 1;
-    const houseText = CHIRON_IN_HOUSE[chironHouse - 1] || '';
-    const signText = CHIRON_IN_SIGN[chironSign] || '';
+    const houseText = interp.CHIRON_IN_HOUSE[chironHouse - 1] || '';
+    const signText = interp.CHIRON_IN_SIGN[chironSign] || '';
     sections.push({
       title: titles.chiron(chironHouse, SIGN_NAMES[chironSign]),
       planet: 'chiron',

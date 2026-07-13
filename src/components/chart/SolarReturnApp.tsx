@@ -10,8 +10,11 @@ import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { isValidTimeZone, localeToDateLocale } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
 
-export default function SolarReturnApp() {
+interface Props { locale?: Locale }
+
+export default function SolarReturnApp(props: Props) {
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [srChart, setSrChart] = createSignal<any>(null);
   const [year, setYear] = createSignal(new Date().getFullYear());
@@ -92,7 +95,7 @@ export default function SolarReturnApp() {
         </Show>
 
         <Show when={srChart()}>
-          <PlanetTable chart={srChart()} />
+          <PlanetTable chart={srChart()} locale={props.locale} />
         </Show>
       </div>
 
@@ -126,8 +129,8 @@ export default function SolarReturnApp() {
 
           {/* Aspect Grid + Element Table */}
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-            <AspectGrid chart={srChart()} />
-            <ElementTable chart={srChart()} />
+            <AspectGrid chart={srChart()} locale={props.locale} />
+            <ElementTable chart={srChart()} locale={props.locale} />
           </div>
         </Show>
       </div>
