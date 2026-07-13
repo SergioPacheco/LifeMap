@@ -6,8 +6,33 @@ const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
 import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.tsx';
+
+const PAGE_LABELS = {
+  pt: {
+    title: 'Astrocartografia',
+    breadcrumb: 'Astrocartografia',
+    intro: 'A Astrocartografia mostra como seu mapa natal se expressa em diferentes locais do mundo.',
+    summary: 'Como funciona? O que são planetas angulares?',
+    section1: 'O que é Astrocartografia?',
+    section2: 'Casas Angulares',
+    section3: 'Cidades Favoráveis',
+    section4: 'Cidades Desafiadoras',
+  },
+  en: {
+    title: 'Astrocartography',
+    breadcrumb: 'Astrocartography',
+    intro: 'Astrocartography shows how your natal chart expresses itself in different places around the world.',
+    summary: 'How does it work? What are angular planets?',
+    section1: 'What is Astrocartography?',
+    section2: 'Angular Houses',
+    section3: 'Favorable Cities',
+    section4: 'Challenging Cities',
+  },
+} as const;
+
+const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
 ---
-<BaseLayout title="Astrocartografia" locale={locale}>
+<BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
     <!-- Breadcrumb + Header -->
@@ -15,14 +40,14 @@ import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.t
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-gold transition-colors">{t.nav.charts}</a>
         <span class="mx-2 opacity-40">→</span>
-        <span class="text-cream">Astrocartografia</span>
+        <span class="text-cream">{page.breadcrumb}</span>
       </nav>
 
       <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">
-        🗺️ Astrocartografia
+        🗺️ {page.title}
       </h1>
       <p class="text-muted text-base max-w-3xl leading-relaxed">
-        A Astrocartografia mostra como seu mapa natal se expressa em diferentes locais do mundo.
+        {page.intro}
         <strong class="text-cream">Cidades onde planetas benéficos ficam angulares</strong> (Casas 1, 4, 7, 10)
         tendem a ativar essas energias positivamente.
       </p>
@@ -34,13 +59,13 @@ import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.t
         <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        Como funciona? O que são planetas angulares?
+        {page.summary}
       </summary>
 
       <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🌍</span> O que é Astrocartografia?
+            <span class="text-gold">🌍</span> {page.section1}
           </h3>
           <p class="text-xs text-cream-dark leading-relaxed mb-2">
             Quando você nasce, os planetas ocupam posições específicas no zodíaco.
@@ -48,14 +73,14 @@ import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.t
           </p>
           <p class="text-xs text-cream-dark leading-relaxed">
             Em cidades diferentes, os mesmos planetas caem em casas diferentes.
-            A Astrocartografia usa esse princípio para encontrar locais onde planetas específicos
+            A {page.title} usa esse princípio para encontrar locais onde planetas específicos
             ficam nas casas angulares — as mais poderosas do mapa.
           </p>
         </div>
 
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🏛️</span> Casas Angulares
+            <span class="text-gold">🏛️</span> {page.section2}
           </h3>
           <ul class="space-y-2 text-xs text-cream-dark">
             <li class="flex items-start gap-2">
@@ -79,7 +104,7 @@ import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.t
 
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">✅</span> Cidades Favoráveis
+            <span class="text-gold">✅</span> {page.section3}
           </h3>
           <p class="text-xs text-cream-dark leading-relaxed mb-2">
             Cidades onde <strong class="text-cream">Júpiter, Vênus, Sol ou Lua</strong> ficam angulares
@@ -96,7 +121,7 @@ import AstrocartographyApp from '../../../components/chart/AstrocartographyApp.t
 
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">⚠️</span> Cidades Desafiadoras
+            <span class="text-gold">⚠️</span> {page.section4}
           </h3>
           <p class="text-xs text-cream-dark leading-relaxed mb-2">
             Cidades com <strong class="text-cream">Saturno, Plutão ou Marte</strong> angulares tendem a

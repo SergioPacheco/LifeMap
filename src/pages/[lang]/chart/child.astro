@@ -10,9 +10,27 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
----
 
-<BaseLayout title="Mapa Infantil" locale={locale}>
+const PAGE_LABELS = {
+  pt: {
+    title: 'Mapa Infantil',
+    breadcrumb: 'Mapa Infantil',
+    intro: 'Descubra os talentos naturais do seu filho, como ele aprende melhor, o que precisa para se sentir seguro e como expressa sua energia no mundo.',
+    summary: '🌈 Como usar o Mapa Infantil?',
+    note: '🌈 Lembrete amoroso',
+  },
+  en: {
+    title: 'Child Chart',
+    breadcrumb: 'Child Chart',
+    intro: 'Discover your child’s natural talents, how they learn best, what they need to feel safe and how they express their energy in the world.',
+    summary: '🌈 How to use the Child Chart?',
+    note: '🌈 Loving reminder',
+  },
+} as const;
+
+const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
+---
+<BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
     <!-- Header -->
@@ -22,17 +40,16 @@ const t = getTranslations(locale);
         {' '}→{' '}
         <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.natal}</a>
         {' '}→{' '}
-        <span class="text-cream">Mapa Infantil</span>
+        <span class="text-cream">{page.breadcrumb}</span>
       </nav>
 
       <div class="flex items-center gap-3 mb-3">
         <span class="text-4xl">👶</span>
-        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream">Mapa Infantil</h1>
+        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream">{page.title}</h1>
       </div>
 
       <p class="text-muted text-base max-w-3xl leading-relaxed">
-        Descubra os <strong class="text-gold">talentos naturais</strong> do seu filho, como ele aprende melhor,
-        o que precisa para se sentir seguro e como expressa sua energia no mundo.
+        {page.intro}
       </p>
     </div>
 
@@ -42,7 +59,7 @@ const t = getTranslations(locale);
         <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        🌈 Como usar o Mapa Infantil?
+        {page.summary}
       </summary>
 
       <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -103,7 +120,7 @@ const t = getTranslations(locale);
 
     <!-- Nota de rodapé -->
     <div class="mt-8 glass rounded-xl p-5 border border-base-300">
-      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">🌈 Lembrete amoroso</h3>
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">{page.note}</h3>
       <p class="text-xs text-cream-dark leading-relaxed">
         A astrologia é uma ferramenta de autoconhecimento e <strong class="text-cream">nunca uma sentença</strong>.
         Use este mapa como um convite para conhecer melhor a criança, observar seus talentos e apoiar suas necessidades únicas.

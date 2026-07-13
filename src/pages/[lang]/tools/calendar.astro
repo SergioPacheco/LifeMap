@@ -10,13 +10,25 @@ export function getStaticPaths() {
 const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
----
 
-<BaseLayout title="Calendário Astrológico" locale={locale}>
+const PAGE_LABELS = {
+  pt: {
+    title: 'Calendário Astrológico',
+    subtitle: 'Seus trânsitos dia a dia — energia, temas e dicas personalizadas para cada momento',
+  },
+  en: {
+    title: 'Astrological Calendar',
+    subtitle: 'Your transits day by day - energy, themes and personalized tips for each moment',
+  },
+} as const;
+
+const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
+---
+<BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="mb-6">
-      <h1 class="text-2xl font-serif font-bold text-cream">Calendário Astrológico</h1>
-      <p class="text-sm text-muted mt-1">Seus trânsitos dia a dia — energia, temas e dicas personalizadas para cada momento</p>
+      <h1 class="text-2xl font-serif font-bold text-cream">{page.title}</h1>
+      <p class="text-sm text-muted mt-1">{page.subtitle}</p>
     </div>
     <AstroCalendarApp client:load locale={locale} />
   </div>

@@ -4,6 +4,7 @@ import { calculateNatalChart, initSweph, getSignIndex } from '../../engine/index
 import { calculateFullHouses, getHouseForLongitude } from '../../engine/houses';
 import { renderWheel } from '../../renderer/wheel';
 import type { NatalChart } from '../../engine/types';
+import type { Locale } from '../../i18n';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { estimateOffsetFromLongitude, formatUtcOffset, getEffectiveTimezoneOffset, inferTimeZoneId, todayDateInput } from '../../utils/dateTime';
@@ -20,6 +21,23 @@ interface GeoResult {
   timezone: number;
   timeZoneId?: string;
 }
+
+interface Props {
+  locale: Locale;
+}
+
+const TEXT = {
+  pt: {
+    chooseCity: 'Selecione uma cidade da lista para relocar.',
+    relocateError: 'Erro ao recalcular as casas. Tente novamente.',
+    loadProfileFirst: 'Faça o onboarding para criar um perfil natal primeiro.',
+  },
+  en: {
+    chooseCity: 'Select a city from the list to relocate.',
+    relocateError: 'Error recalculating houses. Please try again.',
+    loadProfileFirst: 'Complete onboarding to create a natal profile first.',
+  },
+} as const;
 
 // ============================================================
 // CONSTANTS
@@ -41,7 +59,8 @@ const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra
 // MAIN COMPONENT
 // ============================================================
 
-export default function RelocatedApp() {
+export default function RelocatedApp(props: Props) {
+  const text = TEXT[props.locale] ?? TEXT.en;
   const [natalChart, setNatalChart] = createSignal<NatalChart | null>(null);
   const [relocatedChart, setRelocatedChart] = createSignal<NatalChart | null>(null);
   const [wheelSvg, setWheelSvg] = createSignal('');
@@ -150,7 +169,7 @@ export default function RelocatedApp() {
     const natal = natalChart();
     const city = selectedCity();
     if (!natal || !city) {
-      setError('Selecione uma cidade da lista para relocar.');
+        setError(text.chooseCity);
       return;
     }
     setLoading(true);
@@ -183,7 +202,7 @@ export default function RelocatedApp() {
       setWheelSvg(renderWheel(relocated));
     } catch (e) {
       console.error('Relocation error:', e);
-      setError('Erro ao recalcular as casas. Tente novamente.');
+      setError(text.relocateError);
     } finally {
       setLoading(false);
     }
@@ -217,7 +236,7 @@ export default function RelocatedApp() {
         <Show when={natalChart()} fallback={
           <div class="glass rounded-2xl p-6 text-center text-muted">
             <div class="text-4xl mb-3">📍</div>
-            <p class="text-sm">Faça o onboarding para criar um perfil natal primeiro.</p>
+            <p class="text-sm">{text.loadProfileFirst}</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4 border border-base-300">

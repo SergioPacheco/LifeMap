@@ -7,8 +7,78 @@ interface Props {
   locale: Locale;
 }
 
+const MENU_LABELS = {
+  lunarReturn: {
+    pt: 'Revolução Lunar',
+    en: 'Lunar Return',
+    es: 'Retorno lunar',
+    fr: 'Retour lunaire',
+    de: 'Mondrückkehr',
+    it: 'Ritorno lunare',
+    nl: 'Maansreturn',
+    tr: 'Ay dönüşü',
+    ru: 'Лунное возвращение',
+    zh: '月返盘',
+    ja: '月回帰',
+  },
+  relocated: {
+    pt: 'Mapa Relocado',
+    en: 'Relocated Chart',
+    es: 'Carta relocalizada',
+    fr: 'Carte relocalisée',
+    de: 'Relokalisierte Karte',
+    it: 'Carta rilocata',
+    nl: 'Verplaatste kaart',
+    tr: 'Yer değiştirilmiş harita',
+    ru: 'Релокационная карта',
+    zh: '迁移星盘',
+    ja: 'リロケーションチャート',
+  },
+  astrocartography: {
+    pt: 'Astrocartografia',
+    en: 'Astrocartography',
+    es: 'Astrocartografía',
+    fr: 'Astrocartographie',
+    de: 'Astrokartografie',
+    it: 'Astrocartografia',
+    nl: 'Astrocartografie',
+    tr: 'Astrokartografi',
+    ru: 'Астрокартография',
+    zh: '占星地图',
+    ja: 'アストロカートグラフィー',
+  },
+  childChart: {
+    pt: 'Mapa Infantil',
+    en: 'Child Chart',
+    es: 'Carta infantil',
+    fr: 'Carte enfant',
+    de: 'Kinderhoroskop',
+    it: 'Carta infantile',
+    nl: 'Kinderhoroscoop',
+    tr: 'Çocuk haritası',
+    ru: 'Детская карта',
+    zh: '儿童星盘',
+    ja: '子どもチャート',
+  },
+  calendarAstro: {
+    pt: 'Calendário Astrológico',
+    en: 'Astrological Calendar',
+    es: 'Calendario astrológico',
+    fr: 'Calendrier astrologique',
+    de: 'Astrologischer Kalender',
+    it: 'Calendario astrologico',
+    nl: 'Astrologische kalender',
+    tr: 'Astrolojik takvim',
+    ru: 'Астрологический календарь',
+    zh: '占星日历',
+    ja: '占星カレンダー',
+  },
+} as const;
+
 export default function Header(props: Props) {
   const t = () => getTranslations(props.locale);
+  const menuLabel = (key: keyof typeof MENU_LABELS) =>
+    MENU_LABELS[key][props.locale] ?? MENU_LABELS[key].en;
   const [menuOpen, setMenuOpen] = createSignal(false);
   const [langOpen, setLangOpen] = createSignal(false);
   const [profileOpen, setProfileOpen] = createSignal(false);
@@ -70,17 +140,17 @@ export default function Header(props: Props) {
       label: t().nav.charts,
       icon: '🗺️',
       items: [
-        { icon: '☀️', label: t().nav.natal, href: localePath('/chart/natal', props.locale), desc: 'Mapa completo com interpretação' },
-        { icon: '🔄', label: t().nav.transits, href: localePath('/chart/transits', props.locale), desc: 'Planetas de hoje sobre seu mapa' },
-        { icon: '💕', label: t().nav.synastry, href: localePath('/chart/synastry', props.locale), desc: 'Compatibilidade entre dois mapas' },
-        { icon: '🌅', label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale), desc: 'Temas do próximo ano solar' },
-        { icon: '⏩', label: t().nav.progressions, href: localePath('/chart/progressions', props.locale), desc: 'Evolução interna ao longo da vida' },
-        { icon: '♾️', label: t().nav.composite, href: localePath('/chart/composite', props.locale), desc: 'O mapa da relação como entidade' },
-        { icon: '🔀', label: 'Davison', href: localePath('/chart/davison', props.locale), desc: 'Ponto médio temporal da relação' },
-        { icon: '📍', label: 'Relocado', href: localePath('/chart/relocated', props.locale), desc: 'Seu mapa em outra cidade' },
-        { icon: '🗺️', label: 'Astrocartografia', href: localePath('/chart/astrocartography', props.locale), desc: 'Melhores cidades para você' },
-        { icon: '🌙', label: 'Revolução Lunar', href: localePath('/chart/lunar-return', props.locale), desc: 'Tendências emocionais do mês' },
-        { icon: '👶', label: 'Mapa Infantil', href: localePath('/chart/child', props.locale), desc: 'Talentos e necessidades da criança' },
+        { icon: '☀️', label: t().nav.natal, href: localePath('/chart/natal', props.locale) },
+        { icon: '🔄', label: t().nav.transits, href: localePath('/chart/transits', props.locale) },
+        { icon: '💕', label: t().nav.synastry, href: localePath('/chart/synastry', props.locale) },
+        { icon: '🌅', label: t().nav.solarReturn, href: localePath('/chart/solar-return', props.locale) },
+        { icon: '⏩', label: t().nav.progressions, href: localePath('/chart/progressions', props.locale) },
+        { icon: '♾️', label: t().nav.composite, href: localePath('/chart/composite', props.locale) },
+        { icon: '🔀', label: 'Davison', href: localePath('/chart/davison', props.locale) },
+        { icon: '📍', label: menuLabel('relocated'), href: localePath('/chart/relocated', props.locale) },
+        { icon: '🗺️', label: menuLabel('astrocartography'), href: localePath('/chart/astrocartography', props.locale) },
+        { icon: '🌙', label: menuLabel('lunarReturn'), href: localePath('/chart/lunar-return', props.locale) },
+        { icon: '👶', label: menuLabel('childChart'), href: localePath('/chart/child', props.locale) },
       ],
     },
     {
@@ -88,11 +158,11 @@ export default function Header(props: Props) {
       label: t().nav.horoscope,
       icon: '✨',
       items: [
-        { icon: '⭐', label: t().nav.dailyHoroscope, href: localePath('/horoscope/daily', props.locale), desc: 'Previsão personalizada para hoje' },
-        { icon: '❤️', label: t().nav.loveHoroscope, href: localePath('/horoscope/love', props.locale), desc: 'Energia afetiva do dia' },
-        { icon: '🔮', label: t().nav.weeklyHoroscope, href: localePath('/horoscope/weekly', props.locale), desc: 'Visão geral da semana' },
-        { icon: '🌟', label: t().nav.celestialEvents, href: localePath('/horoscope/events', props.locale), desc: 'Ingressos, eclipses, lunações' },
-        { icon: '💑', label: t().nav.lovers || 'Compatibilidade', href: localePath('/horoscope/lovers', props.locale), desc: 'Afinidade entre dois signos' },
+        { icon: '⭐', label: t().nav.dailyHoroscope, href: localePath('/horoscope/daily', props.locale) },
+        { icon: '❤️', label: t().nav.loveHoroscope, href: localePath('/horoscope/love', props.locale) },
+        { icon: '🔮', label: t().nav.weeklyHoroscope, href: localePath('/horoscope/weekly', props.locale) },
+        { icon: '🌟', label: t().nav.celestialEvents, href: localePath('/horoscope/events', props.locale) },
+        { icon: '💑', label: t().nav.lovers || 'Compatibilidade', href: localePath('/horoscope/lovers', props.locale) },
       ],
     },
     {
@@ -100,13 +170,13 @@ export default function Header(props: Props) {
       label: t().nav.tools,
       icon: '🛠️',
       items: [
-        { icon: '📆', label: 'Calendário Astrológico', href: localePath('/tools/calendar', props.locale), desc: 'Seus trânsitos dia a dia personalizado' },
-        { icon: '📅', label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale), desc: 'Posições planetárias dia a dia' },
-        { icon: '🌗', label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale), desc: 'Calendário lunar do mês' },
-        { icon: '🔙', label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale), desc: 'Períodos retrógrados do ano' },
-        { icon: '🌐', label: t().nav.currentPlanets, href: localePath('/tools/current-planets', props.locale), desc: 'Onde cada planeta está agora' },
-        { icon: '🎨', label: t().nav.colorOracle || 'Color Oracle', href: localePath('/tools/color-oracle', props.locale), desc: 'Sua cor pessoal para hoje' },
-        { icon: '⏱️', label: t().nav.bestTime || 'Melhor Momento', href: localePath('/tools/best-time', props.locale), desc: 'O que favorece este dia' },
+        { icon: '📆', label: menuLabel('calendarAstro'), href: localePath('/tools/calendar', props.locale) },
+        { icon: '📅', label: t().nav.ephemeris, href: localePath('/tools/ephemeris', props.locale) },
+        { icon: '🌗', label: t().nav.moonPhases, href: localePath('/tools/moon-phases', props.locale) },
+        { icon: '🔙', label: t().nav.retrograde, href: localePath('/tools/retrogrades', props.locale) },
+        { icon: '🌐', label: t().nav.currentPlanets, href: localePath('/tools/current-planets', props.locale) },
+        { icon: '🎨', label: t().nav.colorOracle || 'Color Oracle', href: localePath('/tools/color-oracle', props.locale) },
+        { icon: '⏱️', label: t().nav.bestTime || 'Melhor Momento', href: localePath('/tools/best-time', props.locale) },
       ],
     },
     {
@@ -114,12 +184,12 @@ export default function Header(props: Props) {
       label: t().nav.learn,
       icon: '📚',
       items: [
-        { icon: '🪐', label: t().nav.learnPlanets || 'Planetas', href: localePath('/learn/planets', props.locale), desc: 'Funções psicológicas dos planetas' },
-        { icon: '♈', label: t().nav.learnSigns || 'Signos', href: localePath('/learn/signs', props.locale), desc: 'Os 12 arquétipos do zodíaco' },
-        { icon: '🏠', label: t().nav.learnHouses || 'Casas', href: localePath('/learn/houses', props.locale), desc: 'As 12 áreas da vida' },
-        { icon: '🔗', label: t().nav.learnAspects || 'Aspectos', href: localePath('/learn/aspects', props.locale), desc: 'Conexões entre planetas' },
-        { icon: '🔄', label: t().nav.learnCycles || 'Ciclos Planetários', href: localePath('/learn/planetary-cycles', props.locale), desc: 'Fases de crescimento por idade' },
-        { icon: '💫', label: t().nav.learnChiron || 'Quíron', href: localePath('/learn/chiron', props.locale), desc: 'A ferida sagrada e a cura' },
+        { icon: '🪐', label: t().nav.learnPlanets || 'Planetas', href: localePath('/learn/planets', props.locale) },
+        { icon: '♈', label: t().nav.learnSigns || 'Signos', href: localePath('/learn/signs', props.locale) },
+        { icon: '🏠', label: t().nav.learnHouses || 'Casas', href: localePath('/learn/houses', props.locale) },
+        { icon: '🔗', label: t().nav.learnAspects || 'Aspectos', href: localePath('/learn/aspects', props.locale) },
+        { icon: '🔄', label: t().nav.learnCycles || 'Ciclos Planetários', href: localePath('/learn/planetary-cycles', props.locale) },
+        { icon: '💫', label: t().nav.learnChiron || 'Quíron', href: localePath('/learn/chiron', props.locale) },
       ],
     },
   ];
@@ -173,12 +243,7 @@ export default function Header(props: Props) {
                               onClick={() => setActiveDropdown(null)}
                             >
                               <span class="text-base group-hover:scale-110 transition-transform">{item.icon}</span>
-                              <div>
-                                <div class="font-medium">{item.label}</div>
-                                <Show when={item.desc}>
-                                  <div class="text-[11px] text-muted mt-0.5">{item.desc}</div>
-                                </Show>
-                              </div>
+                              <div class="font-medium">{item.label}</div>
                             </a>
                           )}
                         </For>
@@ -204,21 +269,21 @@ export default function Header(props: Props) {
             {/* Profile Switcher */}
             <Show when={profiles().length > 0}>
               <div class="profile-dropdown relative">
-                <button
-                  onClick={() => { setProfileOpen(!profileOpen()); setLangOpen(false); setActiveDropdown(null); }}
-                  class="flex items-center gap-1 px-2 py-1.5 text-sm text-muted hover:text-cream rounded-lg hover:bg-base-100 transition-colors"
-                  title="Trocar perfil"
-                >
+                  <button
+                    onClick={() => { setProfileOpen(!profileOpen()); setLangOpen(false); setActiveDropdown(null); }}
+                    class="flex items-center gap-1 px-2 py-1.5 text-sm text-muted hover:text-cream rounded-lg hover:bg-base-100 transition-colors"
+                  title={t().common.selectProfile}
+                  >
                   <svg class="w-4 h-4 text-gold-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  <span class="hidden sm:inline text-xs font-medium text-cream-dark max-w-[60px] truncate">{activeProfile() || 'Perfil'}</span>
+                  <span class="hidden sm:inline text-xs font-medium text-cream-dark max-w-[60px] truncate">{activeProfile() || '—'}</span>
                 </button>
 
                 <Show when={profileOpen()}>
                   <div class="absolute right-0 mt-2 w-56 bg-base-50 rounded-xl shadow-card border border-base-300 py-1 z-50 max-h-64 overflow-y-auto animate-fade-in">
                     <div class="px-3 py-2 text-[10px] text-muted uppercase font-semibold tracking-wider border-b border-base-300/50">
-                      Perfis Salvos
+                      {t().common.profiles}
                     </div>
                     <For each={profiles()}>
                       {(profile) => (
@@ -231,14 +296,14 @@ export default function Header(props: Props) {
                           >
                             <span class="text-xs">{profile.name === activeProfile() ? '●' : '○'}</span>
                             <div class="flex-1 min-w-0">
-                              <div class="text-xs font-medium truncate">{profile.name || 'Sem nome'}</div>
+                              <div class="text-xs font-medium truncate">{profile.name || '—'}</div>
                               <div class="text-[10px] text-muted">{profile.date} • {profile.city}</div>
                             </div>
                           </button>
                           <button
                             onClick={(e) => deleteProfile(e, profile)}
                             class="p-1.5 mr-2 text-muted hover:text-red-400 transition-colors rounded hover:bg-base-300/30"
-                            title="Excluir perfil"
+                            title={t().common.delete}
                           >
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -250,7 +315,7 @@ export default function Header(props: Props) {
                     <div class="border-t border-base-300/50 mt-1 pt-1">
                       <a href={localePath('/onboarding', props.locale)} class="flex items-center gap-2 px-3 py-2 text-xs text-gold-muted hover:text-gold hover:bg-base-200 transition-colors rounded-lg mx-1">
                         <span>+</span>
-                        <span>Novo perfil</span>
+                        <span>{t().common.newProfile}</span>
                       </a>
                     </div>
                   </div>

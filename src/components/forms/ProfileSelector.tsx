@@ -1,13 +1,15 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
+import { getTranslations, type Locale } from '../../i18n';
 import { db, type Profile } from '../../store/db';
 
 interface Props {
   onSelect: (profile: Profile) => void;
   onNew?: () => void;
-  locale: string;
+  locale: Locale;
 }
 
 export default function ProfileSelector(props: Props) {
+  const t = () => getTranslations(props.locale);
   const [profiles, setProfiles] = createSignal<Profile[]>([]);
   const [open, setOpen] = createSignal(false);
 
@@ -42,7 +44,7 @@ export default function ProfileSelector(props: Props) {
 
   const deleteProfile = async (e: Event, id: number) => {
     e.stopPropagation();
-    if (confirm('Excluir este perfil?')) {
+    if (confirm(t().common.delete + '?')) {
       await db.profiles.delete(id);
       await loadProfiles();
     }
@@ -59,7 +61,7 @@ export default function ProfileSelector(props: Props) {
           <svg class="w-4 h-4 text-gold-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
-          Perfis Salvos ({profiles().length})
+          {t().common.profiles} ({profiles().length})
         </span>
         <svg class={`w-4 h-4 text-muted transition-transform ${open() ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -78,13 +80,13 @@ export default function ProfileSelector(props: Props) {
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
-              Novo Perfil
+              {t().common.newProfile}
             </button>
           </Show>
 
           <Show when={profiles().length === 0}>
             <div class="px-4 py-3 text-sm text-muted text-center">
-              Nenhum perfil salvo ainda
+              {t().common.noProfiles}
             </div>
           </Show>
 
@@ -96,7 +98,7 @@ export default function ProfileSelector(props: Props) {
               >
                 <div>
                   <div class="text-sm font-medium text-cream">
-                    {profile.name || 'Sem nome'}
+                    {profile.name || '—'}
                   </div>
                   <div class="text-xs text-muted">
                     {profile.date} {profile.time} • {profile.city}
@@ -106,7 +108,7 @@ export default function ProfileSelector(props: Props) {
                   type="button"
                   onClick={(e) => deleteProfile(e, profile.id!)}
                   class="p-1.5 text-muted hover:text-red-400 transition-colors rounded hover:bg-base-300/30"
-                  title="Excluir"
+                  title={t().common.delete}
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

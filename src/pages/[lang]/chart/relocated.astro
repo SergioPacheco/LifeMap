@@ -6,8 +6,37 @@ const { lang } = Astro.params;
 const locale = lang as Locale;
 const t = getTranslations(locale);
 import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
+
+const PAGE_LABELS = {
+  pt: {
+    title: 'Mapa Relocado',
+    breadcrumb: 'Mapa Relocado',
+    intro: 'O Mapa Relocado mostra como sua energia natal se expressa em diferentes locais.',
+    summary: 'Como funciona? O que estou vendo?',
+    section1: 'O que é o Mapa Relocado?',
+    section2: 'Planetas fixos, casas fluidas',
+    section3: 'O que observar',
+    section4: 'Mapa Relocado vs. Astrocartografia',
+    note: 'Dica de leitura',
+    compare: 'Astrocartografia',
+  },
+  en: {
+    title: 'Relocated Chart',
+    breadcrumb: 'Relocated Chart',
+    intro: 'The relocated chart shows how your natal energy expresses itself in different places.',
+    summary: 'How does it work? What am I seeing?',
+    section1: 'What is the relocated chart?',
+    section2: 'Fixed planets, fluid houses',
+    section3: 'What to observe',
+    section4: 'Relocated Chart vs. Astrocartography',
+    note: 'Reading tip',
+    compare: 'Astrocartography',
+  },
+} as const;
+
+const page = PAGE_LABELS[locale] ?? PAGE_LABELS.en;
 ---
-<BaseLayout title="Mapa Relocado" locale={locale}>
+<BaseLayout title={page.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
     <!-- Breadcrumb + Header -->
@@ -15,14 +44,14 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-cream transition-colors">{t.nav.charts}</a>
         <span class="mx-2 opacity-40">→</span>
-        <span class="text-cream">Mapa Relocado</span>
+        <span class="text-cream">{page.breadcrumb}</span>
       </nav>
 
       <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">
-        📍 Mapa Relocado
+        📍 {page.title}
       </h1>
       <p class="text-muted text-base max-w-3xl leading-relaxed">
-        O Mapa Relocado mostra como sua energia natal se expressa em diferentes locais.
+        {page.intro}
         As <strong class="text-cream">posições dos planetas são as mesmas do natal</strong>,
         mas as <strong class="text-gold">CASAS (áreas de vida) mudam</strong> conforme a latitude/longitude.
       </p>
@@ -37,7 +66,7 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        Como funciona? O que estou vendo?
+        {page.summary}
       </summary>
 
       <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -45,7 +74,7 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
         <!-- O que é -->
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🌍</span> O que é o Mapa Relocado?
+            <span class="text-gold">🌍</span> {page.section1}
           </h3>
           <p class="text-xs text-cream-dark leading-relaxed mb-2">
             Imagine que você tivesse nascido na mesma data e hora, mas em outra cidade.
@@ -60,7 +89,7 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
         <!-- Casas vs Planetas -->
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🏠</span> Planetas fixos, casas fluidas
+            <span class="text-gold">🏠</span> {page.section2}
           </h3>
           <ul class="space-y-1.5 text-xs text-cream-dark">
             <li>
@@ -80,7 +109,7 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
         <!-- Como usar -->
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🔍</span> O que observar
+            <span class="text-gold">🔍</span> {page.section3}
           </h3>
           <ul class="space-y-1.5 text-xs text-cream-dark">
             <li><strong class="text-cream">Sol e Lua nas casas angulares</strong> (1, 4, 7, 10) — local de grande expressão</li>
@@ -94,11 +123,11 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
         <!-- Diferença para Astrocartografia -->
         <div class="glass rounded-xl p-5 border border-base-300">
           <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">📡</span> Mapa Relocado vs. Astrocartografia
+            <span class="text-gold">📡</span> {page.section4}
           </h3>
           <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A <strong class="text-cream">Astrocartografia</strong> traça linhas no mapa-mundi onde cada planeta
-            seria angular. O <strong class="text-cream">Mapa Relocado</strong> é mais detalhado: mostra exatamente
+            A <strong class="text-cream">{page.compare}</strong> traça linhas no mapa-mundi onde cada planeta
+            seria angular. O <strong class="text-cream">{page.title}</strong> é mais detalhado: mostra exatamente
             em qual casa cada planeta cai numa cidade específica.
           </p>
           <p class="text-xs text-muted italic">
@@ -114,7 +143,7 @@ import RelocatedApp from '../../../components/chart/RelocatedApp.tsx';
 
     <!-- Dica de leitura -->
     <div class="mt-8 glass rounded-xl p-5 border border-base-300">
-      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
+      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">{page.note}</h3>
       <p class="text-xs text-cream-dark leading-relaxed">
         Procure cidades onde seus planetas <strong class="text-cream">benéficos</strong> (Sol, Júpiter, Vênus)
         ficam nas <strong class="text-cream">casas angulares</strong> (1, 4, 7, 10) — elas amplificam a energia do planeta.

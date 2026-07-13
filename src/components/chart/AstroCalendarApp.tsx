@@ -22,9 +22,10 @@ import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { todayDateInput } from '../../utils/dateTime';
 import { calendarDateKeyForInstant, getCalendarTimeContext } from '../../engine/calendar/calendar-date';
+import type { Locale } from '../../i18n';
 
 interface Props {
-  locale: string;
+  locale: Locale;
 }
 
 export default function AstroCalendarApp(props: Props) {
