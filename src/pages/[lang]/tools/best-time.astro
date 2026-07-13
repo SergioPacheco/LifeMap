@@ -12,15 +12,16 @@ const locale = lang as Locale;
 const t = getTranslations(locale);
 ---
 
-<BaseLayout title="Melhor Momento" locale={locale}>
+<BaseLayout title="Mejor Momento — Astrología Eletiva" locale={locale}>
   <div class="max-w-3xl mx-auto px-4 py-8">
     <div class="mb-6">
       <div class="flex items-center gap-2 mb-1">
-        <span class="text-gold text-xs uppercase tracking-widest font-semibold">Astrologia Eletiva</span>
+        <span class="text-gold text-xs uppercase tracking-widest font-semibold">Horóscopo Electivo</span>
       </div>
-      <h1 class="text-2xl font-serif font-bold text-cream">Melhor Momento</h1>
+      <h1 class="text-2xl font-serif font-bold text-cream">El Mejor Momento</h1>
       <p class="text-sm text-muted mt-1">
-        Descubra o que os planetas regentes de cada dia favorecem — e o que é melhor adiar
+        Encuentra la fecha ideal para tu proyecto basándote en posiciones planetarias reales,
+        fases lunares, retrógrados y reglas de astrología electiva tradicional.
       </p>
     </div>
     <BestTime client:load />
