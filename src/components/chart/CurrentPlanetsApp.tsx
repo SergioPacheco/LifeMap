@@ -2,6 +2,9 @@ import { createSignal, onMount, For } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/index';
 import * as Astronomy from 'astronomy-engine';
 import { localeToDateLocale } from '../../utils/dateTime';
+import { getTranslations, type Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
+import { getCurrentPlanetsText, getToolsUi } from '../../i18n/tools-ui';
 
 const PLANET_DATA: { id: string; name: string; symbol: string }[] = [
   { id: 'sun', name: 'Sol', symbol: '☉' },
@@ -18,7 +21,6 @@ const PLANET_DATA: { id: string; name: string; symbol: string }[] = [
   { id: 'chiron', name: 'Quíron', symbol: '⚷' },
 ];
 
-const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const ELEMENT_COLORS = ['#cc0000','#006600','#0000cc','#cc6600','#cc0000','#006600','#0000cc','#cc6600','#cc0000','#006600','#0000cc','#cc6600'];
 
@@ -28,10 +30,14 @@ interface PlanetRow {
 }
 
 interface Props {
-  locale?: string;
+  locale: Locale;
 }
 
 export default function CurrentPlanetsApp(props: Props) {
+  const text = () => getCurrentPlanetsText(props.locale);
+  const phases = () => getToolsUi(props.locale).moon.phases;
+  const t = () => getTranslations(props.locale);
+  const interp = () => getInterpretations(props.locale);
   const [planets, setPlanets] = createSignal<PlanetRow[]>([]);
   const [now, setNow] = createSignal(new Date());
   const [moonPhase, setMoonPhase] = createSignal({ phase: '', illumination: 0, emoji: '🌑' });
@@ -54,6 +60,7 @@ export default function CurrentPlanetsApp(props: Props) {
       if (pos) {
         rows.push({
           ...p,
+          name: interp().PLANET_NAMES[p.id] || p.name,
           sign: getSignIndex(pos.longitude),
           deg: getDegreeInSign(pos.longitude),
           retro: pos.isRetrograde || false,
@@ -68,7 +75,7 @@ export default function CurrentPlanetsApp(props: Props) {
       const astroTime = new Astronomy.AstroTime(date);
       const phase = Astronomy.MoonPhase(astroTime);
       const illum = Astronomy.Illumination('Moon' as Astronomy.Body, astroTime);
-      const phaseName = getMoonPhaseName(phase);
+      const phaseName = getMoonPhaseName(phase, phases());
       const emoji = getMoonPhaseEmoji(phase);
       setMoonPhase({ phase: phaseName, illumination: Math.round(illum.phase_fraction * 100), emoji });
     } catch (e) {
@@ -80,7 +87,7 @@ export default function CurrentPlanetsApp(props: Props) {
     <div class="space-y-6">
       {/* Header with time */}
       <div class="glass rounded-2xl p-4 text-center">
-        <p class="text-sm text-muted">Posições em tempo real</p>
+        <p class="text-sm text-muted">{text().realtime}</p>
         <p class="text-lg font-mono text-cream">{now().toLocaleString(localeToDateLocale(props.locale))}</p>
       </div>
 
@@ -88,7 +95,7 @@ export default function CurrentPlanetsApp(props: Props) {
       <div class="bg-gradient-to-r from-dark-50 to-dark-100 rounded-xl border border-base-300 p-6 shadow-sm text-center">
         <div class="text-5xl mb-2">{moonPhase().emoji}</div>
         <h3 class="text-lg font-semibold text-cream">{moonPhase().phase}</h3>
-        <p class="text-sm text-muted">Iluminação: {moonPhase().illumination}%</p>
+        <p class="text-sm text-muted">{text().illumination}: {moonPhase().illumination}%</p>
       </div>
 
       {/* Planets table */}
@@ -96,10 +103,10 @@ export default function CurrentPlanetsApp(props: Props) {
         <table class="w-full">
           <thead>
             <tr class="border-b border-base-300 bg-base-100">
-              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Planeta</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Signo</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Posição</th>
-              <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">Longitude</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{t().chart.planet}</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{t().chart.sign}</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().position}</th>
+              <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">{text().longitude}</th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +120,7 @@ export default function CurrentPlanetsApp(props: Props) {
                   </td>
                   <td class="px-4 py-2.5" style={{ color: ELEMENT_COLORS[p.sign] }}>
                     <span class="text-lg mr-1">{SIGN_SYMBOLS[p.sign]}</span>
-                    <span class="text-sm">{SIGN_NAMES[p.sign]}</span>
+                    <span class="text-sm">{interp().SIGN_NAMES[p.sign]}</span>
                   </td>
                   <td class="px-4 py-2.5 font-mono text-sm text-muted">
                     {formatDegMin(p.deg)}
@@ -132,16 +139,16 @@ export default function CurrentPlanetsApp(props: Props) {
 }
 
 // Moon phase helpers
-function getMoonPhaseName(phase: number): string {
-  if (phase < 22.5) return 'Lua Nova';
-  if (phase < 67.5) return 'Lua Crescente';
-  if (phase < 112.5) return 'Quarto Crescente';
-  if (phase < 157.5) return 'Gibosa Crescente';
-  if (phase < 202.5) return 'Lua Cheia';
-  if (phase < 247.5) return 'Gibosa Minguante';
-  if (phase < 292.5) return 'Quarto Minguante';
-  if (phase < 337.5) return 'Lua Minguante';
-  return 'Lua Nova';
+function getMoonPhaseName(phase: number, names: readonly string[]): string {
+  if (phase < 22.5) return names[0];
+  if (phase < 67.5) return names[1];
+  if (phase < 112.5) return names[2];
+  if (phase < 157.5) return names[3];
+  if (phase < 202.5) return names[4];
+  if (phase < 247.5) return names[5];
+  if (phase < 292.5) return names[6];
+  if (phase < 337.5) return names[7];
+  return names[0];
 }
 
 function getMoonPhaseEmoji(phase: number): string {

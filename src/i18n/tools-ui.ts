@@ -48,3 +48,28 @@ const texts: Record<Locale, ToolsUiText> = {
 export function getToolsUi(locale: Locale): ToolsUiText {
   return texts[locale] || texts.pt;
 }
+
+interface CurrentPlanetsText {
+  realtime: string;
+  illumination: string;
+  position: string;
+  longitude: string;
+}
+
+const currentPlanetsTexts: Record<Locale, CurrentPlanetsText> = {
+  pt: { realtime: 'Posições em tempo real', illumination: 'Iluminação', position: 'Posição', longitude: 'Longitude' },
+  en: { realtime: 'Real-time positions', illumination: 'Illumination', position: 'Position', longitude: 'Longitude' },
+  es: { realtime: 'Posiciones en tiempo real', illumination: 'Iluminación', position: 'Posición', longitude: 'Longitud' },
+  fr: { realtime: 'Positions en temps réel', illumination: 'Illumination', position: 'Position', longitude: 'Longitude' },
+  de: { realtime: 'Positionen in Echtzeit', illumination: 'Beleuchtung', position: 'Position', longitude: 'Längengrad' },
+  it: { realtime: 'Posizioni in tempo reale', illumination: 'Illuminazione', position: 'Posizione', longitude: 'Longitudine' },
+  ja: { realtime: 'リアルタイムの位置', illumination: '照度', position: '位置', longitude: '黄経' },
+  zh: { realtime: '实时位置', illumination: '照明度', position: '位置', longitude: '黄经' },
+  ru: { realtime: 'Положения в реальном времени', illumination: 'Освещённость', position: 'Положение', longitude: 'Долгота' },
+  tr: { realtime: 'Gerçek zamanlı konumlar', illumination: 'Aydınlanma', position: 'Konum', longitude: 'Boylam' },
+  nl: { realtime: 'Realtime posities', illumination: 'Verlichting', position: 'Positie', longitude: 'Lengtegraad' },
+};
+
+export function getCurrentPlanetsText(locale: Locale): CurrentPlanetsText {
+  return currentPlanetsTexts[locale] || currentPlanetsTexts.pt;
+}

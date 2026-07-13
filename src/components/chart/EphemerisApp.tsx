@@ -1,6 +1,8 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, getDegreeInSign, formatDegMin } from '../../engine/index';
 import { getTranslations, type Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
+import { getEphemerisGuide } from '../../i18n/ephemeris-guide';
 
 const PLANET_IDS = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'northNode', 'chiron'];
 const PLANET_SYMBOLS: Record<string, string> = {
@@ -12,11 +14,6 @@ const PLANET_COLORS: Record<string, string> = {
   sun: '#f0b840', moon: '#c0c8d8', mercury: '#80d090', venus: '#f0a0c0',
   mars: '#ff6050', jupiter: '#b080e0', saturn: '#90a8c0', uranus: '#60d8f0',
   neptune: '#7090ff', pluto: '#d06080', northNode: '#a0a0b0', chiron: '#c0a0e0',
-};
-const PLANET_NAMES_SHORT: Record<string, string> = {
-  sun: 'Sol', moon: 'Lua', mercury: 'Mer', venus: 'Vên', mars: 'Mar',
-  jupiter: 'Júp', saturn: 'Sat', uranus: 'Ura', neptune: 'Net', pluto: 'Plu',
-  northNode: 'NN', chiron: 'Qui',
 };
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 // Cores por ELEMENTO do signo — alto contraste em fundo escuro
@@ -35,6 +32,9 @@ interface Props {
 export default function EphemerisApp(props: Props) {
   const locale = () => (props.locale || 'pt') as Locale;
   const t = () => getTranslations(locale());
+  const guide = () => getEphemerisGuide(locale());
+  const interp = () => getInterpretations(locale());
+  const shortPlanetName = (planetId: string) => Array.from(interp().PLANET_NAMES[planetId] || planetId).slice(0, 3).join('');
 
   const [year, setYear] = createSignal(new Date().getFullYear());
   const [month, setMonth] = createSignal(new Date().getMonth() + 1);
@@ -88,54 +88,46 @@ export default function EphemerisApp(props: Props) {
           <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
-          Para que serve esta tabela?
+          {guide().summary}
         </summary>
 
         <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="glass rounded-xl p-5 border border-base-300">
             <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-              <span class="text-gold">📅</span> O que é uma Efeméride?
+              <span class="text-gold">📅</span> {guide().titles[0]}
             </h3>
-            <p class="text-xs text-cream-dark leading-relaxed">
-              Uma efeméride é um <strong class="text-cream">almanaque astronômico</strong> que mostra a posição exata de cada planeta para cada dia do mês.
-              É a ferramenta fundamental do astrólogo — equivale a um "GPS do céu".
-            </p>
+            <p class="text-xs text-cream-dark leading-relaxed" innerHTML={guide().definition} />
           </div>
 
           <div class="glass rounded-xl p-5 border border-base-300">
             <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-              <span class="text-gold">🔍</span> Para que usar?
+              <span class="text-gold">🔍</span> {guide().titles[1]}
             </h3>
             <ul class="space-y-1.5 text-xs text-cream-dark">
-              <li>• <strong class="text-cream">Verificar trânsitos</strong> — quando um planeta entra em um novo signo</li>
-              <li>• <strong class="text-cream">Identificar retrógrados</strong> — marcados com ℞ (planeta "anda para trás")</li>
-              <li>• <strong class="text-cream">Planejar datas</strong> — escolher dias com configurações favoráveis</li>
-              <li>• <strong class="text-cream">Estudar padrões</strong> — como a Lua muda de signo a cada ~2.5 dias</li>
+              <li>• <span innerHTML={guide().uses[0]} /></li>
+              <li>• <span innerHTML={guide().uses[1]} /></li>
+              <li>• <span innerHTML={guide().uses[2]} /></li>
+              <li>• <span innerHTML={guide().uses[3]} /></li>
             </ul>
           </div>
 
           <div class="glass rounded-xl p-5 border border-base-300">
             <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-              <span class="text-gold">📖</span> Como ler a tabela
+              <span class="text-gold">📖</span> {guide().titles[2]}
             </h3>
-            <p class="text-xs text-cream-dark leading-relaxed mb-2">
-              Cada célula mostra: <strong class="text-cream">signo</strong> (glifo grande colorido) + <strong class="text-cream">grau</strong> (número abaixo, 0°–29°).
-            </p>
-            <p class="text-xs text-cream-dark leading-relaxed">
-              <strong class="text-cream">Exemplo:</strong> ♋ 15° = o planeta está a 15 graus de Câncer naquele dia.
-              Quando o grau vai de 29° para 0° no dia seguinte com signo diferente, houve um <strong class="text-cream">ingresso</strong> (mudança de signo).
-            </p>
+            <p class="text-xs text-cream-dark leading-relaxed mb-2" innerHTML={guide().reading[0]} />
+            <p class="text-xs text-cream-dark leading-relaxed" innerHTML={guide().reading[1]} />
           </div>
 
           <div class="glass rounded-xl p-5 border border-base-300">
             <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-              <span class="text-gold">⚡</span> Destaques para observar
+              <span class="text-gold">⚡</span> {guide().titles[3]}
             </h3>
             <ul class="space-y-1.5 text-xs text-cream-dark">
-              <li>• <span class="text-red-400 font-bold">℞</span> = <strong class="text-cream">Retrógrado</strong> — planeta "revisando" temas (comunicação, amor, ação)</li>
-              <li>• <strong class="text-cream">Lua</strong> muda de signo rápido (~cada 2 dias) — afeta o humor coletivo</li>
-              <li>• <strong class="text-cream">Mercúrio ℞</strong> = rever comunicações, evitar contratos novos</li>
-              <li>• <strong class="text-cream">Vênus ℞</strong> = rever relacionamentos e valores</li>
+              <li>• <span innerHTML={guide().highlights[0]} /></li>
+              <li>• <span innerHTML={guide().highlights[1]} /></li>
+              <li>• <span innerHTML={guide().highlights[2]} /></li>
+              <li>• <span innerHTML={guide().highlights[3]} /></li>
             </ul>
           </div>
         </div>
@@ -171,10 +163,10 @@ export default function EphemerisApp(props: Props) {
                 <th class="px-3 py-3 text-left font-medium text-muted text-xs">{t().ephemerisPage.day}</th>
                 <For each={PLANET_IDS}>
                   {(pid) => (
-                    <th class="px-2 py-3 text-center" title={pid}>
+                    <th class="px-2 py-3 text-center" title={interp().PLANET_NAMES[pid]}>
                       <div class="flex flex-col items-center gap-0.5">
                         <span class="text-xl leading-none" style={{ color: PLANET_COLORS[pid] }}>{PLANET_SYMBOLS[pid]}</span>
-                        <span class="text-[9px] text-muted font-normal">{PLANET_NAMES_SHORT[pid]}</span>
+                        <span class="text-[9px] text-muted font-normal">{shortPlanetName(pid)}</span>
                       </div>
                     </th>
                   )}
@@ -212,7 +204,7 @@ export default function EphemerisApp(props: Props) {
 
       {/* Legend */}
       <div class="glass rounded-xl p-5 text-muted space-y-3">
-        <p class="font-semibold text-cream text-sm">Legenda dos Signos</p>
+        <p class="font-semibold text-cream text-sm">{guide().signsLegend}</p>
         <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
           <For each={SIGN_KEYS}>
             {(key, i) => (
