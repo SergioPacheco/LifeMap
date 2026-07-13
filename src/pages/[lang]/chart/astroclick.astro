@@ -1,18 +1,19 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import AstroClickApp from '../../../components/chart/AstroClickApp.tsx';
-import { getTranslations, supportedLocales, type Locale } from '../../../i18n';
+import { supportedLocales, type Locale } from '../../../i18n';
+import { getAstroClickText } from '../../../i18n/astroclick';
 export function getStaticPaths() { return supportedLocales.map(lang => ({ params: { lang } })); }
 const { lang } = Astro.params;
 const locale = lang as Locale;
-const t = getTranslations(locale);
+const text = getAstroClickText(locale);
 ---
-<BaseLayout title="AstroClick Portrait" locale={locale}>
+<BaseLayout title={text.title} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <div class="mb-6">
-      <h1 class="text-2xl font-serif font-bold text-cream">AstroClick Portrait</h1>
-      <p class="text-sm text-muted mt-1">Explore seu mapa de forma interativa — clique em cada planeta para descobrir seu significado</p>
+      <h1 class="text-2xl font-serif font-bold text-cream">{text.title}</h1>
+      <p class="text-sm text-muted mt-1">{text.subtitle}</p>
     </div>
-    <AstroClickApp client:load />
+    <AstroClickApp client:load locale={locale} />
   </div>
 </BaseLayout>
