@@ -9,101 +9,12 @@ import CompositeApp from '../../../components/chart/CompositeApp.tsx';
 ---
 <BaseLayout title={t.nav.composite} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-
-    <!-- Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.charts}</a> → <span class="text-cream">{t.nav.composite}</span>
       </nav>
-
-      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Mapa Composto</h1>
-      <p class="text-muted text-base max-w-3xl leading-relaxed">
-        O mapa composto é o <strong class="text-cream">mapa da relação como entidade própria</strong>.
-        Calculado a partir do ponto médio entre cada planeta dos dois mapas, ele revela o propósito, os desafios e o potencial do relacionamento — como se o casal fosse uma "terceira pessoa".
-      </p>
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">{t.nav.composite}</h1>
     </div>
-
-    <!-- Explicação colapsável -->
-    <details class="mb-8 group">
-      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
-        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-        Como funciona? O que estou vendo?
-      </summary>
-
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">∞</span> O que é o Mapa Composto?
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            Se o Sol de A está em 10° Áries e o Sol de B está em 20° Leão, o Sol composto fica no ponto médio: 0° Gêmeos.
-            Isso é feito para <strong class="text-cream">todos os planetas</strong>, criando um mapa que não pertence a nenhum dos dois — pertence à relação.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            É o "DNA" do relacionamento — mostra para onde a relação "quer" ir, independente do que cada indivíduo deseja.
-          </p>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🔍</span> O que observar
-          </h3>
-          <ul class="space-y-1.5 text-xs text-cream-dark">
-            <li><strong class="text-cream">Sol composto</strong> — o propósito central da relação</li>
-            <li><strong class="text-cream">Lua composta</strong> — o clima emocional quando estão juntos</li>
-            <li><strong class="text-cream">Vênus composta</strong> — como o amor se expressa entre vocês</li>
-            <li><strong class="text-cream">Saturno composto</strong> — onde há trabalho duro e compromisso</li>
-            <li><strong class="text-cream">Casa do Sol</strong> — a área da vida que o relacionamento ativa</li>
-            <li><strong class="text-cream">Ascendente composto</strong> — como o mundo vê vocês como casal</li>
-          </ul>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">⚡</span> Aspectos que importam
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            Os aspectos no composto mostram as <strong class="text-cream">dinâmicas internas da relação</strong>:
-          </p>
-          <ul class="space-y-1 text-xs text-cream-dark">
-            <li>• <strong class="text-cream">Sol △ Lua</strong> — relação emocionalmente nutritiva</li>
-            <li>• <strong class="text-cream">Vênus □ Saturno</strong> — amor exige esforço e paciência</li>
-            <li>• <strong class="text-cream">Marte ☌ Plutão</strong> — intensidade e poder na dinâmica</li>
-            <li>• <strong class="text-cream">Júpiter na Casa 7</strong> — relação expande ambos</li>
-          </ul>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">⚖️</span> Composto vs Sinastria
-          </h3>
-          <div class="text-xs text-cream-dark space-y-2">
-            <div class="flex items-start gap-2">
-              <span class="text-pink-400 flex-shrink-0">♡</span>
-              <span><strong class="text-cream">Sinastria</strong> = como cada pessoa vivencia a outra. Subjetivo (A sente B diferente de B sente A).</span>
-            </div>
-            <div class="flex items-start gap-2">
-              <span class="text-purple-400 flex-shrink-0">∞</span>
-              <span><strong class="text-cream">Composto</strong> = o que a relação É por natureza. Objetivo (o mesmo para ambos). Mostra o destino da relação.</span>
-            </div>
-            <p class="text-muted italic mt-2">O composto explica por que certos temas sempre aparecem quando estão juntos — independente da vontade individual.</p>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- App -->
     <CompositeApp client:load locale={locale} />
-
-    <!-- Legenda -->
-    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
-      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
-      <p class="text-xs text-cream-dark leading-relaxed">
-        O composto funciona melhor para <strong class="text-cream">relações que já existem</strong> (casais, parcerias de longa data).
-        Foque no Sol (propósito), na Lua (emoção compartilhada) e em qualquer planeta que caia nas casas angulares (1, 4, 7, 10) — esses são os pilares visíveis da relação.
-      </p>
-    </div>
   </div>
 </BaseLayout>
