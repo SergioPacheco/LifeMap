@@ -9,104 +9,14 @@ import LunarReturnApp from '../../../components/chart/LunarReturnApp.tsx';
 ---
 <BaseLayout title="Revolução Lunar" locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-
-    <!-- Header -->
     <div class="mb-8">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.charts}</a>
         <span class="mx-1 opacity-40">→</span>
-        <span class="text-cream">Revolução Lunar</span>
+        <span class="text-cream">{t.nav.lunarReturn}</span>
       </nav>
-
-      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">
-        🌙 Revolução Lunar
-      </h1>
-      <p class="text-muted text-base max-w-3xl leading-relaxed">
-        A revolução lunar é o <strong class="text-cream">mapa do momento exato em que a Lua retorna ao grau do seu nascimento</strong> —
-        um ciclo emocional que se renova a cada ~27,3 dias.
-        Ela revela as tendências emocionais, necessidades e o clima interior do próximo mês lunar.
-      </p>
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream">{t.nav.lunarReturn}</h1>
     </div>
-
-    <!-- Explicação colapsável -->
-    <details class="mb-8 group">
-      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
-        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-        Como funciona? O que estou vendo?
-      </summary>
-
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🌙</span> O que é a Revolução Lunar?
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A cada ~27,3 dias, a Lua retorna ao grau exato em que estava no momento do seu nascimento.
-            Esse instante específico inaugura um novo ciclo emocional pessoal — diferente do mês calendário.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            Como a Revolução Solar define o clima do ano, a Revolução Lunar define o clima emocional
-            do mês — com seu próprio Ascendente, posição da Lua e configuração planetária.
-          </p>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🔍</span> O que observar
-          </h3>
-          <ul class="space-y-1.5 text-xs text-cream-dark">
-            <li><strong class="text-cream">Signo da Lua</strong> — o tom emocional geral do ciclo</li>
-            <li><strong class="text-cream">Ascendente da RL</strong> — como você entra no mês, sua "persona" do período</li>
-            <li><strong class="text-cream">Casa da Lua</strong> — área da vida onde as emoções operam</li>
-            <li><strong class="text-cream">Casa do Sol</strong> — foco de consciência e ação do mês</li>
-            <li><strong class="text-cream">Saturno</strong> — onde haverá estruturação ou cobrança</li>
-            <li><strong class="text-cream">Planetas angulares</strong> (casas 1, 4, 7, 10) — energias em destaque</li>
-          </ul>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🔄</span> A diferença da Lua natal
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A <strong class="text-cream">Lua natal</strong> (no seu mapa de nascimento) revela sua natureza emocional profunda — como você sente, o que precisa para se nutrir.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            A <strong class="text-cream">Revolução Lunar</strong> é um mapa temporário: mostra as circunstâncias e o contexto em que essa natureza emocional vai operar <em>neste ciclo específico</em>.
-            É o "palco" do mês.
-          </p>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">📅</span> Frequência e uso prático
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A Lua percorre o zodíaco em ~27,3 dias — então você tem aproximadamente <strong class="text-cream">13 Revoluções Lunares por ano</strong>.
-            Cada uma inicia um novo capítulo emocional.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            Use o seletor de mês para ver o ciclo atual ou planejar os próximos. Compare com sua Revolução Solar para ver onde os temas convergem.
-          </p>
-        </div>
-      </div>
-    </details>
-
-    <!-- App -->
-    <LunarReturnApp client:load />
-
-    <!-- Dica de leitura -->
-    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
-      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
-      <p class="text-xs text-cream-dark leading-relaxed">
-        Comece pelo <strong class="text-cream">signo da Lua na RL</strong> (tom emocional do ciclo),
-        depois veja a <strong class="text-cream">casa onde ela cai</strong> (onde as emoções operam).
-        O <strong class="text-cream">Ascendente da RL</strong> revela como você "entra" no mês — sua
-        postura e energia de abertura. Por fim, observe <strong class="text-cream">Saturno</strong>
-        para saber onde o mês pede estrutura ou cobranças.
-      </p>
-    </div>
+    <LunarReturnApp client:load locale={locale} />
   </div>
 </BaseLayout>

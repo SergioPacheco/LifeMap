@@ -9,13 +9,40 @@ import type { Profile } from '../../store/db';
 import { db } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { dateInputToNoonDate, todayDateInput } from '../../utils/dateTime';
+import type { Locale } from '../../i18n';
+
+interface Props {
+  locale: Locale;
+}
 
 const PLANET_SYMBOLS: Record<string, string> = {
   sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂',
   jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇',
 };
 
-export default function ProgressionsApp() {
+const TEXT = {
+  pt: {
+    progressTo: 'Progredir até',
+    age: 'Idade',
+    targetDate: 'Data-alvo',
+    activeAspects: 'Aspectos Prog → Natal',
+    loading: 'Carregando progressões...',
+    selectProfile: 'Selecione um perfil no menu superior (👤)',
+    title: 'Progressões Secundárias',
+  },
+  en: {
+    progressTo: 'Progress to',
+    age: 'Age',
+    targetDate: 'Target date',
+    activeAspects: 'Prog → Natal Aspects',
+    loading: 'Loading progressions...',
+    selectProfile: 'Select a profile from the top menu (👤)',
+    title: 'Secondary Progressions',
+  },
+} as const;
+
+export default function ProgressionsApp(props: Props) {
+  const text = TEXT[props.locale as keyof typeof TEXT] ?? TEXT.en;
   const [natal, setNatal] = createSignal<NatalChart | null>(null);
   const [progressed, setProgressed] = createSignal<ProgressedChart | null>(null);
   const [birthData, setBirthData] = createSignal<BirthData | null>(null);
@@ -78,15 +105,15 @@ export default function ProgressionsApp() {
       <div class="lg:col-span-1 lg:sticky lg:top-20 flex flex-col gap-4 lg:max-h-[calc(100vh-6rem)] lg:overflow-hidden">
         <Show when={natal()}>
           <div class="glass rounded-2xl p-4">
-            <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Progredir até</h3>
+            <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">{text.progressTo}</h3>
             <input
               type="date" value={targetDate()}
               onInput={(e) => handleDateChange(e.currentTarget.value)}
               class="w-full px-3 py-2 rounded-lg border border-base-400 bg-base-200 text-cream text-sm"
             />
             <Show when={progressed()}>
-              <p class="text-xs text-muted mt-2">Idade: {progressed()!.age} anos</p>
-              <p class="text-xs text-muted">Data-alvo: {targetDate()}</p>
+              <p class="text-xs text-muted mt-2">{text.age}: {progressed()!.age} years</p>
+              <p class="text-xs text-muted">{text.targetDate}: {targetDate()}</p>
             </Show>
           </div>
 
@@ -94,7 +121,7 @@ export default function ProgressionsApp() {
           <Show when={p2nAspects().length > 0}>
             <div class="glass rounded-2xl p-4 flex-1 flex flex-col">
               <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">
-                Aspectos Prog → Natal ({p2nAspects().length})
+                {text.activeAspects} ({p2nAspects().length})
               </h3>
               <div class="space-y-1 flex-1 overflow-y-auto text-xs">
                 {p2nAspects().map((asp: any) => (
@@ -120,13 +147,13 @@ export default function ProgressionsApp() {
               </div>
             </Show>
             <div class="text-5xl mb-3">⟳</div>
-            <p>Carregando progressões...</p>
-            <p class="text-xs mt-2">Selecione um perfil no menu superior (👤)</p>
+            <p>{text.loading}</p>
+            <p class="text-xs mt-2">{text.selectProfile}</p>
           </div>
         }>
           <div class="glass rounded-2xl p-4">
             <div class="text-center text-sm text-muted mb-2">
-              Progressões Secundárias — <strong>{profileName()}</strong> — Idade {progressed()!.age}
+              {text.title} — <strong>{profileName()}</strong> — {text.age} {progressed()!.age}
             </div>
             <div class="w-full max-w-[600px] mx-auto" innerHTML={wheelSvg()} />
           </div>

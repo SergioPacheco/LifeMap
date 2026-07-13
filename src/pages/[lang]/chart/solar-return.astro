@@ -9,94 +9,12 @@ import SolarReturnApp from '../../../components/chart/SolarReturnApp.tsx';
 ---
 <BaseLayout title={t.nav.solarReturn} locale={locale}>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-
-    <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-6">
       <nav class="text-sm text-muted mb-4">
         <a href={localePath('/chart/natal', locale)} class="hover:text-brand-600">{t.nav.charts}</a> → <span class="text-cream">{t.nav.solarReturn}</span>
       </nav>
-
-      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream mb-3">Revolução Solar</h1>
-      <p class="text-muted text-base max-w-3xl leading-relaxed">
-        A revolução solar é o <strong class="text-cream">mapa do exato momento em que o Sol retorna à posição do seu nascimento</strong> — seu aniversário astrológico.
-        Ela define os temas, oportunidades e desafios do próximo ano solar (aniversário a aniversário).
-      </p>
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-cream">{t.nav.solarReturn}</h1>
     </div>
-
-    <!-- Explicação colapsável -->
-    <details class="mb-8 group">
-      <summary class="cursor-pointer flex items-center gap-2 text-sm font-medium text-gold hover:text-gold-light transition-colors">
-        <svg class="w-4 h-4 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-        Como funciona? O que estou vendo?
-      </summary>
-
-      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">☼</span> O que é a Revolução Solar?
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            Todo ano, o Sol volta ao grau exato que estava no seu nascimento. Esse momento (que pode ser no dia anterior, no dia ou no posterior ao aniversário civil) gera um novo mapa válido por 12 meses.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            É como se a cada ano você recebesse uma "missão renovada" — o mapa solar mostra o cenário dessa missão.
-          </p>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">🔍</span> O que observar
-          </h3>
-          <ul class="space-y-1.5 text-xs text-cream-dark">
-            <li><strong class="text-cream">Ascendente da RS</strong> — o tom geral do ano (como você se apresenta)</li>
-            <li><strong class="text-cream">Casa do Sol</strong> — a área da vida que será protagonista</li>
-            <li><strong class="text-cream">Lua na RS</strong> — necessidades emocionais do ano</li>
-            <li><strong class="text-cream">Planetas angulares</strong> (casas 1, 4, 7, 10) — energias em destaque</li>
-            <li><strong class="text-cream">Saturno</strong> — onde haverá reestruturação ou responsabilidade</li>
-            <li><strong class="text-cream">Júpiter</strong> — onde há expansão e oportunidade</li>
-          </ul>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">📍</span> Localização importa
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A revolução solar depende de <strong class="text-cream">onde você está no momento exato</strong> do retorno solar — não de onde nasceu.
-            Astrólogos usam isso a favor: viajar para mudar o Ascendente da RS (técnica de "Astrocartografia Solar").
-          </p>
-          <p class="text-xs text-muted italic">
-            Calcule com a cidade onde estava (ou estará) no aniversário.
-          </p>
-        </div>
-
-        <div class="glass rounded-xl p-5 border border-base-300">
-          <h3 class="text-sm font-semibold text-cream mb-3 flex items-center gap-2">
-            <span class="text-gold">📅</span> Validade
-          </h3>
-          <p class="text-xs text-cream-dark leading-relaxed mb-2">
-            A revolução solar vale de <strong class="text-cream">aniversário a aniversário</strong>, não de janeiro a dezembro.
-            Se seu aniversário é em março, o mapa de 2026 vale de março/2026 a março/2027.
-          </p>
-          <p class="text-xs text-cream-dark leading-relaxed">
-            Compare com os trânsitos do mesmo período para ver onde os temas convergem.
-          </p>
-        </div>
-      </div>
-    </details>
-
-    <!-- App -->
-    <SolarReturnApp client:load />
-
-    <!-- Legenda -->
-    <div class="mt-8 glass rounded-xl p-5 border border-base-300">
-      <h3 class="text-xs font-semibold text-muted uppercase tracking-wider mb-3">Dica de leitura</h3>
-      <p class="text-xs text-cream-dark leading-relaxed">
-        Foque no <strong class="text-cream">Ascendente</strong> (tom do ano), na <strong class="text-cream">casa onde o Sol cai</strong> (tema central) e em qualquer planeta na <strong class="text-cream">Casa 1 ou Casa 10</strong> (energias protagonistas).
-        Aspectos tensos com Saturno ou Plutão indicam anos de transformação profunda — difíceis mas evolutivos.
-      </p>
-    </div>
+    <SolarReturnApp client:load locale={locale} />
   </div>
 </BaseLayout>

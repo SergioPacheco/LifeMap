@@ -7,6 +7,8 @@ import PlanetTable from './PlanetTable';
 import { db, type Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
 import { isValidTimeZone, localeToDateLocale, pad2, zonedDateTimeToUtc } from '../../utils/dateTime';
+import { getContent } from '../../content';
+import type { Locale } from '../../i18n';
 
 // ============================================================
 // TYPES
@@ -214,7 +216,7 @@ function calculateLunarReturn(
 // INTERPRETATION COMPONENT
 // ============================================================
 
-function LRInterpretation(props: { lr: LunarReturnResult; natalMoonLon: number }) {
+function LRInterpretation(props: { lr: LunarReturnResult; natalMoonLon: number; localeData: any }) {
   const lr = () => props.lr;
   if (!lr()) return null;
 
@@ -224,74 +226,77 @@ function LRInterpretation(props: { lr: LunarReturnResult; natalMoonLon: number }
   const sunHouse = () => lr().planetHouses?.sun || 1;
   const saturnHouse = () => lr().planetHouses?.saturn || 1;
   const natalMoonSign = () => getSignIndex(props.natalMoonLon);
+  const signName = (idx: number) => props.localeData?.signs?.list?.[idx]?.name ?? SIGN_NAMES[idx];
+  const signDescription = (idx: number) => props.localeData?.signs?.list?.[idx]?.description ?? '';
+  const houseDescription = (idx: number) => props.localeData?.houses?.list?.[idx - 1]?.description ?? '';
 
   return (
     <div class="space-y-5">
       {/* Tema emocional do mês */}
       <div class="border-l-4 border-blue-400/50 pl-4 py-2">
         <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-blue-900/20 text-blue-300">
-          Tema Emocional do Mês
+          {props.localeData?.signs?.title ?? 'Tema Emocional do Mês'}
         </span>
         <h4 class="text-sm font-semibold text-cream mt-1.5 mb-1">
-          ☽ Lua retorna em {SIGN_NAMES[moonSignIdx()]}
+          ☽ {signName(moonSignIdx())}
         </h4>
         <p class="text-sm text-cream-dark leading-relaxed">
-          {MOON_SIGN_THEME[moonSignIdx()]}
+          {signDescription(moonSignIdx())}
         </p>
         <p class="text-xs text-muted mt-1.5">
-          Sua Lua natal está em {SIGN_NAMES[natalMoonSign()]} — agora ela volta para casa, trazendo consciência renovada das suas necessidades emocionais mais profundas.
+          {props.localeData?.signs?.intro ?? 'Your natal Moon is returning to its place, bringing renewed awareness of your deepest emotional needs.'}
         </p>
       </div>
 
       {/* Tom do mês — ASC */}
       <div class="border-l-4 border-gold/40 pl-4 py-2">
         <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-gold/10 text-gold">
-          Tom do Mês
+          {props.localeData?.signs?.intro ?? 'Tone of the Month'}
         </span>
         <h4 class="text-sm font-semibold text-cream mt-1.5 mb-1">
-          Ascendente de RL em {SIGN_NAMES[ascSignIdx()]}
+          {signName(ascSignIdx())}
         </h4>
         <p class="text-sm text-cream-dark leading-relaxed">
-          {LR_ASC_INTERP[ascSignIdx()]}
+          {signDescription(ascSignIdx())}
         </p>
       </div>
 
       {/* Casa da Lua */}
       <div class="border-l-4 border-indigo-400/40 pl-4 py-2">
         <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-indigo-900/20 text-indigo-300">
-          Onde as Emoções Operam
+          {props.localeData?.houses?.title ?? 'Onde as Emoções Operam'}
         </span>
         <h4 class="text-sm font-semibold text-cream mt-1.5 mb-1">
-          ☽ Lua na Casa {moonHouse()}
+          ☽ {props.localeData?.houses?.list?.[moonHouse() - 1]?.name ?? `Casa ${moonHouse()}`}
         </h4>
         <p class="text-sm text-cream-dark leading-relaxed">
-          {LR_MOON_HOUSE[moonHouse() - 1]}
+          {houseDescription(moonHouse())}
         </p>
       </div>
 
       {/* Casa do Sol */}
       <div class="border-l-4 border-yellow-500/40 pl-4 py-2">
         <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-yellow-900/20 text-yellow-300">
-          Foco Principal
+          {props.localeData?.houses?.intro ?? 'Foco Principal'}
         </span>
         <h4 class="text-sm font-semibold text-cream mt-1.5 mb-1">
-          ☉ Sol na Casa {sunHouse()}
+          ☉ {props.localeData?.houses?.list?.[sunHouse() - 1]?.name ?? `Casa ${sunHouse()}`}
         </h4>
         <p class="text-sm text-cream-dark leading-relaxed">
-          {LR_SUN_HOUSE[sunHouse() - 1]}
+          {houseDescription(sunHouse())}
         </p>
       </div>
 
       {/* Saturno */}
       <div class="border-l-4 border-slate-400/40 pl-4 py-2">
         <span class="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-slate-900/30 text-slate-300">
-          Onde Estruturar
+          {props.localeData?.signs?.intro ?? 'Onde Estruturar'}
         </span>
         <h4 class="text-sm font-semibold text-cream mt-1.5 mb-1">
-          ♄ Saturno na Casa {saturnHouse()}
+          ♄ {props.localeData?.houses?.list?.[saturnHouse() - 1]?.name ?? `Casa ${saturnHouse()}`}
         </h4>
         <p class="text-sm text-cream-dark leading-relaxed">
-          {SATURN_HOUSE[saturnHouse() - 1]}
+          {houseDescription(saturnHouse())}
         </p>
       </div>
     </div>
@@ -302,7 +307,11 @@ function LRInterpretation(props: { lr: LunarReturnResult; natalMoonLon: number }
 // MAIN COMPONENT
 // ============================================================
 
-export default function LunarReturnApp() {
+interface Props {
+  locale: Locale;
+}
+
+export default function LunarReturnApp(props: Props) {
   const now = new Date();
   const [natalChart, setNatalChart] = createSignal<any>(null);
   const [lrChart, setLrChart] = createSignal<LunarReturnResult | null>(null);
@@ -313,9 +322,14 @@ export default function LunarReturnApp() {
   const [targetYear, setTargetYear] = createSignal(now.getFullYear());
   const [loading, setLoading] = createSignal(false);
   const [error, setError] = createSignal('');
+  const [localeData, setLocaleData] = createSignal<any>(null);
 
   onMount(async () => {
     await initSweph();
+    Promise.all([
+      getContent(props.locale, 'signs'),
+      getContent(props.locale, 'houses'),
+    ]).then(([signs, houses]) => setLocaleData({ signs, houses }));
     try {
       const profiles = await db.profiles.orderBy('id').reverse().limit(1).toArray();
       if (profiles.length > 0) handleProfileSelect(profiles[0]);
@@ -351,10 +365,10 @@ export default function LunarReturnApp() {
           setLrChart(result);
           setWheelSvg(renderWheel(result as any));
         } else {
-          setError('Não foi possível encontrar a Revolução Lunar neste mês.');
+          setError(props.locale === 'pt' ? 'Não foi possível encontrar a Revolução Lunar neste mês.' : 'Unable to find a Lunar Return for this month.');
         }
       } catch (e: any) {
-        setError(e?.message || 'Erro no cálculo da Revolução Lunar');
+        setError(e?.message || (props.locale === 'pt' ? 'Erro no cálculo da Revolução Lunar' : 'Error calculating the Lunar Return'));
       } finally {
         setLoading(false);
       }
@@ -382,11 +396,16 @@ export default function LunarReturnApp() {
     handleMonthChange(m, y);
   };
 
-  const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MONTH_NAMES = (() => {
+    const locale = localeToDateLocale(props.locale);
+    return Array.from({ length: 12 }, (_, i) =>
+      new Intl.DateTimeFormat(locale, { month: 'short' }).format(new Date(2020, i, 1))
+    );
+  })();
 
   const formatDate = (d: Date) => {
     const meta = profileMeta();
-    const locale = localeToDateLocale('pt');
+    const locale = localeToDateLocale(props.locale);
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'long', day: '2-digit', month: 'long',
       year: 'numeric', hour: '2-digit', minute: '2-digit',
@@ -407,14 +426,14 @@ export default function LunarReturnApp() {
         {/* Month selector */}
         <Show when={natalChart()}>
           <div class="glass rounded-2xl p-4">
-            <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">Mês de Busca</h3>
+            <h3 class="text-sm font-semibold text-cream-dark uppercase tracking-wider mb-3">{props.locale === 'pt' ? 'Mês de Busca' : 'Search Month'}</h3>
             <div class="flex items-center gap-2 mb-3">
               <button
                 onClick={prevMonth}
                 class="px-3 py-1.5 text-sm bg-base-200 rounded-lg hover:bg-base-300 transition-colors text-cream"
               >←</button>
               <div class="flex-1 text-center">
-                <span class="text-cream font-medium">{MONTH_NAMES[targetMonth()]} {targetYear()}</span>
+              <span class="text-cream font-medium">{MONTH_NAMES[targetMonth()]} {targetYear()}</span>
               </div>
               <button
                 onClick={nextMonth}
@@ -425,18 +444,18 @@ export default function LunarReturnApp() {
             <Show when={loading()}>
               <div class="flex items-center gap-2 text-xs text-muted mt-2">
                 <span class="animate-spin inline-block">⟳</span>
-                <span>Calculando...</span>
+                <span>{props.locale === 'pt' ? 'Calculando...' : 'Calculating...'}</span>
               </div>
             </Show>
 
             <Show when={lrChart() && !loading()}>
               <div class="mt-3 p-3 bg-blue-900/20 border border-blue-800/30 rounded-lg">
-                <p class="text-xs text-blue-300 font-medium mb-1">🌙 Revolução Lunar encontrada</p>
+                <p class="text-xs text-blue-300 font-medium mb-1">{props.locale === 'pt' ? '🌙 Revolução Lunar encontrada' : '🌙 Lunar Return found'}</p>
                 <p class="text-xs text-cream-dark leading-relaxed">
                   {formatDate(lrChart()!.date)}
                 </p>
                 <p class="text-[10px] text-muted mt-1">
-                  Lua natal: {SIGN_NAMES[getSignIndex(natalChart().positions.moon.longitude)]}
+                  {props.locale === 'pt' ? 'Lua natal' : 'Natal Moon'}: {localeData()?.signs?.list?.[getSignIndex(natalChart().positions.moon.longitude)]?.name ?? SIGN_NAMES[getSignIndex(natalChart().positions.moon.longitude)]}
                 </p>
               </div>
             </Show>
@@ -459,19 +478,19 @@ export default function LunarReturnApp() {
           <div class="glass rounded-2xl p-8 text-center text-muted">
             <Show when={loading()}>
               <div class="text-5xl mb-3 animate-pulse">🌙</div>
-              <p>Calculando Revolução Lunar...</p>
+              <p>{props.locale === 'pt' ? 'Calculando Revolução Lunar...' : 'Calculating Lunar Return...'}</p>
             </Show>
             <Show when={!loading() && !natalChart()}>
               <div class="text-5xl mb-3">🌙</div>
-              <p>Selecione um perfil para calcular a Revolução Lunar</p>
-              <p class="text-xs mt-2">Use o menu de perfil no topo da página (👤)</p>
+              <p>{props.locale === 'pt' ? 'Selecione um perfil para calcular a Revolução Lunar' : 'Select a profile to calculate the Lunar Return'}</p>
+              <p class="text-xs mt-2">{props.locale === 'pt' ? 'Use o menu de perfil no topo da página (👤)' : 'Use the profile menu at the top of the page (👤)'}</p>
             </Show>
           </div>
         }>
           {/* Wheel */}
           <div class="glass rounded-2xl p-4">
             <div class="text-center text-sm text-muted mb-2">
-              Revolução Lunar — <strong class="text-cream">{profileName()}</strong> —{' '}
+              {props.locale === 'pt' ? 'Revolução Lunar' : 'Lunar Return'} — <strong class="text-cream">{profileName()}</strong> —{' '}
               <strong class="text-blue-300">{MONTH_NAMES[targetMonth()]} {targetYear()}</strong>
             </div>
             <div
@@ -483,15 +502,18 @@ export default function LunarReturnApp() {
           {/* Interpretation */}
           <div class="glass rounded-2xl p-6 mt-6">
             <h3 class="text-lg font-serif font-semibold text-cream mb-1">
-              🌙 Leitura — Revolução Lunar
+              🌙 {props.locale === 'pt' ? 'Leitura' : 'Reading'} — {props.locale === 'pt' ? 'Revolução Lunar' : 'Lunar Return'}
             </h3>
             <p class="text-xs text-muted mb-5">
-              Este é o mapa do momento em que a Lua retorna ao seu grau natal — um novo ciclo emocional de ~27 dias começa aqui.
+              {props.locale === 'pt'
+                ? 'Este é o mapa do momento em que a Lua retorna ao seu grau natal — um novo ciclo emocional de ~27 dias começa aqui.'
+                : 'This is the chart for the moment the Moon returns to its natal degree — a new emotional cycle of about 27 days begins here.'}
             </p>
             <Show when={natalChart()}>
               <LRInterpretation
                 lr={lrChart()!}
                 natalMoonLon={natalChart().positions.moon.longitude}
+                localeData={localeData()}
               />
             </Show>
           </div>
