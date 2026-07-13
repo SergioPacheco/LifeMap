@@ -1,6 +1,7 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { getTranslations, languages, localePath, switchLocalePath, type Locale } from '../../i18n';
 import { db, type Profile } from '../../store/db';
+import BrandLogo from './BrandLogo';
 
 interface Props {
   locale: Locale;
@@ -138,8 +139,7 @@ export default function Header(props: Props) {
         <div class="flex items-center justify-between h-14">
           {/* Logo */}
           <a href={localePath('/', props.locale)} class="flex items-center gap-2 flex-shrink-0">
-            <span class="text-xl text-gold">✦</span>
-            <span class="font-serif text-lg font-bold text-gold">LifeMap</span>
+            <BrandLogo pro />
           </a>
 
           {/* Desktop Nav — Mega Menu */}

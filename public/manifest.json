@@ -5,10 +5,17 @@
   "start_url": "pt/",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f0f1a",
-  "theme_color": "#7c3aed",
+  "background_color": "#050507",
+  "theme_color": "#050507",
   "orientation": "any",
-  "icons": [],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
   "categories": ["lifestyle", "education"],
   "lang": "pt",
   "dir": "ltr"

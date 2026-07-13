@@ -1,4 +1,5 @@
 import { getTranslations, localePath, type Locale } from '../../i18n';
+import BrandLogo from './BrandLogo';
 
 interface Props {
   locale: Locale;
@@ -14,8 +15,7 @@ export default function Footer(props: Props) {
           {/* Brand */}
           <div>
             <div class="flex items-center gap-2 mb-3">
-              <span class="text-xl text-gold">✦</span>
-              <span class="font-serif text-lg font-bold text-gold">LifeMap Pro</span>
+              <BrandLogo pro />
             </div>
             <p class="text-sm text-muted">
               {t().site.description}
