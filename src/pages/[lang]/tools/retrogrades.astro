@@ -12,6 +12,6 @@ const t = getTranslations(locale);
     <div class="mb-6">
       <h1 class="text-2xl font-serif font-bold text-cream">{t.nav.retrograde}</h1>
     </div>
-    <RetrogradesApp client:load />
+    <RetrogradesApp client:load locale={locale} />
   </div>
 </BaseLayout>

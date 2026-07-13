@@ -1,6 +1,10 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { getSignIndex, norm } from '../../engine/astro-utils';
 import * as Astronomy from 'astronomy-engine';
+import type { Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
+import { getToolsUi } from '../../i18n/tools-ui';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 const PLANETS = [
   { id: 'mercury', name: 'Mercury', symbol: '☿', color: '#d4a853' },
@@ -13,7 +17,6 @@ const PLANETS = [
   { id: 'pluto', name: 'Pluto', symbol: '♇', color: '#cc4444' },
 ];
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
-const SIGN_NAMES = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 
 interface RetroPeriod {
   planet: string;
@@ -26,7 +29,12 @@ interface RetroPeriod {
   days: number;
 }
 
-export default function RetrogradesApp() {
+interface Props { locale: Locale }
+
+export default function RetrogradesApp(props: Props) {
+  const text = () => getToolsUi(props.locale).retrogrades;
+  const interp = () => getInterpretations(props.locale);
+  const dateLocale = localeToDateLocale(props.locale);
   const [year, setYear] = createSignal(new Date().getFullYear());
   const [periods, setPeriods] = createSignal<RetroPeriod[]>([]);
   const [loading, setLoading] = createSignal(true);
@@ -135,7 +143,7 @@ export default function RetrogradesApp() {
             const days = Math.round((date.getTime() - start.getTime()) / 86400000);
 
             results.push({
-              planet: planet.name,
+              planet: planet.id,
               symbol: planet.symbol,
               color: planet.color,
               startDate,
@@ -152,7 +160,7 @@ export default function RetrogradesApp() {
         if (inRetro) {
           const endOfYear = new Date(Date.UTC(yr, 11, 31));
           results.push({
-            planet: planet.name,
+            planet: planet.id,
             symbol: planet.symbol,
             color: planet.color,
             startDate,
@@ -168,15 +176,14 @@ export default function RetrogradesApp() {
       setProgress(100);
     } catch (e: any) {
       console.error('[Retrogrades] Error:', e);
-      setError(e.message || 'Erro ao calcular retrógrados');
+      setError(e.message || text().error);
     } finally {
       setLoading(false);
     }
   };
 
   const formatDate = (dateStr: string) => {
-    const [y, m, d] = dateStr.split('-');
-    return `${d}/${m}/${y}`;
+    return new Intl.DateTimeFormat(dateLocale, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(`${dateStr}T12:00:00Z`));
   };
 
   const changeYear = async (delta: number) => {
@@ -192,18 +199,18 @@ export default function RetrogradesApp() {
           onClick={() => changeYear(-1)}
           class="px-3 py-1.5 text-sm font-medium bg-base-200 hover:bg-base-300 text-cream rounded-lg transition-colors"
         >
-          ← Anterior
+          ← {text().previous}
         </button>
         <span class="text-xl font-bold text-gold">{year()}</span>
         <button
           onClick={() => changeYear(1)}
           class="px-3 py-1.5 text-sm font-medium bg-base-200 hover:bg-base-300 text-cream rounded-lg transition-colors"
         >
-          Próximo →
+          {text().next} →
         </button>
         <Show when={!loading()}>
           <span class="text-sm text-muted ml-auto">
-            {periods().length} períodos retrógrados encontrados
+            {periods().length} {text().found}
           </span>
         </Show>
       </div>
@@ -212,7 +219,7 @@ export default function RetrogradesApp() {
       <Show when={loading()}>
         <div class="glass rounded-2xl p-8 text-center">
           <div class="animate-spin text-4xl mb-4">⏳</div>
-          <p class="text-cream-dark font-medium mb-2">Calculando retrógrados de {year()}...</p>
+          <p class="text-cream-dark font-medium mb-2">{text().calculating} {year()}...</p>
           <div class="w-48 mx-auto bg-base-300 rounded-full h-2 overflow-hidden">
             <div
               class="h-full bg-gold rounded-full transition-all duration-300"
@@ -231,7 +238,7 @@ export default function RetrogradesApp() {
             onClick={() => calculate()}
             class="mt-3 px-4 py-2 text-sm bg-base-200 rounded-lg hover:bg-base-300 text-cream transition-colors"
           >
-            Tentar novamente
+            {text().retry}
           </button>
         </div>
       </Show>
@@ -241,11 +248,11 @@ export default function RetrogradesApp() {
         <div class="glass rounded-2xl border-glow overflow-hidden">
           {/* Timeline visualization */}
           <div class="p-4 border-b border-base-300">
-            <h3 class="text-sm font-medium text-muted uppercase tracking-wider mb-3">Timeline Visual</h3>
+            <h3 class="text-sm font-medium text-muted uppercase tracking-wider mb-3">{text().timeline}</h3>
             <div class="space-y-1.5">
               <For each={PLANETS}>
                 {(planet) => {
-                  const planetPeriods = () => periods().filter(p => p.planet === planet.name);
+                  const planetPeriods = () => periods().filter(p => p.planet === planet.id);
                   return (
                     <div class="flex items-center gap-2">
                       <span class="w-6 text-center" style={{ color: planet.color }}>{planet.symbol}</span>
@@ -264,7 +271,7 @@ export default function RetrogradesApp() {
                                   width: `${Math.max(width, 1)}%`,
                                   'background-color': planet.color,
                                 }}
-                                title={`${planet.name}: ${p.startDate} → ${p.endDate} (${p.days} dias)`}
+                                title={`${interp().PLANET_NAMES[planet.id]}: ${formatDate(p.startDate)} → ${formatDate(p.endDate)} (${p.days} ${text().days.toLowerCase()})`}
                               />
                             );
                           }}
@@ -278,9 +285,7 @@ export default function RetrogradesApp() {
               <div class="flex items-center gap-2">
                 <span class="w-6" />
                 <div class="flex-1 flex justify-between text-[9px] text-muted px-1">
-                  <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span>
-                  <span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span>
-                  <span>Set</span><span>Out</span><span>Nov</span><span>Dez</span>
+                  {Array.from({ length: 12 }, (_, i) => <span>{new Intl.DateTimeFormat(dateLocale, { month: 'short' }).format(new Date(2024, i, 1))}</span>)}
                 </div>
               </div>
             </div>
@@ -291,11 +296,11 @@ export default function RetrogradesApp() {
             <table class="w-full text-sm">
               <thead>
                 <tr class="border-b border-base-300 bg-base-100/50">
-                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Planeta</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Início</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Fim</th>
-                  <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">Signos</th>
-                  <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">Dias</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().planet}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().start}</th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().end}</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">{text().signs}</th>
+                  <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">{text().days}</th>
                 </tr>
               </thead>
               <tbody>
@@ -304,16 +309,16 @@ export default function RetrogradesApp() {
                     <tr class="border-b border-base-300/50 hover:bg-base-200/20 transition-colors">
                       <td class="px-4 py-2.5">
                         <span class="text-lg mr-1.5" style={{ color: p.color }}>{p.symbol}</span>
-                        <span class="font-medium text-cream" style={{ color: p.color }}>{p.planet}</span>
+                        <span class="font-medium text-cream" style={{ color: p.color }}>{interp().PLANET_NAMES[p.planet]}</span>
                       </td>
                       <td class="px-4 py-2.5 font-mono text-xs text-cream-dark">{formatDate(p.startDate)}</td>
                       <td class="px-4 py-2.5 font-mono text-xs text-cream-dark">{formatDate(p.endDate)}</td>
                       <td class="px-4 py-2.5 text-center">
-                        <span title={SIGN_NAMES[p.startSign]}>{SIGN_SYMBOLS[p.startSign]}</span>
+                        <span title={interp().SIGN_NAMES[p.startSign]}>{SIGN_SYMBOLS[p.startSign]}</span>
                         <span class="text-muted mx-1">→</span>
-                        <span title={SIGN_NAMES[p.endSign]}>{SIGN_SYMBOLS[p.endSign]}</span>
+                        <span title={interp().SIGN_NAMES[p.endSign]}>{SIGN_SYMBOLS[p.endSign]}</span>
                       </td>
-                      <td class="px-4 py-2.5 text-center text-muted font-medium">{p.days}d</td>
+                      <td class="px-4 py-2.5 text-center text-muted font-medium">{p.days}{text().daySuffix}</td>
                     </tr>
                   )}
                 </For>
@@ -326,7 +331,7 @@ export default function RetrogradesApp() {
       {/* Empty state */}
       <Show when={!loading() && !error() && periods().length === 0}>
         <div class="glass rounded-2xl p-8 text-center">
-          <p class="text-cream-dark">Nenhum período retrógrado encontrado para {year()}.</p>
+          <p class="text-cream-dark">{text().none} {year()}.</p>
         </div>
       </Show>
     </div>

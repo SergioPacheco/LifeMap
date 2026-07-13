@@ -1,7 +1,10 @@
 import { createSignal, onMount, For } from 'solid-js';
 import { calculatePositions, initSweph, getSignIndex, angularDifference } from '../../engine/index';
+import type { Locale } from '../../i18n';
+import { getInterpretations } from '../../engine/interpretations';
+import { getToolsUi } from '../../i18n/tools-ui';
+import { localeToDateLocale } from '../../utils/dateTime';
 
-const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 const SIGN_SYMBOLS = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 
 interface MoonDay {
@@ -16,12 +19,18 @@ interface MoonDay {
   isQuarter: boolean;
 }
 
-export default function MoonPhasesApp() {
+interface Props { locale: Locale }
+
+export default function MoonPhasesApp(props: Props) {
+  const text = () => getToolsUi(props.locale);
+  const signNames = () => getInterpretations(props.locale).SIGN_NAMES;
   const [year, setYear] = createSignal(new Date().getFullYear());
   const [month, setMonth] = createSignal(new Date().getMonth() + 1);
   const [days, setDays] = createSignal<MoonDay[]>([]);
 
-  const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const dateLocale = localeToDateLocale(props.locale);
+  const MONTHS = Array.from({ length: 12 }, (_, i) => new Intl.DateTimeFormat(dateLocale, { month: 'short' }).format(new Date(2024, i, 1)));
+  const WEEKDAYS = Array.from({ length: 7 }, (_, i) => new Intl.DateTimeFormat(dateLocale, { weekday: 'short' }).format(new Date(2024, 0, 1 + i)));
 
   onMount(async () => { await initSweph(); calculate(); });
 
@@ -44,7 +53,7 @@ export default function MoonPhasesApp() {
       let elongation = moonLon - sunLon;
       if (elongation < 0) elongation += 360;
 
-      const phaseData = getPhaseData(elongation);
+      const phaseData = getPhaseData(elongation, text().moon.phases);
       const illumination = Math.round((1 - Math.cos(elongation * Math.PI / 180)) / 2 * 100);
 
       results.push({
@@ -87,7 +96,7 @@ export default function MoonPhasesApp() {
       <div class="glass rounded-2xl border-glow shadow-sm overflow-hidden">
         <div class="grid grid-cols-7 gap-px bg-base-300">
           {/* Header */}
-          {['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(d => (
+          {WEEKDAYS.map(d => (
             <div class="bg-base-100 px-2 py-2 text-center text-xs font-medium text-muted">{d}</div>
           ))}
 
@@ -112,7 +121,7 @@ export default function MoonPhasesApp() {
                   <span class="text-lg">{d.phaseEmoji}</span>
                 </div>
                 <div class="mt-1">
-                  <span class="text-xs" title={SIGN_NAMES[d.sign]}>{SIGN_SYMBOLS[d.sign]}</span>
+                  <span class="text-xs" title={signNames()[d.sign]}>{SIGN_SYMBOLS[d.sign]}</span>
                   {d.signChanged && <span class="text-[8px] text-brand-600 ml-0.5">●</span>}
                 </div>
                 <div class="text-[9px] text-muted mt-0.5">{d.illumination}%</div>
@@ -124,23 +133,23 @@ export default function MoonPhasesApp() {
 
       {/* Legend */}
       <div class="flex flex-wrap gap-4 text-xs text-muted px-2">
-        <span>🌑 Lua Nova</span>
-        <span>🌓 Quarto Crescente</span>
-        <span>🌕 Lua Cheia</span>
-        <span>🌗 Quarto Minguante</span>
-        <span><span class="text-brand-600">●</span> Mudança de signo</span>
+        <span>🌑 {text().moon.phases[0]}</span>
+        <span>🌓 {text().moon.phases[2]}</span>
+        <span>🌕 {text().moon.phases[4]}</span>
+        <span>🌗 {text().moon.phases[6]}</span>
+        <span><span class="text-brand-600">●</span> {text().moon.signChange}</span>
       </div>
     </div>
   );
 }
 
-function getPhaseData(elongation: number): { emoji: string; name: string } {
-  if (elongation < 22.5 || elongation > 337.5) return { emoji: '🌑', name: 'Nova' };
-  if (elongation < 67.5) return { emoji: '🌒', name: 'Crescente' };
-  if (elongation < 112.5) return { emoji: '🌓', name: 'Quarto Cr.' };
-  if (elongation < 157.5) return { emoji: '🌔', name: 'Gibosa Cr.' };
-  if (elongation < 202.5) return { emoji: '🌕', name: 'Cheia' };
-  if (elongation < 247.5) return { emoji: '🌖', name: 'Gibosa Mn.' };
-  if (elongation < 292.5) return { emoji: '🌗', name: 'Quarto Mn.' };
-  return { emoji: '🌘', name: 'Minguante' };
+function getPhaseData(elongation: number, names: readonly string[]): { emoji: string; name: string } {
+  if (elongation < 22.5 || elongation > 337.5) return { emoji: '🌑', name: names[0] };
+  if (elongation < 67.5) return { emoji: '🌒', name: names[1] };
+  if (elongation < 112.5) return { emoji: '🌓', name: names[2] };
+  if (elongation < 157.5) return { emoji: '🌔', name: names[3] };
+  if (elongation < 202.5) return { emoji: '🌕', name: names[4] };
+  if (elongation < 247.5) return { emoji: '🌖', name: names[5] };
+  if (elongation < 292.5) return { emoji: '🌗', name: names[6] };
+  return { emoji: '🌘', name: names[7] };
 }

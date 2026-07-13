@@ -1,5 +1,9 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { calculatePositions, initSweph, angularDifference } from '../../engine/index';
+import type { Locale } from '../../i18n';
+import { getChartUi } from '../../i18n/chart-ui';
+import { getToolsUi } from '../../i18n/tools-ui';
+import { localeToDateLocale } from '../../utils/dateTime';
 
 const PLANETS = [
   { id: 'sun', symbol: '☉' }, { id: 'moon', symbol: '☽' },
@@ -8,11 +12,11 @@ const PLANETS = [
   { id: 'saturn', symbol: '♄' },
 ];
 const ASPECTS = [
-  { angle: 0, symbol: '☌', name: 'Conj', color: '#cc0000' },
-  { angle: 60, symbol: '⚹', name: 'Sext', color: '#0000cc' },
-  { angle: 90, symbol: '□', name: 'Quad', color: '#cc0000' },
-  { angle: 120, symbol: '△', name: 'Tríg', color: '#0000cc' },
-  { angle: 180, symbol: '☍', name: 'Opos', color: '#cc0000' },
+  { angle: 0, symbol: '☌', type: 'conjunction' as const, color: '#cc0000' },
+  { angle: 60, symbol: '⚹', type: 'sextile' as const, color: '#0000cc' },
+  { angle: 90, symbol: '□', type: 'square' as const, color: '#cc0000' },
+  { angle: 120, symbol: '△', type: 'trine' as const, color: '#0000cc' },
+  { angle: 180, symbol: '☍', type: 'opposition' as const, color: '#cc0000' },
 ];
 
 interface AspectEvent {
@@ -25,12 +29,16 @@ interface AspectEvent {
   orb: number;
 }
 
-export default function AspectCalendarApp() {
+interface Props { locale: Locale }
+
+export default function AspectCalendarApp(props: Props) {
+  const text = () => getToolsUi(props.locale).aspects;
+  const chartText = () => getChartUi(props.locale);
   const [year, setYear] = createSignal(new Date().getFullYear());
   const [month, setMonth] = createSignal(new Date().getMonth() + 1);
   const [events, setEvents] = createSignal<AspectEvent[]>([]);
 
-  const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  const MONTHS = Array.from({ length: 12 }, (_, i) => new Intl.DateTimeFormat(localeToDateLocale(props.locale), { month: 'short' }).format(new Date(2024, i, 1)));
 
   onMount(async () => { await initSweph(); calculate(); });
 
@@ -58,7 +66,7 @@ export default function AspectCalendarApp() {
                 day,
                 p1: PLANETS[i].symbol,
                 p2: PLANETS[j].symbol,
-                aspect: asp.name,
+                aspect: chartText().aspects[asp.type],
                 aspectSymbol: asp.symbol,
                 color: asp.color,
                 orb: +orb.toFixed(2),
@@ -91,21 +99,21 @@ export default function AspectCalendarApp() {
             )}
           </For>
         </div>
-        <span class="text-sm text-muted">{events().length} aspectos exatos</span>
+        <span class="text-sm text-muted">{events().length} {text().exact}</span>
       </div>
 
       {/* Events list */}
       <div class="glass rounded-2xl border-glow shadow-sm overflow-hidden">
         <Show when={events().length > 0} fallback={
-          <div class="p-8 text-center text-muted">Nenhum aspecto exato neste mês (orbe &lt; 1°)</div>
+          <div class="p-8 text-center text-muted">{text().none}</div>
         }>
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-base-300 bg-base-100">
-                <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Dia</th>
-                <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">Aspecto</th>
-                <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">Tipo</th>
-                <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">Orbe</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().day}</th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-muted uppercase">{text().aspect}</th>
+                <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">{text().type}</th>
+                <th class="px-4 py-3 text-center text-xs font-medium text-muted uppercase">{text().orb}</th>
               </tr>
             </thead>
             <tbody>

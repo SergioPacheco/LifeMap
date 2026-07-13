@@ -12,6 +12,6 @@ const t = getTranslations(locale);
     <div class="mb-6">
       <h1 class="text-2xl font-serif font-bold text-cream">{t.nav.moonPhases}</h1>
     </div>
-    <MoonPhasesApp client:load />
+    <MoonPhasesApp client:load locale={locale} />
   </div>
 </BaseLayout>
