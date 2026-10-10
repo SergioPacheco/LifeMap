@@ -383,3 +383,23 @@ mean-grade, Quíron omitido quando mean-elements, nodos fora de contatos
 cronometrados no fallback. WASM da Swiss Ephemeris adiado (não necessário
 para o v1). Tarefas 3 (runtime), 5 (PDF), 6 (entitlements) e 8 (ops) mudam
 de forma; custos passam a pay-per-use a medir no piloto.
+
+## 15. Adendo híbrida rules-first (10/10/2026, decisão do usuário)
+
+MVP vende sem IA em runtime (4A); IA só como síntese opcional com teto
+(4B). Auditoria: repositório real com 46 pares de aspectos × 3 registros,
+planetas em casas/signos e síntese por 6 temas; `RuleEngine`/`ScoringEngine`/
+`ReportAssembler` não existem como código e há zero linhas de dedup —
+o gap é montagem (scoring, dedup, síntese-primeiro, contradições), não
+conteúdo. Baseline: natal completo atual tem 26 páginas mas ~3.560 palavras
+(meta 8–12k); páginas ≠ profundidade.
+
+4A monta `ReportDocument` deterministicamente a partir do catálogo
+versionado (textos existentes + expansões com IA em dev-time, revisadas e
+commitadas) até a faixa de palavras, sem padding. 4B recebe só resumos
+priorizados e reescreve sínteses preservando IDs/fatos, com envelope-teto
+(30k in / 20k out por relatório, 1 retry, modelo pequeno, `store: false`,
+nomes fora do payload); indisponibilidade cai para 4A, nunca parcial.
+Custo validado: ~US$ 0,0165/relatório no envelope (GPT-4o mini, preços
+$0.15/$0.60 por 1M verificados em 10/10/2026) — o teto, não o piso.
+A/B 4A×4B na rubrica editorial (≥4/5) decide o rollout do premium.

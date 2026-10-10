@@ -155,41 +155,46 @@ Não executar tarefas 4, 6 e 7 como alterações independentes do contrato compa
 
 **Aceite:** infraestrutura opera de modo privado com gerador falso, sem gastos de API; testes demonstram isolamento, persistência e retomada.
 
-## Tarefa 4 — Blueprints, OpenAI e qualidade: natal/anual
+## Tarefa 4 — Blueprints, montagem e qualidade: natal/anual (HÍBRIDA, decisão 10/10/2026)
+
+MVP vende **sem IA em runtime** (4A); síntese por IA é gateway opcional com
+teto (4B), só após A/B editorial. Auditoria: repositório real com 46 pares
+de aspectos × 3 registros + planetas em casas + 6 temas; `RuleEngine` /
+`ScoringEngine` / `ReportAssembler` não existem como código e há zero
+linhas de dedup — o gap é montagem, não conteúdo.
 
 **Files — criar:**
 
 - `src/reports/planning/plan.ts`, `src/reports/planning/blueprints/natal.ts`, `src/reports/planning/blueprints/annual.ts`.
-- `src/reports/knowledge/select.ts`, `src/reports/knowledge/catalog.ts`: base curada, versionada e selecionada por evidência.
-- `services/report-worker/openai/client.ts`, `services/report-worker/openai/chapter-writer.ts`, `services/report-worker/openai/editor.ts`, `services/report-worker/openai/usage.ts`.
-- `services/report-worker/prompts/system-v1.ts`, `services/report-worker/prompts/chapter-v1.ts`, `services/report-worker/prompts/editor-v1.ts`.
+- `src/reports/knowledge/select.ts`, `src/reports/knowledge/catalog.ts`: base curada, versionada e selecionada por evidência (consolida `src/engine/*interpretation*.ts`, dignidades e síntesis por tema; IA só em dev-time para rascunhos, revisados e commitados).
+- `src/reports/scoring/score.ts`, `src/reports/assembler/assemble.ts`: priorização, dedup por texto/fato, síntese-primeiro (cada capítulo integra ≥2 indicadores), regras de contradição.
 - `src/reports/quality/validate.ts`, `src/reports/quality/evidence.ts`, `src/reports/quality/coverage.ts`, `src/reports/quality/repetition.ts`.
-- `tests/reports/planning.test.ts`, `tests/reports/quality.test.ts`, `tests/services/openai-pipeline.test.ts`.
+- `tests/reports/planning.test.ts`, `tests/reports/quality.test.ts`, `tests/reports/assembler.test.ts`.
+- 4B (após aceite da 4A): `services/report-worker/openai/client.ts`, `chapter-writer.ts` → `synthesis-writer.ts` (só sínteses sobre resumos priorizados), `usage.ts`; prompts versionados; `tests/services/openai-pipeline.test.ts`.
 
 **Files — modificar:** `services/report-worker/jobs.ts`, `src/reports/core/policies.ts`.
 
 **Interfaces:**
 
 - `planReport(request: ReportRequest, context: ReportContext): ReportPlan`.
-- `generateChapter(chapter: PlannedChapter, context: ReportContext, locale: Locale): Promise<ChapterDraft>`.
+- `assembleReport(request, context, plan): ReportDocument` (4A, determinístico; gera `summary` por regras a partir das prioridades).
+- `synthesizeReport(document: ReportDocument, budget: SynthesisBudget): Promise<ReportDocument>` (4B, preserva IDs e fatos; `SynthesisBudget = { maxInputTokens: 30000; maxOutputTokens: 20000; maxRetries: 1 }` — envelope-teto, não piso).
 - `validateReport(document: ReportDocument): QualityResult`.
-- `reviewReport(document: ReportDocument): Promise<ReportDocument>` preserva IDs e retorna conteúdo sujeito à revalidação.
 - `computeUsageCost(usage: ProviderUsage, prices: PriceTable): number`; `ProviderUsage = { inputTokens: number; cachedInputTokens: number; cacheWriteTokens: number; outputTokens: number; reasoningTokens: number }`, com categorias mutuamente exclusivas para cálculo e raciocínio identificado como subconjunto da saída quando assim faturado pelo provedor. `PriceTable = { model: string; mode: string; version: string; inputUsdPerMillion: number; cachedInputUsdPerMillion: number; cacheWriteUsdPerMillion: number; outputUsdPerMillion: number }`.
 
 **Steps:**
 
 - [ ] Escrever testes de planos: anual tem 12 capítulos mensais no período; evidências prioritárias aparecem; cada mês recebe seus eventos; natal integra indicadores e não apenas lista planetas.
-- [ ] Escrever testes de rejeição: ID inexistente, data técnica divergente, capítulo abaixo da faixa, duplicação de parágrafos, locale errado, resposta truncada e refusal. Texto factual contraditório é reprovado mesmo com evidenceId existente.
-- [ ] Escrever testes do client falso: 429/503 têm retry limitado; 400 não é repetido; JSON incompleto não vira PDF; teto inclui revisão/retries; nomes/notas de perfil não entram no payload enviado.
-- [ ] Rodar `npm run test:reports -- tests/reports/planning.test.ts tests/reports/quality.test.ts tests/services/openai-pipeline.test.ts`; confirmar falha das unidades novas.
-- [ ] Implementar geração pelo SDK/Responses com Structured Outputs e `store: false`; schemas e instruções versionados. Resumos globais compactos limitam contexto; evidências completas ficam por capítulo.
-- [ ] Implementar revisão global e regeneração seletiva, max. uma reescrita editorial por capítulo. Validação por código usa fatos normalizados; checagem semântica e revisão humana complementam sem prometer prova automática de toda a prosa.
-- [ ] Integrar checkpoints e reserva de custo ao worker. A chamada externa pode ter sido cobrada mesmo sem resposta local; registrar tentativa ambígua e reservar margem antes de repetir.
-- [ ] Reexecutar testes com mocks e `npm run services:build`; esperado: report só avança a renderização se aceito. Não adicionar chamadas pagas aos testes comuns.
-- [ ] Executar um smoke real somente quando chave e teto do piloto estiverem configurados; registrar tokens, modelo, custo e qualidade, sem usar perfis pessoais reais.
-- [ ] Registrar checkpoint em commit.
+- [ ] Escrever testes de rejeição: ID inexistente, data técnica divergente, capítulo abaixo da faixa, duplicação de parágrafos, locale errado. Texto factual contraditório é reprovado mesmo com evidenceId existente.
+- [ ] Escrever testes do assembler: nenhum parágrafo repetido entre capítulos, nenhuma evidência prioritária sem cobertura, sínteses citam ≥2 indicadores, contradições conhecidas resolvidas por regra.
+- [ ] Rodar os testes novos; confirmar falha das unidades novas.
+- [ ] Implementar 4A: catálogo versionado a partir dos textos existentes, scoring por exatidão/planeta-lento/ângulos, assembler determinístico até a faixa de palavras da política (natal 8–12k) sem padding. Montagem pura roda em Workers sem sweph.
+- [ ] Validar 4A no painel editorial (12 relatórios: especificidade, integração, clareza, utilidade, repetição ≥4/5) contra os PDFs legados; baseline de palavras medidas.
+- [ ] 4B só então: gateway de síntese com modelo pequeno, Structured Outputs, `store: false`, 1 retry editorial, teto do envelope, nomes fora do payload; testes com mocks (429/503 retry limitado, 400 não repetido, truncado/refusal viram estado retomável, nunca PDF parcial).
+- [ ] Registrar tokens/modelo/custo do smoke com teto do piloto, sem perfis pessoais reais; A/B 4A×4B decide o rollout do premium.
+- [ ] Registrar checkpoint em commit (4A e 4B em commits separados).
 
-**Aceite:** natal/anual produzem JSON aprovado com profundidade, locale e evidências; indisponibilidade da IA resulta em estado retomável e informado.
+**Aceite:** 4A — natal/anual em JSON aprovado com profundidade, locale e evidências, custo variável zero; 4B — síntese opcional dentro do teto, indisponibilidade resulta em estado retomável e informado (cai para 4A, nunca parcial).
 
 ## Tarefa 5 — Layout editorial, leitor e PDF
 
@@ -344,3 +349,17 @@ o rework serverless porta o desenho, não recomeça do zero. Ordem: spike de
 efemérides (feito, `docs/reports/ephemeris-spike.md`) → rework T3 em
 Workers/D1 → T4 (OpenAI) → T5 (PDF via Browser Rendering) → T6
 (Stripe/Clerk) → T7 → T8 (custos pay-per-use medidos).
+
+## Adendo agendamento (10/10/2026): GitHub Actions para batch, Workflows para interativo
+
+Actions cron (`schedule`, mais `workflow_dispatch` para re-run manual) cobre
+o trabalho agendado offline: geração diária/semanal dos forecasts públicos,
+cleanup de retenção, cost-summary e regressão da T8. O cron só **dispara**:
+chama um endpoint interno do Worker (auth por service token) que enfileira
+um Workflow/batch e responde 202; o job do Actions faz poll até a conclusão
+e falha (alertando) se o batch falhar. Chave OpenAI vive só em Cloudflare —
+o Actions guarda apenas o trigger token. Jobs de usuário seguem em
+Workflows (request-time, progresso por polling): cron do Actions não serve
+para caminho interativo (latência de fila, sem resposta síncrona).
+Publicação idempotente por data (re-run do mesmo dia sobrescreve as mesmas
+chaves); agendar com margem — cron do Actions pode atrasar em pico.
