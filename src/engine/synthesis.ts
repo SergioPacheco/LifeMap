@@ -102,7 +102,7 @@ export function generateFullReport(chart: NatalChart): FullReport {
 // OVERVIEW NARRATIVO (Camada 5 - texto humano)
 // ============================================================
 
-function generateOverview(chart: NatalChart): string {
+export function generateOverview(chart: NatalChart): string {
   const sunSign = getSignIndex(chart.positions.sun?.longitude || 0);
   const moonSign = getSignIndex(chart.positions.moon?.longitude || 0);
   const ascSign = getSignIndex(chart.houses.ascendant);
@@ -160,7 +160,7 @@ function getAscPerception(sign: number): string {
 // SÍNTESE POR TEMAS (Camada 4 - Premium)
 // ============================================================
 
-function synthesizeLove(chart: NatalChart): ThemeSynthesis {
+export function synthesizeLove(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // Vênus (como ama)
@@ -212,7 +212,7 @@ function synthesizeLove(chart: NatalChart): ThemeSynthesis {
   return { theme: 'love', title: 'Amor e Relacionamentos', icon: '♡', sections };
 }
 
-function synthesizeCareer(chart: NatalChart): ThemeSynthesis {
+export function synthesizeCareer(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // MC / Casa 10
@@ -257,7 +257,7 @@ function synthesizeCareer(chart: NatalChart): ThemeSynthesis {
   return { theme: 'career', title: 'Carreira e Propósito', icon: '♄', sections };
 }
 
-function synthesizeMoney(chart: NatalChart): ThemeSynthesis {
+export function synthesizeMoney(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // Casa 2 (dinheiro próprio)
@@ -294,7 +294,7 @@ function synthesizeMoney(chart: NatalChart): ThemeSynthesis {
   return { theme: 'money', title: 'Dinheiro e Recursos', icon: '💰', sections };
 }
 
-function synthesizeMission(chart: NatalChart): ThemeSynthesis {
+export function synthesizeMission(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // Nodo Norte
@@ -348,7 +348,7 @@ function synthesizeMission(chart: NatalChart): ThemeSynthesis {
   return { theme: 'mission', title: 'Missão e Evolução', icon: '☊', sections };
 }
 
-function synthesizeBlocks(chart: NatalChart): ThemeSynthesis {
+export function synthesizeBlocks(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // Aspectos difíceis (quadraturas e oposições)
@@ -392,7 +392,7 @@ function synthesizeBlocks(chart: NatalChart): ThemeSynthesis {
   return { theme: 'blocks', title: 'Desafios e Bloqueios', icon: '⚡', sections };
 }
 
-function synthesizeTalents(chart: NatalChart): ThemeSynthesis {
+export function synthesizeTalents(chart: NatalChart): ThemeSynthesis {
   const sections: ThemeSection[] = [];
 
   // Trígonos (facilidades)
@@ -437,7 +437,7 @@ function synthesizeTalents(chart: NatalChart): ThemeSynthesis {
 // HELPERS
 // ============================================================
 
-function getHouseTheme(house: number): string {
+export function getHouseTheme(house: number): string {
   const themes = [
     'identidade, corpo e a forma como o mundo te percebe',
     'dinheiro, valores pessoais e autoestima material',
