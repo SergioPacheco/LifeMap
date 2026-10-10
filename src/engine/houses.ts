@@ -40,6 +40,52 @@ export function calculateFullHouses(
   return { cusps, ascendant: asc, midheaven: mc, system };
 }
 
+export interface HousesWithProvenance {
+  houses: HouseData;
+  /** True origin of these cusps/angles — never inferred from a global flag. */
+  provenance: {
+    engine: 'swisseph' | 'astronomy-engine';
+    source: string;
+    precision: 'computed' | 'approximate';
+  };
+}
+
+/**
+ * Houses with per-result provenance. The trigonometric fallback is marked
+ * approximate (and placidus/koch near the polar circle degrade to an
+ * interpolation); only Swiss Ephemeris results are announced as computed.
+ */
+export function calculateHousesWithProvenance(
+  utcDate: Date, lat: number, lng: number, system: HouseSystem
+): HousesWithProvenance {
+  if (isSwephReady()) {
+    const swephResult = calculateHousesSweph(utcDate, lat, lng, system);
+    if (swephResult) {
+      return {
+        houses: {
+          cusps: swephResult.cusps,
+          ascendant: swephResult.ascendant,
+          midheaven: swephResult.midheaven,
+          system,
+        },
+        provenance: {
+          engine: 'swisseph',
+          source: 'swiss-ephemeris:native:houses',
+          precision: 'computed',
+        },
+      };
+    }
+  }
+  return {
+    houses: calculateFullHouses(utcDate, lat, lng, system),
+    provenance: {
+      engine: 'astronomy-engine',
+      source: 'lifemap-houses:trigonometric-fallback',
+      precision: 'approximate',
+    },
+  };
+}
+
 // ============================================================
 // FALLBACK: Ascendant & MC (trigonometric)
 // ============================================================

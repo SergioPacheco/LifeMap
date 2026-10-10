@@ -7,7 +7,9 @@ export * from './types';
 export * from './calculations';
 export * from './houses';
 export * from './aspects';
-export { initSweph, isSwephReady } from './sweph-provider';
+export { initSweph, isSwephReady, swephLongitude } from './sweph-provider';
+export { ECLIPSE_CATALOG, ECLIPSE_CATALOG_START, ECLIPSE_CATALOG_END, isEclipseRangeCovered } from './calendar/eclipses';
+export type { EclipseData } from './calendar/eclipses';
 
 import { calculatePositions, buildUTCDate, getSignIndex, getDegreeInSign, norm, getActiveEngine } from './calculations';
 import { calculateFullHouses, getHouseForLongitude } from './houses';

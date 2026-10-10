@@ -22,7 +22,7 @@ import { calendarDateAtLocalTime, type CalendarTimeContext } from './calendar-da
 // Fonte: NASA + Café Astrology + BigBeautifulSky
 // ============================================================
 
-interface EclipseData {
+export interface EclipseData {
   date: string;          // YYYY-MM-DD
   type: 'solar-total' | 'solar-annular' | 'solar-partial' | 'lunar-total' | 'lunar-partial' | 'lunar-penumbral';
   degree: number;        // Longitude zodiacal (0-360)
@@ -31,7 +31,9 @@ interface EclipseData {
 }
 
 // Eclipses 2024-2028 com graus zodiacais
-const ECLIPSE_DATABASE: EclipseData[] = [
+// Coverage below is the hard validity range of this table. Periods outside
+// it must NOT receive invented eclipse events (see forecast/coverage.ts).
+export const ECLIPSE_CATALOG: EclipseData[] = [
   // 2024
   { date: '2024-03-25', type: 'lunar-penumbral', degree: 185.2, sign: 6, degreeInSign: 5 },  // 5° Libra
   { date: '2024-04-08', type: 'solar-total', degree: 19.2, sign: 0, degreeInSign: 19 },       // 19° Áries
@@ -67,6 +69,18 @@ const ECLIPSE_DATABASE: EclipseData[] = [
 
 const SIGN_NAMES = ['Áries','Touro','Gêmeos','Câncer','Leão','Virgem','Libra','Escorpião','Sagitário','Capricórnio','Aquário','Peixes'];
 
+/** Noon-UTC validity bounds of the eclipse table (inclusive). */
+export const ECLIPSE_CATALOG_START = '2024-01-01';
+export const ECLIPSE_CATALOG_END = '2029-01-01';
+
+/** True when the whole [startUtcMs, endUtcMs) range is covered by the table. */
+export function isEclipseRangeCovered(startUtcMs: number, endUtcMs: number): boolean {
+  return (
+    startUtcMs >= Date.parse(`${ECLIPSE_CATALOG_START}T00:00:00Z`) &&
+    endUtcMs <= Date.parse(`${ECLIPSE_CATALOG_END}T00:00:00Z`)
+  );
+}
+
 // ============================================================
 // MAIN: Get eclipse events for a month with personal impact
 // ============================================================
@@ -84,7 +98,7 @@ export function getEclipseEvents(
   const orb = cfg.eclipses.personalOrb;
 
   // Find eclipses in this month (or within pre-effect range)
-  for (const eclipse of ECLIPSE_DATABASE) {
+  for (const eclipse of ECLIPSE_CATALOG) {
     const [eYear, eMonth, eDay] = eclipse.date.split('-').map(Number);
     const eclipseDate = ctx
       ? calendarDateAtLocalTime(eYear, eMonth - 1, eDay, 12, 0, ctx)
