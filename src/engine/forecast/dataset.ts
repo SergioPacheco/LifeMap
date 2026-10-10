@@ -99,6 +99,13 @@ export interface DatasetOptions {
   housesKnown: boolean;
   subjectIndex?: number;
   birth?: BirthData;
+  /**
+   * Per-body provenance. Timed transit contacts require computed grade on
+   * BOTH ends: mean-elements bodies (fallback Chiron/Lilith/nodes) are
+   * excluded from the refined search — their windows would certify a
+   * precision the source cannot support. Absent provenance keeps legacy behavior.
+   */
+  positionsProvenance?: Record<string, { engine: string }>;
 }
 
 export interface TemporalFacts {
@@ -112,8 +119,13 @@ export async function buildForecastDataset(request: ReportRequest): Promise<Fore
   if (!isTemporal(validated.reportType)) return [];
   if (!validated.period) throw new Error('PERIOD_REQUIRED: temporal content needs an explicit period');
   const subject = validated.subjects[0];
-  const { chart, housesKnown } = buildSubjectChart(subject, validated.houseSystem);
-  const datasetOptions: DatasetOptions = { housesKnown, subjectIndex: 0, birth: subject.birth };
+  const { chart, housesKnown, chartProvenance } = buildSubjectChart(subject, validated.houseSystem);
+  const datasetOptions: DatasetOptions = {
+    housesKnown,
+    subjectIndex: 0,
+    birth: subject.birth,
+    positionsProvenance: chartProvenance.positions,
+  };
   const { events } = collectForecastEvents(chart, validated, datasetOptions);
   const temporal = buildTemporalFacts(chart, validated, datasetOptions);
   return retainKnownFactIds(events, knownFactIds(chart, temporal.facts, 0, housesKnown));
@@ -304,8 +316,18 @@ export function collectForecastEvents(
   }
 
   // ---- Natal contact points --------------------------------------
+  // Timed contacts require computed grade on both ends (spike 2026-10-10).
+  const computedGrade = (body: string): boolean =>
+    (options.positionsProvenance?.[body]?.engine ?? 'astronomy-engine') !== 'mean-elements';
+  const transitPlanets = TRANSIT_PLANETS.filter(computedGrade);
+  if (transitPlanets.length < TRANSIT_PLANETS.length) {
+    limitations.push(
+      'Transit search restricted to computed-grade bodies; mean-elements points ' +
+        '(fallback Chiron/Lilith/nodes) are covered by natal facts only, not timed contacts.'
+    );
+  }
   const natalPoints: Record<string, number> = {};
-  for (const planet of TRANSIT_PLANETS) {
+  for (const planet of transitPlanets) {
     const position = chart.positions[planet];
     if (position && Number.isFinite(position.longitude)) natalPoints[planet] = position.longitude;
   }
@@ -322,7 +344,7 @@ export function collectForecastEvents(
   const counters = new Map<string, number>();
   const candidateDays = new Map<string, number[]>();
   for (const day of days) {
-    for (const transitPlanet of TRANSIT_PLANETS) {
+    for (const transitPlanet of transitPlanets) {
       const transitLon = day.lon[transitPlanet];
       if (transitLon === null || transitLon === undefined) continue;
       for (const [natalPoint, natalLon] of Object.entries(natalPoints)) {
@@ -393,7 +415,7 @@ export function collectForecastEvents(
   for (let i = 1; i < days.length; i++) {
     const date = new Date(days[i].t);
     if (days[i].t < startMs || days[i].t >= endMs) continue;
-    for (const planet of TRANSIT_PLANETS) {
+    for (const planet of transitPlanets) {
       if (planet === 'sun' || planet === 'moon') continue;
       const before = days[i - 1].retro[planet];
       const after = days[i].retro[planet];
@@ -437,8 +459,8 @@ export function collectForecastEvents(
 
   // ---- Ingresses (sign changes, minute-grade) ----------------------
   const ingressPlanets = request.reportType === 'forecast' && request.forecastGranularity !== 'annual'
-    ? [...TRANSIT_PLANETS, 'moon']
-    : TRANSIT_PLANETS;
+    ? [...transitPlanets, 'moon']
+    : transitPlanets;
   for (const planet of ingressPlanets) {
     for (const [beforeMs, afterMs, sign] of findSignChanges(days, planet)) {
       const exactMs = refineSignIngress(beforeMs, afterMs, planet, sign);

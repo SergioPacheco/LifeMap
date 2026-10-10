@@ -80,6 +80,16 @@ describe('forecast dataset', () => {
     }
   });
 
+  it('excludes mean-grade bodies from timed transit contacts', async () => {
+    const period = { start: '2026-06-01T00:00:00Z', end: '2026-07-01T00:00:00Z', timeZoneId: 'Etc/UTC', basis: 'custom' as const };
+    const events = await buildForecastDataset(annualRequest(2, period));
+    for (const event of events.filter((item) => item.kind === 'transit-aspect')) {
+      expect(event.id.startsWith('t-chiron-')).toBe(false);
+      expect(event.id.startsWith('t-lilith-')).toBe(false);
+      expect(event.id.startsWith('t-northNode-')).toBe(false);
+    }
+  });
+
   it('blocks complete annual reports outside the eclipse catalog', async () => {
     const gap = {
       start: '2030-06-01T00:00:00Z',

@@ -155,8 +155,13 @@ export function calculatePlanetLongitude(planet: string, utcDate: Date): number 
 // FALLBACK: ASTRONOMY ENGINE
 // ============================================================
 
-// Extra points — mean elements (Astronomy Engine doesn't cover these)
-const EXTRA_J2000 = { northNode: 125.04, lilith: 83.35, chiron: 209.37 };
+// Extra points — mean elements (Astronomy Engine doesn't cover these).
+// Verified 2026-10-10 against sweph SE_MEAN_APOG/SE_TRUE_NODE across
+// 2000–2030: northNode ≤ 0.4°, lilith ≤ 0.11° (constant was +180° off —
+// the perigee — before; see scripts/reports/ephemeris-spike.ts). Chiron's
+// eccentric orbit defeats any linear model (~29° off): callers must omit
+// Chiron when this is the active source, never publish it as computed.
+const EXTRA_J2000 = { northNode: 125.04, lilith: 263.35, chiron: 209.37 };
 const EXTRA_SPEED = { northNode: -0.05295, lilith: 0.11140, chiron: 0.01951 };
 
 export function calculatePositionsFallback(utcDate: Date, options?: CalculationOptions): Positions {

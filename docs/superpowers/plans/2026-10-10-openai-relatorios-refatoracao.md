@@ -332,3 +332,15 @@ Não executar tarefas 4, 6 e 7 como alterações independentes do contrato compa
 O desenho e o plano abrangem a cadeia completa solicitada. A escolha inicial recomendada é execução inline por entregas, começando com contratos e dataset factual, seguida de um piloto natal/anual. Isso mantém os contratos compartilhados sob uma implementação consistente e permite validar qualidade/custo antes de expandir.
 
 Antes de executar, revisar as metas de conteúdo e o desenho de layout. Não é necessário obter uma chave para revisar este plano; chave, teto de gasto, ambiente de backend e pagamento real só passam a ser necessários nas respectivas etapas. Nenhuma infraestrutura externa, compra, chamada paga ou publicação foi realizada durante o planejamento.
+
+## Adendo Cloudflare-native (10/10/2026, decisão do usuário)
+
+Destino: Pages + Workers + Workflows/Queues + D1/R2 + Stripe/Clerk + Browser
+Rendering. Tarefas 1–2 executadas como planejado e preservadas. Tarefa 3
+executada como backend próprio (Postgres + Node) **antes** da decisão:
+vale como referência executável da máquina de estados (idempotência,
+fencing, budget, entitlements) e como fallback caso o serverless emperre —
+o rework serverless porta o desenho, não recomeça do zero. Ordem: spike de
+efemérides (feito, `docs/reports/ephemeris-spike.md`) → rework T3 em
+Workers/D1 → T4 (OpenAI) → T5 (PDF via Browser Rendering) → T6
+(Stripe/Clerk) → T7 → T8 (custos pay-per-use medidos).

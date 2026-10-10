@@ -59,8 +59,25 @@ export function buildNatalFacts(
       precision: 'unavailable',
     };
 
+  // Chiron's linear mean model is ~29° off (spike 2026-10-10): when it is
+  // the active source its facts are omitted, never published as computed.
+  // With Swiss Ephemeris (computed grade) everything is kept.
+  const omitted = new Set<string>();
+  const limitationsAdditions: string[] = [];
+  for (const point of ['chiron'] as const) {
+    if (provenanceOf(point).engine === 'mean-elements') {
+      omitted.add(point);
+      limitationsAdditions.push(
+        'Chiron omitted: the mean-elements fallback cannot model its eccentric orbit ' +
+          '(~29° error); no Chiron positions, houses or aspects are published from it.'
+      );
+    }
+  }
+  limitations.push(...limitationsAdditions);
+
   // ---- Positions -------------------------------------------------
   for (const point of BODIES) {
+    if (omitted.has(point)) continue;
     const position = chart.positions[point];
     if (!position || !Number.isFinite(position.longitude)) continue;
     const provenance = provenanceOf(point);
@@ -120,6 +137,7 @@ export function buildNatalFacts(
 
     // ---- Placements ----------------------------------------------
     for (const point of BODIES) {
+      if (omitted.has(point)) continue;
       const position = chart.positions[point];
       if (!position || !Number.isFinite(position.longitude)) continue;
       facts.push({
@@ -155,7 +173,11 @@ export function buildNatalFacts(
 
   // ---- Aspects ----------------------------------------------------
   chart.aspects.forEach((aspect, index) => {
+    if (omitted.has(aspect.planet1) || omitted.has(aspect.planet2)) return;
     const involvesMoon = aspect.planet1 === 'moon' || aspect.planet2 === 'moon';
+    const meanEndpoint =
+      provenanceOf(aspect.planet1).engine === 'mean-elements' ||
+      provenanceOf(aspect.planet2).engine === 'mean-elements';
     facts.push({
       id: `s${subjectIndex}-aspect-${String(index + 1).padStart(2, '0')}`,
       kind: 'aspect',
@@ -168,7 +190,7 @@ export function buildNatalFacts(
       },
       subjectIndex,
       source: 'lifemap-engine:calculateAspects',
-      precision: involvesMoon && !housesKnown ? 'approximate' : 'computed',
+      precision: involvesMoon && !housesKnown ? 'approximate' : meanEndpoint ? 'approximate' : 'computed',
     });
   });
 

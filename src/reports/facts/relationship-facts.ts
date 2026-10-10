@@ -35,9 +35,23 @@ export function buildRelationshipFacts(
   const facts: AstroFact[] = [];
   const limitations: string[] = [];
 
+  // Same Chiron rule as natal facts: omitted when mean-elements is the
+  // active source on either side; kept (computed) with Swiss Ephemeris.
+  const meanSide = (point: string, side: 'a' | 'b'): boolean =>
+    (side === 'a' ? options.positionsProvenanceA : options.positionsProvenanceB)[point]?.engine ===
+    'mean-elements';
+  const omitted = (point: string): boolean =>
+    point === 'chiron' && (meanSide(point, 'a') || meanSide(point, 'b'));
+  if (['chiron'].some(omitted)) {
+    limitations.push(
+      'Chiron omitted from synastry/overlays: the mean-elements fallback cannot model it.'
+    );
+  }
+
   // ---- Synastry (A × B, both directions covered by ordered pairs) --
   const synastry = calculateAspects(chartA.positions, chartB.positions, false);
   synastry.forEach((aspect, index) => {
+    if (omitted(aspect.planet1) || omitted(aspect.planet2)) return;
     facts.push({
       id: `r-synastry-${String(index + 1).padStart(2, '0')}`,
       kind: 'synastry-aspect',
@@ -50,7 +64,7 @@ export function buildRelationshipFacts(
       },
       subjectIndex: 0,
       source: 'lifemap-engine:calculateAspects:synastry',
-      precision: 'computed',
+      precision: meanSide(aspect.planet1, 'a') || meanSide(aspect.planet2, 'b') ? 'approximate' : 'computed',
     });
   });
 
@@ -62,6 +76,7 @@ export function buildRelationshipFacts(
     subjectIndex: 0 | 1
   ) => {
     for (const [planet, position] of Object.entries(from.positions)) {
+      if (omitted(planet)) continue;
       if (!Number.isFinite(position.longitude)) continue;
       facts.push({
         id: `r-overlay-${fromLabel}-${planet}`,
@@ -74,7 +89,7 @@ export function buildRelationshipFacts(
         },
         subjectIndex,
         source: 'lifemap-engine:house-overlay',
-        precision: 'computed',
+        precision: meanSide(planet, fromLabel) ? 'approximate' : 'computed',
       });
     }
   };
@@ -92,6 +107,7 @@ export function buildRelationshipFacts(
   // ---- Composite (midpoint engine, positions + aspects) ------------
   const composite = calculateComposite(chartA, chartB);
   for (const [planet, position] of Object.entries(composite.positions)) {
+    if (omitted(planet)) continue;
     if (!Number.isFinite(position.longitude)) continue;
     facts.push({
       id: `r-composite-${planet}`,
@@ -108,6 +124,7 @@ export function buildRelationshipFacts(
     });
   }
   composite.aspects.forEach((aspect, index) => {
+    if (omitted(aspect.planet1) || omitted(aspect.planet2)) return;
     facts.push({
       id: `r-composite-aspect-${String(index + 1).padStart(2, '0')}`,
       kind: 'composite-aspect',

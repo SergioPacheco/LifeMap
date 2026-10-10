@@ -42,6 +42,22 @@ describe('natal facts', () => {
     expect(Array.isArray(limitations)).toBe(true);
   });
 
+  it('omits Chiron facts when the fallback is the active source', async () => {
+    const subject = reportSubjects[0];
+    const { chart, chartProvenance } = buildSubjectChart(subject, 'placidus');
+    expect(chartProvenance.positions.chiron?.engine).toBe('mean-elements');
+    const { facts, limitations } = buildNatalFacts(chart, 0, {
+      timeQuality: subject.timeQuality,
+      positionsProvenance: chartProvenance.positions,
+      housesProvenance: chartProvenance.houses,
+    });
+    expect(facts.some((fact) => JSON.stringify(fact.values).includes('chiron'))).toBe(false);
+    expect(limitations.join(' ')).toContain('Chiron');
+    // Mean-grade Lilith stays, flagged approximate — never silent.
+    const lilith = facts.find((fact) => fact.id === 's0-position-lilith');
+    expect(lilith?.precision).toBe('approximate');
+  });
+
   it('omits houses and angles for unknown birth time and intervals the Moon', async () => {
     const subject = reportSubjects[5]; // unknown time
     const { chart, chartProvenance } = buildSubjectChart(subject, 'placidus');

@@ -71,6 +71,7 @@ export async function buildReportContext(request: ReportRequest): Promise<Report
       housesKnown: primary.housesKnown,
       subjectIndex: 0,
       birth: validated.subjects[0].birth,
+      positionsProvenance: primary.chartProvenance.positions,
     };
     const temporal = buildTemporalFacts(primary.chart, validated, datasetOptions);
     facts.push(...temporal.facts);

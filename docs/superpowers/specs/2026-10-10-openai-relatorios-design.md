@@ -366,3 +366,20 @@ Fora do escopo inicial: trocar Astro/SolidJS, chat aberto com astrólogo virtual
 O planejamento não depende destas respostas, mas produção depende de chave/projeto OpenAI, teto financeiro aprovado, infraestrutura Node/PostgreSQL/objetos, origem da API e credenciais de pagamento. O piloto definirá modelo efetivo, concorrência, tempo p50/p95 e custo médio. Os preços de produtos existentes não serão alterados automaticamente.
 
 Plano operacional associado: `../plans/2026-10-10-openai-relatorios-refatoracao.md`.
+
+## 14. Adendo Cloudflare-native (10/10/2026, decisão do usuário)
+
+Site estático em Cloudflare Pages; nada de containers/Postgres autogeridos.
+Secrets em Workers secrets; login/pagamento/email via terceiros
+(Clerk/Auth0, Stripe, Resend); jobs longos em Workflows/Queues; estado em
+D1+R2; PDF via Browser Rendering `/pdf`. Tarefas 1–2 intactas (agnósticas a
+runtime); lógica OpenAI/blueprints (T4) e conteúdo por produto (T7) preservados.
+
+Exceção verificada no spike (`docs/reports/ephemeris-spike.md`,
+`scripts/reports/ephemeris-spike.ts`): o addon `sweph` não executa em
+Workers. Path serverless usa o fallback com regras por proveniência —
+planetas/Lua/fases/estações suficientes (≤ 0.2'), Lilith corrigida e
+mean-grade, Quíron omitido quando mean-elements, nodos fora de contatos
+cronometrados no fallback. WASM da Swiss Ephemeris adiado (não necessário
+para o v1). Tarefas 3 (runtime), 5 (PDF), 6 (entitlements) e 8 (ops) mudam
+de forma; custos passam a pay-per-use a medir no piloto.
