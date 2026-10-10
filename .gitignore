@@ -7,6 +7,10 @@ dist/
 # Astro
 .astro/
 
+# Browser verification artifacts
+test-results/
+playwright-report/
+
 # Environment
 .env
 .env.*

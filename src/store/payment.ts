@@ -3,7 +3,8 @@
 // Replace with real Stripe integration in production
 // ============================================================
 
-import { db, type Purchase, type CartItem } from '../store/db';
+import { db, type Purchase } from './db';
+import { REPORT_PRODUCTS } from '../reports/core/products';
 
 export interface PaymentResult {
   success: boolean;
@@ -19,136 +20,14 @@ export interface ProductInfo {
   description: string;
 }
 
-// Available products catalog — IDs must match ReportsShop.tsx
-export const PRODUCTS: Record<string, ProductInfo> = {
-  'natal-completo': {
-    id: 'natal-completo',
-    name: 'Mapa Natal Completo',
-    price: 29.90,
-    currency: 'BRL',
-    description: 'Relatório completo de 20+ páginas com interpretação profunda do seu mapa natal.',
-  },
-  'previsao-anual': {
-    id: 'previsao-anual',
-    name: 'Previsão Anual',
-    price: 34.90,
-    currency: 'BRL',
-    description: 'Profecção anual + trânsitos + recomendações por trimestre.',
-  },
-  'relacionamento': {
-    id: 'relacionamento',
-    name: 'Relatório de Relacionamento',
-    price: 39.90,
-    currency: 'BRL',
-    description: 'Sinastria completa + mapa composto + compatibilidade por tema.',
-  },
-  'psicologico': {
-    id: 'psicologico',
-    name: 'Análise Psicológica Profunda',
-    price: 39.90,
-    currency: 'BRL',
-    description: 'Análise da estrutura psicológica via planetas, aspectos e casas.',
-  },
-  'carreira': {
-    id: 'carreira',
-    name: 'Carreira e Vocação',
-    price: 29.90,
-    currency: 'BRL',
-    description: 'MC, Casa 6, Casa 10 e indicadores de vocação profissional.',
-  },
-  'seven-sins': {
-    id: 'seven-sins',
-    name: 'Os Sete Pecados',
-    price: 19.90,
-    currency: 'BRL',
-    description: 'A sombra lúdica do zodíaco — seus 7 pecados astrológicos.',
-  },
-  'crianca': {
-    id: 'crianca',
-    name: 'Mapa da Criança',
-    price: 24.90,
-    currency: 'BRL',
-    description: 'Compreenda o temperamento, necessidades e potenciais do seu filho.',
-  },
-  'financial': {
-    id: 'financial',
-    price: 29.90,
-    currency: 'BRL',
-    name: 'Mapa Financeiro',
-    description: 'Casa 2, Casa 8, Vênus, Júpiter, Saturno — seu perfil completo de riqueza e recursos.',
-  },
-  'financeiro': {
-    id: 'financeiro',
-    price: 29.90,
-    currency: 'BRL',
-    name: 'Mapa Financeiro',
-    description: 'Casa 2, Casa 8, Vênus, Júpiter, Saturno — seu perfil completo de riqueza e recursos.',
-  },
-  'espiritual': {
-    id: 'espiritual',
-    price: 34.90,
-    currency: 'BRL',
-    name: 'Mapa Espiritual e Kármico',
-    description: 'Nodos Lunares, Casa 12, Netuno, Quíron e Plutão — o caminho da alma.',
-  },
-  'spiritual': {
-    id: 'spiritual',
-    price: 34.90,
-    currency: 'BRL',
-    name: 'Mapa Espiritual e Kármico',
-    description: 'Nodos Lunares, Casa 12, Netuno, Quíron e Plutão — o caminho da alma.',
-  },
-  'retorno-saturno': {
-    id: 'retorno-saturno',
-    price: 24.90,
-    currency: 'BRL',
-    name: 'Retorno de Saturno',
-    description: 'Guia para o ciclo de 29 anos de Saturno — reestruturação e propósito.',
-  },
-  'saturn-return': {
-    id: 'saturn-return',
-    price: 24.90,
-    currency: 'BRL',
-    name: 'Retorno de Saturno',
-    description: 'Guia para o ciclo de 29 anos de Saturno — reestruturação e propósito.',
-  },
-  // Legacy IDs (for backward compatibility with ReportPreview)
-  'natal-complete': {
-    id: 'natal-complete',
-    name: 'Mapa Natal Completo',
-    price: 29.90,
-    currency: 'BRL',
-    description: 'Relatório completo de 20+ páginas com interpretação profunda do seu mapa natal.',
-  },
-  'annual-forecast': {
-    id: 'annual-forecast',
-    name: 'Previsão Anual',
-    price: 34.90,
-    currency: 'BRL',
-    description: 'Profecção anual + trânsitos + recomendações por trimestre.',
-  },
-  'relationship': {
-    id: 'relationship',
-    name: 'Relatório de Relacionamento',
-    price: 39.90,
-    currency: 'BRL',
-    description: 'Sinastria completa + mapa composto + compatibilidade por tema.',
-  },
-  'psychological': {
-    id: 'psychological',
-    name: 'Análise Psicológica Profunda',
-    price: 39.90,
-    currency: 'BRL',
-    description: 'Análise da estrutura psicológica via planetas, aspectos e casas.',
-  },
-  'career': {
-    id: 'career',
-    name: 'Carreira e Vocação',
-    price: 29.90,
-    currency: 'BRL',
-    description: 'MC, Casa 6, Casa 10 e indicadores de vocação profissional.',
-  },
-};
+// Compatibility view: every legacy ID retains its identity, with shared prices.
+export const PRODUCTS: Record<string, ProductInfo> = Object.assign(Object.create(null),
+  Object.fromEntries(REPORT_PRODUCTS.flatMap(product =>
+    [product.id, ...product.aliases].map(id => [id, {
+      id, name: product.name, description: product.description, price: product.price, currency: product.currency,
+    }])
+  ))
+);
 
 /**
  * Mock payment processor — simulates Stripe Checkout.
