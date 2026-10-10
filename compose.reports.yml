@@ -1,0 +1,58 @@
+# ============================================================
+# Local report stack: Postgres + API + worker.
+# The static Astro site (GitHub Pages) is NOT part of this compose file.
+# Usage: docker compose -f compose.reports.yml up --build
+# ============================================================
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: reports
+      POSTGRES_PASSWORD: reports-dev-only
+      POSTGRES_DB: reports
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reports -d reports"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  report-api:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: ["node", "dist/services/report-api/main.js"]
+    environment:
+      DATABASE_URL: postgres://reports:reports-dev-only@postgres:5432/reports
+      ARTIFACT_DIR: /artifacts
+      REPORT_MAX_COST_USD: 25
+      REPORT_OWNER_QUOTA_USD: 10
+      REPORT_PILOT_OWNERS: ""
+      REPORT_ALLOWED_ORIGINS: ""
+    ports:
+      - "127.0.0.1:4100:4100"
+    volumes:
+      - artifacts:/artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  report-worker:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    command: ["node", "dist/services/report-worker/main.js"]
+    environment:
+      DATABASE_URL: postgres://reports:reports-dev-only@postgres:5432/reports
+      ARTIFACT_DIR: /artifacts
+    volumes:
+      - artifacts:/artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  artifacts:

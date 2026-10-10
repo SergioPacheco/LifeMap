@@ -1,6 +1,7 @@
 {
   "name": "lifemap-pro",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +12,11 @@
     "test": "vitest run",
     "test:reports": "vitest run",
     "test:e2e:reports": "playwright test --config playwright.reports.config.ts",
-    "reports:baseline": "tsx scripts/reports/baseline.ts"
+    "reports:baseline": "tsx scripts/reports/baseline.ts",
+    "api:dev": "tsx services/report-api/main.ts",
+    "worker:dev": "tsx services/report-worker/main.ts",
+    "services:build": "tsc -p services/tsconfig.json && esbuild services/report-api/main.ts services/report-worker/main.ts --bundle --platform=node --format=esm --outdir=dist/services --external:pg --external:sweph --log-level=warning && mkdir -p dist/services/migrations && cp services/migrations/001-reports.sql dist/services/migrations/",
+    "test:services": "vitest run tests/services"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +28,7 @@
     "astronomy-engine": "^2.1.19",
     "dexie": "^4.4.4",
     "jspdf": "^4.2.1",
+    "pg": "^8.23.1",
     "solid-js": "^1.9.14",
     "sweph": "^2.10.3-7",
     "zod": "4.6.5"
@@ -31,7 +37,10 @@
     "@astrojs/check": "0.9.10",
     "@playwright/test": "1.64.0",
     "@types/node": "^26.1.0",
+    "@types/pg": "^8.15.6",
+    "esbuild": "^0.25.12",
     "fake-indexeddb": "6.2.5",
+    "pg-mem": "^3.0.14",
     "tailwindcss": "^3.4.19",
     "tsx": "4.23.15",
     "typescript": "^6.0.3",
