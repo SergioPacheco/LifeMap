@@ -5,7 +5,7 @@
 // ============================================================
 
 import * as Astronomy from 'astronomy-engine';
-import { calculatePositionsSweph, isSwephReady } from './sweph-provider';
+import { calculatePositionsSweph, isSwephReady, swephLongitude } from './sweph-provider';
 import type { CelestialPosition, Positions, CalculationOptions } from './types';
 import { zonedDateTimeToUtc } from '../utils/dateTime';
 
@@ -38,14 +38,133 @@ export function getActiveEngine(): 'swisseph' | 'astronomy-engine' {
 }
 
 // ============================================================
+// PROVENANCE — per-result engine attribution
+// The global ready flag alone never proves which engine produced a
+// value; every factual pipeline must carry this per-point record.
+// ============================================================
+
+export type EngineId = 'swisseph' | 'astronomy-engine' | 'mean-elements';
+
+export interface CalculationProvenance {
+  engine: EngineId;
+  /** Human-readable origin, e.g. 'swiss-ephemeris:native:calc_ut'. */
+  source: string;
+  /** 'computed' (ephemeris), 'approximate' (mean elements/trig), 'unavailable'. */
+  precision: 'computed' | 'approximate' | 'unavailable';
+}
+
+export interface PositionsWithProvenance {
+  positions: Positions;
+  provenance: Record<string, CalculationProvenance>;
+}
+
+/** Points served by linear mean elements when the JS fallback is active. */
+const MEAN_ELEMENT_POINTS = new Set(['northNode', 'southNode', 'lilith', 'chiron']);
+
+/**
+ * Calculate all positions and record, per body, which engine produced it.
+ * Missing Swiss Ephemeris bodies are completed with the JS fallback and
+ * attributed accordingly — never silently.
+ */
+export function calculatePositionsWithProvenance(
+  utcDate: Date,
+  options?: CalculationOptions
+): PositionsWithProvenance {
+  const positions: Positions = {};
+  const provenance: Record<string, CalculationProvenance> = {};
+
+  if (isSwephReady()) {
+    const swephResult = calculatePositionsSweph(utcDate);
+    if (swephResult) {
+      for (const [key, value] of Object.entries(swephResult)) {
+        positions[key] = value;
+        provenance[key] = {
+          engine: 'swisseph',
+          source: 'swiss-ephemeris:native:calc_ut',
+          precision: 'computed',
+        };
+      }
+    }
+  }
+
+  const fallback = calculatePositionsFallback(utcDate, options);
+  for (const [key, value] of Object.entries(fallback)) {
+    if (positions[key]) continue;
+    positions[key] = value;
+    const mean = MEAN_ELEMENT_POINTS.has(key);
+    provenance[key] = {
+      engine: mean ? 'mean-elements' : 'astronomy-engine',
+      source: mean ? 'mean-elements:linear:J2000' : 'astronomy-engine:GeoVector+Ecliptic',
+      precision: mean ? 'approximate' : 'computed',
+    };
+  }
+
+  return { positions, provenance };
+}
+
+// Single-body map for cheap refinement sampling (no full-chart cost).
+const SINGLE_BODY_MAP: Record<string, Astronomy.Body> = {
+  sun: 'Sun' as Astronomy.Body,
+  mercury: 'Mercury' as Astronomy.Body,
+  venus: 'Venus' as Astronomy.Body,
+  mars: 'Mars' as Astronomy.Body,
+  jupiter: 'Jupiter' as Astronomy.Body,
+  saturn: 'Saturn' as Astronomy.Body,
+  uranus: 'Uranus' as Astronomy.Body,
+  neptune: 'Neptune' as Astronomy.Body,
+  pluto: 'Pluto' as Astronomy.Body,
+};
+
+/**
+ * Longitude of one body at one instant, with real-engine priority.
+ * Used by the adaptive transit search: sampling one body costs a
+ * fraction of a full chart calculation. Returns null when unavailable
+ * (callers must treat the contact as unavailable, never as zero).
+ */
+export function calculatePlanetLongitude(planet: string, utcDate: Date): number | null {
+  if (planet === 'southNode') {
+    const node = calculatePlanetLongitude('northNode', utcDate);
+    return node === null ? null : norm(node + 180);
+  }
+  const swephLon = swephLongitude(planet, utcDate);
+  if (swephLon !== null) return swephLon;
+  try {
+    if (planet === 'moon') {
+      const ecl = Astronomy.EclipticGeoMoon(new Astronomy.AstroTime(utcDate));
+      return Number.isFinite(ecl.lon) ? norm(ecl.lon) : null;
+    }
+    const body = SINGLE_BODY_MAP[planet];
+    if (body) {
+      const ecl = Astronomy.Ecliptic(
+        Astronomy.GeoVector(body, new Astronomy.AstroTime(utcDate), true)
+      );
+      return Number.isFinite(ecl.elon) ? norm(ecl.elon) : null;
+    }
+    const base = EXTRA_J2000[planet as keyof typeof EXTRA_J2000];
+    const speed = EXTRA_SPEED[planet as keyof typeof EXTRA_SPEED];
+    if (base !== undefined && speed !== undefined) {
+      return norm(base + speed * daysSinceJ2000(utcDate));
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+// ============================================================
 // FALLBACK: ASTRONOMY ENGINE
 // ============================================================
 
-// Extra points — mean elements (Astronomy Engine doesn't cover these)
-const EXTRA_J2000 = { northNode: 125.04, lilith: 83.35, chiron: 209.37 };
+// Extra points — mean elements (Astronomy Engine doesn't cover these).
+// Verified 2026-10-10 against sweph SE_MEAN_APOG/SE_TRUE_NODE across
+// 2000–2030: northNode ≤ 0.4°, lilith ≤ 0.11° (constant was +180° off —
+// the perigee — before; see scripts/reports/ephemeris-spike.ts). Chiron's
+// eccentric orbit defeats any linear model (~29° off): callers must omit
+// Chiron when this is the active source, never publish it as computed.
+const EXTRA_J2000 = { northNode: 125.04, lilith: 263.35, chiron: 209.37 };
 const EXTRA_SPEED = { northNode: -0.05295, lilith: 0.11140, chiron: 0.01951 };
 
-function calculatePositionsFallback(utcDate: Date, options?: CalculationOptions): Positions {
+export function calculatePositionsFallback(utcDate: Date, options?: CalculationOptions): Positions {
   const positions: Positions = {};
 
   try {

@@ -6,11 +6,12 @@ import { generateAnnualPdf, generateRelationshipPdf, generatePsychologicalPdf, g
 import { generateFinancialPdf } from '../../reports/financial-report';
 import { generateSpiritualPdf } from '../../reports/spiritual-report';
 import { generateSaturnReturnPdf } from '../../reports/saturn-return-report';
-import { processPayment, savePurchase, PRODUCTS } from '../../store/payment';
+import { processPayment, savePurchase } from '../../store/payment';
 import { getTranslations, languages, localePath, type Locale } from '../../i18n';
 import type { NatalChart } from '../../engine/types';
 import type { Profile } from '../../store/db';
 import { birthDataFromProfile } from '../../utils/profile';
+import { productForReportType } from '../../reports/core/products';
 
 interface Props {
   locale: Locale;
@@ -105,19 +106,12 @@ export default function ReportPreview(props: Props) {
     }
   };
 
-  const PRODUCT_MAP: Record<string, string> = {
-    natal: 'natal-complete',
-    annual: 'annual-forecast',
-    relationship: 'relationship',
-    psychological: 'psychological',
-    career: 'career',
-    'seven-sins': 'seven-sins',
-  };
+  const product = () => productForReportType(props.reportType);
 
   const handleDownloadFull = async () => {
     if (!natal() || !profile()) return;
 
-    const productId = PRODUCT_MAP[props.reportType] || 'natal-complete';
+    const productId = product().id;
     setBuyStatus('paying');
     setBuyError('');
 
@@ -217,7 +211,7 @@ export default function ReportPreview(props: Props) {
                 onClick={handleDownloadFull}
                 class="w-full px-6 py-3 bg-base-200 hover:bg-base-100 text-cream font-medium rounded-lg transition-colors border border-base-400 hover:border-gold/30"
               >
-                💳 {labels().buyFull} — R$ {PRODUCTS[PRODUCT_MAP[props.reportType]]?.price.toFixed(2) || '29.90'}
+                💳 {labels().buyFull} — R$ {product().price.toFixed(2)}
               </button>
             </Show>
 

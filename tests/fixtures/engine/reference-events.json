@@ -1,0 +1,50 @@
+{
+  "_note": "Astronomical reference events obtained and verified in task 2 (2026-10-10). Engine values were produced with the astronomy-engine fallback (no sweph in this environment) and cross-checked against primary sources. Tolerances reflect each method: minute-refined elongation crossings ±2h, day-catalog eclipses ±12h, daily station scans ±2d. The regression test asserts the engine reproduces every entry within tolerance.",
+  "verifiedAt": "2026-10-10",
+  "engine": "astronomy-engine (fallback; sweph unavailable in this environment)",
+  "events": [
+    {
+      "id": "full-moon-2025-03-14",
+      "kind": "moon-phase",
+      "detail": "full",
+      "expectedUtc": "2025-03-14T06:58:48Z",
+      "toleranceMinutes": 120,
+      "engineMeasuredUtc": "2025-03-14T06:54:35Z",
+      "source": "USNO Astronomical Applications (eclipse_moon_2025_03): geocentric opposition in RA 06:35:59 UT, mid-eclipse 06:58:48 UT. Engine elongation-refined full moon agrees within ~4 min."
+    },
+    {
+      "id": "lunar-eclipse-2025-03-14",
+      "kind": "eclipse-lunar",
+      "detail": "lunar-total",
+      "expectedUtc": "2025-03-14T12:00:00Z",
+      "toleranceMinutes": 720,
+      "source": "NASA eclipse catalog (total lunar eclipse 2025-03-14; internal day-catalog). Day precision: catalog noon UTC."
+    },
+    {
+      "id": "mercury-station-rx-2025-03-15",
+      "kind": "retrograde-start",
+      "detail": "mercury",
+      "expectedUtc": "2025-03-15T00:00:00Z",
+      "toleranceMinutes": 2880,
+      "engineMeasuredUtc": "2025-03-15T00:00:00Z",
+      "source": "Documented Mercury retrograde ingress 2025-03-15 (retrograde until 2025-04-07). Day-grade daily isRetrograde-flip detection."
+    },
+    {
+      "id": "new-moon-2025-03-29",
+      "kind": "moon-phase",
+      "detail": "new",
+      "expectedUtc": "2025-03-29T10:47:27Z",
+      "toleranceMinutes": 120,
+      "engineMeasuredUtc": "2025-03-29T10:57:49Z",
+      "source": "EclipseWise/F. Espenak: greatest solar eclipse 10:47:27 UT. Engine elongation-refined new moon agrees within ~11 min (elongation zero and greatest eclipse naturally differ by minutes)."
+    },
+    {
+      "id": "solar-eclipse-2025-03-29",
+      "kind": "eclipse-solar",
+      "detail": "solar-partial",
+      "expectedUtc": "2025-03-29T12:00:00Z",
+      "toleranceMinutes": 720,
+      "source": "NASA eclipse catalog (partial solar eclipse 2025-03-29; internal day-catalog). Day precision: catalog noon UTC."
+    }
+  ]
+}

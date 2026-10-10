@@ -4,8 +4,11 @@
 // Fonte única de verdade para o relatório natal em PT
 // ============================================================
 
-// Re-export dos textos existentes (evita duplicação)
-import { VENUS_IN_HOUSE as _VENUS, MARS_IN_HOUSE as _MARS, NORTH_NODE_HOUSE as _NN_HOUSE, NORTH_NODE_IN_SIGN as _NN_SIGN } from '../interpret';
+// Re-export dos textos existentes (evita duplicação).
+// Leaf modules only: nunca importar de volta '../interpret' aqui,
+// senão o ciclo ESM (interpret → index → pt → interpret) quebra
+// loaders nativos (Node/tsx/Workers) com erro TDZ.
+import { VENUS_IN_HOUSE as _VENUS, MARS_IN_HOUSE as _MARS, NORTH_NODE_HOUSE as _NN_HOUSE, NORTH_NODE_IN_SIGN as _NN_SIGN } from './classic-houses';
 import { JUPITER_IN_HOUSE as _JUPITER, SATURN_IN_HOUSE as _SATURN, URANUS_IN_HOUSE as _URANUS, NEPTUNE_IN_HOUSE as _NEPTUNE, PLUTO_IN_HOUSE as _PLUTO } from '../outer-planets';
 import { CHIRON_IN_HOUSE as _CHIRON, CHIRON_IN_SIGN as _CHIRON_SIGN } from '../chiron';
 

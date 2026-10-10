@@ -1,4 +1,5 @@
 import Dexie, { type Table } from 'dexie';
+import type { BirthTimeQuality } from '../reports/core/types';
 
 // ============================================================
 // TYPES
@@ -9,6 +10,8 @@ export interface Profile {
   name: string;
   date: string;       // YYYY-MM-DD
   time: string;       // HH:mm
+  timeQuality?: BirthTimeQuality;
+  timeUncertaintyMinutes?: number;
   lat: number;
   lng: number;
   city: string;
@@ -94,6 +97,18 @@ class LifeMapDB extends Dexie {
       purchases: '++id, stripeSessionId, productId, profileId, purchasedAt',
       settings: '++id, &key',
     });
+
+    // Historical compatibility only: old times were entered without a quality field.
+    // This default does not assert that the birth time was independently verified.
+    this.version(3).stores({
+      profiles: '++id, name, date, city, createdAt, updatedAt',
+      charts: '++id, profileId, type, createdAt',
+      cart: '++id, productId, profileId',
+      purchases: '++id, stripeSessionId, productId, profileId, purchasedAt',
+      settings: '++id, &key',
+    }).upgrade(tx => tx.table('profiles').toCollection().modify(profile => {
+      profile.timeQuality ??= 'exact';
+    }));
   }
 }
 

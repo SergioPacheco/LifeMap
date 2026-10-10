@@ -1,7 +1,12 @@
 // ============================================================
 // SWEPH-PROVIDER.TS — Swiss Ephemeris Wrapper
-// Provides high-precision planetary positions via sweph (WASM)
-// Same engine used by astro.com (Astrodienst)
+// Provides high-precision planetary positions via the `sweph` npm
+// package (native Node addon). Same engine family used by astro.com.
+// NOTE: this addon loads in Node only. The static site runs in the
+// browser (GitHub Pages) and always uses the JS fallback engine there;
+// the report worker (Node) uses the native addon when available.
+// Per-result provenance (not the global ready flag) is the source of
+// truth for which engine produced each value.
 // ============================================================
 
 import type { CelestialPosition, Positions, HouseSystem } from './types';
@@ -139,6 +144,26 @@ export function calculatePositionsSweph(utcDate: Date): Positions | null {
   }
 
   return positions;
+}
+
+/**
+ * Longitude of a single body via Swiss Ephemeris (cheap refinement path).
+ * Returns null when sweph is unavailable, the body is unknown, or the
+ * calculation fails — callers must fall back to the JS engine.
+ */
+export function swephLongitude(planetId: string, utcDate: Date): number | null {
+  if (!swephReady || !sweph) return null;
+  const seId = SE_PLANETS[planetId];
+  if (seId === undefined) return null;
+  try {
+    const result = sweph.calc_ut(dateToJulianDay(utcDate), seId, CALC_FLAGS);
+    if (result && result.data && Number.isFinite(result.data[0])) {
+      return norm(result.data[0]);
+    }
+  } catch (e) {
+    console.warn(`[SwissEph] Error calculating ${planetId}:`, e);
+  }
+  return null;
 }
 
 // ============================================================

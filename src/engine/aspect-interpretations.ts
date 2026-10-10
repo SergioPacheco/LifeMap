@@ -280,6 +280,31 @@ export const PLANET_ASPECTS: Record<string, AspectInterp> = {
     soft: 'Sua ação no mundo é informada pela experiência de dor. Há uma qualidade de "guerreiro consciente" — você sabe como usar força sem destruir porque conhece o custo da destruição. Dom para artes marciais, ativismo ou qualquer campo que use poder a serviço da cura.',
     hard: 'Tensão entre ação e ferida — raiva reprimida, medo de ser agressivo, ou dificuldade em se defender quando necessário. Pode haver experiências onde sua força foi usada contra você ou onde agir trouxe consequências dolorosas. A lição é que sua raiva não é venenosa — é combustível sagrado quando canalizada com consciência.',
   },
+  'mercury-venus': {
+    conjunction: 'Mente e afeto falam a mesma língua — você pensa sobre amor com clareza e ama com inteligência. Comunicação naturalmente agradável, com talento para palavras que acolhem. O risco é racionalizar sentimentos em vez de senti-los.',
+    soft: 'Fluidez entre pensar e relacionar-se: você explica o que sente com facilidade rara e aprende melhor em ambientes afetivos. Diplomacia mental — sabe dizer verdades difíceis de forma que o outro consiga ouvir.',
+    hard: 'Raro em orbe apertado (os dois nunca se afastam muito). Quando presente, indica atrito entre o que você pensa do amor e o que sente por ele — a mente critica o que o coração escolhe. A lição é deixar o pensamento a serviço do vínculo, não como seu juiz.',
+  },
+  'mercury-mars': {
+    conjunction: 'Mente afiada e língua rápida — você pensa em velocidade de ação e age com a mente ligada. Excelente para debates, decisões sob pressão e trabalho que exige reflexo intelectual. O desafio é a impaciência com quem processa mais devagar.',
+    soft: 'Energia mental bem dirigida: você transforma ideias em movimento sem atrito. Boa combinação para empreender, argumentar e executar — pensar e fazer funcionam como um sistema só.',
+    hard: 'Tensão entre pensamento e impulso — a mente quer analisar e o corpo quer agir, gerando irritação, discussões e palavras das quais se arrepende. A lição é instalar um intervalo entre o estímulo e a resposta: contar até três antes de disparar.',
+  },
+  'venus-jupiter': {
+    conjunction: 'Expansão fundida ao afeto — generosidade natural, otimismo nos vínculos, prazer em compartilhar. Você atrai abundância relacional e material com mais facilidade que a média. O desafio é o excesso: prometer demais no amor ou gastar além da conta em nome do prazer.',
+    soft: 'Fluidez entre amor e prosperidade — relacionamentos abrem portas e a generosidade retorna multiplicada. Há uma proteção natural sobre a vida afetiva e financeira, desde que você não confunda sorte com dispensa de esforço.',
+    hard: 'Raro em orbe apertado. Quando presente, indica exagero afetivo — idealizar parceiros, dramatizar rompimentos ou buscar no amor uma grandiosidade que ele não precisa ter. A lição é celebrar sem inflacionar.',
+  },
+  'venus-uranus': {
+    conjunction: 'Amor e liberdade fundidos — você precisa de espaço para amar e ama quem respeita sua independência. Atração por pessoas incomuns, relações fora do roteiro, magnetismo excêntrico. O desafio é não confundir necessidade de variedade com incapacidade de vínculo.',
+    soft: 'Originalidade afetiva que funciona: você renova vínculos sem rompê-los, trazendo frescor para relações duradouras. Amizades que viram amor (e vice-versa) com naturalidade. Abertura para formatos de relação não convencionais.',
+    hard: 'Tensão entre vínculo e autonomia — rupturas súbitas, alternância entre grude e fuga, atração pelo indisponível. O padrão costuma se repetir até que você negocie liberdade dentro do compromisso, em vez de buscá-la fora dele.',
+  },
+  'saturn-jupiter': {
+    conjunction: 'O grande equilíbrio fundido à personalidade — expansão e contenção nascidas juntas. Você sabe quando apostar e quando consolidar, o que dá aos seus projetos uma solidez rara. Amadurecimento em ciclos: cada década organiza melhor a anterior.',
+    soft: 'Fluidez entre crescer e estruturar: oportunidades encontram você preparado, e disciplina encontra sentido no crescimento. É a assinatura de quem constrói grande sem perder o chão — progresso sustentável como traço de caráter.',
+    hard: 'Tensão entre o desejo de expandir e o medo de arriscar — alternância entre euforia empreendedora e paralisia cautelosa. Pode oscilar entre gastar energia demais e segurar demais. A lição é orçamentar o risco: definir de antemão quanto pode perder liberta para ganhar.',
+  },
 };
 
 // ============================================================

@@ -1,5 +1,6 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { db } from '../../store/db';
+import { resolveProduct } from '../../reports/core/products';
 import { getTranslations, localePath, type Locale } from '../../i18n';
 
 interface Props {
@@ -15,17 +16,17 @@ interface ProductMeta {
 }
 
 // Static product metadata — translations come from i18n/*.json
-const PRODUCTS_META: ProductMeta[] = [
-  { id: 'natal-completo', icon: '☉', category: 'personality', price: 29.90, currency: 'BRL' },
-  { id: 'relacionamento', icon: '♡', category: 'relationship', price: 39.90, currency: 'BRL' },
-  { id: 'previsao-anual', icon: '↻', category: 'forecast', price: 34.90, currency: 'BRL' },
-  { id: 'carreira', icon: '♄', category: 'career', price: 29.90, currency: 'BRL' },
-  { id: 'psicologico', icon: '♇', category: 'personality', price: 39.90, currency: 'BRL' },
-  { id: 'seven-sins', icon: '🔥', category: 'personality', price: 19.90, currency: 'BRL' },
-  { id: 'financeiro', icon: '💰', category: 'career', price: 29.90, currency: 'BRL' },
-  { id: 'espiritual', icon: '🔮', category: 'personality', price: 34.90, currency: 'BRL' },
-  { id: 'retorno-saturno', icon: '♄', category: 'forecast', price: 24.90, currency: 'BRL' },
-];
+const PRODUCTS_META: ProductMeta[] = ([
+  { id: 'natal-completo', icon: '☉', category: 'personality' },
+  { id: 'relacionamento', icon: '♡', category: 'relationship' },
+  { id: 'previsao-anual', icon: '↻', category: 'forecast' },
+  { id: 'carreira', icon: '♄', category: 'career' },
+  { id: 'psicologico', icon: '♇', category: 'personality' },
+  { id: 'seven-sins', icon: '🔥', category: 'personality' },
+  { id: 'financeiro', icon: '💰', category: 'career' },
+  { id: 'espiritual', icon: '🔮', category: 'personality' },
+  { id: 'retorno-saturno', icon: '♄', category: 'forecast' },
+] as const).map(meta => ({ ...meta, price: resolveProduct(meta.id).price, currency: resolveProduct(meta.id).currency }));
 
 const CATEGORY_KEYS = ['all', 'personality', 'forecast', 'relationship', 'career'] as const;
 
